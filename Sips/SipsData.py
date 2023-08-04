@@ -5,8 +5,9 @@ from tabulate import tabulate
 from geopy.geocoders import Nominatim
 import time
 import os
+import folium
 
-html = "https://centercityphila.org/explore-center-city/ccd-sips"
+html = "https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view"
 base_html = "https://centercityphila.org"
 source = requests.get(html).text
 soup = BeautifulSoup(source, "lxml")
@@ -25,33 +26,27 @@ for page in pages:
     # Request and parse HTML for each page 
     page_html = requests.get(page, allow_redirects=False).text
     soupIter = BeautifulSoup(page_html, 'lxml')
+    # print(soupIter.find_all('tr')[1])
+    for card in soupIter.find_all('tr'):
+        try:
+            title = card.find('a', class_='o-text-link').text.strip("\n        ")
+            url = html + card.find('a', class_='o-card-link')['href']
+            address = card.find('td', attrs={'data-th': 'Address'}).text.strip()
 
-    for card in soupIter.find_all('div', class_='o-card__container'):
-        title = card.find('h3', class_='o-card__title').text
-        address = card.find('p', class_='o-card__lede').text
-
-        bars.append([title, address])
+            bars.append([title, address, url])
+        except AttributeError:
+            # One of the classes is not present in this <tr> element
+            # Skip this element and continue with the next one
+            continue
 
 # Create dataframe  
-df = pd.DataFrame(bars, columns=['Bar Name', 'Address'])
+df = pd.DataFrame(bars, columns=['Bar Name', 'Address', 'Url'])
 
 mask = df['Address'].str.contains('Philadelphia')
 df = df[mask]
 df = df.reset_index(drop=True)
 df = df.drop_duplicates(subset=['Bar Name'])
 print(df)
-
-# def find_location(row):
-#     place = row['Address']
-#     print(place)
-#     location = geolocator.geocode(place)
-#     print(location)
-#     print()
-#     if location != None:
-#         return location.latitude, location.longitude
-#     else:
-#         return 0
-
 
 MAX_ATTEMPTS = 5
 
@@ -62,7 +57,7 @@ def find_location(row):
     while attempts < MAX_ATTEMPTS:
         try:
             location = geolocator.geocode(place)
-            print(location)
+            # print(location)
             return location.latitude, location.longitude # type: ignore
         except:
             attempts += 1
@@ -80,6 +75,4 @@ current_directory = os.getcwd()
 # Combine the current directory with the filename
 file_path = os.path.join(current_directory, 'SipsLocations.csv')
 
-df.to_csv("SipsLocations.csv", index=False)
-# location = geolocator.geocode("1801 John F Kennedy Blvd, Philadelphia, PA 19103")
-# print(location.latitude, location.longitude)
+df.to_csv("AllSipsLocations.csv", index=False)
