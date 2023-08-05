@@ -26,15 +26,55 @@ print(pages)
 
 # Define a regular expression pattern to extract the JSON object from the line
 pattern = r'apos\.maps\["ccd-places"\]\.addMap\((.*?)\)'
-
+bar_info_list = []
 for page in pages:
-    # Request and parse HTML for each page 
     page_html = requests.get(page, allow_redirects=False).text
     soupIter = BeautifulSoup(page_html, 'lxml')
-    script_tags = soup.find_all('script', text=re.compile(pattern))
-    # print(script_tags)
+    script_tags = soupIter.find_all('script', text=re.compile(pattern))
+
+    json_data = {}
     for script_tag in script_tags:
-        print(script_tag.string.splitlines())
+        lines = script_tag.string.splitlines()
+        for line in lines:
+            if re.match(pattern, line.strip()):
+                # Extract the JSON text from the line
+                start_index = line.find('{')
+                end_index = line.rfind('}') + 1
+                json_text = line[start_index:end_index]
+                json_data = json.loads(json_text)
+                break
+        if json_data is not None:
+            break
+
+    for item in json_data["items"]:
+        title = item.get("title", "")
+        url_website = item.get("urlWebsite", "")
+        if url_website:
+            url_website = url_website.rstrip('/')
+        bar_info = {"Bar Name": title, "Bar Website": url_website}
+        print(bar_info)
+        bar_info_list.append(bar_info)
+
+new_df = pd.DataFrame(bar_info_list)
+
+
+# Print the resulting DataFrame with the new "Bar Website" column
+print(new_df)
+
+df = pd.read_csv('AllSipsLocations.csv')
+merged_df = df.merge(new_df, on='Bar Name', how='left')
+print(merged_df)
+merged_df.to_csv("Test.csv", index=False)
+# for page in pages:
+#     # Request and parse HTML for each page 
+#     page_html = requests.get(page, allow_redirects=False).text
+#     soupIter = BeautifulSoup(page_html, 'lxml')
+#     script_tags = soup.find_all('script', text=re.compile(pattern))
+#     # print(script_tags)
+#     for script_tag in script_tags:
+#         result = [item for item in script_tag if "apos.maps" in item]
+#         print(result)
+#         print(len(result))
         
         # Access the title and urlWebsite fields
         # title = data.get('title')

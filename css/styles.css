@@ -10967,6 +10967,10 @@ html {
   color: #6c757d;
 }
 
+.iframe-container {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+}
+
 .masthead {
   padding-top: calc(6rem + 74px);
   padding-bottom: 6rem;
