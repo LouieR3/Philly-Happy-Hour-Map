@@ -22,13 +22,12 @@ for index, row in df.iterrows():
     popup_content += f"<p style='text-align: center; font-size: 16px; font-weight: bold; color:DodgerBlue;'>"
     popup_content += f"<a href='{row['Bar Website']}' target='_blank'>Go to their website</a></p>"
     popup_content += f"<p style='text-align: center;'>{row['Address']}</p><hr>"
-    # popup_content += f"<p style='text-align: center;'>{row['Deals']}</p></div>"
     # Split the 'Deals' column by newline character and join the parts with HTML line breaks
     deals_parts = row['Deals'].split('\n')
     # Loop through the deals parts and apply bold to specific lines
     for deal in deals_parts:
         if deal.strip() in ['$7 Cocktails', '$6 Wine', '$5 Beer', 'Half-Priced Appetizers']:
-            popup_content += f"<p style='text-align: center; font-weight: bold; margin: 10px 5px; font-size: 18px;'>{deal}</p>"
+            popup_content += f"<p style='text-align: center; font-weight: bold; margin: 15px 5px 5px; font-size: 18px;'>{deal}</p>"
         else:
             popup_content += f"<p style='text-align: center; margin: 4px 0; font-size: 15px;'>{deal}</p>"
 
@@ -37,14 +36,13 @@ for index, row in df.iterrows():
     # Append the deals content to the popup
     # popup_content += f"<p style='text-align: center;'>{deals_content}</p></div>"
     
-    
     # Create the popup using IFrame with custom styling
     popup = folium.Popup(IFrame(popup_content, width=260, height=300), max_width=260) # type: ignore
 
     # folium.Marker([row['Latitude'], row['Longitude']], popup=popup).add_to(marker_cluster)
     folium.Marker([row['Latitude'], row['Longitude']], popup=popup, icon=folium.Icon(icon="glyphicon-glass")).add_to(map)
 
+map.save('sips_map.html')
+
 # Add the MarkerCluster to the map
 # marker_cluster.add_to(map)
-
-map.save('sips_map.html')

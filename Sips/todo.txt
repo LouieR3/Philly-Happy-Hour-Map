@@ -7,6 +7,7 @@ Sips -
 * Compare Sips deals for each restaurant to find best deals
 * Compare restaurant deals against their usual menu prices
 * Compare restaurant deals against median price of item in the city/autoRename
+------------------------------------------------------------------------------------------------------------------------
 * Read through reviews and assign score for vibes, price, business, etc.
 * Fix the map up to look better
 

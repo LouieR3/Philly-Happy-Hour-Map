@@ -86,9 +86,18 @@ bar_names = df['Bar Name'].tolist()
 # Render the sidebar HTML using the bar names
 sidebar = folium.Html(sidebar_html.replace('\n', ''), script=True)
 popup_sidebar = folium.Popup(sidebar, max_width=250) # type: ignore
-popup_sidebar.add_to(map)
 
-# Add JavaScript to open the corresponding popup on the map when a bar name is clicked
+# Create a Div icon with the sidebar HTML
+icon_sidebar = folium.DivIcon(html=popup_sidebar, icon_size=(250, 400))
+
+# Add the sidebar as an overlay on the map
+marker_sidebar = folium.Marker(
+    location=[39.955, -75.162],
+    icon=icon_sidebar
+)
+marker_sidebar.add_to(map)
+
+# Create a JavaScript function to open the corresponding popup on the map when a bar name is clicked
 js = """
 function openPopup(barName) {
     var popupContent = popups[barName];
@@ -101,6 +110,7 @@ function openPopup(barName) {
 }
 """
 
+# Add the JavaScript to the map
 folium.Marker(
     location=[39.955, -75.162],
     icon=folium.DivIcon(html='<div></div>', icon_size=(0, 0)),
