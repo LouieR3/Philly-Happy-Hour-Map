@@ -17,11 +17,11 @@ map = folium.Map(location=[39.95, -75.16], zoom_start=15, tiles='CartoDB Positro
 for index, row in df.iterrows():
     # Create the popup content using HTML
     popup_content = f"<div style='width: auto; height: auto; font-family: Arial;'>"
-    popup_content += f"<p style='text-align: center; font-size: 18px; font-weight: bold; color:DodgerBlue;'>"
-    popup_content += f"<a href='{row['Url']}' target='_blank'>{row['Bar Name']}</a></p>"
-    popup_content += f"<p style='text-align: center; font-size: 16px; font-weight: bold; color:DodgerBlue;'>"
-    popup_content += f"<a href='{row['Bar Website']}' target='_blank'>Go to their website</a></p>"
-    popup_content += f"<p style='text-align: center;'>{row['Address']}</p><hr>"
+    popup_content += f"<p style='text-align: center; font-size: 18px; font-weight: bold;'>"
+    popup_content += f"<a style='color:darkgreen;' href='{row['Url']}' target='_blank'>{row['Bar Name']}</a></p>"
+    popup_content += f"<p style='text-align: center; font-size: 16px; font-weight: bold;'>"
+    popup_content += f"<a style='color:darkgreen;'href='{row['Bar Website']}' target='_blank'>Go to their website</a></p>"
+    popup_content += f"<p style='text-align: center; font-size: 14px;'>{row['Address']}</p><hr><p style='text-align: center; font-size: 20px; font-weight: bold;'>Sips Offerings</p>"
     # Split the 'Deals' column by newline character and join the parts with HTML line breaks
     deals_parts = row['Deals'].split('\n')
     # Loop through the deals parts and apply bold to specific lines
@@ -37,10 +37,10 @@ for index, row in df.iterrows():
     # popup_content += f"<p style='text-align: center;'>{deals_content}</p></div>"
     
     # Create the popup using IFrame with custom styling
-    popup = folium.Popup(IFrame(popup_content, width=260, height=300), max_width=260) # type: ignore
+    popup = folium.Popup(IFrame(popup_content, width=280, height=500), max_width=280) # type: ignore
 
     # folium.Marker([row['Latitude'], row['Longitude']], popup=popup).add_to(marker_cluster)
-    folium.Marker([row['Latitude'], row['Longitude']], popup=popup, icon=folium.Icon(icon="glyphicon-glass")).add_to(map)
+    folium.Marker([row['Latitude'], row['Longitude']], popup=popup, icon=folium.Icon(color="darkgreen", icon="glyphicon-glass")).add_to(map)
 
 map.save('sips_map.html')
 

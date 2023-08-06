@@ -1,4 +1,4 @@
-Bar Name,Address,Url,Latitude,Longitude,Bar Website,Deals
+Bar Name,Address,Sips Url,Latitude,Longitude,Bar Website,Deals
 1225 Raw Sushi and Sake Lounge*,"1225 Sansom St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#1225-raw-sushi-and-sake-lounge,39.94977844897959,-75.16082181632653,https://1225rawnledas.com,"$7 Cocktails
 Sumo Punch -Hornitos + Yuzu + Raspberry Liquor + Sprite
 Ginger Spirit - Hornitos + Ginger Liquor + Lime Juice + Splash Ginger Beer
@@ -121,7 +121,7 @@ $5 Beer
 Miller Light
 Half-Priced Appetizers
 Cheese & Charcuterie: Local cheese, La Quercia prosciutto, pickled vegetables $10"
-Bar Bombon,"133 S 18th St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#bar-bombon,39.950618,-75.1704475,http://barbombon.com,"$7 Cocktails
+Bar Bombón,"133 S 18th St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#bar-bombon,39.950618,-75.1704475,http://barbombon.com,"$7 Cocktails
 La Paloma with Hornitos
 $6 Wine
 Rosa
@@ -186,7 +186,7 @@ Mac and Cheese
 Hummus
 Garlic Fries
 Stay here after SIPS and get 15% off dinner!"
-Blume Burger,"1500 Locust Street, Philadelphia, PA, 19102",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#blume-burger,39.94824265,-75.16654758167297,http://blumephilly.com,"$7 Cocktails
+Blume Burger,"1500 Locust Street, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#blume-burger,39.94824265,-75.16654758167297,http://blumephilly.com,"$7 Cocktails
 Blue Margarita: Hornitos Tequila, Orange Liqueur, Blueberry-Rosemary Syrup, Lime
 $6 Wine
 Pull Cabernet
@@ -233,7 +233,7 @@ $6 Cheese Curds
 $6 Wurst Sandwich
 $6 Fries
 Stay here after SIPS and get 15% off dinner!"
-Buca D'oro Ristorante,"711 Locust St, Philadelphia PA, 19106",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#buca-d-oro-ristorante,39.94700095833333,-75.15420804166666,http://bucadororistorante.com,"$7 Cocktails
+Buca D'oro Ristorante,"711 Locust St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#buca-d-oro-ristorante,39.94700095833333,-75.15420804166666,http://bucadororistorante.com,"$7 Cocktails
 Madagascar: Fresh lemon juice, hot iris tequila blanco and tamarindo extract
 Aperol spritz: Aperol, splash of club soda and prosseco
 Lemon drop martini: vodka lemon juice and simple syrup
@@ -249,7 +249,7 @@ Melanzane Margarita
 Peperoncini Lunghi
 Misto Funghi
 Stay here after SIPS and get 15% off dinner!"
-Butcher Bar,"2034 Chestnut St, Philadelphia PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#butcher-bar,39.95206038886013,-75.17422040565523,http://www.butcherbarphilly.com,"$7 Cocktails
+Butcher Bar,"2034 Chestnut St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#butcher-bar,39.95206038886013,-75.17422040565523,http://www.butcherbarphilly.com,"$7 Cocktails
 Aventador: Hornitos Reposado, mango, lime, lemon lime soda
 $6 Wine
 Red Wine
@@ -261,7 +261,7 @@ Baby Back Ribs
 Mac n' Cheese
 Butcher Sliders
 Arancini"
-Capriccio Café and Bar,"110 N 16th St, Philadelphia PA, 19102",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#capriccio-café-and-bar,39.95543595,-75.16650035,http://capricciocafe.com,"Specials TBA
+Capriccio Café and Bar,"110 N 16th St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#capriccio-café-and-bar,39.95543595,-75.16650035,http://capricciocafe.com,"Specials TBA
 
 Stay here after SIPS and get 15% off dinner!
  "
@@ -493,7 +493,7 @@ Sausage Rolls
 Corned Beef Boxty Eggrolls
 Cheese Puffs.
  "
-Fahrenheit 451 Pizza and Bar,"1815 JFK Blvd. Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#fahrenheit-451-pizza-and-bar,39.9545619,-75.17052421055456,https://www.fahrenheit451pizzaandbar.com,"$7 Cocktails
+Fahrenheit 451 Pizza and Bar,"1815 John F Kennedy Blvd., Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#fahrenheit-451-pizza-and-bar,39.9545619,-75.17052421055456,https://www.fahrenheit451pizzaandbar.com,"$7 Cocktails
 Margarita
 $6 Wine
 House wines
@@ -508,7 +508,7 @@ $5 Caesar Salad
 $20 Combo: 6 Wings, 4 Mozzarella Sticks, 3 Fried Shrimp, 1 Cheesesteak Roll & Fries"
 Finn McCools Ale House,"118 S 12th Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#finn-mccools-ale-house,39.9497605,-75.16062855,http://www.finnmccoolsphilly.com,"Specials TBA
 Stay here after SIPS and get 15% off dinner!"
-Flambo Caribbean Restaurant*,"205 S 13th St, Philadelphia PA 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#flambo-caribbean-restaurant,39.948599125,-75.162324125,http://www.flamboh.com,"$7 Cocktails
+Flambo Caribbean Restaurant*,"205 S 13th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#flambo-caribbean-restaurant,39.948599125,-75.162324125,http://www.flamboh.com,"$7 Cocktails
 Hornitos and select vodka, gin and rum cocktails
 $6 Wine
 Chardonnay
@@ -595,7 +595,7 @@ Nachos
 Onion Rings
 Roma Flatbread
 Stay here after SIPS and get 15% off dinner!"
-Harp & Crown,"1525 Sansom St, Philadelphia, PA, 19102",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#harp-crown1,39.95045546938776,-75.1662245510204,http://harpcrown.com,"$7 Cocktails
+Harp & Crown,"1525 Sansom St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#harp-crown1,39.95045546938776,-75.1662245510204,http://harpcrown.com,"$7 Cocktails
 The Secret Garden Hornitos Tequila, Watermelon, Lime
 House Cocktail
 $6 Wine
@@ -613,7 +613,7 @@ Spicy Fried Chicken Wing: Scallion, Sesame, Chili
 Lamb Meatball*: Date Relish, Green Yogurt, Mint
 Daily Pizza
 *Cannot Be Made Gf Or Vegan"
-The Hayes,"1123 Walnut Street Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#the-hayes,39.94888952380953,-75.15993766666666,http://www.thehayesphl.com,"$7 Cocktails
+The Hayes,"1123 Walnut Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#the-hayes,39.94888952380953,-75.15993766666666,http://www.thehayesphl.com,"$7 Cocktails
 Hornitos Tequila Margarita 
 $6 Wine
 White
@@ -780,7 +780,7 @@ Patchwork Popcorn Blend
 Spiced Nuts
 Marinated Olives
 Onion Dip"
-The Patio @ Thirteen Restaurant,"1201 Market St., Philadelphia, PA",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#patio-at-thirteen-restaurant,39.952543000000006,-75.16060407927046,https://www.marriott.com/en-us/hotels/phldt-philadelphia-marriott-downtown/dining,"*Please note that The Patio @ Thirteen Restaurant will be closed on Wednesday, August 16. So, there will be no SIPS that night.
+The Patio @ Thirteen Restaurant,"1201 Market St., Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#patio-at-thirteen-restaurant,39.952543000000006,-75.16060407927046,https://www.marriott.com/en-us/hotels/phldt-philadelphia-marriott-downtown/dining,"*Please note that The Patio @ Thirteen Restaurant will be closed on Wednesday, August 16. So, there will be no SIPS that night.
 $7 Cocktails
 Hornitos Paloma - Hornitos Tequila, fresh ruby red grapefruit juice, simple syrup and club soda
 Blue Margarita – Hornitos Tequila, Blue Curacao, lime juice and simple syrup
@@ -883,7 +883,7 @@ Sides $6
 -Pine Nut, White Soy, Garlic
 -Kim Chee Fried Rice
 -Shrimp, Shallot, Poached Egg"
-Sueno,"114 S. 12th St., Philadelphia PA, 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#sueno,39.9498686,-75.1606032,http://suenophilly.com,"$7 Cocktails
+Sueno,"114 S. 12th St., Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#sueno,39.9498686,-75.1606032,http://suenophilly.com,"$7 Cocktails
 Spicy Paloma - Hornitos Blanco, Grapefruit juice, Jalapeno simple, Lime, Club soda
 $6 Wine
 House Red
@@ -974,7 +974,7 @@ $5 Pretzel
 $5 Fries
 $5 1/4lb hot dog
 Stay here after SIPS and get 15% off dinner!"
-Veda - Modern Indian Bistro,"1920 Chestnut St., Philadelphia PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#veda-modern-indian-bistr,39.95175635,-75.17289475578013,http://vedaphilly.com,"$7 Cocktails
+Veda - Modern Indian Bistro,"1920 Chestnut St., Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#veda-modern-indian-bistr,39.95175635,-75.17289475578013,http://vedaphilly.com,"$7 Cocktails
 Spicy Margarita
 $6 Wine
 Stemmari Red Wine
@@ -988,7 +988,7 @@ Crab Cakes
 Samosa Chaat
 Goat Cheese Naan
 Stay here after SIPS and get 15% off dinner!"
-Via Locusta,"1723 Locust St,  Philadelphia PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#via-locust,39.94891916326531,-75.16961781632654,https://www.vialocusta.com,"$7 Cocktails
+Via Locusta,"1723 Locust St,  Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#via-locust,39.94891916326531,-75.16961781632654,https://www.vialocusta.com,"$7 Cocktails
 Rosemarina: Hornitos Tequila, Rosemary, Grapefruit
 Hugo Spritz: Elderflower, Mint, Lemon
 $6 Wine
@@ -1026,7 +1026,7 @@ Walnut Garden Lager
 Half-Priced Appetizers
 Featured Slider
 Fries"
-The Wayward,"1170 Ludlow St., Philadelphia, PA",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#the-wayward-canopy,39.95123353061225,-75.15948418367347,https://www.thewayward.com,"$7 Cocktails
+The Wayward,"1170 Ludlow St., Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#the-wayward-canopy,39.95123353061225,-75.15948418367347,https://www.thewayward.com,"$7 Cocktails
 Wooder Melon (Hornitos blanco tequila, salted watermelon, combier, lime, jalepeno oil
 $6 Wine
 Proverb Pinot Grigio // Proverb Pinot Noir
