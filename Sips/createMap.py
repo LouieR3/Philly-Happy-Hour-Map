@@ -9,7 +9,7 @@ from folium.plugins import MarkerCluster
 
 df = pd.read_csv('AllSipsLocations.csv')
 
-map = folium.Map(location=[39.95, -75.16], zoom_start=15, tiles='CartoDB Positron')
+map = folium.Map(location=[39.951, -75.163], zoom_start=16, tiles='CartoDB Positron')
 
 # Create a MarkerCluster object
 # marker_cluster = MarkerCluster()
@@ -18,10 +18,10 @@ for index, row in df.iterrows():
     # Create the popup content using HTML
     popup_content = f"<div style='width: auto; height: auto; font-family: Arial;'>"
     popup_content += f"<p style='text-align: center; font-size: 18px; font-weight: bold;'>"
-    popup_content += f"<a style='color:darkgreen;' href='{row['Url']}' target='_blank'>{row['Bar Name']}</a></p>"
+    popup_content += f"<a style='color:darkgreen;' href='{row['Sips Url']}' target='_blank'>{row['Bar Name']}</a></p>"
     popup_content += f"<p style='text-align: center; font-size: 16px; font-weight: bold;'>"
     popup_content += f"<a style='color:darkgreen;'href='{row['Bar Website']}' target='_blank'>Go to their website</a></p>"
-    popup_content += f"<p style='text-align: center; font-size: 14px;'>{row['Address']}</p><hr><p style='text-align: center; font-size: 20px; font-weight: bold;'>Sips Offerings</p>"
+    popup_content += f"<p style='text-align: center; font-size: 14px;'>{row['Address']}</p><hr><p style='text-align: center; font-size: 20px; font-weight: bold;'>Sips Deals</p>"
     # Split the 'Deals' column by newline character and join the parts with HTML line breaks
     deals_parts = row['Deals'].split('\n')
     # Loop through the deals parts and apply bold to specific lines

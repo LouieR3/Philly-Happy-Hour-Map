@@ -685,6 +685,30 @@ progress {
   margin-top: var(--bs-gutter-y);
 }
 
+.w-90 {
+  width: 90% !important;
+}
+.w-95 {
+  width: 95% !important;
+}
+.paginate_button {
+  background-color: #1abc9c !important;
+  color: white !important;
+}
+.paginate_button.current{
+  background-color: rgba(44, 62, 80) !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+  color:white  !important;
+  background-color: gray !important;
+}
+.dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
+  color: #000;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: rgba(44, 62, 80) !important;
+  color: white !important;
+}
 .col {
   flex: 1 0 0%;
 }
@@ -5424,7 +5448,10 @@ textarea.form-control-lg {
 .modal-fullscreen .modal-body {
   overflow-y: auto;
 }
-
+.center {
+  margin-left: auto;
+  margin-right: auto;
+}
 @media (max-width: 575.98px) {
   .modal-fullscreen-sm-down {
     width: 100vw;
