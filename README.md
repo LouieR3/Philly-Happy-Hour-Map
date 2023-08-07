@@ -8,9 +8,14 @@ This map displays all bars participating in Center City Sips for 2023, lists the
 
 ## How it is done
 To do this, I used Python and Beautiful Soup to scrape the Center City District Sips website with the list of bars, their links to the CCD Sips specific page on that bar, and their addresses. (Version 0.1)
+
 I then used geopy and Nominatim to geocode each address so I could plot their latitude and longitudes and created the map with folium. (Version 0.2)
+
 I then used selenium's web driver to go through the list of links of the bars on the CCD Sips page to retrieve the specific bar information found in the pop up that comes up when you open up the page for a specific bar. This allowed me to retrieve the bar's own website and the listed deals they were offering for cocktails, wine, beer, and appetizers. (Version 0.3)
+
 With that information, I used the yelpapi to get the information from each bar from yelp, including the menu prices they had listed. (Version 0.4)
+
+I then displayed that information from the dataframe to an html datatable to allow you to see more information on those bars (Version 0.5)
 
 ## Happy Hour Map
 UNDER CONSTRUCTION
