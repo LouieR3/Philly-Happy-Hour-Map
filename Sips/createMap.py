@@ -38,7 +38,7 @@ for index, row in df.iterrows():
     # popup_content += f"<p style='text-align: center;'>{deals_content}</p></div>"
 
     # Create the popup using IFrame with custom styling
-    popup = folium.Popup(IFrame(popup_content, width=280, height=450), max_width=280) # type: ignore
+    popup = folium.Popup(IFrame(popup_content, width=280, height=470), max_width=280) # type: ignore
 
     # folium.Marker([row['Latitude'], row['Longitude']], popup=popup).add_to(marker_cluster)
     folium.Marker([row['Latitude'], row['Longitude']], popup=popup, icon=folium.Icon(color="darkgreen", icon="glyphicon-glass")).add_to(map)

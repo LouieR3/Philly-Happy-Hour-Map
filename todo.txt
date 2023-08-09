@@ -15,3 +15,7 @@ Sips -
 Happy Hour Map -
 * Get data of all Philly bars and restaurants via database, website, place of interest map
 * Pull data on happ hour deals compared to normal menu, the area, average price of the items
+* YOU CREATE AN ACCOUNT AND LOG BARS WITH YOUR RATING/REVIEW and FAVORITES AND ARE ABLE TO QUICKLY CHOOSE A BAR FOR THE NIGHT
+* DIFFERENT CATEGORIES FOR BARS YOU CAN SET OR CHOOES FROM "DAY DRINK", "HAPPY HOUR", "CHILL VIBE", "GO OUT", "CLUB"
+* SLIDER BASED ON HAPPY HOUR TIMES AND CLOSING TIMES
+* AGGREGATE AVERAGE BAR ITEM PRICE BY RADIUS OR NEIGHBORHOOD OR BOUND4ING BOX

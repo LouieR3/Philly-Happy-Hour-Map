@@ -10870,6 +10870,27 @@ html {
     line-height: 2.5rem;
   }
 }
+@media (max-width: 768px) { /* Change the value to match the iPad breakpoint */
+  #table_sort {
+    display: none;
+  }
+  #table_sort_wrapper{
+    display: none;
+  }
+}
+.custom-col {
+  width: 100%; /* Default to 100% */
+}
+@media (max-width: 768px) {
+  .center-text {
+    text-align: center; /* On screens smaller than iPad */
+  }
+}
+@media (min-width: 768px) {
+  .custom-col {
+    width: 66%; /* On screens larger than iPad */
+  }
+}
 
 .divider-custom {
   margin: 1rem 0 1.25rem;
