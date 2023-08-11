@@ -1,16 +1,13 @@
 # Philly-Happy-Hour-Map
 
 Sips - 
-* Add the list of bars to a table to the right of the map with the name and pic, alphabetical, and you can click it there to open the pop up
-* Find a better style for the popup
-* FIND BETTER WAY TO DISPLAY ALL THE DATA
 ------------------------------------------------------------------------------------------------------------------------
 * Compare Sips deals for each restaurant to find best deals
 * Compare restaurant deals against their usual menu prices
 * Compare restaurant deals against median price of item in the city/autoRename
 ------------------------------------------------------------------------------------------------------------------------
+* Add machine learning to pick up on actual drink name in custom item names: "Any Given Sunday Bloody Mary" to "Bloody Mary"
 * Read through reviews and assign score for vibes, price, business, etc.
-* Fix the map up to look better
 
 Happy Hour Map -
 * Get data of all Philly bars and restaurants via database, website, place of interest map
