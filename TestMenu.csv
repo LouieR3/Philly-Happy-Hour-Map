@@ -92,7 +92,6 @@ Brü Craft & Wurst,Spicy Paloma,$7,Y
 Brü Craft & Wurst,House Red,$6,Y
 Brü Craft & Wurst,House White,$6,Y
 Brü Craft & Wurst,House Rose,$6,Y
-Brü Craft & Wurst,Select drafts,$5,Y
 Buca D'oro Ristorante,"Madagascar: Fresh lemon juice, hot iris tequila blanco and tamarindo extract",$7,Y
 Buca D'oro Ristorante,"Aperol spritz: Aperol, splash of club soda and prosseco",$7,Y
 Buca D'oro Ristorante,Lemon drop martini: vodka lemon juice and simple syrup,$7,Y
@@ -130,7 +129,6 @@ Con Murphy's Irish Pub,"Paloma with Hornitos Tequila, grapefruit juice, lime, ag
 Con Murphy's Irish Pub,Pinot Grigio,$6,Y
 Con Murphy's Irish Pub,Merlot,$6,Y
 Con Murphy's Irish Pub,Golden Road Mango Cart Can,$5,Y
-Con Murphy's Irish Pub,Victory Rotating Draft,$5,Y
 Continental Midtown,'Wooder Melon Margarita',$7,Y
 Continental Midtown,'Northern Lights',$7,Y
 Continental Midtown,'Frozen Astronaut',$7,Y
@@ -144,7 +142,6 @@ Craftsman Row Saloon,House Red,$6,Y
 Craftsman Row Saloon,House White,$6,Y
 Craftsman Row Saloon,Modelo Especial lager,$5,Y
 Craftsman Row Saloon,Kona Big Wave golden ale,$5,Y
-Craftsman Row Saloon,Sam Adams Drafts,$5,Y
 Darling Jack's Tavern,Blood Orange Margarita,$7,Y
 Darling Jack's Tavern,Chardonnay or Pinot Noir,$6,Y
 Darling Jack's Tavern,Victory Prima Pils,$5,Y
@@ -177,7 +174,6 @@ Double Knot,Montucky Cold Snacks Lage,$5,Y
 Drinker's Pub,Hornitos Paloma,$7,Y
 Drinker's Pub,Pinot Grigio,$6,Y
 Drinker's Pub,Pinot Noir,$6,Y
-Drinker's Pub,All draft beer,$5,Y
 Drury Beer Garden (DBG),"Sansom St Mule: vodka, lime, ginger beer",$7,Y
 Drury Beer Garden (DBG),"Hornitos Pear Margarita: tequila, pear, lime, club",$7,Y
 Drury Beer Garden (DBG),House White,$6,Y
@@ -189,7 +185,6 @@ Fado Irish Pub,Sycamore Lane Chardonnay 6oz glass,$6,Y
 Fado Irish Pub,Modelo,$5,Y
 Fahrenheit 451 Pizza and Bar,Margarita,$7,Y
 Fahrenheit 451 Pizza and Bar,House wines,$6,Y
-Fahrenheit 451 Pizza and Bar,Domestic beer,$5,Y
 Flambo Caribbean Restaurant*,"Hornitos and select vodka, gin and rum cocktails",$7,Y
 Flambo Caribbean Restaurant*,Chardonnay,$6,Y
 Flambo Caribbean Restaurant*,Cabernet,$6,Y
@@ -199,7 +194,6 @@ Giovani's Bar & Grill,Pinot Grigio,$6,Y
 Giovani's Bar & Grill,Michelob Ultra,$5,Y
 Giuseppe and Sons,"La Grenada Hornitos Tequila, Pomegranate, Soda Hotel Nacional Rum, Pineapple, Apricot",$7,Y
 Giuseppe and Sons,Vino Rosso Vino Bianco,$6,Y
-Giuseppe and Sons,Rotating Draft,$5,Y
 The Goat Rittenhouse,Pomegranate Margarita,$7,Y
 The Goat Rittenhouse,Spinelli Pinot Grigio,$6,Y
 The Goat Rittenhouse,Arizona Hard Ice Tea,$5,Y
@@ -213,11 +207,8 @@ Gran Caffe L'Aquila,Peroni (Lombardia) 5.10% the original Italian lager. a high 
 Hard Rock Cafe,Hornitos Jalapeno Infused Spicy Margarita,$7,Y
 Hard Rock Cafe,White Peach Sangria,$7,Y
 Hard Rock Cafe,House wine,$6,Y
-Hard Rock Cafe,Domestic draft,$5,Y
 Harp & Crown,"The Secret Garden Hornitos Tequila, Watermelon, Lime",$7,Y
 Harp & Crown,House Cocktail,$7,Y
-Harp & Crown,Red And White Daily Selection,$6,Y
-Harp & Crown,Daily Selection,$5,Y
 The Hayes,Hornitos Tequila Margarita,$7,Y
 The Hayes,White,$6,Y
 The Hayes,Rose,$6,Y
@@ -267,29 +258,37 @@ Marathon 16th & Sansom,House Merlot,$6,Y
 Marathon 16th & Sansom,House Chardonnay,$6,Y
 Marathon 16th & Sansom,Michelob Ultra draft,$5,Y
 Misconduct Tavern,Paloma,$7,Y
-Misconduct Tavern,All House Wine,$6,Y
 Misconduct Tavern,Bud Light,$5,Y
 The Mulberry on Arch,Dragonfruit Spritz,$7,Y
 The Mulberry on Arch,Rose,$6,Y
 The Mulberry on Arch,PBR,$5,Y
 The Mulberry on Arch,Solid Gold Founders,$5,Y
 Pagano's Market and Bar,Hornitos Margaritas,$7,Y
-Pagano's Market and Bar,Rotating selections,$6,Y
-Pagano's Market and Bar,Rotating selections,$5,Y
 Patchwork,Tamarind Spritz,$7,Y
 Patchwork,House Red,$6,Y
 Patchwork,HouseWhite,$6,Y
-Patchwork,Rotating Local Draft,$5,Y
-The Patio @ Thirteen Restaurant,$7 Cocktails,$*Please,Y
-The Patio @ Thirteen Restaurant,$6 Wine,$Hornitos,Y
-The Patio @ Thirteen Restaurant,$5 Beer,$Woodbridge,Y
+The Patio @ Thirteen Restaurant,Hornitos Paloma,$7,Y
+The Patio @ Thirteen Restaurant,Blue Margarita,$7,Y
+The Patio @ Thirteen Restaurant,Ginger Rose,$7,Y
+The Patio @ Thirteen Restaurant,Pink Champagne Margarita,$7,Y
+The Patio @ Thirteen Restaurant,Cranberry Moscow Mule,$7,Y
+The Patio @ Thirteen Restaurant,Woodbridge Chardonnay,$6,Y
+The Patio @ Thirteen Restaurant,Don Miguel Gascon Malbec,$6,Y
+The Patio @ Thirteen Restaurant,Line 30 California Rosé,$6,Y
+The Patio @ Thirteen Restaurant,Nobilo Sauvignon Blanc,$6,Y
+The Patio @ Thirteen Restaurant,Mark West Pinot Noir,$6,Y
+The Patio @ Thirteen Restaurant,Coors Light,$5,Y
+The Patio @ Thirteen Restaurant,Miller Light,$5,Y
+The Patio @ Thirteen Restaurant,Michelob Ultra,$5,Y
+The Patio @ Thirteen Restaurant,Stella Artois,$5,Y
+The Patio @ Thirteen Restaurant,Dogfish Head IPA,$5,Y
+The Patio @ Thirteen Restaurant,Victory Dirtwolf Double IPA,$5,Y
 Pearl & Mary,"Gimlet: Vodka, Lime, Simple",$7,Y
 Pearl & Mary,"Paloma: Hornitos Tequila, Grapefruit, Soda",$7,Y
 Pearl & Mary,White,$6,Y
 Pearl & Mary,Red,$6,Y
 Pearl & Mary,Rosé,$6,Y
 Pearl & Mary,Sparkling,$6,Y
-Pearl & Mary,Daily Selection,$5,Y
 Prunella,Pistola Rosa,$7,Y
 Prunella,"Hornitos Tequila, Cocchi, Grapefruit",$7,Y
 Prunella,Honey Fitzgerald,$7,Y
@@ -297,18 +296,15 @@ Prunella,"Gin, Grappa, Lemon",$7,Y
 Prunella,House White,$6,Y
 Prunella,House Rosé,$6,Y
 Prunella,House Red,$6,Y
-Prunella,Daily Draft Selection,$5,Y
 Sampan,Prickly Pear Margarita,$7,Y
 Sampan,"Hornitos Tequila, Prickly Pear",$7,Y
 Sampan,Ming Mule,$7,Y
 Sampan,"Vodka, Mint, Lychee, Ginger",$7,Y
 Sampan,House Rose wine and Pinenapple wine,$6,Y
-Sampan,Featured draft,$5,Y
 Sueno,Spicy Paloma,$7,Y
 Sueno,House Red,$6,Y
 Sueno,House White,$6,Y
 Sueno,House Rose,$6,Y
-Sueno,Select drafts,$5,Y
 Thanal Indian Tavern,Classic Margarita with Hornitos Tequila,$7,Y
 Thanal Indian Tavern,Cocktail of the day,$7,Y
 Thanal Indian Tavern,House wines and daily special wines,$6,Y
@@ -331,17 +327,14 @@ Top Tomato Bar & Pizza,Hammered Hulk,$7,Y
 Top Tomato Bar & Pizza,Mango Tango,$7,Y
 Top Tomato Bar & Pizza,Philly Flush,$7,Y
 Top Tomato Bar & Pizza,House wine,$6,Y
-Top Tomato Bar & Pizza,Draft beer,$5,Y
 Tradesman's,Trading Sunrises,$7,Y
 Tradesman's,House Red,$6,Y
 Tradesman's,House White,$6,Y
 Tradesman's,House Rose,$6,Y
-Tradesman's,Select drafts,$5,Y
 Uptown Beer Garden,Pineapple Lemonade,$7,Y
 Uptown Beer Garden,House Red,$6,Y
 Uptown Beer Garden,House White,$6,Y
 Uptown Beer Garden,House Rose,$6,Y
-Uptown Beer Garden,Select drafts,$5,Y
 Veda - Modern Indian Bistro,Spicy Margarita,$7,Y
 Veda - Modern Indian Bistro,Stemmari Red Wine,$6,Y
 Veda - Modern Indian Bistro,Povero Favorita White Wine,$6,Y
@@ -358,11 +351,11 @@ Walnut Garden - Temporarily Closed,"A Walk in the Park: Hornitos Plata Tequila, 
 Walnut Garden - Temporarily Closed,Rose (Grenache | Cinsauly),$6,Y
 Walnut Garden - Temporarily Closed,Walnut Garden Lager,$5,Y
 The Wayward,"Wooder Melon (Hornitos blanco tequila, salted watermelon, combier, lime, jalepeno oil",$7,Y
-The Wayward,Proverb Pinot Grigio // Proverb Pinot Noir,$6,Y
+The Wayward,Proverb Pinot Grigio,$6,Y
+The Wayward,Proverb Pinot Noir,$6,Y
 The Wayward,Love City Lager,$5,Y
 Wicked Wolf,Hornitos Paloma,$7,Y
 Wrap Shack,Hornitos Tequila Paloma,$7,Y
 Wrap Shack,Well Liquor,$7,Y
 Wrap Shack,Pinot Grigio,$6,Y
 Wrap Shack,PBR,$5,Y
-Wrap Shack,Miller Lite,$5,Y

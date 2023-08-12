@@ -1,60 +1,64 @@
 import pandas as pd
-import re
+import locale
 
+locale.setlocale(locale.LC_ALL, "")
 # Read the CSV file into a DataFrame
-# df = pd.read_csv('AllSipsLocations.csv')
-df = pd.read_csv('Test2.csv')
+df = pd.read_csv("SipsBarItems.csv")
 
-# Function to extract the prices for beers, wines, and cocktails from the "Deals" column
-def extract_prices(deals):
-    cocktail_price = re.search(r'\$7 Cocktails\n(.+?)\n\$6 Wine', deals, re.DOTALL)
-    wine_price = re.search(r'\$6 Wine\n(.+?)\n\$5 Beer', deals, re.DOTALL)
-    beer_price = re.search(r'\$5 Beer\n(.+?)\nHalf-Priced Appetizers', deals, re.DOTALL)
-    appetizers = re.findall(r'Half-Priced Appetizers\n(.+)', deals, re.DOTALL)
-    print(cocktail_price)
-    if cocktail_price:
-        cocktails = cocktail_price.group(1).strip().split('\n')
-    else:
-        cocktails = []
+# Remove certain words from Menu Item values
+words_to_remove = [" can", " beer", " draft", " bottle"]
+df = df[df["Price"] != "Price not available"]
+df["Menu Item"] = (
+    df["Menu Item"]
+    .str.lower()  # Convert to lowercase
+    .str.replace("|".join(words_to_remove), "", regex=True)  # Remove specified words
+    .str.capitalize()  # Capitalize first letter
+    .str.strip()  # Clean whitespace
+)
+df["Menu Item"] = df["Menu Item"].str.split(":").str[0].str.strip()
+df["Price"] = df["Price"].str.replace("$", "").astype(float)
 
-    if wine_price:
-        wine = wine_price.group(1).strip().split('\n')
-    else:
-        wine = []
+# Create subdataframes for SipsDeal = Y and SipsDeal = N
+sips_deal_y_df = df[df["Sips Deal"] == "Y"]
+sips_deal_n_df = df[df["Sips Deal"] == "N"]
 
-    if beer_price:
-        beer = beer_price.group(1).strip().split('\n')
-    else:
-        beer = []
+# Initialize an empty results dataframe
+results_df = pd.DataFrame(
+    columns=["Menu Item", "Sips Price", "Normal Price", "Comparison Result"]
+)
 
-    if appetizers:
-        appetizers = appetizers[0].strip().split('\n')
-    else:
-        appetizers = []
+# Compare prices for each unique Menu Item
+for menu_item in df["Menu Item"].unique():
+    sips_price = sips_deal_y_df[sips_deal_y_df["Menu Item"] == menu_item][
+        "Price"
+    ].mean()
+    sips_bar = (
+        sips_deal_y_df[sips_deal_y_df["Menu Item"] == menu_item]["Bar"].iloc[0]
+        if not pd.isna(sips_price)
+        else ""
+    )
+    normal_price = sips_deal_n_df[sips_deal_n_df["Menu Item"] == menu_item][
+        "Price"
+    ].mean()
 
-    return cocktails, wine, beer, appetizers
+    comparison_result = None
+    if sips_price is not None and normal_price is not None:
+        comparison_result = normal_price - sips_price
 
-# Create new columns for Cocktails, Wine, Beer, and Appetizers
-df['Cocktails'], df['Wine'], df['Beer'], df['Appetizers'] = zip(*df['Deals'].apply(extract_prices))
+    results_df = results_df.append(
+        {
+            "Menu Item": menu_item,
+            "Sips Price": sips_price,
+            "Normal Price": normal_price,
+            "Comparison Result": comparison_result,
+            "Sips Bar": sips_bar,
+        },
+        ignore_index=True,
+    )  # type: ignore
 
-# Display the DataFrame with extracted prices
-print(df[['Bar Name', 'Cocktails', 'Wine', 'Beer', 'Appetizers']])
+results_df = results_df.sort_values(by="Comparison Result", ascending=False)
 
-# Define the general prices of beers, wines, and cocktails outside of happy hour
-general_beer_price = 6.0
-general_wine_price = 8.0
-general_cocktail_price = 10.0
+# Save the results dataframe to a CSV file
+results_df.to_csv("ComparisonResults.csv", index=False)
 
-# Calculate scores for each bar based on the comparison of Sips deals with general prices
-df['Beer Score'] = (general_beer_price - df['Beer Price']).fillna(0)
-df['Wine Score'] = (general_wine_price - df['Wine Price']).fillna(0)
-df['Cocktail Score'] = (general_cocktail_price - df['Cocktail Price']).fillna(0)
-
-# Calculate the overall score for each bar by summing the individual scores
-df['Overall Score'] = df['Beer Score'] + df['Wine Score'] + df['Cocktail Score']
-
-# Rank the bars by the overall score to get the best deals
-ranked_bars = df.sort_values(by='Overall Score', ascending=False)
-
-# Display the ranked bars
-print(ranked_bars[['Bar Name', 'Overall Score']])
+print(results_df)
