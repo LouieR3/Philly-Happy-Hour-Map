@@ -7,7 +7,7 @@ import time
 import os
 import re
 
-df = pd.read_csv("AllSipsLocations.csv")
+df = pd.read_csv("AllSipsOriginal.csv")
 print(df)
 menu_data = []
 

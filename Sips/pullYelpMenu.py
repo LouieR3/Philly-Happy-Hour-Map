@@ -7,7 +7,7 @@ import time
 import os
 
 # Assuming you have the DataFrame 'df' with the 'Deals' column
-df = pd.read_csv('AllSipsLocations2.csv')
+df = pd.read_csv('AllSipsLocations.csv')
 
 html = "https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view"
 base_html = "https://www.yelp.com/menu/"

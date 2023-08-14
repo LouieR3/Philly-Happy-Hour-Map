@@ -11,7 +11,7 @@ soup = BeautifulSoup(html_content, 'html.parser')
 
 # Create or load your DataFrame
 # For this example, let's create a simple DataFrame
-df = pd.read_csv('AllSipsLocations.csv', encoding='utf-8')
+df = pd.read_csv('AllSipsOriginal.csv', encoding='utf-8')
 
 # Drop the 'Latitude' and 'Longitude' columns
 df.drop(columns=['Latitude', 'Longitude'], inplace=True)

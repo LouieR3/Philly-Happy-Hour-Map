@@ -143,7 +143,8 @@ Craftsman Row Saloon,House White,$6,Y
 Craftsman Row Saloon,Modelo Especial lager,$5,Y
 Craftsman Row Saloon,Kona Big Wave golden ale,$5,Y
 Darling Jack's Tavern,Blood Orange Margarita,$7,Y
-Darling Jack's Tavern,Chardonnay or Pinot Noir,$6,Y
+Darling Jack's Tavern,Chardonnay,$6,Y
+Darling Jack's Tavern,Pinot Noir,$6,Y
 Darling Jack's Tavern,Victory Prima Pils,$5,Y
 Devil's Alley,Paloma,$7,Y
 Devil's Alley,"Spicy Margarita,",$7,Y
@@ -193,7 +194,8 @@ Giovani's Bar & Grill,Gio's Tea,$7,Y
 Giovani's Bar & Grill,Pinot Grigio,$6,Y
 Giovani's Bar & Grill,Michelob Ultra,$5,Y
 Giuseppe and Sons,"La Grenada Hornitos Tequila, Pomegranate, Soda Hotel Nacional Rum, Pineapple, Apricot",$7,Y
-Giuseppe and Sons,Vino Rosso Vino Bianco,$6,Y
+Giuseppe and Sons,Vino Rosso,$6,Y
+Giuseppe and Sons,Vino Bianco,$6,Y
 The Goat Rittenhouse,Pomegranate Margarita,$7,Y
 The Goat Rittenhouse,Spinelli Pinot Grigio,$6,Y
 The Goat Rittenhouse,Arizona Hard Ice Tea,$5,Y
@@ -266,7 +268,7 @@ The Mulberry on Arch,Solid Gold Founders,$5,Y
 Pagano's Market and Bar,Hornitos Margaritas,$7,Y
 Patchwork,Tamarind Spritz,$7,Y
 Patchwork,House Red,$6,Y
-Patchwork,HouseWhite,$6,Y
+Patchwork,House White,$6,Y
 The Patio @ Thirteen Restaurant,Hornitos Paloma,$7,Y
 The Patio @ Thirteen Restaurant,Blue Margarita,$7,Y
 The Patio @ Thirteen Restaurant,Ginger Rose,$7,Y
@@ -316,7 +318,7 @@ Tir Na Nog Irish Bar & Grill,"Fresh Squeezed Margarita: Hornitos Tequila, Orange
 Tir Na Nog Irish Bar & Grill,"Peach Martini: Vodka, Orange Juice, Peach Schnapps, Triple Sec & Lime Juice",$7,Y
 Tir Na Nog Irish Bar & Grill,Starborough Sauvignon Blanc,$6,Y
 Tir Na Nog Irish Bar & Grill,Dark Horse Rose,$6,Y
-Tir Na Nog Irish Bar & Grill,Stateside Seltzer Orange,$5,Y
+Tir Na Nog Irish Bar & Grill,Stateside Orange Seltzer,$5,Y
 Tir Na Nog Irish Bar & Grill,Strongbow Cider,$5,Y
 Top Tomato Bar & Pizza,Sunset On Top,$7,Y
 Top Tomato Bar & Pizza,High Noon,$7,Y

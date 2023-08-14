@@ -7,7 +7,7 @@ import folium
 from folium import IFrame
 from folium.plugins import MarkerCluster
 
-df = pd.read_csv('AllSipsLocations.csv')
+df = pd.read_csv('AllSipsOriginal.csv')
 
 map = folium.Map(location=[39.951, -75.163], zoom_start=16, tiles='CartoDB Positron')
 

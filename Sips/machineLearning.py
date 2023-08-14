@@ -4,17 +4,19 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
 # Sample training data
+# train_data = {
+#     "DrinkName": [
+#         "Tully Old Fashioned",
+#         "Any Given Sunday Bloody Mary",
+#         "Regular Old Fashioned",
+#         "Bloody Mary",
+#     ],
+#     "CommonDrinkType": ["Old Fashioned", "Bloody Mary", "Old Fashioned", "Bloody Mary"],
+# }
 train_data = {
     "DrinkName": [
-        "Tully Old Fashioned",
-        "Any Given Sunday Bloody Mary",
-        "Regular Old Fashioned",
-        "Bloody Mary",
-    ],
-    "CommonDrinkType": ["Old Fashioned", "Bloody Mary", "Old Fashioned", "Bloody Mary"],
-}
-train_data = {
-    "DrinkName": [
+        "House Red",
+        "House White",
         "Philly Style Cabernet",
         "House Merlot",
         "Eola Hills Pinot Noir",
@@ -22,19 +24,23 @@ train_data = {
         "Joel Gott Sauvignon Blanc",
         "Riesling",
         "Syrah/Shiraz",
-        "Zinfandel",
+        "Vino Rosso",
+        "Vino Bianco",
+        "White Zinfandel",
         "Prosecco",
         "Dona Paula Los Cardos Malbec",
         "Tempranillo",
         "Sangiovese",
         "Montepulciano",
         "Cantina Pinot Grigio",
-        "Rosa",
+        "Sutter Home Rose",
         "Chenin Blanc",
         "Gewürztraminer",
         "House Chianti",
     ],
     "CommonDrinkType": [
+        "Red",
+        "White",
         "Cabernet Sauvignon",
         "Merlot",
         "Pinot Noir",
@@ -42,9 +48,11 @@ train_data = {
         "Sauvignon Blanc",
         "Riesling",
         "Syrah/Shiraz",
+        "Vino Rosso",
+        "Vino Bianco",
         "Zinfandel",
         "Prosecco",
-        "House Malbec",
+        "Malbec",
         "Tempranillo",
         "Sangiovese",
         "Montepulciano",
@@ -67,7 +75,7 @@ model = LogisticRegression()
 model.fit(X, df_train["CommonDrinkType"])
 
 # Sample test data
-test_data = {"DrinkName": ["Tully Old Fashioned", "Gin and Tonic", "Big Bloody Mary"]}
+# test_data = {"DrinkName": ["Tully Old Fashioned", "Gin and Tonic", "Big Bloody Mary"]}
 
 test_data = {
     "DrinkName": [
@@ -78,7 +86,7 @@ test_data = {
         "Sauvignon Blanc",
         "Riesling",
         "Prosecco",
-        "Syrah/Shiraz",
+        "House Malbec",
         "Zinfandel",
         "Dona Paula Los Cardos Malbec",
         "Sycamore Lane Chardonnay 6oz glass",

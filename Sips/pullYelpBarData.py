@@ -78,7 +78,6 @@ def get_yelp_data(row):
         'Website': website
         # Add more Yelp data as needed
     }
-
     return yelp_data
 
 # Create a new DataFrame to store the Yelp data
