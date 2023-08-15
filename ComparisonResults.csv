@@ -3,13 +3,17 @@ Espresso martini,7.0,14.0,7.0,Top Tomato Bar & Pizza
 Aperol spritz,7.0,12.0,5.0,Buca D'oro Ristorante
 Paloma,7.0,12.0,5.0,Cavanaugh's Rittenhouse
 Stateside orange seltzer,5.0,9.0,4.0,Tir Na Nog Irish Bar & Grill
-Kona big wave,5.0,6.5,1.5,Air Grille Garden at Dilworth Park
+Stella artois,5.0,7.25,2.25,The Patio @ Thirteen Restaurant
+Carlsberg,5.0,6.75,1.75,The Black Sheep
+Sierra nevada pale ale,5.0,6.75,1.75,Blume Burger
 Modelo,5.0,6.5,1.5,Fado Irish Pub
+Kona big wave,5.0,6.5,1.5,Air Grille Garden at Dilworth Park
 Michelob ultra,5.0,5.5,0.5,ArtBar at Sonesta Hotel
-Bud light,5.0,5.0,0.0,1225 Raw Sushi and Sake Lounge*
-Budweiser,5.0,5.0,0.0,1518 Bar and Grill
-Coors light,5.0,5.0,0.0,1518 Bar and Grill
-Miller lite,5.0,5.0,0.0,1518 Bar and Grill
+Budweiser,5.0,5.5,0.5,1518 Bar and Grill
+Miller lite,5.0,5.5,0.5,1518 Bar and Grill
+Bud light,5.0,5.5,0.5,1225 Raw Sushi and Sake Lounge*
+Coors light,5.0,5.5,0.5,1518 Bar and Grill
+Yuengling,5.0,5.375,0.375,Bar-Ly Chinatown
 Miller high life,5.0,4.5,-0.5,The Hayes
 Pbr,5.0,4.0,-1.0,The Mulberry on Arch
 Dragonade,,8.0,,
@@ -29,7 +33,7 @@ Blue moon,,6.5,,
 Downeast seasonal cider,,7.5,,
 New belgium voodoo ranger,,7.5,,
 Sam adams summer ale,,7.0,,
-Victory brotherly love,,7.5,,
+Victory brotherly love,,7.25,,
 Yuengling lager,,5.0,,
 Guinness non alcoholic,,7.0,,
 Stella liberte 0.0,,6.75,,
@@ -122,7 +126,6 @@ Hornitos sunrise,7.0,,,Bar-Ly Chinatown
 Hornitos spritzer,7.0,,,Bar-Ly Chinatown
 Cabernet,6.0,,,Bar-Ly Chinatown
 White zinfandel,6.0,,,Bar-Ly Chinatown
-Yuengling,5.0,,,Bar-Ly Chinatown
 Corona premier,5.0,,,Bar-Ly Chinatown
 Passionfruit tequila punch,7.0,,,Barbuzzo
 Troegs sunshine pils,5.0,,,Barbuzzo
@@ -131,7 +134,6 @@ Watermelon margarita (with hornitos & watermelon red bull),7.0,,,Barstool Sansom
 Tropical tequila (with hornitos and tropical red bull),7.0,,,Barstool Sansom Street
 Victory brothery love,5.0,,,Barstool Sansom Street
 Hornitos paloma,7.0,,,The Black Sheep
-Carlsberg,5.0,,,The Black Sheep
 Yards,5.0,,,The Black Sheep
 Hoegarrden,5.0,,,The Black Sheep
 Pull cabernet,6.0,,,Blume Burger
@@ -139,7 +141,6 @@ Vin blanc chardonnay,6.0,,,Blume Burger
 Sutter home rose,6.0,,,Blume Burger
 2sp delco lager,5.0,,,Blume Burger
 Firestone walker union jack ipa,5.0,,,Blume Burger
-Sierra nevada pale ale,5.0,,,Blume Burger
 "Maragritas (regular, spicy, blood orange, strawberry)",7.0,,,Bodega Taco Bar
 Mojito,7.0,,,Bodega Taco Bar
 Twin vines vinho verde,6.0,,,Bodega Taco Bar
@@ -185,7 +186,6 @@ Vodka mule,7.0,,,Craftsman Row Saloon
 Modelo especial lager,5.0,,,Craftsman Row Saloon
 Kona big wave golden ale,5.0,,,Craftsman Row Saloon
 Blood orange margarita,7.0,,,Darling Jack's Tavern
-Chardonnay or pinot noir,6.0,,,Darling Jack's Tavern
 Victory prima pils,5.0,,,Darling Jack's Tavern
 "Spicy margarita,",7.0,,,Devil's Alley
 Mexican mule,7.0,,,Devil's Alley
@@ -215,15 +215,14 @@ House wines,6.0,,,Fahrenheit 451 Pizza and Bar
 All,5.0,,,Flambo Caribbean Restaurant*
 Gio's tea,7.0,,,Giovani's Bar & Grill
 "La grenada hornitos tequila, pomegranate, soda hotel nacional rum, pineapple, apricot",7.0,,,Giuseppe and Sons
-Vino rosso vino bianco,6.0,,,Giuseppe and Sons
+Vino rosso,6.0,,,Giuseppe and Sons
+Vino bianco,6.0,,,Giuseppe and Sons
 Pomegranate margarita,7.0,,,The Goat Rittenhouse
 Spinelli pinot grigio,6.0,,,The Goat Rittenhouse
 Arizona hard ice tea,5.0,,,The Goat Rittenhouse
 Margarita calabrese,7.0,,,Gran Caffe L'Aquila
 "Hornitos tequila, caffo orange liqueur, lemon, limoncello kiss.",7.0,,,Gran Caffe L'Aquila
 Hugo,7.0,,,Gran Caffe L'Aquila
-Vino bianco,6.0,,,Gran Caffe L'Aquila
-Vino rosso,6.0,,,Gran Caffe L'Aquila
 Peroni (lombardia) 5.10% the original italian lager. a high quality malt and hop lager,5.0,,,Gran Caffe L'Aquila
 Hornitos jalapeno infused spicy margarita,7.0,,,Hard Rock Cafe
 White peach sangria,7.0,,,Hard Rock Cafe
@@ -269,7 +268,6 @@ Don miguel gascon malbec,6.0,,,The Patio @ Thirteen Restaurant
 Line 30 california rosé,6.0,,,The Patio @ Thirteen Restaurant
 Nobilo sauvignon blanc,6.0,,,The Patio @ Thirteen Restaurant
 Mark west pinot noir,6.0,,,The Patio @ Thirteen Restaurant
-Stella artois,5.0,,,The Patio @ Thirteen Restaurant
 Dogfish head ipa,5.0,,,The Patio @ Thirteen Restaurant
 Victory dirtwolf double ipa,5.0,,,The Patio @ Thirteen Restaurant
 Gimlet,7.0,,,Pearl & Mary
@@ -320,3 +318,45 @@ Proverb pinot grigio,6.0,,,The Wayward
 Proverb pinot noir,6.0,,,The Wayward
 Hornitos tequila paloma,7.0,,,Wrap Shack
 Well liquor,7.0,,,Wrap Shack
+Signature old fashioned,,12.0,,
+Signature manhattan,,12.0,,
+Signature irish whiskey sour,,12.0,,
+Signature irish coffee,,9.5,,
+Signature gin & tonic,,11.0,,
+Irish coffee,,9.5,,
+Guinness,,7.25,,
+Harp,,5.0,,
+Strongbow gold apple,,7.0,,
+Smithwicks,,5.5,,
+Sam adams winter lager- of the month,,7.0,,
+Golden road mango kart,,7.0,,
+Cape may crushin it orange ipa,,8.0,,
+Two roads lil heaven ipa,,7.0,,
+Yards philly pale ale,,7.0,,
+Allagash,,7.0,,
+Kronenberg,,7.0,,
+Lagunitas ipa,,7.0,,
+Cigar city jai alai,,7.0,,
+Yards philty hazy ipa,,7.0,,
+Lancaster milk stout,,6.75,,
+Lefthand milk stout,,6.75,,
+St. bernardus abt 12,,10.0,,
+Angry orchard crisp apple cider,,6.5,,
+Angry orchard rose cider,,6.5,,
+Dogfish head seaquench sour ale,,6.5,,
+Magners irish cider,,7.0,,
+Magners pear irish cider,,7.0,,
+White claw mango,,7.25,,
+White claw black cherry,,7.25,,
+Amstel light,,6.25,,
+Heineken,,6.5,,
+Heinken light,,6.5,,
+Heineken 0.0,,6.0,,
+Miller highlife,,5.0,,
+Twisted tea,,6.0,,
+"Elmo pio pinot grigio 2018 (veneto, italy)",,9.75,,
+"Bv century cellars chardonnay 2019 (napa valley, ca)",,9.75,,
+J. roget brut sparkling white,,8.0,,
+"Rosehaven rosé 2018 (modesto, ca)",,9.25,,
+"Proverb merlot 2018 (nappa valley, ca)",,11.25,,
+"Conquista malbec 2018 (mendoza, argentina)",,11.25,,

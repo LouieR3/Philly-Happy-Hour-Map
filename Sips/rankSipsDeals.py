@@ -1,7 +1,5 @@
 import pandas as pd
-import locale
 
-locale.setlocale(locale.LC_ALL, "")
 # Read the CSV file into a DataFrame
 df = pd.read_csv("SipsBarItems.csv")
 

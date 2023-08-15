@@ -1,0 +1,49 @@
+Cabernet Sauvignon
+Merlot
+Pinot Noir
+Malbec
+Syrah / Shiraz
+Zinfandel
+Sangiovese
+Nebbiolo
+Tempranillo
+Grenache
+Petite Sirah
+Pinotage
+Barbera
+Gamay
+Nero d'Avola
+Agiorgitiko
+Touriga Nacional
+Corvina
+Pinot Gris / Pinot Grigio
+Chardonnay
+Sauvignon Blanc
+Riesling
+Gewürztraminer
+Viognier
+Chenin Blanc
+Roussanne
+Marsanne
+Albariño
+Vermentino
+Muscat
+Furmint
+Grüner Veltliner
+Sémillon
+Pinot Blanc
+Verdejo
+Macabeo / Viura
+Torrontés
+Verdicchio
+Arneis
+Trebbiano
+Kerner
+Xinomavro
+Xarel-lo
+Silvaner
+Zweigelt
+Blaufränkisch
+Rosé
+White
+Red
