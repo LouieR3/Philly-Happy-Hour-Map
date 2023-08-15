@@ -1,362 +1,175 @@
 Menu Item,Sips Price,Normal Price,Comparison Result,Sips Bar
-Espresso martini,7.0,14.0,7.0,Top Tomato Bar & Pizza
-Aperol spritz,7.0,12.0,5.0,Buca D'oro Ristorante
-Paloma,7.0,12.0,5.0,Cavanaugh's Rittenhouse
-Stateside orange seltzer,5.0,9.0,4.0,Tir Na Nog Irish Bar & Grill
-Stella artois,5.0,7.25,2.25,The Patio @ Thirteen Restaurant
-Carlsberg,5.0,6.75,1.75,The Black Sheep
-Sierra nevada pale ale,5.0,6.75,1.75,Blume Burger
-Modelo,5.0,6.5,1.5,Fado Irish Pub
-Kona big wave,5.0,6.5,1.5,Air Grille Garden at Dilworth Park
-Michelob ultra,5.0,5.5,0.5,ArtBar at Sonesta Hotel
-Budweiser,5.0,5.5,0.5,1518 Bar and Grill
-Miller lite,5.0,5.5,0.5,1518 Bar and Grill
-Bud light,5.0,5.5,0.5,1225 Raw Sushi and Sake Lounge*
-Coors light,5.0,5.5,0.5,1518 Bar and Grill
-Yuengling,5.0,5.375,0.375,Bar-Ly Chinatown
-Miller high life,5.0,4.5,-0.5,The Hayes
-Pbr,5.0,4.0,-1.0,The Mulberry on Arch
-Dragonade,,8.0,,
-Jameson orange crushed,,12.0,,
-Mezcal-a-rita,,13.0,,
-Philly mule,,11.0,,
-Pink lady,,12.0,,
-Sidecar,,16.0,,
-Tully old fashioned,,12.0,,
-Summertime city wide,,10.0,,
-Any given sunday bloody mary,,12.0,,
-Bottom's up,,11.0,,
-Tropical tequila,,11.0,,
-Passion fruit margarita,,11.0,,
-Anaperitivo lemonade,,11.0,,
-Blue moon,,6.5,,
-Downeast seasonal cider,,7.5,,
-New belgium voodoo ranger,,7.5,,
-Sam adams summer ale,,7.0,,
-Victory brotherly love,,7.25,,
-Yuengling lager,,5.0,,
-Guinness non alcoholic,,7.0,,
-Stella liberte 0.0,,6.75,,
-Two roads n/a juicy ipa,,6.5,,
-Downeast original,,7.5,,
-Magners apple cider,,7.0,,
-Cape may white,,7.0,,
-Dogfish namaste,,6.5,,
-Konig ludwig weissbier,,6.75,,
-Delirium tremens,,15.0,,
-Yards jefferson's golden ale,,7.5,,
-Corona,,6.5,,
-Corona light,,6.5,,
-Kenwood original,,5.0,,
-Rocky mountain outlaw,,4.0,,
-Yards brawler,,6.75,,
-Fat head sunshine daydream,,6.5,,
-Neshaminy creek shape of hops,,9.0,,
-New trail broken heels,,7.0,,
-Half acre daisy cutter pale ale,,7.0,,
-Dogfish head citrus squal,,7.0,,
-New belgium fat tire,,6.5,,
-Warsteiner premium,,6.0,,
-Anderson valley briny melon gose,,6.5,,
-Dogfish seaquench,,6.5,,
-Victory sour monkey,,7.75,,
-Mummers row philly tea,,8.0,,
-Stateside black cherry seltzer,,9.0,,
-Stateside lemon cucumber mint seltzer,,9.0,,
-Surfside half & half & vodka,,9.0,,
-Surfside iced tea & vodka,,9.0,,
-Surfside lemonade & vodka,,9.0,,
-Surfside peach tea & vodka,,9.0,,
-Twisted tea lite,,6.5,,
-White claw blackberry seltzer,,6.5,,
-White claw mango seltzer,,6.5,,
-White claw peach,,6.5,,
-Roaring eagle chardonnay,,8.5,,
-Eola hills pinot grigio,,8.5,,
-Bridge lane sauvignon blanc,,9.0,,
-Bridge lane rose,,10.0,,
-Champagne,,8.25,,
-Prosecco,,10.0,,
-Eola hills pinot noir,,8.5,,
-Dona paula los cardos malbec,,8.5,,
-Philly style cabernet,,8.5,,
-Sumo punch,7.0,,,1225 Raw Sushi and Sake Lounge*
-Ginger spirit,7.0,,,1225 Raw Sushi and Sake Lounge*
-Fruit sake,7.0,,,1225 Raw Sushi and Sake Lounge*
-Pinot grigio,6.0,,,1225 Raw Sushi and Sake Lounge*
-Chardonnay,6.0,,,1225 Raw Sushi and Sake Lounge*
-Cabernet sauvignon,6.0,,,1225 Raw Sushi and Sake Lounge*
-Pinot noir,6.0,,,1225 Raw Sushi and Sake Lounge*
-Blue margarita,7.0,,,1518 Bar and Grill
-Merlot,6.0,,,1518 Bar and Grill
-Kenzinger,5.0,,,1518 Bar and Grill
-Passion fruit margarita made with hornitos tequila,7.0,,,Air Grille Garden at Dilworth Park
-House wine,6.0,,,Air Grille Garden at Dilworth Park
-Bee on thyme,7.0,,,Ancient Spirits & Grille
-La vie en rose,7.0,,,Ancient Spirits & Grille
-Gin (nikka coffey or toki hibiscus),7.0,,,Ancient Spirits & Grille
-Red blend,6.0,,,Ancient Spirits & Grille
-Draft sparkling,6.0,,,Ancient Spirits & Grille
-Love city lager,5.0,,,Ancient Spirits & Grille
-Downeast cider,5.0,,,Ancient Spirits & Grille
-New belgium voodoo ranger juicy haze,5.0,,,Ancient Spirits & Grille
-Man with no name,7.0,,,ArtBar at Sonesta Hotel
-Rum swizzle,7.0,,,ArtBar at Sonesta Hotel
-Craft cosmo,7.0,,,ArtBar at Sonesta Hotel
-Joel gott sauvignon blanc,6.0,,,ArtBar at Sonesta Hotel
-Cantina pinot grigio,6.0,,,ArtBar at Sonesta Hotel
-Collier creek cabernet,6.0,,,ArtBar at Sonesta Hotel
-Day owl rose,6.0,,,ArtBar at Sonesta Hotel
-Modelo especial,5.0,,,ArtBar at Sonesta Hotel
-Yards ipa,5.0,,,ArtBar at Sonesta Hotel
-Sam adams summer love,5.0,,,ArtBar at Sonesta Hotel
-The overture,7.0,,,The Balcony Bar at the Kimmel Center
-The chorus,7.0,,,The Balcony Bar at the Kimmel Center
-The crescendo,7.0,,,The Balcony Bar at the Kimmel Center
-Plus a variety of adult sno,7.0,,,The Balcony Bar at the Kimmel Center
-House red,6.0,,,The Balcony Bar at the Kimmel Center
-House white,6.0,,,The Balcony Bar at the Kimmel Center
-Tecate,5.0,,,The Balcony Bar at the Kimmel Center
-Philly sunrise,7.0,,,Bank and Bourbon*
-Miller light,5.0,,,Bank and Bourbon*
-La paloma with hornitos,7.0,,,Bar Bombón
-Rosa,6.0,,,Bar Bombón
-Hornitos margarita,7.0,,,Bar-Ly Chinatown
-Hornitos sunrise,7.0,,,Bar-Ly Chinatown
-Hornitos spritzer,7.0,,,Bar-Ly Chinatown
-Cabernet,6.0,,,Bar-Ly Chinatown
-White zinfandel,6.0,,,Bar-Ly Chinatown
-Corona premier,5.0,,,Bar-Ly Chinatown
-Passionfruit tequila punch,7.0,,,Barbuzzo
-Troegs sunshine pils,5.0,,,Barbuzzo
-Barstool margarita (with hornitos),7.0,,,Barstool Sansom Street
-Watermelon margarita (with hornitos & watermelon red bull),7.0,,,Barstool Sansom Street
-Tropical tequila (with hornitos and tropical red bull),7.0,,,Barstool Sansom Street
-Victory brothery love,5.0,,,Barstool Sansom Street
-Hornitos paloma,7.0,,,The Black Sheep
-Yards,5.0,,,The Black Sheep
-Hoegarrden,5.0,,,The Black Sheep
-Pull cabernet,6.0,,,Blume Burger
-Vin blanc chardonnay,6.0,,,Blume Burger
-Sutter home rose,6.0,,,Blume Burger
-2sp delco lager,5.0,,,Blume Burger
-Firestone walker union jack ipa,5.0,,,Blume Burger
-"Maragritas (regular, spicy, blood orange, strawberry)",7.0,,,Bodega Taco Bar
-Mojito,7.0,,,Bodega Taco Bar
-Twin vines vinho verde,6.0,,,Bodega Taco Bar
-House malbec,6.0,,,Bodega Taco Bar
-Spicy paloma,7.0,,,Brü Craft & Wurst
-House rose,6.0,,,Brü Craft & Wurst
-Madagascar,7.0,,,Buca D'oro Ristorante
-Lemon drop martini,7.0,,,Buca D'oro Ristorante
-House pinot grigio,6.0,,,Buca D'oro Ristorante
-House chianti,6.0,,,Buca D'oro Ristorante
-House merlot,6.0,,,Buca D'oro Ristorante
-Aventador,7.0,,,Butcher Bar
-Red wine,6.0,,,Butcher Bar
-White wine,6.0,,,Butcher Bar
-Michelob ultras,5.0,,,Butcher Bar
-Centaur's cordial,7.0,,,The Cauldron Philly
-The blob,7.0,,,The Cauldron Philly
-The cauldron truth serum,7.0,,,The Cauldron Philly
-Peroni,5.0,,,The Cauldron Philly
-Fat heads sunshine daydream,5.0,,,The Cauldron Philly
-Mango cart,5.0,,,The Cauldron Philly
-Warsteiner pilsner,5.0,,,Cavanaugh's Rittenhouse
-White claw,5.0,,,Cavanaugh's Rittenhouse
-City tap margarita with hornitos tequila,7.0,,,City Tap House Logan Square
-Hey mama bourbon punch,7.0,,,City Tap House Logan Square
-Oak grove pinot noir,6.0,,,City Tap House Logan Square
-Bollini pinot grigio,6.0,,,City Tap House Logan Square
-C'est la vie rose,6.0,,,City Tap House Logan Square
-Kenwood lager,5.0,,,City Tap House Logan Square
-Pbc walt wit,5.0,,,City Tap House Logan Square
-New trail crisp lager,5.0,,,City Tap House Logan Square
-"Ranch ""wooder"" with hornitos tequila, club soda, lime",7.0,,,Con Murphy's Irish Pub
-"Paloma with hornitos tequila, grapefruit juice, lime, agave nectar, club soda blueberry lemonade with blueberry vodka, lemonade, simple syrup",7.0,,,Con Murphy's Irish Pub
-Golden road mango cart,5.0,,,Con Murphy's Irish Pub
-'wooder melon margarita',7.0,,,Continental Midtown
-'northern lights',7.0,,,Continental Midtown
-'frozen astronaut',7.0,,,Continental Midtown
-Domaine de la patience red blend,6.0,,,Continental Midtown
-Domaine de la patience chardonnay,6.0,,,Continental Midtown
-House sparkling,6.0,,,Continental Midtown
-Hornitos mango margarita,7.0,,,Craftsman Row Saloon
-Vodka mule,7.0,,,Craftsman Row Saloon
-Modelo especial lager,5.0,,,Craftsman Row Saloon
-Kona big wave golden ale,5.0,,,Craftsman Row Saloon
-Blood orange margarita,7.0,,,Darling Jack's Tavern
-Victory prima pils,5.0,,,Darling Jack's Tavern
-"Spicy margarita,",7.0,,,Devil's Alley
-Mexican mule,7.0,,,Devil's Alley
-House cabernet,6.0,,,Devil's Alley
-House chardonnay,6.0,,,Devil's Alley
-Estralla jalisco,5.0,,,Devil's Alley
-Hibiscus margarita,7.0,,,Dim Sum House by Jane G's*
-Starwberry margarita,7.0,,,Dim Sum House by Jane G's*
-New trails crisp lager,5.0,,,Dim Sum House by Jane G's*
-Italian paloma,7.0,,,Dolce Italian
-Rose',6.0,,,Dolce Italian
-Barbera d'asti,6.0,,,Dolce Italian
-Sauvignon blanc,6.0,,,Dolce Italian
-Yards summer crush,5.0,,,Dolce Italian
-Sheet bend,7.0,,,Double Knot
-Barrel hitch,7.0,,,Double Knot
-House red wine,6.0,,,Double Knot
-House white wine,6.0,,,Double Knot
-Montucky cold snacks lage,5.0,,,Double Knot
-Sansom st mule,7.0,,,Drury Beer Garden (DBG)
-Hornitos pear margarita,7.0,,,Drury Beer Garden (DBG)
-Mango jalapeño margarita,7.0,,,Fado Irish Pub
-Sycamore lane chardonnay 6oz glass,6.0,,,Fado Irish Pub
-Margarita,7.0,,,Fahrenheit 451 Pizza and Bar
-House wines,6.0,,,Fahrenheit 451 Pizza and Bar
-"Hornitos and select vodka, gin and rum cocktails",7.0,,,Flambo Caribbean Restaurant*
-All,5.0,,,Flambo Caribbean Restaurant*
-Gio's tea,7.0,,,Giovani's Bar & Grill
-"La grenada hornitos tequila, pomegranate, soda hotel nacional rum, pineapple, apricot",7.0,,,Giuseppe and Sons
-Vino rosso,6.0,,,Giuseppe and Sons
-Vino bianco,6.0,,,Giuseppe and Sons
-Pomegranate margarita,7.0,,,The Goat Rittenhouse
-Spinelli pinot grigio,6.0,,,The Goat Rittenhouse
-Arizona hard ice tea,5.0,,,The Goat Rittenhouse
-Margarita calabrese,7.0,,,Gran Caffe L'Aquila
-"Hornitos tequila, caffo orange liqueur, lemon, limoncello kiss.",7.0,,,Gran Caffe L'Aquila
-Hugo,7.0,,,Gran Caffe L'Aquila
-Peroni (lombardia) 5.10% the original italian lager. a high quality malt and hop lager,5.0,,,Gran Caffe L'Aquila
-Hornitos jalapeno infused spicy margarita,7.0,,,Hard Rock Cafe
-White peach sangria,7.0,,,Hard Rock Cafe
-"The secret garden hornitos tequila, watermelon, lime",7.0,,,Harp & Crown
-House cocktail,7.0,,,Harp & Crown
-Hornitos tequila margarita,7.0,,,The Hayes
-White,6.0,,,The Hayes
-Rose,6.0,,,The Hayes
-Red,6.0,,,The Hayes
-Pacifico,5.0,,,The Hayes
-"Paloma hornitos tequila, grapefruit, soda",7.0,,,Independence Beer Garden
-"Down the shore vodka, raspberry, lemon",7.0,,,Independence Beer Garden
-Vodka lemonade,7.0,,,Iron Hill Brewery & Restaurant
-Whiskey sour,7.0,,,Iron Hill Brewery & Restaurant
-Sunny in pils,5.0,,,Iron Hill Brewery & Restaurant
-Iron hill light lager,5.0,,,Iron Hill Brewery & Restaurant
-Vienna red lager,5.0,,,Iron Hill Brewery & Restaurant
-Brambleberry,5.0,,,Iron Hill Brewery & Restaurant
-Homestead,5.0,,,Iron Hill Brewery & Restaurant
-Pig iron porter,5.0,,,Iron Hill Brewery & Restaurant
-Spicy peach margarita,7.0,,,Kook Burger & Bar
-Echo bay sauvignon blanc,6.0,,,Kook Burger & Bar
-Philly united,5.0,,,Kook Burger & Bar
-Surfside,7.0,,,Ladder 15
-Micholob ultra,5.0,,,Ladder 15
-Raging bull,7.0,,,Leda and the Swan Cocktail Lounge
-Everyday is a good day,7.0,,,Leda and the Swan Cocktail Lounge
-My passion is your passion,7.0,,,Leda and the Swan Cocktail Lounge
-Everyday rose seltzer,6.0,,,Leda and the Swan Cocktail Lounge
-Kirin,5.0,,,Leda and the Swan Cocktail Lounge
-Kirin light,5.0,,,Leda and the Swan Cocktail Lounge
-Montepulciano,6.0,,,Little Nonna's
-Peroni italian lager,5.0,,,Little Nonna's
-Dragonfruit spritz,7.0,,,The Mulberry on Arch
-Solid gold founders,5.0,,,The Mulberry on Arch
-Hornitos margaritas,7.0,,,Pagano's Market and Bar
-Tamarind spritz,7.0,,,Patchwork
-Ginger rose,7.0,,,The Patio @ Thirteen Restaurant
-Pink champagne margarita,7.0,,,The Patio @ Thirteen Restaurant
-Cranberry moscow mule,7.0,,,The Patio @ Thirteen Restaurant
-Woodbridge chardonnay,6.0,,,The Patio @ Thirteen Restaurant
-Don miguel gascon malbec,6.0,,,The Patio @ Thirteen Restaurant
-Line 30 california rosé,6.0,,,The Patio @ Thirteen Restaurant
-Nobilo sauvignon blanc,6.0,,,The Patio @ Thirteen Restaurant
-Mark west pinot noir,6.0,,,The Patio @ Thirteen Restaurant
-Dogfish head ipa,5.0,,,The Patio @ Thirteen Restaurant
-Victory dirtwolf double ipa,5.0,,,The Patio @ Thirteen Restaurant
-Gimlet,7.0,,,Pearl & Mary
-Rosé,6.0,,,Pearl & Mary
-Sparkling,6.0,,,Pearl & Mary
-Pistola rosa,7.0,,,Prunella
-"Hornitos tequila, cocchi, grapefruit",7.0,,,Prunella
-Honey fitzgerald,7.0,,,Prunella
-"Gin, grappa, lemon",7.0,,,Prunella
-House rosé,6.0,,,Prunella
-Prickly pear margarita,7.0,,,Sampan
-"Hornitos tequila, prickly pear",7.0,,,Sampan
-Ming mule,7.0,,,Sampan
-"Vodka, mint, lychee, ginger",7.0,,,Sampan
-House rose wine and pinenapple wine,6.0,,,Sampan
-Classic margarita with hornitos tequila,7.0,,,Thanal Indian Tavern
-Cocktail of the day,7.0,,,Thanal Indian Tavern
-House wines and daily special wines,6.0,,,Thanal Indian Tavern
-The great eye,7.0,,,Time Restaurant
-Fresh squeezed margarita,7.0,,,Tir Na Nog Irish Bar & Grill
-Peach martini,7.0,,,Tir Na Nog Irish Bar & Grill
-Starborough sauvignon blanc,6.0,,,Tir Na Nog Irish Bar & Grill
-Dark horse rose,6.0,,,Tir Na Nog Irish Bar & Grill
-Strongbow cider,5.0,,,Tir Na Nog Irish Bar & Grill
-Sunset on top,7.0,,,Top Tomato Bar & Pizza
-High noon,7.0,,,Top Tomato Bar & Pizza
-Classic mule,7.0,,,Top Tomato Bar & Pizza
-Hammered hulk,7.0,,,Top Tomato Bar & Pizza
-Mango tango,7.0,,,Top Tomato Bar & Pizza
-Philly flush,7.0,,,Top Tomato Bar & Pizza
-Trading sunrises,7.0,,,Tradesman's
-Pineapple lemonade,7.0,,,Uptown Beer Garden
-Spicy margarita,7.0,,,Veda - Modern Indian Bistro
-Stemmari red wine,6.0,,,Veda - Modern Indian Bistro
-Povero favorita white wine,6.0,,,Veda - Modern Indian Bistro
-Rupee lager,5.0,,,Veda - Modern Indian Bistro
-Rosemarina,7.0,,,Via Locusta
-Hugo spritz,7.0,,,Via Locusta
-Oskar blues,5.0,,,Via Locusta
-Roots & culture,7.0,,,Vintage Wine Bar & Bistro
-Barbera (red wine),6.0,,,Vintage Wine Bar & Bistro
-Vermentino (white wine),6.0,,,Vintage Wine Bar & Bistro
-A walk in the park,7.0,,,Walnut Garden - Temporarily Closed
-Rose (grenache | cinsauly),6.0,,,Walnut Garden - Temporarily Closed
-Walnut garden lager,5.0,,,Walnut Garden - Temporarily Closed
-"Wooder melon (hornitos blanco tequila, salted watermelon, combier, lime, jalepeno oil",7.0,,,The Wayward
-Proverb pinot grigio,6.0,,,The Wayward
-Proverb pinot noir,6.0,,,The Wayward
-Hornitos tequila paloma,7.0,,,Wrap Shack
-Well liquor,7.0,,,Wrap Shack
-Signature old fashioned,,12.0,,
-Signature manhattan,,12.0,,
-Signature irish whiskey sour,,12.0,,
-Signature irish coffee,,9.5,,
-Signature gin & tonic,,11.0,,
-Irish coffee,,9.5,,
-Guinness,,7.25,,
-Harp,,5.0,,
-Strongbow gold apple,,7.0,,
-Smithwicks,,5.5,,
-Sam adams winter lager- of the month,,7.0,,
-Golden road mango kart,,7.0,,
-Cape may crushin it orange ipa,,8.0,,
-Two roads lil heaven ipa,,7.0,,
-Yards philly pale ale,,7.0,,
-Allagash,,7.0,,
-Kronenberg,,7.0,,
-Lagunitas ipa,,7.0,,
-Cigar city jai alai,,7.0,,
-Yards philty hazy ipa,,7.0,,
-Lancaster milk stout,,6.75,,
-Lefthand milk stout,,6.75,,
-St. bernardus abt 12,,10.0,,
-Angry orchard crisp apple cider,,6.5,,
-Angry orchard rose cider,,6.5,,
-Dogfish head seaquench sour ale,,6.5,,
-Magners irish cider,,7.0,,
-Magners pear irish cider,,7.0,,
-White claw mango,,7.25,,
-White claw black cherry,,7.25,,
-Amstel light,,6.25,,
-Heineken,,6.5,,
-Heinken light,,6.5,,
-Heineken 0.0,,6.0,,
-Miller highlife,,5.0,,
-Twisted tea,,6.0,,
-"Elmo pio pinot grigio 2018 (veneto, italy)",,9.75,,
-"Bv century cellars chardonnay 2019 (napa valley, ca)",,9.75,,
-J. roget brut sparkling white,,8.0,,
-"Rosehaven rosé 2018 (modesto, ca)",,9.25,,
-"Proverb merlot 2018 (nappa valley, ca)",,11.25,,
-"Conquista malbec 2018 (mendoza, argentina)",,11.25,,
+Espresso Martini,$7.00,$14.00,7.0,Top Tomato Bar & Pizza
+Merlot,$6.00,$11.25,5.25,1518 Bar and Grill
+Orange Crush,$7.00,$12.00,5.0,Bodega Taco Bar
+Paloma,$7.00,$12.00,5.0,Bar Bombón
+Aperol Spritz,$7.00,$12.00,5.0,Buca D'oro Ristorante
+Tequila Punch,$7.00,$11.00,4.0,Barbuzzo
+Moscow Mule,$7.00,$11.00,4.0,Craftsman Row Saloon
+Pineapple Lemonade,$7.00,$11.00,4.0,Uptown Beer Garden
+Stateside Seltzer,$5.00,$9.00,4.0,Tir Na Nog Irish Bar & Grill
+Margarita,$7.00,$11.00,4.0,1518 Bar and Grill
+Gin and Tonic,$7.00,$11.00,4.0,The Cauldron Philly
+Malbec,$6.00,$9.88,3.88,Bodega Taco Bar
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,1225 Raw Sushi and Sake Lounge
+Rosé,$6.05,$9.62,3.57,Ancient Spirits & Grille
+Chardonnay,$6.00,$9.12,3.12,1225 Raw Sushi and Sake Lounge
+Sauvignon Blanc,$6.00,$9.00,3.0,ArtBar at Sonesta Hotel
+Downeast Cider,$5.00,$7.50,2.5,Ancient Spirits & Grille
+Pinot Noir,$6.00,$8.50,2.5,1225 Raw Sushi and Sake Lounge
+Cabernet Sauvignon,$6.00,$8.50,2.5,1225 Raw Sushi and Sake Lounge
+Stella Artois,$5.00,$7.25,2.25,The Patio @ Thirteen Restaurant
+Neshaminy Creek Shape of Hops,$7.00,$9.00,2.0,The Balcony Bar at the Kimmel Center
+Golden Road Mango Cart,$5.00,$7.00,2.0,Con Murphy's Irish Pub
+Surfside Lemonade & Vodka,$7.00,$9.00,2.0,Iron Hill Brewery & Restaurant
+Surfside Iced Tea & Vodka,$7.00,$9.00,2.0,Tir Na Nog Irish Bar & Grill
+Strongbow Cider,$5.00,$7.00,2.0,Tir Na Nog Irish Bar & Grill
+Sam Adams,$5.00,$7.00,2.0,ArtBar at Sonesta Hotel
+New Belgium Voodoo Ranger,$5.00,$7.00,2.0,Ancient Spirits & Grille
+White,$6.10,$8.00,1.9,The Balcony Bar at the Kimmel Center
+White Claw,$5.00,$6.80,1.8,Cavanaugh's Rittenhouse
+Sierra Nevada Pale Ale,$5.00,$6.75,1.75,Blume Burger
+Carlsberg,$5.00,$6.75,1.75,The Black Sheep
+Kona Big Wave,$5.00,$6.50,1.5,Air Grille Garden at Dilworth Park
+Modelo,$5.00,$6.50,1.5,ArtBar at Sonesta Hotel
+Kenwood Lager,$5.00,$6.25,1.25,City Tap House Logan Square
+Warsteiner Pilsner,$5.00,$6.00,1.0,Cavanaugh's Rittenhouse
+Bud Light,$5.00,$5.50,0.5,1225 Raw Sushi and Sake Lounge
+Coors Light,$5.00,$5.50,0.5,1518 Bar and Grill
+Budweiser,$5.00,$5.50,0.5,1518 Bar and Grill
+Michelob Ultra,$5.00,$5.50,0.5,ArtBar at Sonesta Hotel
+Corona Light,$6.00,$6.50,0.5,Ancient Spirits & Grille
+Miller Lite,$5.00,$5.33,0.33,1518 Bar and Grill
+Yuengling,$5.00,$5.25,0.25,Bar-Ly Chinatown
+Frozen Astronaut,$6.64,$6.50,-0.14,Bar Bombón
+Blue Moon,$7.00,$6.50,-0.5,The Cauldron Philly
+Miller High Life,$5.00,$4.50,-0.5,The Hayes
+PBR,$5.00,$4.00,-1.0,The Mulberry on Arch
+Dragonade,,$8.00,,
+Mezcal-A-Rita,,$13.00,,
+Pink Lady,,$12.00,,
+Sidecar,,$16.00,,
+Old Fashioned,,$12.00,,
+City Wide,,$10.00,,
+Bloody Mary,,$12.00,,
+Bottom's Up,,$11.00,,
+Victory Brotherly Love,,$7.25,,
+Guinness Non Alcoholic,,$7.00,,
+Stella Liberte 0.0,,$6.75,,
+Two Roads N/A Juicy IPA,,$6.50,,
+Magners Apple Cider,,$7.00,,
+Cape May White,,$7.00,,
+Dogfish Namaste,,$6.50,,
+Konig Ludwig Weissbier,,$6.75,,
+Delirium Tremens,,$15.00,,
+Yards Jefferson's Golden Ale,,$7.50,,
+Corona,,$6.50,,
+Rocky Mountain Outlaw,,$4.00,,
+Yards Brawler,,$6.75,,
+Fat Head Sunshine Daydream,,$6.50,,
+New Belgium Fat Tire,,$7.00,,
+Half Acre Daisy Cutter Pale Ale,,$7.00,,
+Dogfish Head Citrus Squal,,$7.00,,
+Dogfish Head Seaquench Sour Ale,,$6.50,,
+Sour Monkey,,$7.75,,
+Mummers Row Philly Tea,,$8.00,,
+Surfside Half & Half & Vodka,,$9.00,,
+Twisted Tea,,$6.25,,
+Champagne,,$8.25,,
+Prosecco,,$10.00,,
+Sumo Punch,$7.00,,,1225 Raw Sushi and Sake Lounge
+Ginger Spirit,$7.00,,,1225 Raw Sushi and Sake Lounge
+Sake,$7.00,,,1225 Raw Sushi and Sake Lounge
+Kenzinger,$5.00,,,1518 Bar and Grill
+Vermentino,$6.00,,,Air Grille Garden at Dilworth Park
+Bee On Thyme,$7.00,,,Ancient Spirits & Grille
+Gin (Nikka Coffey or Toki Hibiscus),$7.00,,,Ancient Spirits & Grille
+Red,$6.00,,,Ancient Spirits & Grille
+Love City Lager,$5.00,,,Ancient Spirits & Grille
+Man With No Name,$7.00,,,ArtBar at Sonesta Hotel
+Rum Swizzle,$7.00,,,ArtBar at Sonesta Hotel
+Cosmopolitan,$7.00,,,ArtBar at Sonesta Hotel
+Yards IPA,$5.00,,,ArtBar at Sonesta Hotel
+The Great Eye,$7.00,,,The Balcony Bar at the Kimmel Center
+Tecate,$5.00,,,The Balcony Bar at the Kimmel Center
+Tequila Sunrise,$7.00,,,Bank and Bourbon
+Rosemarina,$7.00,,,Bar-Ly Chinatown
+Zinfandel,$6.00,,,Bar-Ly Chinatown
+Corona Premier,$5.00,,,Bar-Ly Chinatown
+Troegs Sunshine Pils,$5.00,,,Barbuzzo
+Victory Brothery Love,$5.00,,,Barstool Sansom Street
+Hoegarrden,$5.00,,,The Black Sheep
+2SP Delco Lager,$5.00,,,Blume Burger
+Firestone Walker Union Jack IPA,$5.00,,,Blume Burger
+Mojito,$7.00,,,Bodega Taco Bar
+Martini,$7.00,,,Buca D'oro Ristorante
+Sheet Bend,$7.00,,,Butcher Bar
+Peroni,$5.00,,,The Cauldron Philly
+Fat Heads Sunshine Daydream,$5.00,,,The Cauldron Philly
+Mango Tango,$6.00,,,The Cauldron Philly
+Bourbon Punch,$7.00,,,City Tap House Logan Square
+PBC Walt Wit,$5.00,,,City Tap House Logan Square
+New Trail Crisp Lager,$5.00,,,City Tap House Logan Square
+Ranch Wooder,$7.00,,,Con Murphy's Irish Pub
+Northern Lights,$7.00,,,Continental Midtown
+Victory Prima Pils,$5.00,,,Darling Jack's Tavern
+Estralla Jalisco,$5.00,,,Devil's Alley
+New Trails Crisp Lager,$5.00,,,Dim Sum House by Jane G's
+Hugo,$7.00,,,Dolce Italian
+Barbera,$6.00,,,Dolce Italian
+Yards Summer Crush,$5.00,,,Dolce Italian
+Barrel Hitch,$7.00,,,Double Knot
+Montucky Cold Snacks,$5.00,,,Double Knot
+Gio's Tea,$7.00,,,Giovani's Bar & Grill
+La Grenada,$7.00,,,Giuseppe and Sons
+Vino Rosso,$6.00,,,Giuseppe and Sons
+Vino Bianco,$6.00,,,Giuseppe and Sons
+Arizona Hard Ice Tea,$5.00,,,The Goat Rittenhouse
+The Secret Garden,$7.00,,,Harp & Crown
+Pacifico,$5.00,,,The Hayes
+Whiskey Sour,$7.00,,,Iron Hill Brewery & Restaurant
+Sunny in Pils,$5.00,,,Iron Hill Brewery & Restaurant
+Iron Hill Light Lager,$5.00,,,Iron Hill Brewery & Restaurant
+Vienna Red Lager,$5.00,,,Iron Hill Brewery & Restaurant
+Brambleberry,$5.00,,,Iron Hill Brewery & Restaurant
+Homestead,$5.00,,,Iron Hill Brewery & Restaurant
+Pig Iron Porter,$5.00,,,Iron Hill Brewery & Restaurant
+Philly Uniteds,$5.00,,,Kook Burger & Bar
+Kirin,$5.00,,,Leda and the Swan Cocktail Lounge
+Kirin Light,$5.00,,,Leda and the Swan Cocktail Lounge
+Solid Gold Founders,$5.00,,,The Mulberry on Arch
+Dogfish Head IPA,$5.00,,,The Patio @ Thirteen Restaurant
+Victory Dirtwolf Double IPA,$5.00,,,The Patio @ Thirteen Restaurant
+Sparkling,$6.00,,,Pearl & Mary
+Mai Tai,$6.00,,,Thanal Indian Tavern
+Sunset On Top,$7.00,,,Top Tomato Bar & Pizza
+High Noon,$7.00,,,Top Tomato Bar & Pizza
+Hammered Hulk,$7.00,,,Top Tomato Bar & Pizza
+Philly Flush,$7.00,,,Top Tomato Bar & Pizza
+Rupee Lager,$5.00,,,Veda - Modern Indian Bistro
+Oskar Blues,$5.00,,,Via Locusta
+Roots & Culture,$7.00,,,Vintage Wine Bar & Bistro
+Grenache,$6.00,,,Walnut Garden - Temporarily Closed
+Walnut Garden Lager,$5.00,,,Walnut Garden - Temporarily Closed
+Well Liquor,$7.00,,,Wrap Shack
+Manhattan,,$12.00,,
+Irish Coffee,,$10.33,,
+Guinness,,$7.25,,
+Harp,,$5.00,,
+Smithwicks,,$5.50,,
+Sam Adams Winter Lager,,$7.00,,
+Cape May Crushin It Orange IPA,,$8.00,,
+Two Roads Lil Heaven IPA,,$7.00,,
+Yards Philly Pale Ale,,$7.00,,
+Allagash,,$7.00,,
+Kronenberg,,$7.00,,
+Lagunitas IPA,,$7.00,,
+Cigar City Jai Alai,,$7.00,,
+Yards Philty Hazy IPA,,$7.00,,
+Lancaster Milk Stout,,$6.75,,
+Lefthand Milk Stout,,$6.75,,
+St. Bernardus ABT 12,,$10.00,,
+Angry Orchard Apple Cider,,$6.50,,
+Amstel Light,,$6.25,,
+Heineken,,$6.25,,
+Heinken Light,,$6.50,,
