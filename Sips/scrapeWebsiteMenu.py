@@ -32,7 +32,7 @@ for index, row in df.iterrows():
             links = soup.find_all('a')
             # print(links)
             # Keywords to identify potential menu or drinks subpages
-            menu_keywords = ['menu', 'drinks', 'happy hour', 'happy-hour', 'beer', 'wine', 'cocktail']
+            menu_keywords = ['menu', 'drinks', 'happy hour', 'happy-hour', 'beer', 'wine', 'cocktail', 'draft', 'can', 'bottle']
             exclude_keywords = ['food', 'lunch', 'dinner', 'breakfast', 'entre', 'banquet', 'catering', 'dining', 'dessert']
 
             # List to store subpage URLs
@@ -66,24 +66,35 @@ for index, row in df.iterrows():
                     menu_response = requests.get(url)
                     soup = BeautifulSoup(menu_response.content, 'html.parser')
 
-                    # Find menu section    
-                    menu = soup.find('div', id='menu')
+                    # Find all h1, h2, h3, div tags
+                    tags = soup.find_all(['h1', 'h2', 'h3', 'div'])
 
-                    # Get items by type
-                    beers = menu.find_all(string=re.compile('Beer'))
-                    wines = menu.find_all(string=re.compile('Wine'))
-                    cocktails = menu.find_all(string=re.compile('Cocktail'))
-
+                    for tag in tags:
+                        if any(keyword in tag.text.lower() for keyword in menu_keywords):
+                            next_elem = tag.find_next_sibling()
+                            if next_elem:
+                                # Get menu items from li, p, div tags
+                                items = next_elem.find_all(['li', 'p', 'div'])
+                                menu_items.extend([item.text for item in items])
+                                print(menu_items)
+                                print()
+                                # Get prices from span + li, p, div tags 
+                                prices = next_elem.find_all(['span', 'li', 'p', 'div'], class_='price')
+                                menu_prices.extend([price.text for price in prices])
+                                print(menu_prices)
+                            
+                    bar_names.extend([bar_name] * len(menu_items))
                     # Extract prices
-                    for item in beers:
-                        price = item.find_next(class_='price').text
-                        menu_items.append(item.text)  
-                        menu_prices.append(price)
-                        bar_names.append(bar_name)
+                    # for item in beers:
+                    #     price = item.find_next(class_='price').text
+                    #     menu_items.append(item.text)  
+                    #     menu_prices.append(price)
+                    #     bar_names.append(bar_name)
                 except Exception as e:
                     print(f'An error occurred for url {url}: {e}')
                     pass
             print()
+            print(bar_names)
         except requests.exceptions.RequestException as e:
             print(f'An error occurred for base_url {base_url}: {e}')
             print("--------------------------------------------")

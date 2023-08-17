@@ -97,7 +97,9 @@ def pull_website_menu():
                     result = website_json(bar_name, url)
                     if not result.empty:
                         print(result)
-                        combineCSV(result)
+                        print()
+                        print(base_url)
+                        # combineCSV(result)
                     else:
                         result = website_parse(bar_name, url)
                 print()
@@ -142,6 +144,10 @@ def website_json(bar_name, url):
             for json_object in keyword_elements:
                 data = json.loads(json_object)
                 if 'menu' in json.dumps(data).lower():
+                    print(url)
+                    print("---------------")
+                    print()
+                    print(data)
                     entry = data['data']
                     for section in entry:
                         if any(keyword in section["name"].lower() for keyword in keywords):
@@ -272,5 +278,5 @@ def calculateDeal():
     print(results_df)
 
 # pull_yelp()
-# pull_website_menu()
+pull_website_menu()
 

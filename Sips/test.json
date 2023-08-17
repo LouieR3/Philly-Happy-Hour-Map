@@ -1,2443 +1,670 @@
 {
-  "code": 200,
-  "data": [
+  "@context": "http://schema.org",
+  "@type": "Menu",
+  "@id": "https://www.citytap.com/menu/lunch-dinner-menu-copy/#menu",
+  "name": "Lunch & Dinner Menu",
+  "description": "Lunch &amp; Dinner Menu ",
+  "hasMenuSection": [
     {
-      "id": 3055528,
-      "menu_type": "Menu",
-      "location_id": "tir-na-nog-bar",
-      "name": "Food Menu",
+      "@type": "MenuSection",
+      "name": "Bar Favorites",
       "description": "",
-      "footnote": "",
-      "order_num": 1,
-      "currency": "USD",
-      "created": "2018-10-10T04:50:06",
-      "updated": "2022-12-07T19:35:59",
-      "sections": [
+      "hasMenuItem": [
         {
-          "id": 38475119,
-          "name": "Snacks",
-          "description": "Select Sharables $8 During Happy Hour",
-          "order_num": 0,
-          "items": [
+          "@type": "MenuItem",
+          "name": "Charred Brussels Sprouts",
+          "description": "White miso, pomegranate",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "11.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Elote “Street Corn” Dip",
+          "description": "Jalapeños, chili powder, cotija, cilantro, chips",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "11.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Kung Pao Cauliflower",
+          "description": "Crispy fried, kung pao sauce, chiles de arbol, chopped peanuts, scallions, leeks, napa cabbage",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "13.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Hummus",
+          "description": "Olive pepper relish, flatbread, olive oil, lemon",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "10.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Ahi Tuna & Wonton Nachos*",
+          "description": "Edamame, napa cabbage, sliced jalapeno, miso aioli, sweet soy reduction, avocado, toasted sesame seeds, cilantro",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "17.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "BBQ’D Pulled Pork Nachos",
+          "description": "Ranchero beans, nacho and colby jack cheeses, Mexican crema, cilantro, scallions, red onions, avocado mash",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "15.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Mac N’ Cheese",
+          "description": "Cheese sauce, cavatappi, herbed panko",
+          "image": "None",
+          "offers": [
+            { "@type": "Offer", "price": "11.75", "priceCurrency": "USD" },
             {
-              "id": 212030623,
-              "name": "Harp Battered Fish Tacos",
-              "description": "chipotle aioli, shredded cabbage & pico de gallo",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 13.45 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "3.00",
+              "priceCurrency": "USD",
+              "description": "Bacon"
             },
             {
-              "id": 212030624,
-              "name": "Big Soft Pretzel",
-              "description": "freakishly big Bavarian pretzel with whole grain mustard and beer cheese sauce",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 13.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "6.00",
+              "priceCurrency": "USD",
+              "description": "Chicken"
             },
             {
-              "id": 212030625,
-              "name": "Pub Sliders",
-              "description": "American cheese, fried onions, Guinness mayo and pickle on Hawaiian rolls",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "4.00",
+              "priceCurrency": "USD",
+              "description": "BBQ pulled pork"
             },
             {
-              "id": 212030626,
-              "name": "Harp Battered Chicken Tenders",
-              "description": "with chips and honey mustard sauce",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "4.00",
+              "priceCurrency": "USD",
+              "description": "Korean beef"
             },
             {
-              "id": 212030627,
-              "name": "Jumbo Wings",
-              "description": "marinated 24 hours, flash fried to order Guinness BBQ, Buffalo, Jerk Dry Rub",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "5 Wings",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8.95 },
-                  "order_num": 0
-                },
-                {
-                  "name": "10 Wings",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 16.45 },
-                  "order_num": 1
-                },
-                {
-                  "name": "20 Wings",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 28.95 },
-                  "order_num": 2
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "8.00",
+              "priceCurrency": "USD",
+              "description": "Steak"
             },
             {
-              "id": 216745355,
-              "name": "Smoked Salmon Bites",
-              "description": "cold oak-smoked salmon with capers, onions, light horseradish sauce, lemon, served on your choice of boxty blini or cucumber slices",
-              "order_num": 5,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12.45 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 216745356,
-              "name": "Cheese Steak Egg Rolls",
-              "description": "served with spicy ketchup dipping sauce",
-              "order_num": 6,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 14.45 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 246419525,
-              "name": "Pub Nachos",
-              "description": "Tri colored tortilla chips topped with pepper jack fondue, Pico de gallo, shaved jalapenos, lime crema, and guacamole",
-              "order_num": 7,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": [
-                {
-                  "name": "Chicken or Beef",
-                  "unit": "",
-                  "prices": { "max": "", "min": 6 },
-                  "order_num": 0
-                }
-              ]
-            },
-            {
-              "id": 246419526,
-              "name": "Fried Pickles",
-              "description": "Beer battered pickle chips with red chili aioli",
-              "order_num": 8,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 10.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "8.00",
+              "priceCurrency": "USD",
+              "description": "Shrimp"
             }
           ]
         },
         {
-          "id": 38475120,
-          "name": "Mains",
-          "description": "served with thick cut chips; sub salad +$2",
-          "order_num": 1,
-          "items": [
-            {
-              "id": 212030628,
-              "name": "Bacon Cheeseburger Mór",
-              "description": "grilled all-beef patty, cheddar, Applewood smoked bacon, lettuce, tomato, onion (substitute American, Swiss or blue cheese)",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 15.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 212030629,
-              "name": "Tír Na Nóg Reuben",
-              "description": "Custom-made corned beef served hot, coleslaw, Swiss, Marie Rose sauce on marbled rye",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 15.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 216745357,
-              "name": "Toasted Bacon, Cheese, Tomato, & Onion Sandwich",
-              "description": "Irish Bacon, tomato, onion, cheddar and mayo served on grilled sour dough, accompanied with potato chips",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 212030632,
-              "name": "Fish & Chips",
-              "description": "sustainably caught cod from the deep, icy waters of the North Atlantic with crispy chips, tartar sauce, coleslaw",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 20.95 },
-                  "order_num": 0
-                },
-                {
-                  "name": "Lunch Portion",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 16.95 },
-                  "order_num": 1
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 217889230,
-              "name": "Nashville Hot Chicken Sandwich",
-              "description": "house slaw, blue cheese, pickle, sriracha honey dressing",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 15.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 231365187,
-              "name": "Sheperds Pie",
-              "description": "Slow Guinness braised lamb and beef, peas, carrots and creamy colcannon.",
-              "order_num": 5,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 17.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 246419527,
-              "name": "Chicken Bruschetta Sandwich",
-              "description": "Grilled chicken breast topped with melted provolone, bruschetta mix and balsamic glaze drizzle on ciabatta",
-              "order_num": 6,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 15.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 246419528,
-              "name": "Blackened Salmon Entree",
-              "description": "8oz seared blackened salmon topped with a pecan and brown sugar butter sauces and served with sauteed broccoli and colcannon mashed potatoes",
-              "order_num": 7,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 19.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Ten Spice Wings",
+          "description": "Blue cheese ranch, crisp vegetables",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "16.25",
+            "priceCurrency": "USD"
+          }
         },
         {
-          "id": 38475121,
-          "name": "Salads",
-          "description": "add grilled, fried or blackened chicken +$5; Shrimp or salmon +$7",
-          "order_num": 2,
-          "items": [
-            {
-              "id": 212030633,
-              "name": "Pear and Blue Cheese Salad",
-              "description": "mixed greens, blue cheese crumbles, sliced pear, mandarin oranges, candied pecans with poppy seed vinaigrette",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 212030634,
-              "name": "Garden Salad",
-              "description": "mixed greens, cucumber, red onion, yellow cheddar, Hard Boiled Egg, served with red wine vinaigrette",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 217889231,
-              "name": "Spinach Salad",
-              "description": "spinach, feta, roasted red peppers, marinated tomatoes, hard boiled egg, served with honey mustard dressing",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 246419529,
-              "name": "Cobb Salad",
-              "description": "Fresh chopped Romaine lettuce, chopped bacon, grape tomatoes, red onions, cucumbers, blue cheese crumbles, hard boiled egg and sliced avocado with a side of ranch dressing",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 13.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 246419530,
-              "name": "Potato Leek Soup",
-              "description": "",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 5.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Corn & Crab Hushpuppies",
+          "description": "Citrus remoulade, honey-thyme butter",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "15.25",
+            "priceCurrency": "USD"
+          }
         },
         {
-          "id": 38475122,
-          "name": "Desserts",
-          "description": "",
-          "order_num": 3,
-          "items": [
-            {
-              "id": 212030636,
-              "name": "Tír Na Nóg Irish Coffee",
-              "description": "Tullamore D.E.W. Irish Whiskey and brown sugar in hot coffee, topped with cream and cinnamon swirls",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 212030637,
-              "name": "Brownie Sundae",
-              "description": "brownie topped with vanilla ice cream, whipped cream, pecans and chocolate sauce, big and good for sharing",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 246419531,
-              "name": "NY Style Cheesecake",
-              "description": "Raspberry drizzle, whipped cream",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Pretzels & Pimento",
+          "description": "Southern pimento cheese spread, maple bourbon mustard, soft pretzel sticks",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "14.00",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Abigail Mussels",
+          "description": "roasted garlic butter, belgian ale broth, leeks, cherry tomatoes",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "17.75",
+            "priceCurrency": "USD"
+          },
+          "menuAddOn": {
+            "@type": "MenuSection",
+            "hasMenuItem": { "@type": "MenuItem", "name": "Fries" }
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Burrata Toast",
+          "description": "Grilled sourdough, bacon, tomato, avocado, frisee",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "14.50",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Guacamole",
+          "description": "house made guacamole and fried corn chips",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "12.50",
+            "priceCurrency": "USD"
+          }
         }
-      ],
-      "attribution_image": "http://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "attribution_image_link": "http://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207",
-      "secure_attribution_image": "https://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "secure_attribution_image_link": "https://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207"
+      ]
     },
     {
-      "id": 1298001,
-      "menu_type": "Menu",
-      "location_id": "tir-na-nog-bar",
-      "name": "Brunch",
-      "description": "Available Saturday and Sunday from open til 3pm",
-      "footnote": "",
-      "order_num": 2,
-      "currency": "USD",
-      "created": "2014-11-11T02:03:11",
-      "updated": "2022-12-07T19:38:14",
-      "sections": [
+      "@type": "MenuSection",
+      "name": "Soups, Salads & Bowls",
+      "description": "",
+      "hasMenuItem": [
         {
-          "id": 30447180,
-          "name": "Tír Na Nóg Brunch Plates",
+          "@type": "MenuItem",
+          "name": "Chicken Tortilla Soup",
           "description": "",
-          "order_num": 0,
-          "items": [
-            {
-              "id": 172849889,
-              "name": "Irish Breakfast",
-              "description": "two eggs, Irish sausages, rashers, black and white pudding, mushrooms, tomatoes, sourdough toast",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 15.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 172849890,
-              "name": "American Breakfast",
-              "description": "two eggs any style, Applewood smoked bacon, breakfast sausage links, hashbrowns, toast",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 14.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 172849892,
-              "name": "Irish Breakfast Sandwich",
-              "description": "Irish sausage, rashers, fried egg on sourdough, served with brunch potatoes",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 13.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 172849896,
-              "name": "Build Your Own Omelette",
-              "description": "choose any 3 - tomato, mushroom, feta, cheddar, bacon or sausage",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 10.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 219448291,
-              "name": "French Toast",
-              "description": "Thick Sliced Brioche with white chocolate cream cheese spread and strawberries",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 219448292,
-              "name": "Breakfast Burrito",
-              "description": "Sausage, bacon, scrambled eggs, cheddar cheese and Pico de Gallo wrapped in a flour tortilla with a side of sour cream and breakfast potatoes",
-              "order_num": 5,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 13.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 219448293,
-              "name": "Biscuits & Gravy",
-              "description": "Two Buttermilk Biscuits topped with sausage gravy, fried egg, and parsley",
-              "order_num": 6,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 13.95 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
+          "image": "None",
+          "offers": [
+            { "@type": "Offer", "price": "4.00", "priceCurrency": "USD" },
+            { "@type": "Offer", "price": "6.00", "priceCurrency": "USD" }
           ]
         },
         {
-          "id": 38745827,
-          "name": "Brunch Sides",
+          "@type": "MenuItem",
+          "name": "City Tap Chop",
+          "description": "bacon, blue cheese, olives, roasted tomatoes, croutons, crispy shallots, shaved onions, egg, white balsamic vinaigrette",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "13.50",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Apple & Gouda Salad",
+          "description": "Arugula, frisee, granny smith apples, beemster gouda, candied pecans, cider vinaigrette",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "13.50",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Caesar",
+          "description": "Romaine hearts, parmesan crisp, garlic croutons, crispy shallots, classic dressing",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "12.00",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Mediterranean Chicken Bowl",
+          "description": "Marinated chicken, diced cucumbers, cherry tomatoes, kalamata olives, farro, crumbled feta, shredded carrots, arugula, picked red onion",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "17.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "East Side Poke Bowl*",
+          "description": "Marinated tuna, farro, arugula, avocado, sesame, scallions, cilantro, pickled onions, miso sauce",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "19.50",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Beet & Goat Cheese Salad",
+          "description": "Baby kale, arugula, orange segments, red beets, red onion, candied pecans, goat cheese, apple cider vinaigrette",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "13.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "",
           "description": "",
-          "order_num": 1,
-          "items": [
+          "image": "None",
+          "offers": [
             {
-              "id": 213084519,
-              "name": "Rashers/Irish Bacon (3)",
-              "description": "",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 4.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "9.00",
+              "priceCurrency": "USD",
+              "description": "Grilled steak*"
             },
             {
-              "id": 213084520,
-              "name": "American Bacon (5)",
-              "description": "",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 4.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "8.00",
+              "priceCurrency": "USD",
+              "description": "Shrimp*"
             },
             {
-              "id": 213084521,
-              "name": "Irish Sausage (3)",
-              "description": "",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 4.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "2.00",
+              "priceCurrency": "USD",
+              "description": "Avocado"
             },
             {
-              "id": 213084522,
-              "name": "Black and White Pudding (3 of each)",
-              "description": "",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 4.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "6.00",
+              "priceCurrency": "USD",
+              "description": "Roast chicken*"
             },
             {
-              "id": 213084523,
-              "name": "Toast",
-              "description": "",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 4 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "9.50",
+              "priceCurrency": "USD",
+              "description": "Tuna"
+            },
+            {
+              "@type": "Offer",
+              "price": "10.00",
+              "priceCurrency": "USD",
+              "description": "Salmon"
             }
           ]
         }
-      ],
-      "attribution_image": "http://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "attribution_image_link": "http://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207",
-      "secure_attribution_image": "https://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "secure_attribution_image_link": "https://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207"
+      ]
     },
     {
-      "id": 3556363,
-      "menu_type": "Menu",
-      "location_id": "tir-na-nog-bar",
-      "name": "Signature Cocktails",
+      "@type": "MenuSection",
+      "name": "Entrées",
       "description": "",
-      "footnote": "",
-      "order_num": 3,
-      "currency": "USD",
-      "created": "2019-10-03T05:54:59",
-      "updated": "2022-12-07T19:38:42",
-      "sections": [
+      "hasMenuItem": [
         {
-          "id": 41031712,
-          "name": "Signature Cocktails",
-          "description": "",
-          "order_num": 0,
-          "items": [
-            {
-              "id": 223588861,
-              "name": "Signature Old Fashioned",
-              "description": "Jameson Black Barrel, simple syrup, Angostura Bitters, Luxardo Cherries, orange peel",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223588862,
-              "name": "Signature Manhattan",
-              "description": "Bushmills Black Bush, Carpano Antica Sweet Vermouth, Luxardo cherries",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223588863,
-              "name": "Signature Irish Whiskey Sour",
-              "description": "Tullamore D.E.W., lemon juice, simple syrup, egg white, Angostura Bitters",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223588864,
-              "name": "Signature Irish Coffee",
-              "description": "Jameson Cold Brew, coffee, dark brown sugar, fresh cream, cinnamon.",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223588865,
-              "name": "Signature Gin & Tonic",
-              "description": "Gunpowder Irish Gin, Fever Tree Tonic, lime, juniper berries. Make it Barrel Aged with Blue Coat Barrel Aged Gin and Fever Tree Aromatic Tonic",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 224121482,
-              "name": "Irish Coffee",
-              "description": "Tullamore Dew, brown sugar, coffee, whipped cream",
-              "order_num": 5,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": [
-                {
-                  "name": "Add Pumpkin Spice",
-                  "unit": "",
-                  "prices": { "max": "", "min": 2.5 },
-                  "order_num": 0
-                }
-              ]
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Steak Frites",
+          "description": "Sliced NY sirloin, hand-cut fries, house steak sauce",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "35.00",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Chicken & Waffles",
+          "description": "Maple syrup, red pepper jam, honey-thyme butter",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "21.50",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Shrimp & Grits",
+          "description": "Prosciutto, white cheddar grits, cajun beurre blanc, ham hock braised collard greens",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "22.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Cajun Linguine",
+          "description": "Chicken, shrimp, bell peppers, tomatoes, onion, andouille sausage, cajun butter, linguine, scallions, focaccia bread",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "24.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Kung Pao Cauliflower & Rice",
+          "description": "breaded cauliflower, kung pao sauce, chiles de arbol, chopped peanuts, scallions, leeks, peas, carrots, fried rice",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "20.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Fish & Chips",
+          "description": "beer battered cod, coleslaw, salt & vinegar fries, tartar sauce, cocktail sauce, lemon, parsley",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "25.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Panang Salmon",
+          "description": "seared salmon, panang curry sauce, snap peas, bell peppers, carrots, coconut rice, peanuts",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "29.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Filet Mignon",
+          "description": "roasted garlic mashed potatoes, sauteed asparagus, red wine reduction, crispy onions, parsley",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "42.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Rigatoni Roma",
+          "description": "Ground Italian sausage, red wine, shallots, garlic, heavy cream, fresh tomato sauce, cremini mushrooms, cherry peppers, grated parmesan, grilled focaccia",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "18.00",
+            "priceCurrency": "USD"
+          }
         }
-      ],
-      "attribution_image": "http://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "attribution_image_link": "http://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207",
-      "secure_attribution_image": "https://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "secure_attribution_image_link": "https://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207"
+      ]
     },
     {
-      "id": 4926362,
-      "menu_type": "Menu",
-      "location_id": "tir-na-nog-bar",
-      "name": "Draught",
+      "@type": "MenuSection",
+      "name": "Handhelds",
       "description": "",
-      "footnote": "",
-      "order_num": 5,
-      "currency": "USD",
-      "created": "2021-11-03T02:35:38",
-      "updated": "2022-04-06T11:50:26",
-      "sections": [
+      "hasMenuItem": [
         {
-          "id": 41031513,
-          "name": "Essential Irish Drafts",
-          "description": "",
-          "order_num": 0,
-          "items": [
-            {
-              "id": 223587690,
-              "name": "Guinness",
-              "description": "",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7.25 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587691,
-              "name": "Harp",
-              "description": "",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587692,
-              "name": "Strongbow Gold Apple",
-              "description": "",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587693,
-              "name": "Smithwicks",
-              "description": "",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 5.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Veggie Burger",
+          "description": "Wild rice, black bean & beet patty, aged cheddar, dijonnaise, roasted tomatoes, alfalfa sprouts",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "15.25",
+            "priceCurrency": "USD"
+          }
         },
         {
-          "id": 41031514,
-          "name": "Rotating Drafts",
-          "description": "",
-          "order_num": 1,
-          "items": [
-            {
-              "id": 223587694,
-              "name": "Sam Adams Winter Lager- Beer of the Month",
-              "description": "MA, 5.6%, Festive and smooth with cinnamon, giner and orange notes.",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587695,
-              "name": "Golden Road Mango Kart",
-              "description": "CA, 4% light Wheat Ale bursting with lots of fresh mango flavor and aroma, finishing crisp and refreshing",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587696,
-              "name": "Victory Brotherly Love",
-              "description": "PA, 6%, Hazy IPA with bright citrus notes that drift into a tropical fruit character and finishes with a touch of apricot.",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587697,
-              "name": "Cape May Crushin It Orange IPA",
-              "description": "NJ, %8 Citra, Mosaic, and Azacca hops blending together to accentuate the fresh flavors of orange juice, Crushin It is dry, approachable, and perfectly balanced",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587699,
-              "name": "Two Roads Lil Heaven IPA",
-              "description": "CT, 4.8% Made with four exotic hops - Azacca, Calypso, Mosaic and Equinox. Taste is of tropical fruits, specifically passion fruit.",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Fig & Goat Cheese Grilled Chicken Sandwich",
+          "description": "grilled chicken, goat cheese, fig jam, asian pears, arugula, honey mustard, ciabatta roll",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "16.25",
+            "priceCurrency": "USD"
+          }
         },
         {
-          "id": 41031515,
-          "name": "Domestic and Import Drafts",
-          "description": "",
-          "order_num": 2,
-          "items": [
+          "@type": "MenuItem",
+          "name": "Hot Honey Chicken Sandwich",
+          "description": "Buttermilk fried chicken, citrus remoulade, hot honey sauce, brioche bun, pickles",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "17.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Turkey BLT",
+          "description": "sourdough, bacon, lettuce, tomato, smokey mayo, pickle",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "17.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Cheesesteak",
+          "description": "chopped steak, peppers & onions, american cheese sauce, butter toasted long roll",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "18.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "City Tap Stack Burger*",
+          "description": "Two griddled patties, american cheese, special sauce, lettuce, red onion, pickles",
+          "image": "None",
+          "offers": [
+            { "@type": "Offer", "price": "16.75", "priceCurrency": "USD" },
             {
-              "id": 223587701,
-              "name": "Yards Philly Pale Ale",
-              "description": "",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "3.00",
+              "priceCurrency": "USD",
+              "description": "Smoky bacon"
             },
             {
-              "id": 223587702,
-              "name": "Yuengling",
-              "description": "",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 5.75 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "3.00",
+              "priceCurrency": "USD",
+              "description": "Avocado"
             },
             {
-              "id": 223587703,
-              "name": "Allagash",
-              "description": "",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587704,
-              "name": "Carlsberg",
-              "description": "",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.75 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587705,
-              "name": "Stella Artois",
-              "description": "",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7.25 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587706,
-              "name": "Kronenberg",
-              "description": "",
-              "order_num": 5,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223587707,
-              "name": "Lagunitas IPA",
-              "description": "CA, 6.2% a well-rounded, highly drinkable IPA. A bit of Caramel Malt barley provides the richness that mellows out the twang of the hops",
-              "order_num": 6,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "Offer",
+              "price": "2.00",
+              "priceCurrency": "USD",
+              "description": "Fried egg*"
             }
           ]
         }
-      ],
-      "attribution_image": "http://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "attribution_image_link": "http://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207",
-      "secure_attribution_image": "https://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "secure_attribution_image_link": "https://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207"
+      ]
     },
     {
-      "id": 4926341,
-      "menu_type": "Menu",
-      "location_id": "tir-na-nog-bar",
-      "name": "Bottles & Cans",
+      "@type": "MenuSection",
+      "name": "Brick Oven Pizza",
       "description": "",
-      "footnote": "",
-      "order_num": 6,
-      "currency": "USD",
-      "created": "2021-11-03T02:34:52",
-      "updated": "2021-11-06T02:48:23",
-      "sections": [
+      "hasMenuItem": [
         {
-          "id": 41031391,
-          "name": "Pale & Hoppy",
-          "description": "",
-          "order_num": 0,
-          "items": [
-            {
-              "id": 223586923,
-              "name": "Cigar City Jai Alai",
-              "description": "",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586924,
-              "name": "Sierra Nevada Pale Ale",
-              "description": "",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.75 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586925,
-              "name": "Yards Philty Hazy IPA",
-              "description": "",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Umbria",
+          "description": "Garlic roasted cremini mushroom, goat cheese crema, provolone, red onion, rosemary, olive tapenade, roasted & marinated tomatoes, arugula, truffle oil",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "15.75",
+            "priceCurrency": "USD"
+          }
         },
         {
-          "id": 41031392,
-          "name": "Dark & Roasty",
-          "description": "",
-          "order_num": 1,
-          "items": [
-            {
-              "id": 223586926,
-              "name": "Lancaster Milk Stout",
-              "description": "",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.75 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586927,
-              "name": "Lefthand Milk Stout",
-              "description": "",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.75 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586928,
-              "name": "St. Bernardus ABT 12",
-              "description": "",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 10 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Classic Margherita",
+          "description": "Tomato sauce, fresh mozzarella, extra virgin olive oil, basil",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "13.75",
+            "priceCurrency": "USD"
+          }
         },
         {
-          "id": 41031393,
-          "name": "Sweet & Sour",
-          "description": "",
-          "order_num": 2,
-          "items": [
-            {
-              "id": 223586929,
-              "name": "Angry Orchard Crisp Apple Cider",
-              "description": "",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586930,
-              "name": "Angry Orchard Rose Cider",
-              "description": "",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586931,
-              "name": "Dogfish Head Seaquench Sour Ale",
-              "description": "",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586932,
-              "name": "Magners Irish Cider",
-              "description": "",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586933,
-              "name": "Magners Pear Irish Cider",
-              "description": "",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586934,
-              "name": "White Claw Mango",
-              "description": "",
-              "order_num": 5,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7.25 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586935,
-              "name": "White Claw Black Cherry",
-              "description": "",
-              "order_num": 6,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7.25 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Pepperoni",
+          "description": "Curly pepperoni, tomato sauce, mozzarella, oregano, chili flake",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "15.75",
+            "priceCurrency": "USD"
+          }
         },
         {
-          "id": 41031394,
-          "name": "Domestic & Imports",
-          "description": "",
-          "order_num": 3,
-          "items": [
-            {
-              "id": 223586936,
-              "name": "Amstel Light",
-              "description": "",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.25 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586937,
-              "name": "Budweiser",
-              "description": "",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586938,
-              "name": "Bud Light",
-              "description": "",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586939,
-              "name": "Coors Light",
-              "description": "",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586940,
-              "name": "Corona",
-              "description": "",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586941,
-              "name": "Corona Light",
-              "description": "",
-              "order_num": 5,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586942,
-              "name": "Heineken",
-              "description": "",
-              "order_num": 6,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586943,
-              "name": "Heinken Light",
-              "description": "",
-              "order_num": 7,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586944,
-              "name": "Heineken 0.0",
-              "description": "",
-              "order_num": 8,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586945,
-              "name": "Michelob Ultra",
-              "description": "",
-              "order_num": 9,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 5.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586946,
-              "name": "Miller Lite",
-              "description": "",
-              "order_num": 10,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586947,
-              "name": "Miller Highlife",
-              "description": "",
-              "order_num": 11,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586948,
-              "name": "Twisted Tea",
-              "description": "",
-              "order_num": 12,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 6 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586949,
-              "name": "Yuengling",
-              "description": "",
-              "order_num": 13,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Figgy Piggy",
+          "description": "pork belly, fig, bleu cheese, caramelized onions, provolone, balsamic glaze drizzle, arugula",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "16.25",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Four Fathers",
+          "description": "Bacon, pepperoni, sausage, prosciutto, mozzarella, sliced red onions, cherry peppers",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "17.50",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "The G.O.A.T",
+          "description": "Sliced red onions, pistachio pesto, rosemary, truffle honey",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "14.75",
+            "priceCurrency": "USD"
+          }
         }
-      ],
-      "attribution_image": "http://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "attribution_image_link": "http://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207",
-      "secure_attribution_image": "https://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "secure_attribution_image_link": "https://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207"
+      ]
     },
     {
-      "id": 4715143,
-      "menu_type": "Menu",
-      "location_id": "tir-na-nog-bar",
-      "name": "Wine",
+      "@type": "MenuSection",
+      "name": "Tacos",
       "description": "",
-      "footnote": "",
-      "order_num": 7,
-      "currency": "USD",
-      "created": "2021-06-28T21:33:50",
-      "updated": "2021-11-06T02:48:26",
-      "sections": [
+      "hasMenuItem": [
         {
-          "id": 41031285,
-          "name": "White & Sparkling",
-          "description": "",
-          "order_num": 13,
-          "items": [
-            {
-              "id": 223586255,
-              "name": "Elmo Pio Pinot Grigio 2018 (Veneto, Italy)",
-              "description": "exhibits a dry, crisp flavor reminiscent of crisp apple",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "6oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9.75 },
-                  "order_num": 0
-                },
-                {
-                  "name": "9oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12.75 },
-                  "order_num": 1
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586256,
-              "name": "BV Century Cellars Chardonnay 2019 (Napa Valley, CA)",
-              "description": "citrus, apple & pear with hints of floral & spice, balanced acidity, silky texture",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "6oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9.75 },
-                  "order_num": 0
-                },
-                {
-                  "name": "9oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12.75 },
-                  "order_num": 1
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586257,
-              "name": "J. Roget Brut Sparkling White",
-              "description": "fresh aromas of golden delicious apple, pear, and acacia blossom",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
+          "@type": "MenuItem",
+          "name": "Shrimp",
+          "description": "cotija, pickled onions, diced cherry peppers, guacamole, smoked pineapple glaze, lime crema",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "14.25",
+            "priceCurrency": "USD"
+          }
         },
         {
-          "id": 41031286,
-          "name": "Red & Rosé",
-          "description": "",
-          "order_num": 14,
-          "items": [
-            {
-              "id": 223586258,
-              "name": "Rosehaven Rosé 2018 (Modesto, CA)",
-              "description": "strikingly elegant, clean & crisp with notes of guava, rasberry & strawberry",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "6oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9.25 },
-                  "order_num": 0
-                },
-                {
-                  "name": "9oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 12.25 },
-                  "order_num": 1
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586259,
-              "name": "Proverb Merlot 2018 (Nappa Valley, CA)",
-              "description": "notes of plum & dark cherry woven with hints of vanilla & spice",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "6oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11.25 },
-                  "order_num": 0
-                },
-                {
-                  "name": "9oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 14.25 },
-                  "order_num": 1
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223586260,
-              "name": "Conquista Malbec 2018 (Mendoza, Argentina)",
-              "description": "bright & fruity with spicy & red fruit aromas, full bodied, good acidity, wit layers of blackberrries & blueberries",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "6oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11.25 },
-                  "order_num": 0
-                },
-                {
-                  "name": "9oz.",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 14.25 },
-                  "order_num": 1
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            }
-          ]
-        }
-      ],
-      "attribution_image": "http://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "attribution_image_link": "http://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207",
-      "secure_attribution_image": "https://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "secure_attribution_image_link": "https://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207"
-    },
-    {
-      "id": 4926304,
-      "menu_type": "Menu",
-      "location_id": "tir-na-nog-bar",
-      "name": "Irish Whiskey",
-      "description": "",
-      "footnote": "",
-      "order_num": 8,
-      "currency": "USD",
-      "created": "2021-11-03T02:31:59",
-      "updated": "2021-11-06T02:48:31",
-      "sections": [
+          "@type": "MenuItem",
+          "name": "Al Pastor",
+          "description": "pineapple, marinated pork, white onion, cilantro",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "13.75",
+            "priceCurrency": "USD"
+          }
+        },
         {
-          "id": 41031180,
-          "name": "Irish Whiskey",
+          "@type": "MenuItem",
+          "name": "Korean Short Rib",
+          "description": "asian slaw, chili sauce, cilantro",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "13.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "Taquitos - Chicken or Potato",
+          "description": "corn tortillas, romaine lettuce, lime crema, cotija, guacamole, salsa, black beans",
+          "image": "None",
+          "offers": {
+            "@type": "Offer",
+            "price": "13.75",
+            "priceCurrency": "USD"
+          }
+        },
+        {
+          "@type": "MenuItem",
+          "name": "",
           "description": "",
-          "order_num": 9,
-          "items": [
+          "image": "None",
+          "menuAddOn": [
             {
-              "id": 223585568,
-              "name": "Bushmills",
-              "description": "",
-              "order_num": 0,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "MenuSection",
+              "hasMenuItem": {
+                "@type": "MenuItem",
+                "name": "Extra Taco/Taquito"
+              }
             },
             {
-              "id": 223585569,
-              "name": "Black Bush",
-              "description": "",
-              "order_num": 1,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 13 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585570,
-              "name": "Clontarf 1014",
-              "description": "",
-              "order_num": 2,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585571,
-              "name": "Dubliner",
-              "description": "",
-              "order_num": 3,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 13 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585572,
-              "name": "Green Spot",
-              "description": "",
-              "order_num": 4,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 18 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585573,
-              "name": "Jameson",
-              "description": "",
-              "order_num": 5,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8.75 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585574,
-              "name": "Jameson Black Barrel",
-              "description": "",
-              "order_num": 6,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585575,
-              "name": "Jameson Caskmate Stout",
-              "description": "",
-              "order_num": 7,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585576,
-              "name": "Jameson Caskmate IPA",
-              "description": "",
-              "order_num": 8,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585577,
-              "name": "Jameson Coopers Croze",
-              "description": "",
-              "order_num": 9,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 14 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585578,
-              "name": "Kilbeggan Traditional",
-              "description": "",
-              "order_num": 10,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 10 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585579,
-              "name": "Kilbeggan Single Grain",
-              "description": "",
-              "order_num": 11,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585580,
-              "name": "Kilbeggan Small Batch Rye",
-              "description": "",
-              "order_num": 12,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 9.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585581,
-              "name": "The Knot",
-              "description": "",
-              "order_num": 13,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585582,
-              "name": "Paddys",
-              "description": "",
-              "order_num": 14,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585583,
-              "name": "Pops McCann",
-              "description": "",
-              "order_num": 15,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585584,
-              "name": "Powers",
-              "description": "",
-              "order_num": 16,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8.5 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585585,
-              "name": "Tullamore Dew",
-              "description": "",
-              "order_num": 17,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 8 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585586,
-              "name": "Tullamore Dew 12yr",
-              "description": "",
-              "order_num": 18,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 14 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585587,
-              "name": "Tullamore Dew 14yr",
-              "description": "",
-              "order_num": 19,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 18 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585588,
-              "name": "Tullamore Dew 18yr",
-              "description": "",
-              "order_num": 20,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 25 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585589,
-              "name": "Tullamore Dew Cider Cask",
-              "description": "",
-              "order_num": 21,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 11 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585590,
-              "name": "Redbreast 12yr",
-              "description": "",
-              "order_num": 22,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 15 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585591,
-              "name": "Rebreast 15 yr",
-              "description": "",
-              "order_num": 23,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 21 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
-            },
-            {
-              "id": 223585592,
-              "name": "Slane Triple Casked",
-              "description": "",
-              "order_num": 24,
-              "choices": [
-                {
-                  "name": "",
-                  "unit": "",
-                  "calories": { "max": "", "min": "" },
-                  "prices": { "max": "", "min": 7 },
-                  "order_num": 0
-                }
-              ],
-              "attributes": {},
-              "photos": [],
-              "additions": []
+              "@type": "MenuSection",
+              "hasMenuItem": { "@type": "MenuItem", "name": "Rice & Beans" }
             }
           ]
         }
-      ],
-      "attribution_image": "http://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "attribution_image_link": "http://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207",
-      "secure_attribution_image": "https://a.singleplatform.com/DirectBusinessIntegration/tir-na-nog-bar/provided_by_2.png?sp_dt=20221207",
-      "secure_attribution_image_link": "https://www.singleplatform.com/partner-lp?ref=DirectBusinessIntegration&sp_channel=viral&sp_source=publisher&sp_campaign=sp&sp_dt=20221207"
+      ]
     }
-  ]
+  ],
+  "creator": {
+    "@type": "FoodEstablishment",
+    "@id": "https://www.citytap.com/location/city-tap-house-logan-square/#foodestablishment"
+  },
+  "locationCreated": {
+    "@type": "FoodEstablishment",
+    "@id": "https://www.citytap.com/location/city-tap-house-logan-square/#foodestablishment"
+  }
 }

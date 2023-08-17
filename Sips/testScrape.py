@@ -3,11 +3,12 @@ from bs4 import BeautifulSoup
 import re
 import pandas as pd
 import json
+import PyPDF2
 
 # Replace this with the actual URL of the bar's website
-base_url = 'https://www.doubleknotphilly.com'
-base_url = 'http://www.tirnanogphilly.com'
-bar_name = "Tir Na Nog Irish Bar & Grill"
+# base_url = 'https://www.doubleknotphilly.com'
+base_url = 'http://citytaphouselogan.com'
+bar_name = "Uptown"
 # Make a request to the bar's website
 response = requests.get(base_url)
 soup = BeautifulSoup(response.content, 'html.parser')
@@ -54,77 +55,93 @@ if len(subpage_urls) == 0:
     subpage_urls.append(base_url)
 
 subpage_urls = list(set(subpage_urls))
+print(subpage_urls)
+
+target_keyword = "philadelphia"  # You can also use "philadelphia" as the keyword
+
+target_url = None
+
+for url in subpage_urls:
+    if target_keyword in url or "philly" in url:
+        target_url = url
+        break
+
+# Modify subpage_urls to contain only the target URL if found
+if target_url is not None:
+    subpage_urls = [target_url]
+
+# print(subpage_urls)
 
 menu_items = []
 menu_prices = []
 bar_names = []
-# Print the identified subpage URLs
+keywords = ["beer", "draft", "draught", "bottle", "cans", "wine", "cocktail"]
 for url in subpage_urls:
-    print(url)
-    print()
     try:
         menu_response = requests.get(url)
         soup = BeautifulSoup(menu_response.content, 'html.parser')
         for kw in keywords:
             keyword_elements = soup.find_all(string=re.compile(kw), recursive=True)
-            print(kw)
-            print("-----------")
-            # print(keyword_elements)
-            print()
             for json_object in keyword_elements:
                 data = json.loads(json_object)
-                # print(json_data)
-                print(type(data))
                 if 'menu' in json.dumps(data).lower():
+                    print(url)
+                    print("---------------")
+                    print()
+                    print(data)
                     entry = data['data']
                     for section in entry:
                         if any(keyword in section["name"].lower() for keyword in keywords):
                             for section in section["sections"]:
                                 for item in section["items"]:
                                     menu_item = item["name"]
-                                    # menu_price = "$" + str(float(item["choices"][0]["prices"]["min"]))
+                                    # menu_price = item["choices"][0]["prices"]["min"]
                                     menu_price = '${:,.2f}'.format(item["choices"][0]["prices"]["min"])
                                     menu_items.append(menu_item)
                                     menu_prices.append(menu_price)
-
-                # print(data['data'])
-                # for section in entry["sections"]:
-                #     if any(keyword in section["name"].lower() for keyword in keywords):
-                #         for item in section["items"]:
-                #             menu_item = item["name"]
-                #             menu_price = item["choices"][0]["prices"]["min"]
-                #             menu_items.append(menu_item)
-                #             menu_prices.append(menu_price)
-
-
-
-        # for element in keyword_elements:
-        #     # Get the parent element that contains the item and price
-        #     parent_element = element.parent
-        #     if parent_element:
-        #         menu_item = parent_element.get_text(strip=True)
-        #         menu_price = parent_element.find_next('span', class_='price').get_text(strip=True)
-        #         menu_items.append(menu_item)
-        #         menu_prices.append(menu_price)
-
-        # for kw in keywords:
-        #     keyword_elements = soup.find_all(string=re.compile(kw), recursive=True)
-        #     print(kw)
-        #     print("-----------")
-        #     print(keyword_elements)
-        #     print()
-        #     print(type(keyword_elements))
-        #     for element in keyword_elements:
-        #         # Get the parent element that contains the item and price
-        #         parent_element = element.parent
-        #         if parent_element:
-        #             menu_item = parent_element.get_text(strip=True)
-        #             menu_price = parent_element.find_next('span', class_='price').get_text(strip=True)
-        #             menu_items.append(menu_item)
-        #             menu_prices.append(menu_price)
     except Exception as e:
         print(f'An error occurred for url {url}: {e}')
         pass
+
+# for url in subpage_urls:
+#     print(url)
+#     print()
+#     try:
+#         menu_response = requests.get(url)
+#         soup = BeautifulSoup(menu_response.content, 'html.parser')
+
+#         divs_with_item_class = soup.find_all('div', class_=lambda cls: cls and 'item' in cls)
+
+#         # Print the found divs
+#         for div in divs_with_item_class:
+#             print(div)
+#         # print(soup)
+#         tags = soup.find_all(['h1', 'h2', 'h3', 'div'])
+
+#         for tag in tags:
+#             if any(keyword in tag.text.lower() for keyword in menu_keywords):
+#                 next_elem = tag.find_next_sibling()
+#                 if next_elem:
+#                     # Get menu items from li, p, div tags
+#                     items = next_elem.find_all(['li', 'p', 'div'])
+#                     menu_items.extend([item.text for item in items])
+
+#                     # Get prices from span + li, p, div tags 
+#                     prices = next_elem.find_all(['span', 'li', 'p', 'div'], class_='price')
+#                     menu_prices.extend([price.text for price in prices])
+                
+#         bar_names.extend([bar_name] * len(menu_items))
+#         # Extract prices
+#         # for item in beers:
+#         #     price = item.find_next(class_='price').text
+#         #     menu_items.append(item.text)  
+#         #     menu_prices.append(price)
+#         #     bar_names.append(bar_name)
+#     except Exception as e:
+#         print(f'An error occurred for url {url}: {e}')
+#         pass
+# print()
+# print(bar_names)
 
 # Create a dataframe from the collected data
 menu_df = pd.DataFrame({
