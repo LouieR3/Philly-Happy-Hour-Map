@@ -84,7 +84,9 @@ for url in subpage_urls:
             keyword_elements = soup.find_all(string=re.compile(kw), recursive=True)
             for json_object in keyword_elements:
                 data = json.loads(json_object)
-                if 'menu' in json.dumps(data).lower():
+                matches = any(item["name"].lower() in keywords for item in data["items"])
+                print(matches)
+                if 'menu' in json.dumps(data).lower() and any(keyword in json.dumps(data).lower() for keyword in keywords):
                     print(url)
                     print("---------------")
                     print()
