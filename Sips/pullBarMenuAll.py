@@ -46,7 +46,7 @@ def pull_yelp():
                                 price = "Price not available"
                             menu_data.append({
                                 'Bar': df.loc[df['Yelp Alias'] == alias, 'Bar Name'].iloc[0], # type: ignore
-                                'Menu Item': name,
+                                'Drink': name,
                                 'Price': price
                             })
         except Exception as e:
@@ -71,7 +71,7 @@ def pull_yelp():
                         price = "Price not available"
                     menu_data.append({
                         'Bar': df.loc[df['Yelp Alias'] == alias, 'Bar Name'].iloc[0], # type: ignore
-                        'Menu Item': name,
+                        'Drink': name,
                         'Price': price,
                         'Sips Deal': "N"
                     })
@@ -80,16 +80,12 @@ def pull_yelp():
             pass
     combineCSV(menu_data)
 
-def pull_website_menu():
+def main():
     for index, row in df.iterrows():
         base_url = row['Bar Website']
         bar_name = row['Bar Name']
         if pd.notna(base_url):
             try:
-                # Make a request to the bar's website
-                response = requests.get(base_url)
-                soup = BeautifulSoup(response.content, 'html.parser')
-
                 subpage_urls = gather_subpages(base_url)
 
                 for url in subpage_urls:
@@ -101,7 +97,10 @@ def pull_website_menu():
                         print(base_url)
                         # combineCSV(result)
                     else:
-                        result = website_parse(bar_name, url)
+                        # result = website_html(bar_name, url)
+                        if ".pdf" in url:
+                            result = website_pdf(bar_name, url)
+                            print(result)
                 print()
             except requests.exceptions.RequestException as e:
                 print(f'An error occurred for base_url {base_url}: {e}')
@@ -109,7 +108,7 @@ def pull_website_menu():
                 print()
                 pass
 
-def website_parse(bar_name, url):
+def website_html(bar_name, url):
     menu_items = []
     menu_prices = []
     keywords = ["beer", "draft", "draught", "bottle", "cans", "wine", "cocktail"]
@@ -126,7 +125,7 @@ def website_parse(bar_name, url):
 
     menu_df = pd.DataFrame({
         'Bar': bar_name,
-        'Menu Item': menu_items,
+        'Drink': menu_items,
         'Price': menu_prices,
         'Sips Deal': "N"
     })
@@ -135,6 +134,7 @@ def website_parse(bar_name, url):
 def website_json(bar_name, url):
     menu_items = []
     menu_prices = []
+    json_keywords = ["beers", "draft", "drinks"]
     keywords = ["beer", "draft", "draught", "bottle", "cans", "wine", "cocktail"]
     try:
         menu_response = requests.get(url)
@@ -143,11 +143,7 @@ def website_json(bar_name, url):
             keyword_elements = soup.find_all(string=re.compile(kw), recursive=True)
             for json_object in keyword_elements:
                 data = json.loads(json_object)
-                if 'menu' in json.dumps(data).lower():
-                    print(url)
-                    print("---------------")
-                    print()
-                    print(data)
+                if 'menu' in json.dumps(data).lower() and any(keyword in json.dumps(data).lower() for keyword in json_keywords):
                     entry = data['data']
                     for section in entry:
                         if any(keyword in section["name"].lower() for keyword in keywords):
@@ -163,11 +159,72 @@ def website_json(bar_name, url):
         pass
     menu_df = pd.DataFrame({
         'Bar': bar_name,
-        'Menu Item': menu_items,
+        'Drink': menu_items,
         'Price': menu_prices,
         'Sips Deal': "N"
     })
     return menu_df
+
+def website_pdf(bar_name, url):
+    import fitz  # PyMuPDF
+    import requests
+    from io import BytesIO
+    import pandas as pd
+    import re
+    def extract_drinks_from_pdf(pdf_path):
+        try:
+            response = requests.get(pdf_path)
+            if response.status_code == 200:
+                pdf_data = BytesIO(response.content)
+                pdf_document = fitz.open(stream=pdf_data, filetype="pdf") # type: ignore
+                text = ""
+                for page_num in range(pdf_document.page_count):
+                    page = pdf_document.load_page(page_num)
+                    text += page.get_text()
+                pdf_document.close()
+                return text
+            else:
+                print("Failed to fetch PDF from URL.")
+        except Exception as e:
+            print("An error occurred:", e)
+        return None
+
+    def create_dataframe_from_text(text):
+        drinks = []
+        lines = text.split('\n')
+        drink_name = ""
+        drink_price = ""
+        for line in lines:
+            if line.strip() and line.isascii():
+                if "$" in line:
+                    components = line.split()
+                    for component in components:
+                        if '$' in component:
+                            drink_price = component
+                            price = float(drink_price.replace("$", ""))
+
+                            drink_name = re.sub(r'\(.+?\)', '', drink_name).strip()
+
+                            if drink_name and drink_price and price < 24:
+                                drinks.append((drink_name.strip(), drink_price.strip()))
+                            drink_name = ""
+                            break
+                        else:
+                            drink_name += component + " "
+                    
+        df = pd.DataFrame(drinks, columns=["Drink", "Price"])
+        df.insert(0, "Bar", bar_name)
+        return df
+    
+    extracted_text = extract_drinks_from_pdf(url)
+    if extracted_text:
+        menu_df = create_dataframe_from_text(extracted_text)
+        # print(menu_df)
+        # menu_df.insert(0, 'Bar', bar_name)
+        return menu_df
+    else:
+        print("Failed to extract text from PDF.")
+        return None
 
 def gather_subpages(base_url):
     # List to store subpage URLs
@@ -178,8 +235,8 @@ def gather_subpages(base_url):
     # Find all links on the page
     links = soup.find_all('a')
     # Keywords to identify potential menu or drinks subpages
-    menu_keywords = ['menu', 'drinks', 'happy hour', 'happy-hour', 'beer', 'wine', 'cocktail']
-    exclude_keywords = ['food', 'lunch', 'dinner', 'breakfast', 'entre', 'banquet', 'catering', 'dining', 'dessert']
+    menu_keywords = ['menu', 'drinks', 'happy hour', 'happy-hour', 'beer', 'wine', 'cocktail', 'bier', 'beverage']
+    exclude_keywords = ['food', 'lunch', 'brunch', 'dinner', 'breakfast', 'entre', 'banquet', 'catering', 'dining', 'dessert']
     # List to store subpage URLs
     subpage_urls = []
     # Iterate through each link and check for keywords
@@ -201,6 +258,19 @@ def gather_subpages(base_url):
     if len(subpage_urls) == 0:
         subpage_urls.append(base_url)
     subpage_urls = list(set(subpage_urls))
+
+    target_keyword = "philadelphia"  # You can also use "philadelphia" as the keyword
+
+    target_url = None
+
+    for url in subpage_urls:
+        if target_keyword in url:
+            target_url = url
+            break
+
+    # Modify subpage_urls to contain only the target URL if found
+    if target_url is not None:
+        subpage_urls = [target_url]
     return subpage_urls
 
 def combineCSV(menu_df):
@@ -212,8 +282,8 @@ def combineCSV(menu_df):
     # Combine menu_df and sips_bar_items_df
     combined_df = pd.concat([sips_bar_items_df, menu_df])
 
-    # Drop duplicates based on 'Bar', 'Menu Item', and 'Price'
-    combined_df.drop_duplicates(subset=['Bar', 'Menu Item', 'Price'], inplace=True)
+    # Drop duplicates based on 'Bar', 'Drink', and 'Price'
+    combined_df.drop_duplicates(subset=['Bar', 'Drink', 'Price'], inplace=True)
 
     # Write the combined DataFrame to a new CSV file
     combined_df.to_csv('SipsBarItems.csv', index=False)
@@ -221,37 +291,37 @@ def combineCSV(menu_df):
 def calculateDeal():
     # Read the CSV file into a DataFrame
     df = pd.read_csv("SipsBarItems.csv")
-    # Remove certain words from Menu Item values
+    # Remove certain words from Drink values
     words_to_remove = [" can", " beer", " draft", " bottle"]
     df = df[df["Price"] != "Price not available"]
-    df["Menu Item"] = (
-        df["Menu Item"]
+    df["Drink"] = (
+        df["Drink"]
         .str.lower()  # Convert to lowercase
         .str.replace("|".join(words_to_remove), "", regex=True)  # Remove specified words
         .str.capitalize()  # Capitalize first letter
         .str.strip()  # Clean whitespace
     )
-    df["Menu Item"] = df["Menu Item"].str.split(":").str[0].str.strip()
+    df["Drink"] = df["Drink"].str.split(":").str[0].str.strip()
     df["Price"] = df["Price"].str.replace("$", "").astype(float)
     # Create subdataframes for SipsDeal = Y and SipsDeal = N
     sips_deal_y_df = df[df["Sips Deal"] == "Y"]
     sips_deal_n_df = df[df["Sips Deal"] == "N"]
     # Initialize an empty results dataframe
     results_df = pd.DataFrame(
-        columns=["Menu Item", "Sips Price", "Normal Price", "Comparison Result"]
+        columns=["Drink", "Sips Price", "Normal Price", "Comparison Result"]
     )
 
-    # Compare prices for each unique Menu Item
-    for menu_item in df["Menu Item"].unique():
-        sips_price = sips_deal_y_df[sips_deal_y_df["Menu Item"] == menu_item][
+    # Compare prices for each unique Drink
+    for menu_item in df["Drink"].unique():
+        sips_price = sips_deal_y_df[sips_deal_y_df["Drink"] == menu_item][
             "Price"
         ].mean()
         sips_bar = (
-            sips_deal_y_df[sips_deal_y_df["Menu Item"] == menu_item]["Bar"].iloc[0]
+            sips_deal_y_df[sips_deal_y_df["Drink"] == menu_item]["Bar"].iloc[0]
             if not pd.isna(sips_price)
             else ""
         )
-        normal_price = sips_deal_n_df[sips_deal_n_df["Menu Item"] == menu_item][
+        normal_price = sips_deal_n_df[sips_deal_n_df["Drink"] == menu_item][
             "Price"
         ].mean()
 
@@ -261,7 +331,7 @@ def calculateDeal():
 
         results_df = results_df.append(
             {
-                "Menu Item": menu_item,
+                "Drink": menu_item,
                 "Sips Price": sips_price,
                 "Normal Price": normal_price,
                 "Comparison Result": comparison_result,
@@ -278,5 +348,5 @@ def calculateDeal():
     print(results_df)
 
 # pull_yelp()
-pull_website_menu()
+main()
 

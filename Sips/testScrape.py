@@ -7,7 +7,7 @@ import PyPDF2
 
 # Replace this with the actual URL of the bar's website
 # base_url = 'https://www.doubleknotphilly.com'
-base_url = 'http://citytaphouselogan.com'
+base_url = 'http://www.barbuzzo.com/'
 bar_name = "Uptown"
 # Make a request to the bar's website
 response = requests.get(base_url)
@@ -23,14 +23,14 @@ keywords = ["beer", "draft", "draught", "bottle", "cans", "wine", "cocktail"]
 subpage_urls = []
 
 # Iterate through each link and check for keywords
-response = requests.get(base_url)
-soup = BeautifulSoup(response.content, 'html.parser')
+# response = requests.get("http://www.barbuzzo.com/Pdfs/barbuzzoBEVERAGE_MENU.pdf")
+# soup = BeautifulSoup(response.content, 'html.parser')
 
 # Find all links on the page
 links = soup.find_all('a')
 # Keywords to identify potential menu or drinks subpages
-menu_keywords = ['menu', 'drinks', 'happy hour', 'happy-hour', 'beer', 'wine', 'cocktail']
-exclude_keywords = ['food', 'lunch', 'dinner', 'breakfast', 'entre', 'banquet', 'catering', 'dining', 'dessert']
+menu_keywords = ['menu', 'drinks', 'happy hour', 'happy-hour', 'beer', 'wine', 'cocktail', 'bier', 'beverage']
+exclude_keywords = ['food', 'lunch', 'brunch', 'dinner', 'breakfast', 'entre', 'banquet', 'catering', 'dining', 'dessert']
 
 # List to store subpage URLs
 subpage_urls = []
@@ -62,7 +62,7 @@ target_keyword = "philadelphia"  # You can also use "philadelphia" as the keywor
 target_url = None
 
 for url in subpage_urls:
-    if target_keyword in url or "philly" in url:
+    if target_keyword in url:
         target_url = url
         break
 
@@ -70,40 +70,44 @@ for url in subpage_urls:
 if target_url is not None:
     subpage_urls = [target_url]
 
-# print(subpage_urls)
 
-menu_items = []
-menu_prices = []
-bar_names = []
-keywords = ["beer", "draft", "draught", "bottle", "cans", "wine", "cocktail"]
-for url in subpage_urls:
-    try:
-        menu_response = requests.get(url)
-        soup = BeautifulSoup(menu_response.content, 'html.parser')
-        for kw in keywords:
-            keyword_elements = soup.find_all(string=re.compile(kw), recursive=True)
-            for json_object in keyword_elements:
-                data = json.loads(json_object)
-                matches = any(item["name"].lower() in keywords for item in data["items"])
-                print(matches)
-                if 'menu' in json.dumps(data).lower() and any(keyword in json.dumps(data).lower() for keyword in keywords):
-                    print(url)
-                    print("---------------")
-                    print()
-                    print(data)
-                    entry = data['data']
-                    for section in entry:
-                        if any(keyword in section["name"].lower() for keyword in keywords):
-                            for section in section["sections"]:
-                                for item in section["items"]:
-                                    menu_item = item["name"]
-                                    # menu_price = item["choices"][0]["prices"]["min"]
-                                    menu_price = '${:,.2f}'.format(item["choices"][0]["prices"]["min"])
-                                    menu_items.append(menu_item)
-                                    menu_prices.append(menu_price)
-    except Exception as e:
-        print(f'An error occurred for url {url}: {e}')
-        pass
+# menu_items = []
+# menu_prices = []
+# bar_names = []
+# json_keywords = ["beers", "draft", "drinks"]
+# keywords = ["beers", "draft", "draught", "bottle", "cans", "wine", "cocktail"]
+# for url in subpage_urls:
+#     try:
+#         menu_response = requests.get(url)
+#         soup = BeautifulSoup(menu_response.content, 'html.parser')
+#         for kw in keywords:
+#             keyword_elements = soup.find_all(string=re.compile(kw), recursive=True)
+#             print(keyword_elements)
+#             for json_object in keyword_elements:
+#                 data = json.loads(json_object)
+#                 print(data)
+#                 for keyword in json_keywords:
+#                     print(keyword)
+#                     print(keyword in json.dumps(data).lower())
+#                 print()
+#                 # print(matches)
+#                 if 'menu' in json.dumps(data).lower() and any(keyword in json.dumps(data).lower() for keyword in json_keywords):
+#                     print(url)
+#                     print("---------------")
+#                     print(data)
+#                     entry = data['data']
+#                     for section in entry:
+#                         if any(keyword in section["name"].lower() for keyword in keywords):
+#                             for section in section["sections"]:
+#                                 for item in section["items"]:
+#                                     menu_item = item["name"]
+#                                     # menu_price = item["choices"][0]["prices"]["min"]
+#                                     menu_price = '${:,.2f}'.format(item["choices"][0]["prices"]["min"])
+#                                     menu_items.append(menu_item)
+#                                     menu_prices.append(menu_price)
+#     except Exception as e:
+#         print(f'An error occurred for url {url}: {e}')
+#         pass
 
 # for url in subpage_urls:
 #     print(url)
@@ -146,11 +150,11 @@ for url in subpage_urls:
 # print(bar_names)
 
 # Create a dataframe from the collected data
-menu_df = pd.DataFrame({
-    'Bar': bar_name,
-    'Menu Item': menu_items,
-    'Price': menu_prices
-})
+# menu_df = pd.DataFrame({
+#     'Bar': bar_name,
+#     'Drink': menu_items,
+#     'Price': menu_prices
+# })
 
-# Display the dataframe
-print(menu_df)
+# # Display the dataframe
+# print(menu_df)

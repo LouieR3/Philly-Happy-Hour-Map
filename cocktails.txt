@@ -54,7 +54,7 @@ Bee On Thyme
 Gin (Nikka Coffey or Toki Hibiscus)
 Man With No Name
 Rum Swizzle
-Pineapple Lemonade
+Lemonade
 Ranch Wooder
 Sheet Bend
 Barrel Hitch
@@ -73,3 +73,4 @@ Northern Lights
 La Grenada
 Hugo
 Bottom's Up
+Spritzer

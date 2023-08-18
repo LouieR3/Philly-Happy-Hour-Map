@@ -1,111 +1,73 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
+import random
+from sklearn.metrics import accuracy_score
+from tabulate import tabulate
 
-# Sample training data
-# train_data = {
-#     "DrinkName": [
-#         "Tully Old Fashioned",
-#         "Any Given Sunday Bloody Mary",
-#         "Regular Old Fashioned",
-#         "Bloody Mary",
-#     ],
-#     "CommonDrinkType": ["Old Fashioned", "Bloody Mary", "Old Fashioned", "Bloody Mary"],
-# }
-train_data = {
-    "DrinkName": [
-        "House Red",
-        "House White",
-        "Philly Style Cabernet",
-        "House Merlot",
-        "Eola Hills Pinot Noir",
-        "Vin Blanc Chardonnay",
-        "Joel Gott Sauvignon Blanc",
-        "Riesling",
-        "Syrah/Shiraz",
-        "Vino Rosso",
-        "Vino Bianco",
-        "White Zinfandel",
-        "Prosecco",
-        "Dona Paula Los Cardos Malbec",
-        "Tempranillo",
-        "Sangiovese",
-        "Montepulciano",
-        "Cantina Pinot Grigio",
-        "Sutter Home Rose",
-        "Chenin Blanc",
-        "Gewürztraminer",
-        "House Chianti",
-    ],
-    "CommonDrinkType": [
-        "Red",
-        "White",
-        "Cabernet Sauvignon",
-        "Merlot",
-        "Pinot Noir",
-        "Chardonnay",
-        "Sauvignon Blanc",
-        "Riesling",
-        "Syrah/Shiraz",
-        "Vino Rosso",
-        "Vino Bianco",
-        "Zinfandel",
-        "Prosecco",
-        "Malbec",
-        "Tempranillo",
-        "Sangiovese",
-        "Montepulciano",
-        "Pinot Grigio",
-        "Rosé",
-        "Chenin Blanc",
-        "Gewürztraminer",
-        "Chianti",
-    ],
-}
+# Load training data from quick.txt 
+with open('wines.txt', encoding='utf-8') as f:
+    wine_types = f.read().splitlines()
+with open('winesTestData.txt', encoding='utf-8') as f:  
+    wine_drinks = f.read().splitlines()
 
-df_train = pd.DataFrame(train_data)
+# Load cocktail training data    
+with open('cocktails.txt', encoding='utf-8') as f:
+    cocktail_types = f.read().splitlines() 
+with open('cocktailsTestData.txt', encoding='utf-8') as f:
+    cocktail_drinks = f.read().splitlines()
+
+# Load cocktail training data    
+with open('beers.txt', encoding='utf-8') as f:
+    beer_types = f.read().splitlines() 
+with open('beersTestData.txt', encoding='utf-8') as f:
+    beer_drinks = f.read().splitlines()
+
+# Combine data
+train_types = wine_types + cocktail_types + beer_types 
+train_drinks = wine_drinks + cocktail_drinks + beer_drinks 
+
+df_train = pd.DataFrame({'DrinkName': train_drinks, 
+                         'CommonDrinkType': train_types})
+
+# Load test data
+df_test = pd.read_csv('SipsBarItems.csv', encoding='utf-8') 
 
 # Tokenize and vectorize drink names
 vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(df_train["DrinkName"])
+X_train = vectorizer.fit_transform(df_train['DrinkName']) 
 
-# Train a Logistic Regression model
+# Train model 
 model = LogisticRegression()
-model.fit(X, df_train["CommonDrinkType"])
+model.fit(X_train, df_train['CommonDrinkType'])
 
-# Sample test data
-# test_data = {"DrinkName": ["Tully Old Fashioned", "Gin and Tonic", "Big Bloody Mary"]}
+# Vectorize test data
+X_test = vectorizer.transform(df_test['Drink'])
 
-test_data = {
-    "DrinkName": [
-        "Pinot Grigio Bottle",
-        "Collier Creek Cabernet",
-        "Cantina Pinot Grigio",
-        "Oak Grove Pinot Noir",
-        "Sauvignon Blanc",
-        "Riesling",
-        "Prosecco",
-        "House Malbec",
-        "Zinfandel",
-        "Dona Paula Los Cardos Malbec",
-        "Sycamore Lane Chardonnay 6oz glass",
-        "C'est La Vie Rose",
-        "Echo Bay Sauvignon Blanc",
-        "Proverb Pinot Grigio",
-        "Sutter Home Rose",
-        "Pull Cabernet",
-        "House Merlot",
-        "House Chianti",
-    ]
-}
-
-df_test = pd.DataFrame(test_data)
-
-# Predict common drink types
-X_test = vectorizer.transform(df_test["DrinkName"])
+# Predict types for test data
 predicted_types = model.predict(X_test)
 
-df_test["CommonDrinkType"] = predicted_types
+# Predict probabilities for test data
+predicted_probs = model.predict_proba(X_test)
 
-print(df_test)
+# Get the certainty for the predicted class
+certainty = predicted_probs.max(axis=1)  # Max probability along columns
+
+# Add certainty column to the dataframe
+
+newDrinks = []
+for pred_type in predicted_types:
+    if pred_type not in beer_types and pred_type not in wine_types and pred_type not in cocktail_types:
+        newDrinks.append(pred_type)
+print(newDrinks)
+
+finalDF = pd.DataFrame()
+# finalDF["Drink"] = df_test["Drink"]
+# finalDF["PredictedType"] = df_test["PredictedType"]
+print(finalDF)
+df_test['Predicted Item'] = predicted_types
+df_test.insert(2, "Predicted Item", predicted_types)
+# df_test['Certainty'] = certainty
+df_test.to_csv("Test.csv", index=False, encoding='utf-8')
+# df_test.to_csv("SipsBarItems.csv", index=False, encoding='utf-8')
+# print(tabulate(df_test, headers='keys', tablefmt='pretty')) # type: ignore

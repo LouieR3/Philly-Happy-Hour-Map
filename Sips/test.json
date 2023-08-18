@@ -1,670 +1,3647 @@
 {
   "@context": "http://schema.org",
-  "@type": "Menu",
-  "@id": "https://www.citytap.com/menu/lunch-dinner-menu-copy/#menu",
-  "name": "Lunch & Dinner Menu",
-  "description": "Lunch &amp; Dinner Menu ",
-  "hasMenuSection": [
+  "@type": "Restaurant",
+  "image": "https://photos.singleplatform.com/cbb80b5c78f9dc531e80eff39019516fa024e683",
+  "priceRange": "$",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Philadelphia",
+    "addressRegion": "US-PA",
+    "postalCode": "19107",
+    "streetAddress": "1170 Ludlow Street"
+  },
+  "name": "The Wayward",
+  "telephone": "215-258-9430",
+  "url": "https://www.thewayward.com/",
+  "paymentAccepted": "All Major Cards",
+  "description": "Influenced by Stephen Girard&#x27;s journey from Bordeaux to Philly, The Wayward is American-inspired, while French-rooted and we hope your palate enjoys its travels.",
+
+  "servesCuisine": "American - Contemporary, French",
+  "menu": "http://places.singleplatform.com/the-wayward/menu",
+
+  "openingHoursSpecification": [
     {
-      "@type": "MenuSection",
-      "name": "Bar Favorites",
-      "description": "",
-      "hasMenuItem": [
-        {
-          "@type": "MenuItem",
-          "name": "Charred Brussels Sprouts",
-          "description": "White miso, pomegranate",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "11.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Elote “Street Corn” Dip",
-          "description": "Jalapeños, chili powder, cotija, cilantro, chips",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "11.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Kung Pao Cauliflower",
-          "description": "Crispy fried, kung pao sauce, chiles de arbol, chopped peanuts, scallions, leeks, napa cabbage",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "13.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Hummus",
-          "description": "Olive pepper relish, flatbread, olive oil, lemon",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "10.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Ahi Tuna & Wonton Nachos*",
-          "description": "Edamame, napa cabbage, sliced jalapeno, miso aioli, sweet soy reduction, avocado, toasted sesame seeds, cilantro",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "17.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "BBQ’D Pulled Pork Nachos",
-          "description": "Ranchero beans, nacho and colby jack cheeses, Mexican crema, cilantro, scallions, red onions, avocado mash",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "15.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Mac N’ Cheese",
-          "description": "Cheese sauce, cavatappi, herbed panko",
-          "image": "None",
-          "offers": [
-            { "@type": "Offer", "price": "11.75", "priceCurrency": "USD" },
-            {
-              "@type": "Offer",
-              "price": "3.00",
-              "priceCurrency": "USD",
-              "description": "Bacon"
-            },
-            {
-              "@type": "Offer",
-              "price": "6.00",
-              "priceCurrency": "USD",
-              "description": "Chicken"
-            },
-            {
-              "@type": "Offer",
-              "price": "4.00",
-              "priceCurrency": "USD",
-              "description": "BBQ pulled pork"
-            },
-            {
-              "@type": "Offer",
-              "price": "4.00",
-              "priceCurrency": "USD",
-              "description": "Korean beef"
-            },
-            {
-              "@type": "Offer",
-              "price": "8.00",
-              "priceCurrency": "USD",
-              "description": "Steak"
-            },
-            {
-              "@type": "Offer",
-              "price": "8.00",
-              "priceCurrency": "USD",
-              "description": "Shrimp"
-            }
-          ]
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Ten Spice Wings",
-          "description": "Blue cheese ranch, crisp vegetables",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "16.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Corn & Crab Hushpuppies",
-          "description": "Citrus remoulade, honey-thyme butter",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "15.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Pretzels & Pimento",
-          "description": "Southern pimento cheese spread, maple bourbon mustard, soft pretzel sticks",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "14.00",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Abigail Mussels",
-          "description": "roasted garlic butter, belgian ale broth, leeks, cherry tomatoes",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "17.75",
-            "priceCurrency": "USD"
-          },
-          "menuAddOn": {
-            "@type": "MenuSection",
-            "hasMenuItem": { "@type": "MenuItem", "name": "Fries" }
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Burrata Toast",
-          "description": "Grilled sourdough, bacon, tomato, avocado, frisee",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "14.50",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Guacamole",
-          "description": "house made guacamole and fried corn chips",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "12.50",
-            "priceCurrency": "USD"
-          }
-        }
-      ]
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Monday",
+      "opens": "06:30:00",
+      "closes": "14:00:00"
     },
     {
-      "@type": "MenuSection",
-      "name": "Soups, Salads & Bowls",
-      "description": "",
-      "hasMenuItem": [
-        {
-          "@type": "MenuItem",
-          "name": "Chicken Tortilla Soup",
-          "description": "",
-          "image": "None",
-          "offers": [
-            { "@type": "Offer", "price": "4.00", "priceCurrency": "USD" },
-            { "@type": "Offer", "price": "6.00", "priceCurrency": "USD" }
-          ]
-        },
-        {
-          "@type": "MenuItem",
-          "name": "City Tap Chop",
-          "description": "bacon, blue cheese, olives, roasted tomatoes, croutons, crispy shallots, shaved onions, egg, white balsamic vinaigrette",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "13.50",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Apple & Gouda Salad",
-          "description": "Arugula, frisee, granny smith apples, beemster gouda, candied pecans, cider vinaigrette",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "13.50",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Caesar",
-          "description": "Romaine hearts, parmesan crisp, garlic croutons, crispy shallots, classic dressing",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "12.00",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Mediterranean Chicken Bowl",
-          "description": "Marinated chicken, diced cucumbers, cherry tomatoes, kalamata olives, farro, crumbled feta, shredded carrots, arugula, picked red onion",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "17.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "East Side Poke Bowl*",
-          "description": "Marinated tuna, farro, arugula, avocado, sesame, scallions, cilantro, pickled onions, miso sauce",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "19.50",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Beet & Goat Cheese Salad",
-          "description": "Baby kale, arugula, orange segments, red beets, red onion, candied pecans, goat cheese, apple cider vinaigrette",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "13.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "",
-          "description": "",
-          "image": "None",
-          "offers": [
-            {
-              "@type": "Offer",
-              "price": "9.00",
-              "priceCurrency": "USD",
-              "description": "Grilled steak*"
-            },
-            {
-              "@type": "Offer",
-              "price": "8.00",
-              "priceCurrency": "USD",
-              "description": "Shrimp*"
-            },
-            {
-              "@type": "Offer",
-              "price": "2.00",
-              "priceCurrency": "USD",
-              "description": "Avocado"
-            },
-            {
-              "@type": "Offer",
-              "price": "6.00",
-              "priceCurrency": "USD",
-              "description": "Roast chicken*"
-            },
-            {
-              "@type": "Offer",
-              "price": "9.50",
-              "priceCurrency": "USD",
-              "description": "Tuna"
-            },
-            {
-              "@type": "Offer",
-              "price": "10.00",
-              "priceCurrency": "USD",
-              "description": "Salmon"
-            }
-          ]
-        }
-      ]
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Monday",
+      "opens": "17:00:00",
+      "closes": "22:00:00"
     },
     {
-      "@type": "MenuSection",
-      "name": "Entrées",
-      "description": "",
-      "hasMenuItem": [
-        {
-          "@type": "MenuItem",
-          "name": "Steak Frites",
-          "description": "Sliced NY sirloin, hand-cut fries, house steak sauce",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "35.00",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Chicken & Waffles",
-          "description": "Maple syrup, red pepper jam, honey-thyme butter",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "21.50",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Shrimp & Grits",
-          "description": "Prosciutto, white cheddar grits, cajun beurre blanc, ham hock braised collard greens",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "22.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Cajun Linguine",
-          "description": "Chicken, shrimp, bell peppers, tomatoes, onion, andouille sausage, cajun butter, linguine, scallions, focaccia bread",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "24.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Kung Pao Cauliflower & Rice",
-          "description": "breaded cauliflower, kung pao sauce, chiles de arbol, chopped peanuts, scallions, leeks, peas, carrots, fried rice",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "20.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Fish & Chips",
-          "description": "beer battered cod, coleslaw, salt & vinegar fries, tartar sauce, cocktail sauce, lemon, parsley",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "25.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Panang Salmon",
-          "description": "seared salmon, panang curry sauce, snap peas, bell peppers, carrots, coconut rice, peanuts",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "29.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Filet Mignon",
-          "description": "roasted garlic mashed potatoes, sauteed asparagus, red wine reduction, crispy onions, parsley",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "42.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Rigatoni Roma",
-          "description": "Ground Italian sausage, red wine, shallots, garlic, heavy cream, fresh tomato sauce, cremini mushrooms, cherry peppers, grated parmesan, grilled focaccia",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "18.00",
-            "priceCurrency": "USD"
-          }
-        }
-      ]
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Tuesday",
+      "opens": "06:30:00",
+      "closes": "14:00:00"
     },
     {
-      "@type": "MenuSection",
-      "name": "Handhelds",
-      "description": "",
-      "hasMenuItem": [
-        {
-          "@type": "MenuItem",
-          "name": "Veggie Burger",
-          "description": "Wild rice, black bean & beet patty, aged cheddar, dijonnaise, roasted tomatoes, alfalfa sprouts",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "15.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Fig & Goat Cheese Grilled Chicken Sandwich",
-          "description": "grilled chicken, goat cheese, fig jam, asian pears, arugula, honey mustard, ciabatta roll",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "16.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Hot Honey Chicken Sandwich",
-          "description": "Buttermilk fried chicken, citrus remoulade, hot honey sauce, brioche bun, pickles",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "17.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Turkey BLT",
-          "description": "sourdough, bacon, lettuce, tomato, smokey mayo, pickle",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "17.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Cheesesteak",
-          "description": "chopped steak, peppers & onions, american cheese sauce, butter toasted long roll",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "18.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "City Tap Stack Burger*",
-          "description": "Two griddled patties, american cheese, special sauce, lettuce, red onion, pickles",
-          "image": "None",
-          "offers": [
-            { "@type": "Offer", "price": "16.75", "priceCurrency": "USD" },
-            {
-              "@type": "Offer",
-              "price": "3.00",
-              "priceCurrency": "USD",
-              "description": "Smoky bacon"
-            },
-            {
-              "@type": "Offer",
-              "price": "3.00",
-              "priceCurrency": "USD",
-              "description": "Avocado"
-            },
-            {
-              "@type": "Offer",
-              "price": "2.00",
-              "priceCurrency": "USD",
-              "description": "Fried egg*"
-            }
-          ]
-        }
-      ]
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Tuesday",
+      "opens": "17:00:00",
+      "closes": "22:00:00"
     },
     {
-      "@type": "MenuSection",
-      "name": "Brick Oven Pizza",
-      "description": "",
-      "hasMenuItem": [
-        {
-          "@type": "MenuItem",
-          "name": "Umbria",
-          "description": "Garlic roasted cremini mushroom, goat cheese crema, provolone, red onion, rosemary, olive tapenade, roasted & marinated tomatoes, arugula, truffle oil",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "15.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Classic Margherita",
-          "description": "Tomato sauce, fresh mozzarella, extra virgin olive oil, basil",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "13.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Pepperoni",
-          "description": "Curly pepperoni, tomato sauce, mozzarella, oregano, chili flake",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "15.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Figgy Piggy",
-          "description": "pork belly, fig, bleu cheese, caramelized onions, provolone, balsamic glaze drizzle, arugula",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "16.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Four Fathers",
-          "description": "Bacon, pepperoni, sausage, prosciutto, mozzarella, sliced red onions, cherry peppers",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "17.50",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "The G.O.A.T",
-          "description": "Sliced red onions, pistachio pesto, rosemary, truffle honey",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "14.75",
-            "priceCurrency": "USD"
-          }
-        }
-      ]
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Wednesday",
+      "opens": "06:30:00",
+      "closes": "14:00:00"
     },
     {
-      "@type": "MenuSection",
-      "name": "Tacos",
-      "description": "",
-      "hasMenuItem": [
-        {
-          "@type": "MenuItem",
-          "name": "Shrimp",
-          "description": "cotija, pickled onions, diced cherry peppers, guacamole, smoked pineapple glaze, lime crema",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "14.25",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Al Pastor",
-          "description": "pineapple, marinated pork, white onion, cilantro",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "13.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Korean Short Rib",
-          "description": "asian slaw, chili sauce, cilantro",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "13.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "Taquitos - Chicken or Potato",
-          "description": "corn tortillas, romaine lettuce, lime crema, cotija, guacamole, salsa, black beans",
-          "image": "None",
-          "offers": {
-            "@type": "Offer",
-            "price": "13.75",
-            "priceCurrency": "USD"
-          }
-        },
-        {
-          "@type": "MenuItem",
-          "name": "",
-          "description": "",
-          "image": "None",
-          "menuAddOn": [
-            {
-              "@type": "MenuSection",
-              "hasMenuItem": {
-                "@type": "MenuItem",
-                "name": "Extra Taco/Taquito"
-              }
-            },
-            {
-              "@type": "MenuSection",
-              "hasMenuItem": { "@type": "MenuItem", "name": "Rice & Beans" }
-            }
-          ]
-        }
-      ]
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Wednesday",
+      "opens": "17:00:00",
+      "closes": "22:00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Thursday",
+      "opens": "06:30:00",
+      "closes": "14:00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Thursday",
+      "opens": "17:00:00",
+      "closes": "22:00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Friday",
+      "opens": "06:30:00",
+      "closes": "14:00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Friday",
+      "opens": "17:00:00",
+      "closes": "22:00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Saturday",
+      "opens": "06:30:00",
+      "closes": "14:00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Saturday",
+      "opens": "17:00:00",
+      "closes": "22:00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Sunday",
+      "opens": "06:30:00",
+      "closes": "14:00:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": "http://schema.org/Sunday",
+      "opens": "17:00:00",
+      "closes": "22:00:00"
     }
   ],
-  "creator": {
-    "@type": "FoodEstablishment",
-    "@id": "https://www.citytap.com/location/city-tap-house-logan-square/#foodestablishment"
-  },
-  "locationCreated": {
-    "@type": "FoodEstablishment",
-    "@id": "https://www.citytap.com/location/city-tap-house-logan-square/#foodestablishment"
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Menu",
+    "itemListElement": [
+      {
+        "@type": "OfferCatalog",
+        "name": "Dinner",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Starters",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 10,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Vadouvan Crispy Cauliflower",
+                  "description": "fines herbs, sunchoke puree",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Marinated Olives",
+                  "description": "toasted cardamom, orange peel, rosemary",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Avocado Carpaccio",
+                  "description": "watermelon radish, english cucumber, pomegranate seed, micro arugula",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 10,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Honey Whipped Farmer's Cheese",
+                  "description": "fresh baked herb and sour dough",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 22,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Fried Oyster's",
+                  "description": "roasted corn puree, breakfast radish,",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Tarte Flambe",
+                  "description": "chevre, roasted shallott, bacon, herb oil",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 20,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Smoked Steak Tartar",
+                  "description": "crispy caper, cured jidori egg, scallion",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 19,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Steamed Clams",
+                  "description": "Dogfish Head 60 minute IPA, bacon, fennel",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Torched Buratta",
+                  "description": "white and green asparagus salad, champagne gastrique",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 20,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Charcuterie Board",
+                  "description": "daily selection of meats and seasonal accompaniments",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Soup and Salad",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Soup of the Day",
+                  "description": "seasonal ingredients",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "4 French Onion Gratin",
+                  "description": "gruyere, chive",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Romaine Wedge Salad",
+                  "description": "roasted garlic dressing, crispy brioche, shaved toma",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bibb Lettuce Salad",
+                  "description": "shaved radish, tear drop tomato, english cucumber, preserved lemon, honey tarragon vinaigrette",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Lyonnaise Salad",
+                  "description": "frisee, bacon, soft, cooked egg, roasted shallott vinaigrette",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Raw Bar",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 25,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chilled Shrimp",
+                  "description": "charred lemon, cocktail sauce",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 21,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Daily Selections of oysters",
+                  "description": "green apple mignonette",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 26,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chilled Maine Lobster",
+                  "description": "citrus, shallot, english cucumber",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Tuna Carpaccio",
+                  "description": "cured jidori egg, tapenade, frisee, pickled mustard seed",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 55,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Petite Tower",
+                  "description": "6 oysters, 6 clam, 4 shrimp",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 155,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Le GrandeTower",
+                  "description": "6 clams, 6 oysters, 6 shrimps, 1/2 Maine Lobster",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Mains",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 23,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "The Wayward Burger",
+                  "description": "soup onions, truffle cheese, gin mustard, butter-toasted briohche",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 37,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Wayward Steak Frites",
+                  "description": "maitre'd hotel butter, flat iron steak, roasted pearl onions",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 28,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Seared Verlasso Salmon",
+                  "description": "sunchoke puree, friscee",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 22,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Truffle Mac and Cheese",
+                  "description": "cavatappi pasta, truffle cheese, bayonne ham,",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 28,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Boudin Blanc",
+                  "description": "potato puree, whole grain gin mustard, melted leeks",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 21,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Saffron Mouilles",
+                  "description": "leeks, bayonne ham, saffron broth, frites",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Ratatouille",
+                  "description": "roasted vegetables, red pepper rouille, chives",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Herb Gnocci",
+                  "description": "fava bean, english peas, brown butter, shaved toma",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 38,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Lamb Chops",
+                  "description": "lavender, herbs d'provance, crispy potato, post wine reduction",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 23,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pan Roasted Chicken",
+                  "description": "pommes lyonnaise, lemon thyme pan jus",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Sides",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 8,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pommes Lyonaise",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 10,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "House Made Pomme Frittes",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sauteed Rainbow Chard",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Roasted Kennett Square Mushrooms",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Grilled Green White Asparagus",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Truffle Twice Baked Potato",
+                  "description": "scallions, creme fraiche",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "All Day Brunch",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Starters",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "4 Onion Gratin",
+                  "description": "comte, toasted sourdough",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Soup du Jour",
+                  "description": "seasonal ingredients",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Greek Yogurt Parafait",
+                  "description": "macerated berries, chia seed, steel cut granola",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Avocado Tartine",
+                  "description": "breakfast radish, evoo, finger lime, baby watercress",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 11,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Baby Kale Salad",
+                  "description": "baby kale, roasted sunchoke, shaved root vegetables, dried black mission figs, sherry vinaigrette",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bruleed Grapefruit",
+                  "description": "whipped cream, cardamon, cinnamon",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Seasonal Fruit Plate",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Mains",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Deux Eggs",
+                  "description": "two eggs any style, choice of applewood-smoked bacon, chicken apple sausage, or turkey bacon, organic greens and toast",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "French Omelette",
+                  "description": "includes three selections",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Breakfast Sandwich",
+                  "description": "buttered croissant, applewood-smoked bacon, fried egg, gruyere, long hot aioli",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Stuffed French Toast",
+                  "description": "brioche cube, caramalized banana pastry cream, whiskey caramel, chantilly cream",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "BLTA",
+                  "description": "grilled sourdough, applewood-smoked bacon, roma tomato, baby watercress, mashed avocado, espelette aioli",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 23,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "The Wayward Burger",
+                  "description": "soup onions, truffle cheese, gin mustard, frisee",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Smoked Salmon",
+                  "description": "chopped egg, capers, pickled red onion, everything bagel",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pork Roll Benedict",
+                  "description": "wolferman muffin, soft poached eggs, classic hollandaise",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Croque Madame",
+                  "description": "brioche, prosciutto cotto, gruyere cheese, sunny side egg, mornay sauce",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "House Made Boudin Blanc Sandwich",
+                  "description": "baguette, gin mustard, pickled red onion",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 22,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Wayward Cheesesteak Dip",
+                  "description": "sliced rib eye, cooper sharp cheese, french onion aioli",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Sides",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 8,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Breakfast Potatoes",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 8,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Applewood-Smoked Bacon",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 6,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Turkey Bacon",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 8,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chicken-Apple Sausage",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 4,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Toast",
+                  "description": "white or heirloom grain",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 10,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pommes Frites",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 8,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Taylor Pork Roll",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 8,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Side of Berries",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Square One Coffee",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 3,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Drip Coffee",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 4,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Espresso",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Latte",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Cappuccino",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Beverages",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 4,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Steven Smith Loose Leaf Teas",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Naked Bottled Smoothie",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Orange Juice",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Brunch Libations",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Wayward Bloody Mary",
+                  "description": "new amsterdam vodka, horseradish, tomato",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Red Snapper",
+                  "description": "bombay gin, horseradish, tomato",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 10,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Classic Mimosa",
+                  "description": "bubbles, orange juice",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Salads",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bibb Lettuce Salade",
+                  "description": "shaved radish, tear drop tomato, english cucumber, preserved lemon, honey tarragon vinaigrette",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Romaine Wedge Salade",
+                  "description": "roasted garlic dressing, crispy brioche, shaved toma",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Lyonnaise Salad",
+                  "description": "frisee, bacon, soft egg, roasted shallot vinaigrette",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Happy Hour",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Snacks",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Daily Oysters",
+                  "description": "1/2 dozen, green apple mignonette, grilled lemon",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 8,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Salmon Rillettes",
+                  "description": "baquette chips, fine herbs",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 6,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Marinated Olives",
+                  "description": "toasted cardamom, orange peel, rosemary",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 9,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pommes Frites",
+                  "description": "gin mustard aioli",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 10,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Duck Wings",
+                  "description": "l'orange, chili, wild arugula pistou",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 10,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Vadouvan Cauliflower",
+                  "description": "fines herbs, sunchoke puree",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 4,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Duck Fat Popcorn",
+                  "description": "cardamom, orange zest, chili flake",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Libations",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Red",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "White",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 4,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Daily Beer",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Daily Bartender's Punch",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 6,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Classic French 75",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Dessert",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Dessert",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Croquembouche",
+                  "description": "Federal donuts, cr\u00e8me p\u00e2tissi\u00e8re. Choice of one: pecan & gin caramel or cholocate & hazelnut",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 10,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Tahitian Vanilla Bean Cr\u00e8me Br\u00fbl\u00e9e",
+                  "description": "macerated berries, mint pair with gran marnier +14",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Basque Cheese cake",
+                  "description": "strawberry, lavender, chantilly cream, toasted hazelnut pair with titos espresso martini +16",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Flourless Chocolate cake",
+                  "description": "salted bourbon caramel, fresh blackberries, mint pair with woodford reserve bourbon + 15",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Square One Coffee",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 3,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Drip Coffee",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 4,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Espresso",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Latte",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Cappuccino",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 4,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Loose Leaf Teas",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Gin List",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Genever",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Nolet, Netherlands",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "London Dry",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Beefeater, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Tanqueray, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bulldog, Spain",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bombay Sapphire, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Porters Modern Classic Cold Distilled, Scotland",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Whitley Neil Handcrafter, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sipsmith, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Botanist Isle, Scotland",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Monkey 47 Schwarzwald, Germany",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Elephant Sloe Gin, Germany",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 19,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sipsmith Sloe Gin, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Plymouth",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Plymouth Original, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Old Tom",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Hayman's of London, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Thomas Dakin Small Batch, England",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Porters Tropical, Scotland",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Ransom, McMinnville, OR",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "New Western",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Death's Door, Middleton, WI",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Perry's Tot Navy Strength, Brooklyn, NY",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bluebird Juniperus, Philadelphia, PA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Roku, Japan",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Dorothy Parker, Brooklyn, NY",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "St. George Terroir, Alameda, CA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Revivalist Equinox, Chester County, PA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Modagor, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Malfy Gin Con Limone, Italy",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bristow, Jackson, MS",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bluecoat American Dry, Philadelphia, PA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bluecoat Barrel Aged, Philadelphia, PA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Hendricks, Scotland",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Conniption American Dry, Durham, NC",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 17,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Barr Hill, Montpelier, VT",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 19,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Barr Hill Reserve Tom Cat, Montpelier, VT",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Nikka Coffee, Japan",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Uncle Val's Botanical, Sonoma, CA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Arbikie Kirsty's, Scotland",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 19,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Koval Barreled Aged, Chicago, IL",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 19,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Gracias a Dios Agave Gin 32 Botanicals, Mexico",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 19,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Elephant Navy Strength, Germany",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Gin Flight",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "London Dry, Old Tom, New Western, Sloe Gin",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Fever Tree Tonics",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 3,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Premium Indian Tonic Water",
+                  "description": "cinchona bark, bitter orange",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 3,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Aromatic Tonic Water",
+                  "description": "angostura bark, cardamom, ginger, vanilla, pimento berry",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 3,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Lemon Tonic",
+                  "description": "cinchona bark, mediterranean lemon",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Cocktails",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "French 75",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 11,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "The Classic O.G.",
+                  "description": "new amsterdam gin, lemon, bubbles",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sweet Dee",
+                  "description": "tanqueray gin, grapefruit, mint, bitters, bubbles",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "French Dispatch",
+                  "description": "courvoisier, grand marnier, lemon, bubbles",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sister City",
+                  "description": "new amsterdam vodka, honey, lemon, apricot, bubbles",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Signature Cocktails",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "The Girard Spritz",
+                  "description": "tito's handmade vodka, green chartreuse, charred thyme, strawberry, bubbles (for every tito's handmade vodka cocktail sold through 2022, tito's will donate $1 to Give Kids the World, up to $10,000)",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "The Revolutionary",
+                  "description": "bluecoat gin, grapefruit, cr\u00e9ole shrubb, fever-tree ginger beer, orange bitters",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "The French Quarter",
+                  "description": "jim beam black, cognac, dolin rouge, b\u00e9n\u00e9dictine, pernod",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "The Weary Traveler",
+                  "description": "mi campo reposado tequila, lillet rouge, grand marnier, martinique rhum, walnut bitters",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Monchito",
+                  "description": "coconut washed cruzan rum, allspice dram, pineapple, lime, angostura bitters",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Citron Press\u00e9",
+                  "description": "the wayward gin by manatawny still works, salted honey, lemon, ginger, egg white",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 18,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Penn's Martini",
+                  "description": "bluecoat gin, stateside vodka, lillet blanc, orange bitters",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "\"Wooder\" Melon",
+                  "description": "hornitos blanco tequila, salted watermelon, combier, lime, jalape\u00f1o oil",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Draft Beer",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": "",
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Seasonal Draft by Dogfish Head Brewery",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Bud Light, Lager",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 6,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "New Belgium Fat Tire, Amber Ale",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sierra Nevada, Hazy Little Thing IPA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Lagunitas, IPA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Locally Brewed",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 8,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "The Wayward IPA",
+                  "description": "By Iron Hill Brewery",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Bottles & Cans",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Miller Lite, Pilsner",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 6,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Angry Orchard, Hard Cider",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 6,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Truly Citrus Hard Seltzer",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 5,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Heineken 0.0, Non Alcoholic",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Yards, IPA",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Peroni, Pale Lager",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Heineken, Lager",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Stella Artois, Lager",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 7,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Kronenbourg 1664, Pale Lager",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Wine by the Glass",
+            "itemListElement": []
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Sparkling",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Prosecco, La Marca, Veneto, Italy",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 22,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Brut, Piper-Heidsieck Cuv\u00e9e 1785, Champagne, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Ros\u00e9",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Grenache, Bieler P\u00e8re & Fils, Provence, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "White",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sauvignon Blanc, Ch\u00e2teau Les Reuilles, Bordeaux, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chardonnay, Tribute, Monterey, California",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Riesling, Heinz Eifel, Kabinett, Germany",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sauvignon Blanc, Matanzas Creek, Sonoma County, California",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chardonnay, Cave de Lugny, Burgundy, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pinot Grigio, Tiamo, Veneto, Italy",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Red",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Cabernet-Merlot, Ch\u00e2teau Paret, C\u00f4tes du Castillion, Bordeaux, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 15,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Merlot, Cline Cellars, Sonoma County, California",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 12,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Malbec, Santa Julia Reserva, Mendoza, Argentina",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 13,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Gamay Noir, Henry Fessy, Burgundy, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 14,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pinot Noir, Sea Sun by Camus, California",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 16,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Cabernet, Substance, Columbia Valley, Washington",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Wine By the Bottle",
+        "itemListElement": [
+          {
+            "@type": "OfferCatalog",
+            "name": "Sparkling",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 139,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Brut, Veuve Clicquot Yellow Label, Champagne, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 128,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Brut, Paul Goerg, Champagne, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 69,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Brut, Bruno Paillard, Champagne, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 72,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Prosecco, Le Colture, Veneto, Italy",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 86,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Brut Ros\u00e9, De Perri\u00e8re, Cremant de Bourgogne, France",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Ros\u00e9",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 66,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Grenache, Ch\u00e2teau Peyrassol, Provence, France, 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 72,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Grenache-Cinsault, Birichino, Santa Cruz, California, 2019",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 58,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Mourv\u00e8dre, Cline, Contra Costa County, California, 2018",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "White",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 66,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chardonnay, Domaine Talmard, Macon, Burgundy, France, 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 96,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chardonnay, Ch\u00e2teau de la Cr\u00e9e Premier Cru, Montagny, Burgundy, France, 2018",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 112,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chardonnay, Duckhorn Vineyards, Napa Valley, California 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 89,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chardonnay, Neyers, Carneros, California, 2017",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 62,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sauvignon Blanc, Whitehaven, Marlborough, New Zealand, 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 95,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sauvignon Blanc, Jacques Dumont, Sancerre, Loire Valley, France, 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 95,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Chenin Blanc, Domaine du Viking, Vouvray Sec-Tendre, Loire, France 2017",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 56,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Sauvignon Blanc-Semillon, Ch\u00e2teau Pilet, Bordeaux, France, 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 64,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pinot Blanc, Pierre Sparr, Alsace, France, 2018",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 79,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pinot Grigio, Jermann, Friuli-Venezia Giulia, Italy, 2019",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 74,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Albari\u00f1o, Fillaboa, Rias Baixas, Spain, 2018",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 48,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Riesling, Salmon Run, Finger Lakes, New York, 2017",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 59,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Gr\u00fcner Veltliner, Familie Bauer, Kabinett, Wagram, Austria, 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "@type": "OfferCatalog",
+            "name": "Red",
+            "itemListElement": [
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 89,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Cabernet, Postmark by Duckhorn, Napa Valley, California, 2019",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 118,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Cabernet, Auros, Napa Valley, California, 2015",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 93,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Blend, Unshackled by The Prisoner Wine Company, California, 2019",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 76,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Cabernet-Merlot, Domaine Les Carmels Les Caprices Cadillac, C\u00f4tes de Bordeaux, France, 2019",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 98,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Cabernet-Merlot, Ch\u00e2teau Rocher-Bonregard Rouge, Pomerol, Bordeaux, France, 2017",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 142,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Merlot, Rombauer, Napa Valley, California, 2018",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 66,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Grenache Noir, Anne Pichon, Rhone Valley, France 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 82,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pinot Noir, Domaine Chanson, Burgundy, France, 2019",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 98,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pinot Noir, Mommessin La Cle Saint-Pierre, Burgundy, France, 2020",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 83,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Pinot Noir, Meiomi, Central Coast, California, 2018",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 92,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Nebbiolo, Renato Ratti, Langhe, Piedmont, Italy, 2018",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 75,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Malbec, Domaine du Th\u00e9ron, Cahors, France, 2015",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 82,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Malbec, Don Miguel Gasc\u00f3n Reserva, Mendoza, Argentina, 2016",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 92,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Syrah, E. Guigal, Crozes-Hermitage, France, 2016",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              },
+              {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": 64,
+                "itemOffered": {
+                  "@type": "MenuItem",
+                  "name": "Tempranillo, Vi\u00f1a Egu\u00eda Reserva, Rioja, Spain, 2015",
+                  "description": "",
+                  "image": [""],
+                  "nutrition": {
+                    "@type": "NutritionInformation",
+                    "calories": ""
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 }
