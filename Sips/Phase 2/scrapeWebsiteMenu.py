@@ -3,6 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
+# ------------------------------------------------
+# This script does = Supposed to find a generic way to read a bar website html for the menu
+# ------------------------------------------------
+
 # Replace this with the actual URL of the bar's website
 base_url = 'https://www.doubleknotphilly.com'
 base_url = 'http://www.drinkersrittenhouse.com/'

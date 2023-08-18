@@ -2,6 +2,10 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from ast import literal_eval
 
+# ------------------------------------------------
+# This script does = Turns the csv of bar data to a HTML datatable
+# ------------------------------------------------
+
 # Read the existing HTML file
 with open('test.html', 'r') as file:
     html_content = file.read()

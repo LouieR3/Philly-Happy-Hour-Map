@@ -7,6 +7,10 @@ import time
 import os
 import re
 
+# ------------------------------------------------
+# This script does = Added Sips deals and prices to SipsBarItems
+# ------------------------------------------------
+
 df = pd.read_csv("AllSipsOriginal.csv")
 print(df)
 menu_data = []

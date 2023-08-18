@@ -1,5 +1,10 @@
 import pandas as pd
 
+# ------------------------------------------------
+# This script does = uses SipsBarItems to calculate the diff between avg sips price for that item from its general name 
+# to the avg price of that item on the regular bar menus I have
+# ------------------------------------------------
+
 # Read the CSV file into a DataFrame
 df = pd.read_csv("SipsBarItems.csv")
 
@@ -44,6 +49,7 @@ for menu_item in df["Predicted Item"].unique():
     comparison_result = None
     if sips_price is not None and normal_price is not None:
         comparison_result = normal_price - sips_price
+        comparison_result = round(comparison_result, 2)
 
     results_df = results_df.append(
         {

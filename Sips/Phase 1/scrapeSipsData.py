@@ -6,6 +6,12 @@ from geopy.geocoders import Nominatim
 import time
 import os
 import folium
+import re
+import json
+
+# ------------------------------------------------
+# This script does = Scraps the basic data from the Sips list site and get Lat and Long
+# ------------------------------------------------
 
 html = "https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view"
 base_html = "https://centercityphila.org"
@@ -22,6 +28,8 @@ for link in pager.find_all('a'): # type: ignore
 
 print(pages)
 
+pattern = r'apos\.maps\["ccd-places"\]\.addMap\((.*?)\)'
+bar_info_list = []
 for page in pages:
     # Request and parse HTML for each page 
     page_html = requests.get(page, allow_redirects=False).text
@@ -48,6 +56,47 @@ df = df.reset_index(drop=True)
 df = df.drop_duplicates(subset=['Bar Name'])
 print(df)
 
+pattern = r'apos\.maps\["ccd-places"\]\.addMap\((.*?)\)'
+bar_info_list = []
+for page in pages:
+    page_html = requests.get(page, allow_redirects=False).text
+    soupIter = BeautifulSoup(page_html, 'lxml')
+    script_tags = soupIter.find_all('script', text=re.compile(pattern))
+
+    json_data = {}
+    for script_tag in script_tags:
+        lines = script_tag.string.splitlines()
+        for line in lines:
+            if re.match(pattern, line.strip()):
+                # Extract the JSON text from the line
+                start_index = line.find('{')
+                end_index = line.rfind('}') + 1
+                json_text = line[start_index:end_index]
+                json_data = json.loads(json_text)
+                break
+        if json_data is not None:
+            break
+
+    for item in json_data["items"]:
+        title = item.get("title", "")
+        url_website = item.get("urlWebsite", "")
+        if url_website:
+            url_website = url_website.rstrip('/')
+        bar_info = {"Bar Name": title, "Bar Website": url_website}
+        print(bar_info)
+        bar_info_list.append(bar_info)
+
+new_df = pd.DataFrame(bar_info_list)
+
+
+# Print the resulting DataFrame with the new "Bar Website" column
+print(new_df)
+
+df = pd.read_csv('AllSipsLocations.csv')
+merged_df = df.merge(new_df, on='Bar Name', how='left')
+print(merged_df)
+merged_df.to_csv("AllSipsLocations.csv", index=False)
+df = merged_df
 MAX_ATTEMPTS = 5
 
 def find_location(row):

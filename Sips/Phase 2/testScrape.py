@@ -5,6 +5,10 @@ import pandas as pd
 import json
 import PyPDF2
 
+# ------------------------------------------------
+# This script does = different ways to test scraping html, json, or pdf
+# ------------------------------------------------
+
 # Replace this with the actual URL of the bar's website
 # base_url = 'https://www.doubleknotphilly.com'
 base_url = 'http://www.barbuzzo.com/'

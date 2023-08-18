@@ -8,6 +8,10 @@ import os
 import json
 import re
 
+# ------------------------------------------------
+# This script does = All major functions combined to pull bar menu details and calculate score
+# ------------------------------------------------
+
 # Assuming you have the DataFrame 'df' with the 'Deals' column
 df = pd.read_csv('AllSipsLocations.csv')
 

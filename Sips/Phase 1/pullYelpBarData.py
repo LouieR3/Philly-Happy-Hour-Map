@@ -2,6 +2,10 @@ import pandas as pd
 from yelpapi import YelpAPI
 import yelpapi
 
+# ------------------------------------------------
+# This script does = Gets the information from each bar from yelp
+# ------------------------------------------------
+
 # Actual API Key
 # yelpapiKey = "DQx0YugiFJ5inYYp8fVvDqLx0R_dVo8yXxRZtpD5jkbNK0WmAqUygKIyXnYHlfL0pYRndGHGmuvn_QCXPVndRCc0VjtZzxCSHE8MhPthoJ4YUygg65DJrhMJLu7OZHYx"
 

@@ -15,6 +15,10 @@ import random
 from sklearn.metrics import accuracy_score
 from tabulate import tabulate
 
+# ------------------------------------------------
+# This script does = dfToAdd can be swapped out for a new method of getting a bars menu and then you can add it to SipsBarItems and then to ComparisonResults after
+# ------------------------------------------------
+
 df = pd.read_csv('SipsBarItems.csv', encoding='utf-8')
 
 def dfToAdd(pdf_path):
@@ -182,28 +186,29 @@ def calculateDeal():
     )
 
     # Compare prices for each unique Drink
-    for menu_item in df["Drink"].unique():
-        sips_price = sips_deal_y_df[sips_deal_y_df["Drink"] == menu_item][
+    for menu_item in df["Predicted Item"].unique():
+        sips_price = sips_deal_y_df[sips_deal_y_df["Predicted Item"] == menu_item][
             "Price"
         ].mean()
         sips_bar = (
-            sips_deal_y_df[sips_deal_y_df["Drink"] == menu_item]["Bar"].iloc[0]
+            sips_deal_y_df[sips_deal_y_df["Predicted Item"] == menu_item]["Bar"].iloc[0]
             if not pd.isna(sips_price)
             else ""
         )
-        normal_price = sips_deal_n_df[sips_deal_n_df["Drink"] == menu_item][
+        normal_price = sips_deal_n_df[sips_deal_n_df["Predicted Item"] == menu_item][
             "Price"
         ].mean()
 
         comparison_result = None
         if sips_price is not None and normal_price is not None:
             comparison_result = normal_price - sips_price
+            comparison_result = round(comparison_result, 2)
             
         results_df = results_df.append(
             {
                 "Drink": menu_item,
-                "Sips Price": sips_price,
-                "Normal Price": normal_price,
+                "Sips Price": "${:.2f}".format(sips_price),
+                "Normal Price": "${:.2f}".format(normal_price),
                 "Comparison Result": comparison_result,
                 "Sips Bar": sips_bar,
             },
@@ -211,6 +216,8 @@ def calculateDeal():
         )  # type: ignore
     results_df = results_df.sort_values(by="Comparison Result", ascending=False)
     # Save the results dataframe to a CSV file
+    results_df["Sips Price"] = results_df["Sips Price"].replace("$nan", "")
+    results_df["Normal Price"] = results_df["Normal Price"].replace("$nan", "")
     results_df.to_csv("ComparisonResults.csv", index=False)
     print(results_df)
 
@@ -222,3 +229,4 @@ if not menu_df.empty:
     print(final_df)
     if not final_df.empty:
         combineCSV(final_df)
+        calculateDeal()

@@ -7,6 +7,10 @@ from tabulate import tabulate
 from fuzzywuzzy import fuzz
 from Levenshtein import distance
 
+# ------------------------------------------------
+# This script does = reads SispBarItems and uses machine learning to tell what a drink is from its long name and the general name I gave it
+# ------------------------------------------------
+
 def fuzzy_match(str1, str2):
   ratio = fuzz.ratio(str1.lower(), str2.lower())
   dist = distance(str1.lower(), str2.lower())

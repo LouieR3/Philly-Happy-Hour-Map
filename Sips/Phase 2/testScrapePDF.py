@@ -4,6 +4,10 @@ from io import BytesIO
 import pandas as pd
 import re
 
+# ------------------------------------------------
+# This script does = just to test scraping pdf
+# ------------------------------------------------
+
 def try_pdf(pdf_path):
     def extract_drinks_from_pdf(pdf_path):
         try:

@@ -1,31 +1,32 @@
 Drink,Sips Price,Normal Price,Comparison Result,Sips Bar
 Espresso Martini,$7.00,$14.00,7.0,Top Tomato Bar & Pizza
-Merlot,$6.00,$11.25,5.25,1518 Bar and Grill
-Paloma,$7.00,$12.00,5.0,Bar Bombón
+Merlot,$6.00,$12.12,6.12,1518 Bar and Grill
+Grenache,$6.00,$12.00,6.0,Walnut Garden - Temporarily Closed
+Chardonnay,$6.00,$11.31,5.31,1225 Raw Sushi and Sake Lounge
+Cabernet Sauvignon,$6.00,$11.25,5.25,1225 Raw Sushi and Sake Lounge
+Sauvignon Blanc,$6.00,$11.00,5.0,ArtBar at Sonesta Hotel
 Aperol Spritz,$7.00,$12.00,5.0,Buca D'oro Ristorante
-Tequila Punch,$7.00,$11.00,4.0,Barbuzzo
-Moscow Mule,$7.00,$11.00,4.0,Craftsman Row Saloon
 Pineapple Lemonade,$7.00,$11.00,4.0,Uptown Beer Garden
-Stateside Seltzer,$5.00,$9.00,4.0,Tir Na Nog Irish Bar & Grill
 Margarita,$7.00,$11.00,4.0,1518 Bar and Grill
 Gin and Tonic,$7.00,$11.00,4.0,The Cauldron Philly
+Stateside Seltzer,$5.00,$9.00,4.0,Tir Na Nog Irish Bar & Grill
+Moscow Mule,$7.00,$11.00,4.0,Craftsman Row Saloon
+Tequila Punch,$7.00,$11.00,4.0,Barbuzzo
+White,$6.10,$10.00,3.9,The Balcony Bar at the Kimmel Center
 Malbec,$6.00,$9.88,3.88,Bodega Taco Bar
 Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,1225 Raw Sushi and Sake Lounge
 Rosé,$6.05,$9.62,3.57,Ancient Spirits & Grille
-Chardonnay,$6.00,$9.12,3.12,1225 Raw Sushi and Sake Lounge
-Sauvignon Blanc,$6.00,$9.00,3.0,ArtBar at Sonesta Hotel
-Downeast Cider,$5.00,$7.50,2.5,Ancient Spirits & Grille
+Paloma,$7.00,$10.50,3.5,Bar Bombón
 Pinot Noir,$6.00,$8.50,2.5,1225 Raw Sushi and Sake Lounge
-Cabernet Sauvignon,$6.00,$8.50,2.5,1225 Raw Sushi and Sake Lounge
+Downeast Cider,$5.00,$7.50,2.5,Ancient Spirits & Grille
 Stella Artois,$5.00,$7.25,2.25,The Patio @ Thirteen Restaurant
-Neshaminy Creek Shape of Hops,$7.00,$9.00,2.0,The Balcony Bar at the Kimmel Center
-Golden Road Mango Cart,$5.00,$7.00,2.0,Con Murphy's Irish Pub
-Surfside Lemonade & Vodka,$7.00,$9.00,2.0,Iron Hill Brewery & Restaurant
 Surfside Iced Tea & Vodka,$7.00,$9.00,2.0,Tir Na Nog Irish Bar & Grill
+Golden Road Mango Cart,$5.00,$7.00,2.0,Con Murphy's Irish Pub
 Strongbow Cider,$5.00,$7.00,2.0,Tir Na Nog Irish Bar & Grill
-Sam Adams,$5.00,$7.00,2.0,ArtBar at Sonesta Hotel
+Surfside Lemonade & Vodka,$7.00,$9.00,2.0,Iron Hill Brewery & Restaurant
+Neshaminy Creek Shape of Hops,$7.00,$9.00,2.0,The Balcony Bar at the Kimmel Center
 New Belgium Voodoo Ranger,$5.00,$7.00,2.0,Ancient Spirits & Grille
-White,$6.10,$8.00,1.9,The Balcony Bar at the Kimmel Center
+Sam Adams,$5.00,$7.00,2.0,ArtBar at Sonesta Hotel
 White Claw,$5.00,$6.80,1.8,Cavanaugh's Rittenhouse
 Sierra Nevada Pale Ale,$5.00,$6.75,1.75,Blume Burger
 Carlsberg,$5.00,$6.75,1.75,The Black Sheep
@@ -33,11 +34,12 @@ Kona Big Wave,$5.00,$6.50,1.5,Air Grille Garden at Dilworth Park
 Modelo,$5.00,$6.50,1.5,ArtBar at Sonesta Hotel
 Kenwood Lager,$5.00,$6.25,1.25,City Tap House Logan Square
 Warsteiner Pilsner,$5.00,$6.00,1.0,Cavanaugh's Rittenhouse
-Bud Light,$5.00,$5.50,0.5,1225 Raw Sushi and Sake Lounge
-Coors Light,$5.00,$5.50,0.5,1518 Bar and Grill
-Budweiser,$5.00,$5.50,0.5,1518 Bar and Grill
-Michelob Ultra,$5.00,$5.50,0.5,ArtBar at Sonesta Hotel
+Victory Prima Pils,$5.00,$6.00,1.0,Darling Jack's Tavern
 Corona Light,$6.00,$6.50,0.5,Ancient Spirits & Grille
+Bud Light,$5.00,$5.50,0.5,1225 Raw Sushi and Sake Lounge
+Michelob Ultra,$5.00,$5.50,0.5,ArtBar at Sonesta Hotel
+Budweiser,$5.00,$5.50,0.5,1518 Bar and Grill
+Coors Light,$5.00,$5.50,0.5,1518 Bar and Grill
 Miller Lite,$5.00,$5.33,0.33,1518 Bar and Grill
 Yuengling,$5.00,$5.25,0.25,Bar-Ly Chinatown
 Frozen Astronaut,$6.64,$6.50,-0.14,Bar Bombón
@@ -49,7 +51,7 @@ Orange Crush,,$12.00,,
 Mezcal-A-Rita,,$13.00,,
 Pink Lady,,$12.00,,
 Sidecar,,$16.00,,
-Old Fashioned,,$12.00,,
+Old Fashioned,,$12.75,,
 City Wide,,$10.00,,
 Bloody Mary,,$12.00,,
 Bottom's Up,,$11.00,,
@@ -113,7 +115,6 @@ PBC Walt Wit,$5.00,,,City Tap House Logan Square
 New Trail Crisp Lager,$5.00,,,City Tap House Logan Square
 Ranch Wooder,$7.00,,,Con Murphy's Irish Pub
 Northern Lights,$7.00,,,Continental Midtown
-Victory Prima Pils,$5.00,,,Darling Jack's Tavern
 Estralla Jalisco,$5.00,,,Devil's Alley
 New Trails Crisp Lager,$5.00,,,Dim Sum House by Jane G's
 Hugo,$7.00,,,Dolce Italian
@@ -150,7 +151,6 @@ Philly Flush,$7.00,,,Top Tomato Bar & Pizza
 Rupee Lager,$5.00,,,Veda - Modern Indian Bistro
 Oskar Blues,$5.00,,,Via Locusta
 Roots & Culture,$7.00,,,Vintage Wine Bar & Bistro
-Grenache,$6.00,,,Walnut Garden - Temporarily Closed
 Walnut Garden Lager,$5.00,,,Walnut Garden - Temporarily Closed
 Well Liquor,$7.00,,,Wrap Shack
 Manhattan,,$12.00,,
@@ -174,3 +174,19 @@ Angry Orchard Apple Cider,,$6.50,,
 Amstel Light,,$6.25,,
 Heineken,,$6.25,,
 Heinken Light,,$6.50,,
+Fiore Rosa,,$15.00,,
+Lemonade,,$10.50,,
+Sangria,,$11.00,,
+Troegs Perpetual IPA,,$7.00,,
+Ommegang Neon Rainbows,,$9.00,,
+Elysian Space Dust IPA,,$8.00,,
+Wicked Weed Pernicious IPA,,$8.00,,
+Victory Berry Monkey,,$9.00,,
+Lord Hobo LIFE,,$7.50,,
+Sagardoa,,$9.00,,
+Wyndridge Original,,$7.00,,
+Spritzer,,$8.00,,
+Trebbiano,,$12.00,,
+Soave,,$15.00,,
+Zweigelt,,$12.00,,
+Negroamaro,,$12.00,,
