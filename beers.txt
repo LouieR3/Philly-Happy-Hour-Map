@@ -86,9 +86,9 @@ Strongbow Cider
 Rupee Lager
 Oskar Blues
 Walnut Garden Lager
-Surfside Half & Half & Vodka
-Surfside Iced Tea & Vodka
-Surfside Lemonade & Vodka
+Surfside Half & Half
+Surfside Iced Tea
+Surfside Lemonade
 Twisted Tea
 Blue Moon
 Victory Brotherly Love
@@ -113,3 +113,5 @@ Ommegang Neon Rainbows
 Elysian Space Dust IPA
 Victory Berry Monkey
 Victory Sour Monkey
+Wicked Weed Pernicious IPA
+Lord Hobo LIFE

@@ -16,8 +16,8 @@ yelp = yelpapi.YelpAPI(yelpapiKey)
 # Assuming you have the DataFrame 'df' with the 'Deals' column
 df = pd.read_csv('AllSipsLocations.csv')
 
-# bars = yelp.search_query(location='Philadelphia', categories='bars')
-# print(bars)
+bars = yelp.search_query(location='Philadelphia', categories='bars')
+print(bars)
 
 # Function to get Yelp data for each bar
 def get_yelp_data(row):

@@ -1,7 +1,6 @@
 Drink,Sips Price,Normal Price,Comparison Result,Sips Bar
 Espresso Martini,$7.00,$14.00,7.0,Top Tomato Bar & Pizza
 Merlot,$6.00,$11.25,5.25,1518 Bar and Grill
-Orange Crush,$7.00,$12.00,5.0,Bodega Taco Bar
 Paloma,$7.00,$12.00,5.0,Bar Bombón
 Aperol Spritz,$7.00,$12.00,5.0,Buca D'oro Ristorante
 Tequila Punch,$7.00,$11.00,4.0,Barbuzzo
@@ -46,6 +45,7 @@ Blue Moon,$7.00,$6.50,-0.5,The Cauldron Philly
 Miller High Life,$5.00,$4.50,-0.5,The Hayes
 PBR,$5.00,$4.00,-1.0,The Mulberry on Arch
 Dragonade,,$8.00,,
+Orange Crush,,$12.00,,
 Mezcal-A-Rita,,$13.00,,
 Pink Lady,,$12.00,,
 Sidecar,,$16.00,,
@@ -101,6 +101,7 @@ Victory Brothery Love,$5.00,,,Barstool Sansom Street
 Hoegarrden,$5.00,,,The Black Sheep
 2SP Delco Lager,$5.00,,,Blume Burger
 Firestone Walker Union Jack IPA,$5.00,,,Blume Burger
+Maragrita,$7.00,,,Bodega Taco Bar
 Mojito,$7.00,,,Bodega Taco Bar
 Martini,$7.00,,,Buca D'oro Ristorante
 Sheet Bend,$7.00,,,Butcher Bar

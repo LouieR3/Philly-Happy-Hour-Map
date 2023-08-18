@@ -51,3 +51,6 @@ Prosecco
 Champagne
 Vino Rosso
 Vino Bianco
+Negroamaro
+Soave
+Sangria
