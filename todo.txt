@@ -22,3 +22,7 @@ percent off
 score for bar
 bar best deals
 best deal by Drink
+
+- Get a generic bar score down
+- Get a few more bars
+- Look towards happy hour menu

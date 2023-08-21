@@ -103,6 +103,30 @@ body {
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+.gradient {
+  background: linear-gradient(-45deg, #065a20, #07B862, #09a389, #047e4f);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	height: 100vh;
+}
+
+.headerBox {
+  /* background-color: rgba(0, 0, 0, 0.5); */
+  /* background-image: linear-gradient(to right, rgba(255,0,0,0), rgb(0, 0, 0, 0.4), rgba(255,0,0,0)); */
+  background: radial-gradient(rgb(0, 0, 0, 0.7), rgba(255,0,0,0));
+}
 /* 
 .background {
   position: absolute;
@@ -110,10 +134,12 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://guidetophilly.com/wp-content/uploads/El-Techo-Mexican-rooftop-bar-Philadelphia.jpg");
+  background-image: url("../assets/img/pixelate.jpg");
+  background-color: #000;
+  background-image: url("https://ununsplash.imgix.net/uploads/1413259835094dcdeb9d3/6e609595?q=75&fm=jpg&s=6a4fc66161293fc4a43a6ca6f073d1c5");
   background-size: cover;
   background-position: center;
-  opacity: 0.5;
+  opacity: 0.9;
   z-index: -1; 
 } */
 
@@ -654,30 +680,61 @@ progress {
   margin-right: auto;
   margin-left: auto;
 }
+@media (max-width: 575px) {
+  .mx-6 {
+    margin-right: 1rem !important;
+    margin-left: 1rem !important;
+  }
+}
 
 @media (min-width: 576px) {
   .container-sm, .container {
     max-width: 540px;
+  }
+
+  .mx-6 {
+    margin-right: 1rem !important;
+    margin-left: 1rem !important;
   }
 }
 @media (min-width: 768px) {
   .container-md, .container-sm, .container {
     max-width: 720px;
   }
+
+  .mx-6 {
+    margin-right: 1rem !important;
+    margin-left: 1rem !important;
+  }
 }
 @media (min-width: 992px) {
   .container-lg, .container-md, .container-sm, .container {
     max-width: 960px;
+  }
+
+  .mx-6 {
+    margin-right: 1.5rem !important;
+    margin-left: 1.5rem !important;
   }
 }
 @media (min-width: 1200px) {
   .container-xl, .container-lg, .container-md, .container-sm, .container {
     max-width: 1140px;
   }
+
+  .mx-6 {
+    margin-right: 2.5rem !important;
+    margin-left: 2.5rem !important;
+  }
 }
 @media (min-width: 1400px) {
   .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
     max-width: 1320px;
+  }
+
+  .mx-6 {
+    margin-right: 4rem !important;
+    margin-left: 4rem !important;
   }
 }
 .row {
@@ -11001,10 +11058,10 @@ html {
     border-style: none none solid;
     border-radius: 0px;
   }
-  #mainNav .navbar-nav > li.nav-item > a.nav-link.active:active, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:focus, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover {
+  /* #mainNav .navbar-nav > li.nav-item > a.nav-link.active:active, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:focus, #mainNav .navbar-nav > li.nav-item > a.nav-link.active:hover {
     color: #fff;
     background: #07B862;
-  }
+  } */
   #mainNav.navbar-shrink {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
@@ -11042,12 +11099,14 @@ html {
 .masthead .masthead-heading {
   font-size: 2.75rem;
   line-height: 2.75rem;
+  text-shadow: 2px 4px black;
 }
 .masthead .masthead-subheading {
   font-size: 1.25rem;
 }
 .masthead .masthead-avatar {
   width: 12rem;
+  /* box-shadow: 10px 15px 25px 0 rgba(0,0,0,.2); */
 }
 
 @media (min-width: 992px) {
@@ -11056,7 +11115,7 @@ html {
     padding-bottom: 6rem;
   }
   .masthead .masthead-heading {
-    font-size: 4rem;
+    font-size: 5rem;
     line-height: 3.5rem;
   }
   .masthead .masthead-subheading {

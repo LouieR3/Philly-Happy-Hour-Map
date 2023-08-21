@@ -60,10 +60,10 @@ Cavanaugh's Rittenhouse,Mummers Row Philly Tea,Mummers Row Philly Tea,$8.00,N
 Cavanaugh's Rittenhouse,Stateside Black Cherry Seltzer,Stateside Seltzer,$9.00,N
 Cavanaugh's Rittenhouse,Stateside Lemon Cucumber Mint Seltzer,Stateside Seltzer,$9.00,N
 Cavanaugh's Rittenhouse,Stateside Orange Seltzer,Stateside Seltzer,$9.00,N
-Cavanaugh's Rittenhouse,Surfside Half & Half & Vodka,Surfside Half & Half & Vodka,$9.00,N
-Cavanaugh's Rittenhouse,Surfside Iced Tea & Vodka,Surfside Iced Tea & Vodka,$9.00,N
-Cavanaugh's Rittenhouse,Surfside Lemonade & Vodka,Surfside Lemonade & Vodka,$9.00,N
-Cavanaugh's Rittenhouse,Surfside Peach Tea & Vodka,Surfside Iced Tea & Vodka,$9.00,N
+Cavanaugh's Rittenhouse,Surfside Half & Half & Vodka,Surfside Half & Half,$9.00,N
+Cavanaugh's Rittenhouse,Surfside Iced Tea & Vodka,Surfside Iced Tea,$9.00,N
+Cavanaugh's Rittenhouse,Surfside Lemonade & Vodka,Surfside Lemonade,$9.00,N
+Cavanaugh's Rittenhouse,Surfside Peach Tea & Vodka,Surfside Iced Tea,$9.00,N
 Cavanaugh's Rittenhouse,Twisted Tea Lite,Twisted Tea,$6.50,N
 Cavanaugh's Rittenhouse,White Claw Blackberry Seltzer,White Claw,$6.50,N
 Cavanaugh's Rittenhouse,White Claw Mango Seltzer,White Claw,$6.50,N
@@ -119,7 +119,6 @@ ArtBar at Sonesta Hotel,Sam Adams Summer Love,Sam Adams,$5,Y
 The Balcony Bar at the Kimmel Center,The Overture,The Great Eye,$7,Y
 The Balcony Bar at the Kimmel Center,The Chorus,The Great Eye,$7,Y
 The Balcony Bar at the Kimmel Center,The Crescendo,The Great Eye,$7,Y
-The Balcony Bar at the Kimmel Center,Plus a variety of adult sno,Neshaminy Creek Shape of Hops,$7,Y
 The Balcony Bar at the Kimmel Center,House Red,Red,$6,Y
 The Balcony Bar at the Kimmel Center,House White,White,$6,Y
 The Balcony Bar at the Kimmel Center,Tecate,Tecate,$5,Y
@@ -304,7 +303,7 @@ Independence Beer Garden,House White,White,$6,Y
 Independence Beer Garden,Miller High Life draft,Miller High Life,$5,Y
 Iron Hill Brewery & Restaurant,"Margarita: Hornitos Plata, Triple Sec, Sour Mix",Margarita,$7,Y
 Iron Hill Brewery & Restaurant,"Mojito: Rum, Lime Juice, Simple Syrup, Mint",Mojito,$7,Y
-Iron Hill Brewery & Restaurant,"Vodka Lemonade: Vodka, Triple Sec, House Lemonade",Surfside Lemonade & Vodka,$7,Y
+Iron Hill Brewery & Restaurant,"Vodka Lemonade: Vodka, Triple Sec, House Lemonade",Surfside Lemonade,$7,Y
 Iron Hill Brewery & Restaurant,"Whiskey Sour: Bourbon, Triple Sec, Sour Mix",Whiskey Sour,$7,Y
 Iron Hill Brewery & Restaurant,House Red,Red,$6,Y
 Iron Hill Brewery & Restaurant,House White,White,$6,Y
@@ -319,18 +318,18 @@ Kook Burger & Bar,Spicy Peach Margarita,Margarita,$7,Y
 Kook Burger & Bar,Echo Bay Sauvignon Blanc,Sauvignon Blanc,$6,Y
 Kook Burger & Bar,Philly United,Philly Uniteds,$5,Y
 Ladder 15,Hornitos Paloma,Paloma,$7,Y
-Ladder 15,Surfside,Surfside Lemonade & Vodka,$7,Y
+Ladder 15,Surfside,Surfside Lemonade,$7,Y
 Ladder 15,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y
 Ladder 15,Micholob ultra,Michelob Ultra,$5,Y
-Leda and the Swan Cocktail Lounge,Raging Bull,Frozen Astronaut,$7,Y
-Leda and the Swan Cocktail Lounge,Everyday is a Good Day,Frozen Astronaut,$7,Y
-Leda and the Swan Cocktail Lounge,My Passion is Your Passion,Frozen Astronaut,$7,Y
+Leda and the Swan Cocktail Lounge,Raging Bull,Raging Bull,$7,Y
+Leda and the Swan Cocktail Lounge,"Everyday is a Good Day: Pineapple Rum, pom juice, pineapple juice, lime juice, Lime, Simple",Frozen Astronaut,$7,Y
+Leda and the Swan Cocktail Lounge,"My Passion is Your Passion: Vodka, passionfruit, lime juice, vanilla",Frozen Astronaut,$7,Y
 Leda and the Swan Cocktail Lounge,Everyday Rose Seltzer Can,Rosé,$6,Y
 Leda and the Swan Cocktail Lounge,Kirin Bottle,Kirin,$5,Y
 Leda and the Swan Cocktail Lounge,Kirin Light Bottle,Kirin Light,$5,Y
-Little Nonna's,Italian Paloma,Hugo,$7,Y
+Little Nonna's,Italian Paloma,Paloma,$7,Y
 Little Nonna's,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y
-Little Nonna's,Montepulciano,Frozen Astronaut,$6,Y
+Little Nonna's,Montepulciano,Montepulciano,$6,Y
 Little Nonna's,Peroni Italian Lager,Peroni,$5,Y
 Marathon 16th & Sansom,Blue Margarita,Margarita,$7,Y
 Marathon 16th & Sansom,House Merlot,Merlot,$6,Y
@@ -392,7 +391,7 @@ Time Restaurant,Merlot,Merlot,$6,Y
 Time Restaurant,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y
 Time Restaurant,Love City Lager,Love City Lager,$5,Y
 Tir Na Nog Irish Bar & Grill,"Fresh Squeezed Margarita: Hornitos Tequila, Orange Juice, Fresh Squeezed Lemon & Lime Juice, Agave & Grand Marnier with a Salted Rim",Margarita,$7,Y
-Tir Na Nog Irish Bar & Grill,"Peach Martini: Vodka, Orange Juice, Peach Schnapps, Triple Sec & Lime Juice",Surfside Iced Tea & Vodka,$7,Y
+Tir Na Nog Irish Bar & Grill,"Peach Martini: Vodka, Orange Juice, Peach Schnapps, Triple Sec & Lime Juice",Martini,$7,Y
 Tir Na Nog Irish Bar & Grill,Starborough Sauvignon Blanc,Sauvignon Blanc,$6,Y
 Tir Na Nog Irish Bar & Grill,Dark Horse Rose,Rosé,$6,Y
 Tir Na Nog Irish Bar & Grill,Stateside Orange Seltzer,Stateside Seltzer,$5,Y

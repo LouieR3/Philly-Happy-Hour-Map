@@ -221,12 +221,14 @@ def calculateDeal():
     results_df.to_csv("ComparisonResults.csv", index=False)
     print(results_df)
 
-menu_df = dfToAdd("http://www.barbuzzo.com/Pdfs/barbuzzoBEVERAGE_MENU.pdf")
-if not menu_df.empty:
-    menu_df["Sips Deal"] = "N"
-    # print(menu_df)
-    final_df = machineLearning(menu_df)
-    print(final_df)
-    if not final_df.empty:
-        combineCSV(final_df)
-        calculateDeal()
+# menu_df = dfToAdd("http://www.barbuzzo.com/Pdfs/barbuzzoBEVERAGE_MENU.pdf")
+# if not menu_df.empty:
+#     menu_df["Sips Deal"] = "N"
+#     # print(menu_df)
+#     final_df = machineLearning(menu_df)
+#     print(final_df)
+#     if not final_df.empty:
+#         combineCSV(final_df)
+#         calculateDeal()
+    
+calculateDeal()
