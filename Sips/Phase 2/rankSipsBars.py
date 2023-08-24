@@ -146,13 +146,14 @@ bar_totals['Deal Score'] = bar_totals['Deal Score'].round(1)
 print(bar_totals.sort_values('Deal Score', ascending=False))
 
 # Get list of all bars
-all_bars = pd.read_csv('AllSipsLocations.csv')['Bar Name']  
+all_bars = pd.read_csv('AllSipsLocations.csv')['Bar Name']
 
 # Fill missing with default
 bar_totals = bar_totals.reindex(all_bars, fill_value=5)
 
 bar_totals['Sips Bar'] = bar_totals['Deal Score'].round(1)
-bar_totals.to_csv("ComparisonResults2.csv", index=False)
+results_df.to_csv("ComparisonResults2.csv", index=False)
+# bar_totals.to_csv("ComparisonResults2.csv")
 # Compare prices for each unique Drink
 # for menu_item in df["Predicted Item"].unique():
 #     sips_price = sips_deal_y_df[sips_deal_y_df["Predicted Item"] == menu_item][

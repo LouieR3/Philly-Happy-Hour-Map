@@ -46,6 +46,9 @@ keyword_prices = {}
 def x_round(x):
     return (round(x*4)/4)
 
+def frac_round(x, base=5):
+    return (base * round(x/base))
+
 for word in keywords:
   # Add leading space and convert to lowercase
   keyword = " " + word.lower()  
@@ -54,7 +57,7 @@ for word in keywords:
   
   if len(matching) > 0:
     avg_price = matching["Price"].mean()
-    avg_price = x_round(avg_price )
+    avg_price = x_round(avg_price)
     
     keyword_prices[word] = avg_price
 
@@ -75,6 +78,11 @@ def update_normal_price(row):
                 row['Normal Price'] = price
                 comparison_result = price - row['Sips Price']
                 row['Comparison Result'] = comparison_result
+
+                comparison_frac = (1 - (row['Sips Price'] / row['Normal Price'])) * 100
+                comparison_frac = round(comparison_frac)
+                comparison_frac = frac_round(comparison_frac, base=5)
+                row['Comparison Fraction'] = comparison_frac
                 break
     return row
 
@@ -87,6 +95,6 @@ df["Normal Price"] = df["Normal Price"].apply(lambda x: "${:.2f}".format(x)) # t
 df["Sips Price"] = df["Sips Price"].replace("$nan", "") # type: ignore
 df["Normal Price"] = df["Normal Price"].replace("$nan", "") # type: ignore
 df = df.sort_values(by="Comparison Result", ascending=False) # type: ignore
-
+print(df)
 # Save the updated DataFrame back to the CSV file
-df.to_csv("ComparisonResults2.csv", index=False)
+# df.to_csv("ComparisonResults2.csv", index=False)

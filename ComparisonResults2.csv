@@ -1,72 +1,194 @@
-Comparison Result,Comparison Fraction,Deal Count,Deal Weight,Result Score,Fraction Score,Deal Score,Sips Bar
-17.31,34.0,5,0.38461538461538464,4.741282051282051,6.036585365853659,2.1,2.1
-20.509999999999998,27.857142857142858,7,0.5384615384615384,5.6438461538461535,4.553310104529617,2.7,2.7
-5.5,29.5,2,0.15384615384615385,1.4102564102564104,4.95,0.5,0.5
-12.32,29.0,5,0.38461538461538464,3.3338461538461535,4.829268292682927,1.6,1.6
-21.57,32.57142857142857,7,0.5384615384615384,5.9428205128205125,5.69163763066202,3.1,3.1
-3.9,39.0,1,0.07692307692307693,0.9589743589743589,7.2439024390243905,0.3,0.3
-8.139999999999999,27.333333333333332,3,0.23076923076923078,2.1548717948717946,4.426829268292683,0.8,0.8
-3.33,15.0,2,0.15384615384615385,0.7982051282051282,1.448780487804878,0.2,0.2
-13.58,26.4,5,0.38461538461538464,3.6892307692307695,4.201463414634146,1.5,1.5
-11.809999999999999,37.333333333333336,3,0.23076923076923078,3.19,6.8414634146341475,1.2,1.2
-15.75,36.5,4,0.3076923076923077,4.301282051282051,6.640243902439025,1.7,1.7
-14.25,36.0,4,0.3076923076923077,3.8782051282051277,6.519512195121952,1.6,1.6
-19.88,38.6,5,0.38461538461538464,5.466153846153846,7.147317073170733,2.4,2.4
-4.04,14.0,3,0.23076923076923078,0.9984615384615385,1.2073170731707317,0.3,0.3
-10.969999999999999,36.333333333333336,3,0.23076923076923078,2.9530769230769227,6.6000000000000005,1.1,1.1
-18.77,42.25,4,0.3076923076923077,5.153076923076923,8.028658536585366,2.0,2.0
-0.5,9.0,1,0.07692307692307693,0.0,0.0,0.0,0.0
-5.0,5.0,5,5.0,5.0,5.0,5.0,5.0
-21.71,33.166666666666664,6,0.46153846153846156,5.9823076923076925,5.835365853658536,2.7,2.7
-12.55,28.6,5,0.38461538461538464,3.3987179487179486,4.732682926829269,1.6,1.6
-15.07,32.0,5,0.38461538461538464,4.1094871794871795,5.553658536585367,1.9,1.9
-15.370000000000001,37.5,4,0.3076923076923077,4.194102564102565,6.881707317073171,1.7,1.7
-13.54,25.6,5,0.38461538461538464,3.6779487179487176,4.00829268292683,1.5,1.5
-14.9,31.4,5,0.38461538461538464,4.061538461538461,5.4087804878048775,1.8,1.8
-12.809999999999999,32.25,4,0.3076923076923077,3.4720512820512814,5.614024390243902,1.4,1.4
-22.56,34.666666666666664,6,0.46153846153846156,6.222051282051281,6.197560975609756,2.9,2.9
-11.9,37.0,3,0.23076923076923078,3.2153846153846155,6.760975609756098,1.2,1.2
-17.57,41.75,4,0.3076923076923077,4.814615384615385,7.907926829268294,2.0,2.0
-3.57,37.0,1,0.07692307692307693,0.8658974358974357,6.760975609756098,0.3,0.3
-9.75,33.333333333333336,3,0.23076923076923078,2.6089743589743586,5.875609756097561,1.0,1.0
-14.9,31.4,5,0.38461538461538464,4.061538461538461,5.4087804878048775,1.8,1.8
-10.809999999999999,35.333333333333336,3,0.23076923076923078,2.9079487179487176,6.358536585365854,1.1,1.1
-7.9,37.5,2,0.15384615384615385,2.0871794871794873,6.881707317073171,0.7,0.7
-5.0,5.0,5,5.0,5.0,5.0,5.0,5.0
-14.559999999999999,43.333333333333336,3,0.23076923076923078,3.965641025641025,8.290243902439025,1.4,1.4
-4.25,23.5,2,0.15384615384615385,1.0576923076923077,3.5012195121951217,0.4,0.4
-5.0,5.0,5,5.0,5.0,5.0,5.0,5.0
-7.75,37.0,2,0.15384615384615385,2.0448717948717947,6.760975609756098,0.7,0.7
-9.0,39.0,2,0.15384615384615385,2.3974358974358974,7.2439024390243905,0.7,0.7
-7.9,37.5,2,0.15384615384615385,2.0871794871794873,6.881707317073171,0.7,0.7
-5.0,5.0,5,5.0,5.0,5.0,5.0,5.0
-11.969999999999999,19.833333333333332,6,0.46153846153846156,3.235128205128205,2.6158536585365852,1.4,1.4
-10.469999999999999,24.5,4,0.3076923076923077,2.8120512820512817,3.7426829268292683,1.0,1.0
-13.469999999999999,33.5,4,0.3076923076923077,3.6582051282051276,5.9158536585365855,1.5,1.5
-9.0,40.5,2,0.15384615384615385,2.3974358974358974,7.60609756097561,0.8,0.8
-9.75,25.5,4,0.3076923076923077,2.6089743589743586,3.984146341463415,1.0,1.0
-3.23,10.333333333333334,3,0.23076923076923078,0.77,0.3219512195121953,0.1,0.1
-7.25,35.5,2,0.15384615384615385,1.9038461538461537,6.398780487804879,0.6,0.6
-15.93,35.5,4,0.3076923076923077,4.352051282051281,6.398780487804879,1.7,1.7
-4.0,21.0,2,0.15384615384615385,0.9871794871794872,2.897560975609756,0.3,0.3
-7.57,18.0,3,0.23076923076923078,1.994102564102564,2.1731707317073172,0.5,0.5
-4.0,36.0,1,0.07692307692307693,0.9871794871794872,6.519512195121952,0.3,0.3
-8.9,40.5,2,0.15384615384615385,2.3692307692307693,7.60609756097561,0.8,0.8
-35.6,27.153846153846153,13,1.0,9.9,4.383489681050657,7.1,7.1
-10.969999999999999,36.333333333333336,3,0.23076923076923078,2.9530769230769227,6.6000000000000005,1.1,1.1
-7.13,17.5,4,0.3076923076923077,1.87,2.0524390243902437,0.6,0.6
-11.57,36.333333333333336,3,0.23076923076923078,3.1223076923076922,6.6000000000000005,1.1,1.1
-10.969999999999999,36.333333333333336,3,0.23076923076923078,2.9530769230769227,6.6000000000000005,1.1,1.1
-4.0,36.0,1,0.07692307692307693,0.9871794871794872,6.519512195121952,0.3,0.3
-9.870000000000001,44.0,2,0.15384615384615385,2.642820512820513,8.451219512195122,0.9,0.9
-18.57,38.2,5,0.38461538461538464,5.096666666666667,7.050731707317074,2.3,2.3
-11.0,43.0,2,0.15384615384615385,2.9615384615384617,8.209756097560975,0.9,0.9
-7.3,24.333333333333332,3,0.23076923076923078,1.9179487179487178,3.7024390243902436,0.6,0.6
-11.469999999999999,37.333333333333336,3,0.23076923076923078,3.094102564102564,6.8414634146341475,1.1,1.1
-4.0,36.0,1,0.07692307692307693,0.9871794871794872,6.519512195121952,0.3,0.3
-3.9,39.0,1,0.07692307692307693,0.9589743589743589,7.2439024390243905,0.3,0.3
-5.0,5.0,5,5.0,5.0,5.0,5.0,5.0
-6.0,50.0,1,0.07692307692307693,1.5512820512820513,9.9,0.4,0.4
-6.25,33.5,2,0.15384615384615385,1.6217948717948716,5.9158536585365855,0.6,0.6
-3.5,33.0,1,0.07692307692307693,0.8461538461538461,5.795121951219512,0.3,0.3
-6.25,15.333333333333334,3,0.23076923076923078,1.6217948717948716,1.5292682926829269,0.4,0.4
+Drink,Sips Price,Normal Price,Comparison Result,Comparison Fraction,Sips Bar
+Espresso Martini,$7.00,$14.00,7.0,50.0,Top Tomato Bar & Pizza
+Merlot,$6.00,$12.12,6.12,50.0,1518 Bar and Grill
+Grenache,$6.00,$12.00,6.0,50.0,Walnut Garden - Temporarily Closed
+Chardonnay,$6.00,$11.31,5.31,45.0,1225 Raw Sushi and Sake Lounge
+Cabernet Sauvignon,$6.00,$11.25,5.25,45.0,1225 Raw Sushi and Sake Lounge
+Sauvignon Blanc,$6.00,$11.00,5.0,45.0,ArtBar at Sonesta Hotel
+Aperol Spritz,$7.00,$12.00,5.0,40.0,Buca D'oro Ristorante
+Moscow Mule,$7.00,$11.00,4.0,35.0,Craftsman Row Saloon
+Pineapple Lemonade,$7.00,$11.00,4.0,35.0,Uptown Beer Garden
+Tequila Punch,$7.00,$11.00,4.0,35.0,Barbuzzo
+Margarita,$7.00,$11.00,4.0,35.0,1518 Bar and Grill
+Stateside Seltzer,$5.00,$9.00,4.0,45.0,Tir Na Nog Irish Bar & Grill
+Gin and Tonic,$7.00,$11.00,4.0,35.0,The Cauldron Philly
+White,$6.10,$10.00,3.9,40.0,The Balcony Bar at the Kimmel Center
+Malbec,$6.00,$9.88,3.88,40.0,Bodega Taco Bar
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,40.0,1225 Raw Sushi and Sake Lounge
+Rosé,$6.05,$9.62,3.57,35.0,Ancient Spirits & Grille
+Paloma,$7.00,$10.50,3.5,35.0,Bar Bombón
+Downeast Cider,$5.00,$7.50,2.5,35.0,Ancient Spirits & Grille
+Pinot Noir,$6.00,$8.50,2.5,30.0,1225 Raw Sushi and Sake Lounge
+Stella Artois,$5.00,$7.25,2.25,30.0,The Patio @ Thirteen Restaurant
+Surfside Lemonade,$7.00,$9.00,2.0,20.0,Iron Hill Brewery & Restaurant
+Golden Road Mango Cart,$5.00,$7.00,2.0,30.0,Con Murphy's Irish Pub
+Strongbow Cider,$5.00,$7.00,2.0,30.0,Tir Na Nog Irish Bar & Grill
+Sam Adams,$5.00,$7.00,2.0,30.0,ArtBar at Sonesta Hotel
+New Belgium Voodoo Ranger,$5.00,$7.00,2.0,30.0,Ancient Spirits & Grille
+White Claw,$5.00,$6.80,1.8,25.0,Cavanaugh's Rittenhouse
+Carlsberg,$5.00,$6.75,1.75,25.0,The Black Sheep
+Sierra Nevada Pale Ale,$5.00,$6.75,1.75,25.0,Blume Burger
+Modelo,$5.00,$6.50,1.5,25.0,ArtBar at Sonesta Hotel
+Kona Big Wave,$5.00,$6.50,1.5,25.0,Air Grille Garden at Dilworth Park
+Kenwood Lager,$5.00,$6.25,1.25,20.0,City Tap House Logan Square
+Warsteiner Pilsner,$5.00,$6.00,1.0,15.0,Cavanaugh's Rittenhouse
+Victory Prima Pils,$5.00,$6.00,1.0,15.0,Darling Jack's Tavern
+Bud Light,$5.00,$5.50,0.5,10.0,1225 Raw Sushi and Sake Lounge
+Coors Light,$5.00,$5.50,0.5,10.0,1518 Bar and Grill
+Budweiser,$5.00,$5.50,0.5,10.0,1518 Bar and Grill
+Michelob Ultra,$5.00,$5.50,0.5,10.0,ArtBar at Sonesta Hotel
+Corona Light,$6.00,$6.50,0.5,10.0,Ancient Spirits & Grille
+Miller Lite,$5.00,$5.33,0.33,5.0,1518 Bar and Grill
+Yuengling,$5.00,$5.25,0.25,5.0,Bar-Ly Chinatown
+Frozen Astronaut,$6.67,$6.50,-0.17,-5.0,Bar Bombón
+Blue Moon,$7.00,$6.50,-0.5,-10.0,The Cauldron Philly
+Miller High Life,$5.00,$4.50,-0.5,-10.0,The Hayes
+PBR,$5.00,$4.00,-1.0,-25.0,The Mulberry on Arch
+Dragonade,,$8.00,,,
+Orange Crush,,$12.00,,,
+Mezcal-A-Rita,,$13.00,,,
+Pink Lady,,$12.00,,,
+Sidecar,,$16.00,,,
+Old Fashioned,,$12.75,,,
+City Wide,,$10.00,,,
+Bloody Mary,,$12.00,,,
+Bottom's Up,,$11.00,,,
+Victory Brotherly Love,,$7.25,,,
+Guinness Non Alcoholic,,$7.00,,,
+Stella Liberte 0.0,,$6.75,,,
+Two Roads N/A Juicy IPA,,$6.50,,,
+Magners Apple Cider,,$7.00,,,
+Cape May White,,$7.00,,,
+Dogfish Namaste,,$6.50,,,
+Konig Ludwig Weissbier,,$6.75,,,
+Delirium Tremens,,$15.00,,,
+Yards Jefferson's Golden Ale,,$7.50,,,
+Corona,,$6.50,,,
+Rocky Mountain Outlaw,,$4.00,,,
+Yards Brawler,,$6.75,,,
+Fat Head Sunshine Daydream,,$6.50,,,
+Neshaminy Creek Shape of Hops,,$9.00,,,
+New Belgium Fat Tire,,$7.00,,,
+Half Acre Daisy Cutter Pale Ale,,$7.00,,,
+Dogfish Head Citrus Squal,,$7.00,,,
+Dogfish Head Seaquench Sour Ale,,$6.50,,,
+Sour Monkey,,$7.75,,,
+Mummers Row Philly Tea,,$8.00,,,
+Surfside Half & Half,,$9.00,,,
+Surfside Iced Tea,,$9.00,,,
+Twisted Tea,,$6.25,,,
+Champagne,,$8.25,,,
+Prosecco,,$10.00,,,
+Sumo Punch,$7.00,,,,1225 Raw Sushi and Sake Lounge
+Ginger Spirit,$7.00,,,,1225 Raw Sushi and Sake Lounge
+Sake,$7.00,,,,1225 Raw Sushi and Sake Lounge
+Kenzinger,$5.00,,,,1518 Bar and Grill
+Vermentino,$6.00,,,,Air Grille Garden at Dilworth Park
+Bee On Thyme,$7.00,,,,Ancient Spirits & Grille
+Gin (Nikka Coffey or Toki Hibiscus),$7.00,,,,Ancient Spirits & Grille
+Red,$6.00,,,,Ancient Spirits & Grille
+Love City Lager,$5.00,,,,Ancient Spirits & Grille
+Man With No Name,$7.00,,,,ArtBar at Sonesta Hotel
+Rum Swizzle,$7.00,,,,ArtBar at Sonesta Hotel
+Cosmopolitan,$7.00,,,,ArtBar at Sonesta Hotel
+Yards IPA,$5.00,,,,ArtBar at Sonesta Hotel
+The Great Eye,$7.00,,,,The Balcony Bar at the Kimmel Center
+Tecate,$5.00,,,,The Balcony Bar at the Kimmel Center
+Tequila Sunrise,$7.00,,,,Bank and Bourbon
+Rosemarina,$7.00,,,,Bar-Ly Chinatown
+Zinfandel,$6.00,,,,Bar-Ly Chinatown
+Corona Premier,$5.00,,,,Bar-Ly Chinatown
+Troegs Sunshine Pils,$5.00,,,,Barbuzzo
+Victory Brothery Love,$5.00,,,,Barstool Sansom Street
+Hoegarrden,$5.00,,,,The Black Sheep
+2SP Delco Lager,$5.00,,,,Blume Burger
+Firestone Walker Union Jack IPA,$5.00,,,,Blume Burger
+Maragrita,$7.00,,,,Bodega Taco Bar
+Mojito,$7.00,,,,Bodega Taco Bar
+Martini,$7.00,,,,Buca D'oro Ristorante
+Sheet Bend,$7.00,,,,Butcher Bar
+Peroni,$5.00,,,,The Cauldron Philly
+Fat Heads Sunshine Daydream,$5.00,,,,The Cauldron Philly
+Mango Tango,$6.00,,,,The Cauldron Philly
+Bourbon Punch,$7.00,,,,City Tap House Logan Square
+PBC Walt Wit,$5.00,,,,City Tap House Logan Square
+New Trail Crisp Lager,$5.00,,,,City Tap House Logan Square
+Ranch Wooder,$7.00,,,,Con Murphy's Irish Pub
+Northern Lights,$7.00,,,,Continental Midtown
+Estralla Jalisco,$5.00,,,,Devil's Alley
+New Trails Crisp Lager,$5.00,,,,Dim Sum House by Jane G's
+Hugo,$7.00,,,,Dolce Italian
+Barbera,$6.00,,,,Dolce Italian
+Yards Summer Crush,$5.00,,,,Dolce Italian
+Barrel Hitch,$7.00,,,,Double Knot
+Montucky Cold Snacks,$5.00,,,,Double Knot
+Gio's Tea,$7.00,,,,Giovani's Bar & Grill
+La Grenada,$7.00,,,,Giuseppe and Sons
+Vino Rosso,$6.00,,,,Giuseppe and Sons
+Vino Bianco,$6.00,,,,Giuseppe and Sons
+Arizona Hard Ice Tea,$5.00,,,,The Goat Rittenhouse
+The Secret Garden,$7.00,,,,Harp & Crown
+Pacifico,$5.00,,,,The Hayes
+Whiskey Sour,$7.00,,,,Iron Hill Brewery & Restaurant
+Sunny in Pils,$5.00,,,,Iron Hill Brewery & Restaurant
+Iron Hill Light Lager,$5.00,,,,Iron Hill Brewery & Restaurant
+Vienna Red Lager,$5.00,,,,Iron Hill Brewery & Restaurant
+Brambleberry,$5.00,,,,Iron Hill Brewery & Restaurant
+Homestead,$5.00,,,,Iron Hill Brewery & Restaurant
+Pig Iron Porter,$5.00,,,,Iron Hill Brewery & Restaurant
+Philly Uniteds,$5.00,,,,Kook Burger & Bar
+Raging Bull,$7.00,,,,Leda and the Swan Cocktail Lounge
+Kirin,$5.00,,,,Leda and the Swan Cocktail Lounge
+Kirin Light,$5.00,,,,Leda and the Swan Cocktail Lounge
+Montepulciano,$6.00,,,,Little Nonna's
+Solid Gold Founders,$5.00,,,,The Mulberry on Arch
+Dogfish Head IPA,$5.00,,,,The Patio @ Thirteen Restaurant
+Victory Dirtwolf Double IPA,$5.00,,,,The Patio @ Thirteen Restaurant
+Sparkling,$6.00,,,,Pearl & Mary
+Mai Tai,$6.00,,,,Thanal Indian Tavern
+Sunset On Top,$7.00,,,,Top Tomato Bar & Pizza
+High Noon,$7.00,,,,Top Tomato Bar & Pizza
+Hammered Hulk,$7.00,,,,Top Tomato Bar & Pizza
+Philly Flush,$7.00,,,,Top Tomato Bar & Pizza
+Rupee Lager,$5.00,,,,Veda - Modern Indian Bistro
+Oskar Blues,$5.00,,,,Via Locusta
+Roots & Culture,$7.00,,,,Vintage Wine Bar & Bistro
+Walnut Garden Lager,$5.00,,,,Walnut Garden - Temporarily Closed
+Well Liquor,$7.00,,,,Wrap Shack
+Manhattan,,$12.00,,,
+Irish Coffee,,$10.33,,,
+Guinness,,$7.25,,,
+Harp,,$5.00,,,
+Smithwicks,,$5.50,,,
+Sam Adams Winter Lager,,$7.00,,,
+Cape May Crushin It Orange IPA,,$8.00,,,
+Two Roads Lil Heaven IPA,,$7.00,,,
+Yards Philly Pale Ale,,$7.00,,,
+Allagash,,$7.00,,,
+Kronenberg,,$7.00,,,
+Lagunitas IPA,,$7.00,,,
+Cigar City Jai Alai,,$7.00,,,
+Yards Philty Hazy IPA,,$7.00,,,
+Lancaster Milk Stout,,$6.75,,,
+Lefthand Milk Stout,,$6.75,,,
+St. Bernardus ABT 12,,$10.00,,,
+Angry Orchard Apple Cider,,$6.50,,,
+Amstel Light,,$6.25,,,
+Heineken,,$6.25,,,
+Heinken Light,,$6.50,,,
+Fiore Rosa,,$15.00,,,
+Lemonade,,$10.50,,,
+Sangria,,$11.00,,,
+Troegs Perpetual IPA,,$7.00,,,
+Ommegang Neon Rainbows,,$9.00,,,
+Elysian Space Dust IPA,,$8.00,,,
+Wicked Weed Pernicious IPA,,$8.00,,,
+Victory Berry Monkey,,$9.00,,,
+Lord Hobo LIFE,,$7.50,,,
+Sagardoa,,$9.00,,,
+Wyndridge Original,,$7.00,,,
+Spritzer,,$8.00,,,
+Trebbiano,,$12.00,,,
+Soave,,$15.00,,,
+Zweigelt,,$12.00,,,
+Negroamaro,,$12.00,,,
