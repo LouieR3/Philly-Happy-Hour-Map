@@ -11118,12 +11118,14 @@ html {
   width: 10rem;
   /* box-shadow: 10px 15px 25px 0 rgba(0,0,0,.2); */
 }
-
-@media (min-width: 992px) {
+@media (min-width: 1199px) {
   .masthead .masthead-avatar {
     width: 12rem;
     /* box-shadow: 10px 15px 25px 0 rgba(0,0,0,.2); */
   }
+}
+
+@media (min-width: 992px) {
   .masthead {
     /* padding-top: calc(6rem + 104px); */
     padding-bottom: 6rem;
