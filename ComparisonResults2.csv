@@ -1,194 +1,225 @@
 Drink,Sips Price,Normal Price,Comparison Result,Comparison Fraction,Sips Bar
-Espresso Martini,$7.00,$14.00,7.0,50.0,Top Tomato Bar & Pizza
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,1225 Raw Sushi and Sake Lounge
+Chardonnay,$6.00,$11.31,5.31,47.0,1225 Raw Sushi and Sake Lounge
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,1225 Raw Sushi and Sake Lounge
+Pinot Noir,$6.00,$8.50,2.5,29.0,1225 Raw Sushi and Sake Lounge
+Bud Light,$5.00,$5.50,0.5,9.0,1225 Raw Sushi and Sake Lounge
+Margarita,$7.00,$11.00,4.0,36.0,1518 Bar and Grill
+Chardonnay,$6.00,$11.31,5.31,47.0,1518 Bar and Grill
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,1518 Bar and Grill
 Merlot,$6.00,$12.12,6.12,50.0,1518 Bar and Grill
-Grenache,$6.00,$12.00,6.0,50.0,Walnut Garden - Temporarily Closed
-Chardonnay,$6.00,$11.31,5.31,45.0,1225 Raw Sushi and Sake Lounge
-Cabernet Sauvignon,$6.00,$11.25,5.25,45.0,1225 Raw Sushi and Sake Lounge
+Budweiser,$5.00,$5.50,0.5,9.0,1518 Bar and Grill
+Coors Light,$5.00,$5.50,0.5,9.0,1518 Bar and Grill
+Miller Lite,$5.00,$5.33,0.33,6.0,1518 Bar and Grill
+Margarita,$7.00,$11.00,4.0,36.0,Air Grille Garden at Dilworth Park
+Kona Big Wave,$5.00,$6.50,1.5,23.0,Air Grille Garden at Dilworth Park
+Rosé,$6.05,$9.62,3.57,37.0,Ancient Spirits & Grille
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Ancient Spirits & Grille
+Corona Light,$6.00,$6.50,0.5,8.0,Ancient Spirits & Grille
+Downeast Cider,$5.00,$7.50,2.5,33.0,Ancient Spirits & Grille
+New Belgium Voodoo Ranger,$5.00,$7.00,2.0,29.0,Ancient Spirits & Grille
 Sauvignon Blanc,$6.00,$11.00,5.0,45.0,ArtBar at Sonesta Hotel
-Aperol Spritz,$7.00,$12.00,5.0,40.0,Buca D'oro Ristorante
-Moscow Mule,$7.00,$11.00,4.0,35.0,Craftsman Row Saloon
-Pineapple Lemonade,$7.00,$11.00,4.0,35.0,Uptown Beer Garden
-Tequila Punch,$7.00,$11.00,4.0,35.0,Barbuzzo
-Margarita,$7.00,$11.00,4.0,35.0,1518 Bar and Grill
-Stateside Seltzer,$5.00,$9.00,4.0,45.0,Tir Na Nog Irish Bar & Grill
-Gin and Tonic,$7.00,$11.00,4.0,35.0,The Cauldron Philly
-White,$6.10,$10.00,3.9,40.0,The Balcony Bar at the Kimmel Center
-Malbec,$6.00,$9.88,3.88,40.0,Bodega Taco Bar
-Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,40.0,1225 Raw Sushi and Sake Lounge
-Rosé,$6.05,$9.62,3.57,35.0,Ancient Spirits & Grille
-Paloma,$7.00,$10.50,3.5,35.0,Bar Bombón
-Downeast Cider,$5.00,$7.50,2.5,35.0,Ancient Spirits & Grille
-Pinot Noir,$6.00,$8.50,2.5,30.0,1225 Raw Sushi and Sake Lounge
-Stella Artois,$5.00,$7.25,2.25,30.0,The Patio @ Thirteen Restaurant
-Surfside Lemonade,$7.00,$9.00,2.0,20.0,Iron Hill Brewery & Restaurant
-Golden Road Mango Cart,$5.00,$7.00,2.0,30.0,Con Murphy's Irish Pub
-Strongbow Cider,$5.00,$7.00,2.0,30.0,Tir Na Nog Irish Bar & Grill
-Sam Adams,$5.00,$7.00,2.0,30.0,ArtBar at Sonesta Hotel
-New Belgium Voodoo Ranger,$5.00,$7.00,2.0,30.0,Ancient Spirits & Grille
-White Claw,$5.00,$6.80,1.8,25.0,Cavanaugh's Rittenhouse
-Carlsberg,$5.00,$6.75,1.75,25.0,The Black Sheep
-Sierra Nevada Pale Ale,$5.00,$6.75,1.75,25.0,Blume Burger
-Modelo,$5.00,$6.50,1.5,25.0,ArtBar at Sonesta Hotel
-Kona Big Wave,$5.00,$6.50,1.5,25.0,Air Grille Garden at Dilworth Park
-Kenwood Lager,$5.00,$6.25,1.25,20.0,City Tap House Logan Square
-Warsteiner Pilsner,$5.00,$6.00,1.0,15.0,Cavanaugh's Rittenhouse
-Victory Prima Pils,$5.00,$6.00,1.0,15.0,Darling Jack's Tavern
-Bud Light,$5.00,$5.50,0.5,10.0,1225 Raw Sushi and Sake Lounge
-Coors Light,$5.00,$5.50,0.5,10.0,1518 Bar and Grill
-Budweiser,$5.00,$5.50,0.5,10.0,1518 Bar and Grill
-Michelob Ultra,$5.00,$5.50,0.5,10.0,ArtBar at Sonesta Hotel
-Corona Light,$6.00,$6.50,0.5,10.0,Ancient Spirits & Grille
-Miller Lite,$5.00,$5.33,0.33,5.0,1518 Bar and Grill
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,ArtBar at Sonesta Hotel
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,ArtBar at Sonesta Hotel
+Rosé,$6.05,$9.62,3.57,37.0,ArtBar at Sonesta Hotel
+Michelob Ultra,$5.00,$5.50,0.5,9.0,ArtBar at Sonesta Hotel
+Modelo,$5.00,$6.50,1.5,23.0,ArtBar at Sonesta Hotel
+Sam Adams,$5.00,$7.00,2.0,29.0,ArtBar at Sonesta Hotel
+White,$6.10,$10.00,3.9,39.0,The Balcony Bar at the Kimmel Center
+Chardonnay,$6.00,$11.31,5.31,47.0,Bank and Bourbon
+Pinot Noir,$6.00,$8.50,2.5,29.0,Bank and Bourbon
+Miller Lite,$5.00,$5.33,0.33,6.0,Bank and Bourbon
+Paloma,$7.00,$10.50,3.5,33.0,Bar Bombón
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,Bar Bombón
+Margarita,$7.00,$11.00,4.0,36.0,Bar-Ly Chinatown
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,Bar-Ly Chinatown
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Bar-Ly Chinatown
 Yuengling,$5.00,$5.25,0.25,5.0,Bar-Ly Chinatown
-Frozen Astronaut,$6.67,$6.50,-0.17,-5.0,Bar Bombón
-Blue Moon,$7.00,$6.50,-0.5,-10.0,The Cauldron Philly
-Miller High Life,$5.00,$4.50,-0.5,-10.0,The Hayes
+Miller Lite,$5.00,$5.33,0.33,6.0,Bar-Ly Chinatown
+Tequila Punch,$7.00,$11.00,4.0,36.0,Barbuzzo
+Chardonnay,$6.00,$11.31,5.31,47.0,Barbuzzo
+Pinot Noir,$6.00,$8.50,2.5,29.0,Barbuzzo
+Margarita,$7.00,$11.00,4.0,36.0,Barstool Sansom Street
+Margarita,$7.00,$11.00,4.0,36.0,Barstool Sansom Street
+Margarita,$7.00,$11.00,4.0,36.0,Barstool Sansom Street
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Barstool Sansom Street
+Paloma,$7.00,$10.50,3.5,33.0,The Black Sheep
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,The Black Sheep
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,The Black Sheep
+Carlsberg,$5.00,$6.75,1.75,26.0,The Black Sheep
+Margarita,$7.00,$11.00,4.0,36.0,Blume Burger
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,Blume Burger
+Chardonnay,$6.00,$11.31,5.31,47.0,Blume Burger
+Rosé,$6.05,$9.62,3.57,37.0,Blume Burger
+Sierra Nevada Pale Ale,$5.00,$6.75,1.75,26.0,Blume Burger
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,Bodega Taco Bar
+Malbec,$6.00,$9.88,3.88,39.0,Bodega Taco Bar
+Miller Lite,$5.00,$5.33,0.33,6.0,Bodega Taco Bar
+Paloma,$7.00,$10.50,3.5,33.0,Brü Craft & Wurst
+White,$6.10,$10.00,3.9,39.0,Brü Craft & Wurst
+Rosé,$6.05,$9.62,3.57,37.0,Brü Craft & Wurst
+Aperol Spritz,$7.00,$12.00,5.0,42.0,Buca D'oro Ristorante
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Buca D'oro Ristorante
+White,$6.10,$10.00,3.9,39.0,Buca D'oro Ristorante
+Merlot,$6.00,$12.12,6.12,50.0,Buca D'oro Ristorante
+Michelob Ultra,$5.00,$5.50,0.5,9.0,Butcher Bar
+White,$6.10,$10.00,3.9,39.0,The Cauldron Philly
+Blue Moon,$7.00,$6.50,-0.5,-8.0,The Cauldron Philly
+Gin and Tonic,$7.00,$11.00,4.0,36.0,The Cauldron Philly
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,The Cauldron Philly
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,The Cauldron Philly
+Chardonnay,$6.00,$11.31,5.31,47.0,The Cauldron Philly
+Paloma,$7.00,$10.50,3.5,33.0,Cavanaugh's Rittenhouse
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Cavanaugh's Rittenhouse
+Pinot Noir,$6.00,$8.50,2.5,29.0,Cavanaugh's Rittenhouse
+Warsteiner Pilsner,$5.00,$6.00,1.0,17.0,Cavanaugh's Rittenhouse
+White Claw,$5.00,$6.80,1.8,26.0,Cavanaugh's Rittenhouse
+Margarita,$7.00,$11.00,4.0,36.0,City Tap House Logan Square
+Pinot Noir,$6.00,$8.50,2.5,29.0,City Tap House Logan Square
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,City Tap House Logan Square
+Rosé,$6.05,$9.62,3.57,37.0,City Tap House Logan Square
+Kenwood Lager,$5.00,$6.25,1.25,20.0,City Tap House Logan Square
+Paloma,$7.00,$10.50,3.5,33.0,Con Murphy's Irish Pub
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Con Murphy's Irish Pub
+Merlot,$6.00,$12.12,6.12,50.0,Con Murphy's Irish Pub
+Golden Road Mango Cart,$5.00,$7.00,2.0,29.0,Con Murphy's Irish Pub
+Margarita,$7.00,$11.00,4.0,36.0,Continental Midtown
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,Continental Midtown
+Chardonnay,$6.00,$11.31,5.31,47.0,Continental Midtown
+White,$6.10,$10.00,3.9,39.0,Continental Midtown
+Bud Light,$5.00,$5.50,0.5,9.0,Continental Midtown
+Margarita,$7.00,$11.00,4.0,36.0,Craftsman Row Saloon
+Moscow Mule,$7.00,$11.00,4.0,36.0,Craftsman Row Saloon
+White,$6.10,$10.00,3.9,39.0,Craftsman Row Saloon
+Modelo,$5.00,$6.50,1.5,23.0,Craftsman Row Saloon
+Kona Big Wave,$5.00,$6.50,1.5,23.0,Craftsman Row Saloon
+Margarita,$7.00,$11.00,4.0,36.0,Darling Jack's Tavern
+Chardonnay,$6.00,$11.31,5.31,47.0,Darling Jack's Tavern
+Pinot Noir,$6.00,$8.50,2.5,29.0,Darling Jack's Tavern
+Victory Prima Pils,$5.00,$6.00,1.0,17.0,Darling Jack's Tavern
+Paloma,$7.00,$10.50,3.5,33.0,Devil's Alley
+Margarita,$7.00,$11.00,4.0,36.0,Devil's Alley
+Moscow Mule,$7.00,$11.00,4.0,36.0,Devil's Alley
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,Devil's Alley
+Chardonnay,$6.00,$11.31,5.31,47.0,Devil's Alley
+Bud Light,$5.00,$5.50,0.5,9.0,Devil's Alley
+Margarita,$7.00,$11.00,4.0,36.0,Dim Sum House by Jane G's
+Margarita,$7.00,$11.00,4.0,36.0,Dim Sum House by Jane G's
+White,$6.10,$10.00,3.9,39.0,Dim Sum House by Jane G's
+Rosé,$6.05,$9.62,3.57,37.0,Dolce Italian
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Dolce Italian
+Sauvignon Blanc,$6.00,$11.00,5.0,45.0,Dolce Italian
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,Dolce Italian
+Rosé,$6.05,$9.62,3.57,37.0,Double Knot
+Paloma,$7.00,$10.50,3.5,33.0,Drinker's Pub
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Drinker's Pub
+Pinot Noir,$6.00,$8.50,2.5,29.0,Drinker's Pub
+Moscow Mule,$7.00,$11.00,4.0,36.0,Drury Beer Garden (DBG)
+Margarita,$7.00,$11.00,4.0,36.0,Drury Beer Garden (DBG)
+White,$6.10,$10.00,3.9,39.0,Drury Beer Garden (DBG)
+Modelo,$5.00,$6.50,1.5,23.0,Drury Beer Garden (DBG)
+Kona Big Wave,$5.00,$6.50,1.5,23.0,Drury Beer Garden (DBG)
+Margarita,$7.00,$11.00,4.0,36.0,Fado Irish Pub
+Chardonnay,$6.00,$11.31,5.31,47.0,Fado Irish Pub
+Modelo,$5.00,$6.50,1.5,23.0,Fado Irish Pub
+Margarita,$7.00,$11.00,4.0,36.0,Fahrenheit 451 Pizza and Bar
+White,$6.10,$10.00,3.9,39.0,Fahrenheit 451 Pizza and Bar
+Gin and Tonic,$7.00,$11.00,4.0,36.0,Flambo Caribbean Restaurant
+Chardonnay,$6.00,$11.31,5.31,47.0,Flambo Caribbean Restaurant
+Cabernet Sauvignon,$6.00,$11.25,5.25,47.0,Flambo Caribbean Restaurant
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Giovani's Bar & Grill
+Michelob Ultra,$5.00,$5.50,0.5,9.0,Giovani's Bar & Grill
+Margarita,$7.00,$11.00,4.0,36.0,The Goat Rittenhouse
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,The Goat Rittenhouse
+Margarita,$7.00,$11.00,4.0,36.0,Gran Caffe L'Aquila
+Aperol Spritz,$7.00,$12.00,5.0,42.0,Gran Caffe L'Aquila
+Margarita,$7.00,$11.00,4.0,36.0,Hard Rock Cafe
+White,$6.10,$10.00,3.9,39.0,Hard Rock Cafe
+Margarita,$7.00,$11.00,4.0,36.0,The Hayes
+White,$6.10,$10.00,3.9,39.0,The Hayes
+Rosé,$6.05,$9.62,3.57,37.0,The Hayes
+Coors Light,$5.00,$5.50,0.5,9.0,The Hayes
+Miller High Life,$5.00,$4.50,-0.5,-11.0,The Hayes
+Michelob Ultra,$5.00,$5.50,0.5,9.0,The Hayes
+Paloma,$7.00,$10.50,3.5,33.0,Independence Beer Garden
+Rosé,$6.05,$9.62,3.57,37.0,Independence Beer Garden
+White,$6.10,$10.00,3.9,39.0,Independence Beer Garden
+Miller High Life,$5.00,$4.50,-0.5,-11.0,Independence Beer Garden
+Margarita,$7.00,$11.00,4.0,36.0,Iron Hill Brewery & Restaurant
+Surfside Lemonade,$7.00,$9.00,2.0,22.0,Iron Hill Brewery & Restaurant
+White,$6.10,$10.00,3.9,39.0,Iron Hill Brewery & Restaurant
+Rosé,$6.05,$9.62,3.57,37.0,Iron Hill Brewery & Restaurant
+Margarita,$7.00,$11.00,4.0,36.0,Kook Burger & Bar
+Sauvignon Blanc,$6.00,$11.00,5.0,45.0,Kook Burger & Bar
+Paloma,$7.00,$10.50,3.5,33.0,Ladder 15
+Surfside Lemonade,$7.00,$9.00,2.0,22.0,Ladder 15
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Ladder 15
+Michelob Ultra,$5.00,$5.50,0.5,9.0,Ladder 15
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,Leda and the Swan Cocktail Lounge
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,Leda and the Swan Cocktail Lounge
+Rosé,$6.05,$9.62,3.57,37.0,Leda and the Swan Cocktail Lounge
+Paloma,$7.00,$10.50,3.5,33.0,Little Nonna's
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Little Nonna's
+Margarita,$7.00,$11.00,4.0,36.0,Marathon 16th & Sansom
+Merlot,$6.00,$12.12,6.12,50.0,Marathon 16th & Sansom
+Chardonnay,$6.00,$11.31,5.31,47.0,Marathon 16th & Sansom
+Michelob Ultra,$5.00,$5.50,0.5,9.0,Marathon 16th & Sansom
+Paloma,$7.00,$10.50,3.5,33.0,Misconduct Tavern
+Bud Light,$5.00,$5.50,0.5,9.0,Misconduct Tavern
+Aperol Spritz,$7.00,$12.00,5.0,42.0,The Mulberry on Arch
+Rosé,$6.05,$9.62,3.57,37.0,The Mulberry on Arch
 PBR,$5.00,$4.00,-1.0,-25.0,The Mulberry on Arch
-Dragonade,,$8.00,,,
-Orange Crush,,$12.00,,,
-Mezcal-A-Rita,,$13.00,,,
-Pink Lady,,$12.00,,,
-Sidecar,,$16.00,,,
-Old Fashioned,,$12.75,,,
-City Wide,,$10.00,,,
-Bloody Mary,,$12.00,,,
-Bottom's Up,,$11.00,,,
-Victory Brotherly Love,,$7.25,,,
-Guinness Non Alcoholic,,$7.00,,,
-Stella Liberte 0.0,,$6.75,,,
-Two Roads N/A Juicy IPA,,$6.50,,,
-Magners Apple Cider,,$7.00,,,
-Cape May White,,$7.00,,,
-Dogfish Namaste,,$6.50,,,
-Konig Ludwig Weissbier,,$6.75,,,
-Delirium Tremens,,$15.00,,,
-Yards Jefferson's Golden Ale,,$7.50,,,
-Corona,,$6.50,,,
-Rocky Mountain Outlaw,,$4.00,,,
-Yards Brawler,,$6.75,,,
-Fat Head Sunshine Daydream,,$6.50,,,
-Neshaminy Creek Shape of Hops,,$9.00,,,
-New Belgium Fat Tire,,$7.00,,,
-Half Acre Daisy Cutter Pale Ale,,$7.00,,,
-Dogfish Head Citrus Squal,,$7.00,,,
-Dogfish Head Seaquench Sour Ale,,$6.50,,,
-Sour Monkey,,$7.75,,,
-Mummers Row Philly Tea,,$8.00,,,
-Surfside Half & Half,,$9.00,,,
-Surfside Iced Tea,,$9.00,,,
-Twisted Tea,,$6.25,,,
-Champagne,,$8.25,,,
-Prosecco,,$10.00,,,
-Sumo Punch,$7.00,,,,1225 Raw Sushi and Sake Lounge
-Ginger Spirit,$7.00,,,,1225 Raw Sushi and Sake Lounge
-Sake,$7.00,,,,1225 Raw Sushi and Sake Lounge
-Kenzinger,$5.00,,,,1518 Bar and Grill
-Vermentino,$6.00,,,,Air Grille Garden at Dilworth Park
-Bee On Thyme,$7.00,,,,Ancient Spirits & Grille
-Gin (Nikka Coffey or Toki Hibiscus),$7.00,,,,Ancient Spirits & Grille
-Red,$6.00,,,,Ancient Spirits & Grille
-Love City Lager,$5.00,,,,Ancient Spirits & Grille
-Man With No Name,$7.00,,,,ArtBar at Sonesta Hotel
-Rum Swizzle,$7.00,,,,ArtBar at Sonesta Hotel
-Cosmopolitan,$7.00,,,,ArtBar at Sonesta Hotel
-Yards IPA,$5.00,,,,ArtBar at Sonesta Hotel
-The Great Eye,$7.00,,,,The Balcony Bar at the Kimmel Center
-Tecate,$5.00,,,,The Balcony Bar at the Kimmel Center
-Tequila Sunrise,$7.00,,,,Bank and Bourbon
-Rosemarina,$7.00,,,,Bar-Ly Chinatown
-Zinfandel,$6.00,,,,Bar-Ly Chinatown
-Corona Premier,$5.00,,,,Bar-Ly Chinatown
-Troegs Sunshine Pils,$5.00,,,,Barbuzzo
-Victory Brothery Love,$5.00,,,,Barstool Sansom Street
-Hoegarrden,$5.00,,,,The Black Sheep
-2SP Delco Lager,$5.00,,,,Blume Burger
-Firestone Walker Union Jack IPA,$5.00,,,,Blume Burger
-Maragrita,$7.00,,,,Bodega Taco Bar
-Mojito,$7.00,,,,Bodega Taco Bar
-Martini,$7.00,,,,Buca D'oro Ristorante
-Sheet Bend,$7.00,,,,Butcher Bar
-Peroni,$5.00,,,,The Cauldron Philly
-Fat Heads Sunshine Daydream,$5.00,,,,The Cauldron Philly
-Mango Tango,$6.00,,,,The Cauldron Philly
-Bourbon Punch,$7.00,,,,City Tap House Logan Square
-PBC Walt Wit,$5.00,,,,City Tap House Logan Square
-New Trail Crisp Lager,$5.00,,,,City Tap House Logan Square
-Ranch Wooder,$7.00,,,,Con Murphy's Irish Pub
-Northern Lights,$7.00,,,,Continental Midtown
-Estralla Jalisco,$5.00,,,,Devil's Alley
-New Trails Crisp Lager,$5.00,,,,Dim Sum House by Jane G's
-Hugo,$7.00,,,,Dolce Italian
-Barbera,$6.00,,,,Dolce Italian
-Yards Summer Crush,$5.00,,,,Dolce Italian
-Barrel Hitch,$7.00,,,,Double Knot
-Montucky Cold Snacks,$5.00,,,,Double Knot
-Gio's Tea,$7.00,,,,Giovani's Bar & Grill
-La Grenada,$7.00,,,,Giuseppe and Sons
-Vino Rosso,$6.00,,,,Giuseppe and Sons
-Vino Bianco,$6.00,,,,Giuseppe and Sons
-Arizona Hard Ice Tea,$5.00,,,,The Goat Rittenhouse
-The Secret Garden,$7.00,,,,Harp & Crown
-Pacifico,$5.00,,,,The Hayes
-Whiskey Sour,$7.00,,,,Iron Hill Brewery & Restaurant
-Sunny in Pils,$5.00,,,,Iron Hill Brewery & Restaurant
-Iron Hill Light Lager,$5.00,,,,Iron Hill Brewery & Restaurant
-Vienna Red Lager,$5.00,,,,Iron Hill Brewery & Restaurant
-Brambleberry,$5.00,,,,Iron Hill Brewery & Restaurant
-Homestead,$5.00,,,,Iron Hill Brewery & Restaurant
-Pig Iron Porter,$5.00,,,,Iron Hill Brewery & Restaurant
-Philly Uniteds,$5.00,,,,Kook Burger & Bar
-Raging Bull,$7.00,,,,Leda and the Swan Cocktail Lounge
-Kirin,$5.00,,,,Leda and the Swan Cocktail Lounge
-Kirin Light,$5.00,,,,Leda and the Swan Cocktail Lounge
-Montepulciano,$6.00,,,,Little Nonna's
-Solid Gold Founders,$5.00,,,,The Mulberry on Arch
-Dogfish Head IPA,$5.00,,,,The Patio @ Thirteen Restaurant
-Victory Dirtwolf Double IPA,$5.00,,,,The Patio @ Thirteen Restaurant
-Sparkling,$6.00,,,,Pearl & Mary
-Mai Tai,$6.00,,,,Thanal Indian Tavern
-Sunset On Top,$7.00,,,,Top Tomato Bar & Pizza
-High Noon,$7.00,,,,Top Tomato Bar & Pizza
-Hammered Hulk,$7.00,,,,Top Tomato Bar & Pizza
-Philly Flush,$7.00,,,,Top Tomato Bar & Pizza
-Rupee Lager,$5.00,,,,Veda - Modern Indian Bistro
-Oskar Blues,$5.00,,,,Via Locusta
-Roots & Culture,$7.00,,,,Vintage Wine Bar & Bistro
-Walnut Garden Lager,$5.00,,,,Walnut Garden - Temporarily Closed
-Well Liquor,$7.00,,,,Wrap Shack
-Manhattan,,$12.00,,,
-Irish Coffee,,$10.33,,,
-Guinness,,$7.25,,,
-Harp,,$5.00,,,
-Smithwicks,,$5.50,,,
-Sam Adams Winter Lager,,$7.00,,,
-Cape May Crushin It Orange IPA,,$8.00,,,
-Two Roads Lil Heaven IPA,,$7.00,,,
-Yards Philly Pale Ale,,$7.00,,,
-Allagash,,$7.00,,,
-Kronenberg,,$7.00,,,
-Lagunitas IPA,,$7.00,,,
-Cigar City Jai Alai,,$7.00,,,
-Yards Philty Hazy IPA,,$7.00,,,
-Lancaster Milk Stout,,$6.75,,,
-Lefthand Milk Stout,,$6.75,,,
-St. Bernardus ABT 12,,$10.00,,,
-Angry Orchard Apple Cider,,$6.50,,,
-Amstel Light,,$6.25,,,
-Heineken,,$6.25,,,
-Heinken Light,,$6.50,,,
-Fiore Rosa,,$15.00,,,
-Lemonade,,$10.50,,,
-Sangria,,$11.00,,,
-Troegs Perpetual IPA,,$7.00,,,
-Ommegang Neon Rainbows,,$9.00,,,
-Elysian Space Dust IPA,,$8.00,,,
-Wicked Weed Pernicious IPA,,$8.00,,,
-Victory Berry Monkey,,$9.00,,,
-Lord Hobo LIFE,,$7.50,,,
-Sagardoa,,$9.00,,,
-Wyndridge Original,,$7.00,,,
-Spritzer,,$8.00,,,
-Trebbiano,,$12.00,,,
-Soave,,$15.00,,,
-Zweigelt,,$12.00,,,
-Negroamaro,,$12.00,,,
+Margarita,$7.00,$11.00,4.0,36.0,Pagano's Market and Bar
+Aperol Spritz,$7.00,$12.00,5.0,42.0,Patchwork
+White,$6.10,$10.00,3.9,39.0,Patchwork
+Paloma,$7.00,$10.50,3.5,33.0,The Patio @ Thirteen Restaurant
+Margarita,$7.00,$11.00,4.0,36.0,The Patio @ Thirteen Restaurant
+Margarita,$7.00,$11.00,4.0,36.0,The Patio @ Thirteen Restaurant
+Moscow Mule,$7.00,$11.00,4.0,36.0,The Patio @ Thirteen Restaurant
+Chardonnay,$6.00,$11.31,5.31,47.0,The Patio @ Thirteen Restaurant
+Malbec,$6.00,$9.88,3.88,39.0,The Patio @ Thirteen Restaurant
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,The Patio @ Thirteen Restaurant
+Sauvignon Blanc,$6.00,$11.00,5.0,45.0,The Patio @ Thirteen Restaurant
+Pinot Noir,$6.00,$8.50,2.5,29.0,The Patio @ Thirteen Restaurant
+Coors Light,$5.00,$5.50,0.5,9.0,The Patio @ Thirteen Restaurant
+Miller Lite,$5.00,$5.33,0.33,6.0,The Patio @ Thirteen Restaurant
+Michelob Ultra,$5.00,$5.50,0.5,9.0,The Patio @ Thirteen Restaurant
+Stella Artois,$5.00,$7.25,2.25,31.0,The Patio @ Thirteen Restaurant
+Paloma,$7.00,$10.50,3.5,33.0,Pearl & Mary
+White,$6.10,$10.00,3.9,39.0,Pearl & Mary
+Rosé,$6.05,$9.62,3.57,37.0,Pearl & Mary
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,Prunella
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,Prunella
+White,$6.10,$10.00,3.9,39.0,Prunella
+Rosé,$6.05,$9.62,3.57,37.0,Prunella
+Margarita,$7.00,$11.00,4.0,36.0,Sampan
+Moscow Mule,$7.00,$11.00,4.0,36.0,Sampan
+Rosé,$6.05,$9.62,3.57,37.0,Sampan
+Paloma,$7.00,$10.50,3.5,33.0,Sueno
+White,$6.10,$10.00,3.9,39.0,Sueno
+Rosé,$6.05,$9.62,3.57,37.0,Sueno
+Margarita,$7.00,$11.00,4.0,36.0,Thanal Indian Tavern
+Merlot,$6.00,$12.12,6.12,50.0,Time Restaurant
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Time Restaurant
+Margarita,$7.00,$11.00,4.0,36.0,Tir Na Nog Irish Bar & Grill
+Sauvignon Blanc,$6.00,$11.00,5.0,45.0,Tir Na Nog Irish Bar & Grill
+Rosé,$6.05,$9.62,3.57,37.0,Tir Na Nog Irish Bar & Grill
+Stateside Seltzer,$5.00,$9.00,4.0,44.0,Tir Na Nog Irish Bar & Grill
+Strongbow Cider,$5.00,$7.00,2.0,29.0,Tir Na Nog Irish Bar & Grill
+Espresso Martini,$7.00,$14.00,7.0,50.0,Top Tomato Bar & Pizza
+Moscow Mule,$7.00,$11.00,4.0,36.0,Top Tomato Bar & Pizza
+Frozen Astronaut,$6.67,$6.50,-0.17,-3.0,Tradesman's
+White,$6.10,$10.00,3.9,39.0,Tradesman's
+Rosé,$6.05,$9.62,3.57,37.0,Tradesman's
+Pineapple Lemonade,$7.00,$11.00,4.0,36.0,Uptown Beer Garden
+White,$6.10,$10.00,3.9,39.0,Uptown Beer Garden
+Rosé,$6.05,$9.62,3.57,37.0,Uptown Beer Garden
+Margarita,$7.00,$11.00,4.0,36.0,Veda - Modern Indian Bistro
+White,$6.10,$10.00,3.9,39.0,Via Locusta
+Grenache,$6.00,$12.00,6.0,50.0,Walnut Garden - Temporarily Closed
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,The Wayward
+Pinot Noir,$6.00,$8.50,2.5,29.0,The Wayward
+Paloma,$7.00,$10.50,3.5,33.0,Wicked Wolf
+Paloma,$7.00,$10.50,3.5,33.0,Wrap Shack
+Pinot Gris / Pinot Grigio,$6.00,$9.75,3.75,38.0,Wrap Shack
+PBR,$5.00,$4.00,-1.0,-25.0,Wrap Shack
