@@ -10,7 +10,8 @@ import re
 import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-
+# from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 # ------------------------------------------------
 # This script does = Opens each sips bar modal for its information
 # ------------------------------------------------
@@ -46,62 +47,71 @@ for index, row in df.iterrows():
     # Get content
     content = modal.find_element(By.CSS_SELECTOR, '.apos-rich-text')
     deals = content.text
-    print(deals)
-    print()
-    print(content)
-    # Append the extracted "Deals" content to the list
-    deals_list.append(deals)
+
+    # Extract "Details" and "Deals Offered"
+    start_index_details = deals.find("Restaurant Week Details\n") + len("Restaurant Week Details\n")
+    end_index_details = deals.find("\n", start_index_details)
+    details = deals[start_index_details:end_index_details]
+
+    # Find the start index of "RESTAURANT WEEK MENU:"
+    start_index_deals = deals.find("RESTAURANT WEEK MENU: ")
+    
+    if start_index_deals != -1:
+        start_index_deals += len("RESTAURANT WEEK MENU: ")
+        # Check if there is a newline character after "RESTAURANT WEEK MENU:"
+        end_index_deals = deals.find("\n", start_index_deals)
+        if end_index_deals != -1:
+            deals_offered = deals[start_index_deals:end_index_deals]
+        else:
+            # If there is no newline character, take the substring until the end of the string
+            deals_offered = deals[start_index_deals:]
+    else:
+        deals_offered = None
+
+    modal_html = modal.get_attribute("outerHTML")
+    # Use Beautiful Soup to parse the HTML content
+    soup = BeautifulSoup(modal_html, "html.parser") # type: ignore
+    # Get open table link
+    open_table_links = soup.find_all('a', class_='o-button--openTable')
+    try:
+        open_table_link = open_table_links[0].get('href')
+    except:
+        open_table_link = None
+
+    # Get menu link  
+    rich_text = soup.select_one('.apos-rich-text')
+    if rich_text:
+        rich_text_links = rich_text.find_all('a')
+        try:
+            deal_website = rich_text_links[0].get('href')
+        except:
+            deal_website = None
+    else:
+        deal_website = None
+
+
+    # Append the extracted information to the list
+    deals_list.append({
+        'Restaurant Name': bar,
+        'Details': details,
+        'Deals Offered': deals_offered,
+        'Deal Website': deal_website,
+        'Open Table Link': open_table_link
+    })
+
+    print({
+        'Restaurant Name': bar,
+        'Details': details,
+        'Deals Offered': deals_offered,
+        'Deal Website': deal_website,
+        'Open Table Link': open_table_link
+    })
+
     driver.quit()
-fbdgf
 # driver.quit()
-
-# Add the "Deals" content to the DataFrame as a new column
-df['Deals'] = deals_list
-
-# Save the updated DataFrame back to the CSV file with the same name
-df.to_csv(csvName, index=False)
-# df = pd.read_csv('AllSipsOriginal.csv')
-# Initialize empty lists for each deal type
-cocktails = []
-wine = []
-beer = []
-appetizers = []
-
-# Iterate through each row in the DataFrame
-for row in df.itertuples():
-    # Use regular expressions to extract data for each deal type
-    cocktails_match = re.search(r'\$7 Cocktails(.*?)\$6 Wine', row.Deals, re.DOTALL)
-    wine_match = re.search(r'\$6 Wine(.*?)\$5 Beer', row.Deals, re.DOTALL)
-    beer_match = re.search(r'\$5 Beer(.*?)Half-Priced Appetizers', row.Deals, re.DOTALL)
-    appetizers_match = re.search(r'Half-Priced Appetizers(.*?)$', row.Deals, re.DOTALL)
-
-    # Append extracted data to respective lists
-    if cocktails_match:
-        cocktails.append(cocktails_match.group(1).strip())
-    else:
-        cocktails.append(None)
-    if wine_match:
-        wine.append(wine_match.group(1).strip())
-    else:
-        wine.append(None)
-    if beer_match:
-        beer.append(beer_match.group(1).strip())
-    else:
-        beer.append(None)
-    if appetizers_match:
-        appetizers.append(appetizers_match.group(1).strip())
-    else:
-        appetizers.append(None)
-
-# Create a new DataFrame with the extracted data
-# Add the new columns to the DataFrame
-df['Cocktails'] = cocktails
-df['Wine'] = wine
-df['Beer'] = beer
-df['Half-Priced Appetizers'] = appetizers
-
-# Drop the original 'Deals' column
-df.drop(columns=['Deals'], inplace=True)
-
+csvName = "RestaurantWeek.csv"
+df = pd.read_csv(csvName)
+new_df = pd.DataFrame(deals_list)
+merged_df = df.merge(new_df, on='Restaurant Name', how='left')
 # Write the updated DataFrame to the same CSV file
-df.to_csv(csvName, index=False)
+merged_df.to_csv(csvName, index=False)
