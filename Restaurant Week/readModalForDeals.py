@@ -114,4 +114,4 @@ df = pd.read_csv(csvName)
 new_df = pd.DataFrame(deals_list)
 merged_df = df.merge(new_df, on='Restaurant Name', how='left')
 # Write the updated DataFrame to the same CSV file
-merged_df.to_csv(csvName, index=False)
+merged_df.to_csv("RestaurantWeek2.csv", index=False)

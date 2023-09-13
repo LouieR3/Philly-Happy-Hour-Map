@@ -1,494 +1,95 @@
-Bar,Drink,Predicted Item,Price,Sips Deal,Fuzzy Match,Certainty
-Cavanaugh's Rittenhouse,Aperol Spritz,Aperol Spritz,$12.00,N,False,0.007831702225493767
-Cavanaugh's Rittenhouse,Dragonade,Dragonade,$8.00,N,True,0.010822755279730858
-Cavanaugh's Rittenhouse,Espresso Martini,Espresso Martini,$14.00,N,True,0.008934706053347893
-Cavanaugh's Rittenhouse,Jameson Orange Crushed,Orange Crush,$12.00,N,True,0.010798518613758997
-Cavanaugh's Rittenhouse,Mezcal-A-Rita,Mezcal-A-Rita,$13.00,N,True,0.010758825164537909
-Cavanaugh's Rittenhouse,Paloma,Paloma,$12.00,N,False,0.0050669351576461295
-Cavanaugh's Rittenhouse,Philly Mule,Moscow Mule,$11.00,N,False,0.007022369038881785
-Cavanaugh's Rittenhouse,Pink Lady,Pink Lady,$12.00,N,True,0.010822755279730862
-Cavanaugh's Rittenhouse,Sidecar,Sidecar,$16.00,N,False,0.008539792573575285
-Cavanaugh's Rittenhouse,Tully Old Fashioned,Old Fashioned,$12.00,N,True,0.00945351512836771
-Cavanaugh's Rittenhouse,Cav's City Wide,City Wide,Price not available,N,False,0.008766211930489945
-Cavanaugh's Rittenhouse,Summertime City Wide,City Wide,$10.00,N,True,0.01074421280407305
-Cavanaugh's Rittenhouse,Any Given Sunday Bloody Mary,Bloody Mary,$12.00,N,True,0.01079751576384161
-Cavanaugh's Rittenhouse,Bottom's Up,Bottom's Up,$11.00,N,True,0.010822755279730858
-Cavanaugh's Rittenhouse,Tropical Tequila,Tequila Punch,$11.00,N,False,0.006443180926011226
-Cavanaugh's Rittenhouse,Passion Fruit Margarita,Sake,$11.00,N,False,0.006604713046173591
-Cavanaugh's Rittenhouse,Anaperitivo Lemonade,Lemonade,$11.00,N,False,0.008042545256726166
-Cavanaugh's Rittenhouse,Bud Light,Bud Light,$5.00,N,True,0.010544257591997026
-Cavanaugh's Rittenhouse,Blue Moon,Blue Moon,$6.50,N,True,0.010822755279730837
-Cavanaugh's Rittenhouse,Downeast Seasonal Cider,Downeast Cider,$7.50,N,True,0.010767956509255806
-Cavanaugh's Rittenhouse,Kona Big Wave,Kona Big Wave,$6.50,N,False,0.009078103973980218
-Cavanaugh's Rittenhouse,Modelo,Modelo,$6.50,N,False,0.007522920989048907
-Cavanaugh's Rittenhouse,New Belgium Voodoo Ranger,New Belgium Voodoo Ranger,$7.50,N,True,0.008944321294944086
-Cavanaugh's Rittenhouse,Sam Adams Summer Ale,Sam Adams,$7.00,N,True,0.00866645177683331
-Cavanaugh's Rittenhouse,Victory Brotherly Love,Victory Brotherly Love,$7.50,N,True,0.010549475275425615
-Cavanaugh's Rittenhouse,Yuengling Lager,Yuengling,$5.00,N,True,0.010538718134071506
-Cavanaugh's Rittenhouse,Guinness Non Alcoholic,Guinness Non Alcoholic,$7.00,N,True,0.010744854360151983
-Cavanaugh's Rittenhouse,Stella Liberte 0.0,Stella Liberte 0.0,$6.75,N,True,0.010761873355931064
-Cavanaugh's Rittenhouse,Two Roads N/A Juicy IPA,Two Roads N/A Juicy IPA,$6.50,N,True,0.010555459167305792
-Cavanaugh's Rittenhouse,Downeast Original Can,Downeast Cider,$7.50,N,False,0.006251722074934285
-Cavanaugh's Rittenhouse,Magners Apple Cider,Magners Apple Cider,$7.00,N,True,0.007762885170073608
-Cavanaugh's Rittenhouse,Cape May White,Cape May White,$7.00,N,True,0.010567623225507238
-Cavanaugh's Rittenhouse,Dogfish Namaste,Dogfish Namaste,$6.50,N,True,0.010724050098211542
-Cavanaugh's Rittenhouse,Konig Ludwig Weissbier,Konig Ludwig Weissbier,$6.75,N,True,0.010822755279730839
-Cavanaugh's Rittenhouse,Delirium Tremens,Delirium Tremens,$15.00,N,True,0.010822755279730837
-Cavanaugh's Rittenhouse,Yards Jefferson's Golden Ale,Yards Jefferson's Golden Ale,$7.50,N,True,0.010537155430629925
-Cavanaugh's Rittenhouse,Corona,Corona,$6.50,N,True,0.010593787392126814
-Cavanaugh's Rittenhouse,Corona Light,Corona Light,$6.50,N,True,0.010330536237331246
-Cavanaugh's Rittenhouse,Michelob Ultra,Michelob Ultra,$5.50,N,True,0.010822755279730844
-Cavanaugh's Rittenhouse,Budweiser,Budweiser,$5.00,N,True,0.010822755279730855
-Cavanaugh's Rittenhouse,Coors Light,Coors Light,$5.00,N,True,0.010544257591997026
-Cavanaugh's Rittenhouse,Kenwood Original,Kenwood Lager,$5.00,N,True,0.010747654691744048
-Cavanaugh's Rittenhouse,Miller High Life,Miller High Life,$4.50,N,True,0.010650521099655422
-Cavanaugh's Rittenhouse,Miller Lite,Miller Lite,$5.00,N,True,0.006702782864140917
-Cavanaugh's Rittenhouse,PBR Can,PBR,$4.00,N,False,0.010822755279730853
-Cavanaugh's Rittenhouse,Rocky Mountain Outlaw,Rocky Mountain Outlaw,$4.00,N,True,0.010822755279730837
-Cavanaugh's Rittenhouse,Yards Brawler,Yards Brawler,$6.75,N,True,0.010637715408710224
-Cavanaugh's Rittenhouse,Fat Head Sunshine Daydream,Fat Head Sunshine Daydream,$6.50,N,True,0.010602633388813494
-Cavanaugh's Rittenhouse,Neshaminy Creek Shape of Hops,Neshaminy Creek Shape of Hops,$9.00,N,True,0.010743052038838696
-Cavanaugh's Rittenhouse,New Trail Broken Heels,New Belgium Fat Tire,$7.00,N,True,0.010515193462408796
-Cavanaugh's Rittenhouse,Half Acre Daisy Cutter Pale Ale,Half Acre Daisy Cutter Pale Ale,$7.00,N,True,0.0106624951235515
-Cavanaugh's Rittenhouse,Dogfish Head Citrus Squal,Dogfish Head Citrus Squal,$7.00,N,True,0.010663641091067117
-Cavanaugh's Rittenhouse,New Belgium Fat Tire,New Belgium Voodoo Ranger,$6.50,N,False,0.006190357403286765
-Cavanaugh's Rittenhouse,Warsteiner Premium,Warsteiner Pilsner,$6.00,N,True,0.008113221451786373
-Cavanaugh's Rittenhouse,Anderson Valley Briny Melon Gose,Syrah / Shiraz,$6.50,N,False,0.00403627856791064
-Cavanaugh's Rittenhouse,Dogfish SeaQuench,Dogfish Head Seaquench Sour Ale,$6.50,N,True,0.00774455233920022
-Cavanaugh's Rittenhouse,Victory Sour Monkey,Sour Monkey,$7.75,N,True,0.010332012507680772
-Cavanaugh's Rittenhouse,Mummers Row Philly Tea,Mummers Row Philly Tea,$8.00,N,True,0.010605845360237561
-Cavanaugh's Rittenhouse,Stateside Black Cherry Seltzer,Stateside Seltzer,$9.00,N,True,0.009092546694588642
-Cavanaugh's Rittenhouse,Stateside Lemon Cucumber Mint Seltzer,Stateside Seltzer,$9.00,N,False,0.006704849695425226
-Cavanaugh's Rittenhouse,Stateside Orange Seltzer,Stateside Seltzer,$9.00,N,True,0.007830586729217938
-Cavanaugh's Rittenhouse,Surfside Half & Half & Vodka,Surfside Half & Half,$9.00,N,True,0.010637312980447547
-Cavanaugh's Rittenhouse,Surfside Iced Tea & Vodka,Surfside Iced Tea,$9.00,N,True,0.007550762961339451
-Cavanaugh's Rittenhouse,Surfside Lemonade & Vodka,Surfside Lemonade,$9.00,N,True,0.010560483793917382
-Cavanaugh's Rittenhouse,Surfside Peach Tea & Vodka,Surfside Iced Tea,$9.00,N,True,0.010532087426451654
-Cavanaugh's Rittenhouse,Twisted Tea Lite,Twisted Tea,$6.50,N,True,0.010707192231097734
-Cavanaugh's Rittenhouse,White Claw Blackberry Seltzer,White Claw,$6.50,N,True,0.00809228427013471
-Cavanaugh's Rittenhouse,White Claw Mango Seltzer,White Claw,$6.50,N,True,0.008196208063658051
-Cavanaugh's Rittenhouse,White Claw Peach,White Claw,$6.50,N,False,0.00686807028966909
-Cavanaugh's Rittenhouse,Roaring Eagle Chardonnay,Chardonnay,$8.50,N,False,0.007579287520052462
-Cavanaugh's Rittenhouse,Eola Hills Pinot Grigio,Pinot Noir,$8.50,N,True,0.008173401682034098
-Cavanaugh's Rittenhouse,Bridge Lane Sauvignon Blanc,Sauvignon Blanc,$9.00,N,False,0.007715931557180448
-Cavanaugh's Rittenhouse,Bridge Lane Rose,Rosé,$10.00,N,False,0.007226693578424252
-Cavanaugh's Rittenhouse,Champagne,Champagne,$8.25,N,True,0.010822755279730855
-Cavanaugh's Rittenhouse,Prosecco,Prosecco,$10.00,N,True,0.01078730283805534
-Cavanaugh's Rittenhouse,Eola Hills Pinot Noir,Pinot Noir,$8.50,N,True,0.010733005800255543
-Cavanaugh's Rittenhouse,Dona Paula Los Cardos Malbec,Malbec,$8.50,N,False,0.0063107780649441815
-Cavanaugh's Rittenhouse,Philly Style Cabernet,Cabernet Sauvignon,$8.50,N,False,0.006389311068684079
-1225 Raw Sushi and Sake Lounge,Sumo Punch,Sumo Punch,$7,Y,True,0.010707740062289034
-1225 Raw Sushi and Sake Lounge,Ginger Spirit,Ginger Spirit,$7,Y,True,0.010822755279730862
-1225 Raw Sushi and Sake Lounge,Fruit Sake,Sake,$7,Y,True,0.010822755279730863
-1225 Raw Sushi and Sake Lounge,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-1225 Raw Sushi and Sake Lounge,Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-1225 Raw Sushi and Sake Lounge,Cabernet Sauvignon,Cabernet Sauvignon,$6,Y,False,0.006166519932346723
-1225 Raw Sushi and Sake Lounge,Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-1225 Raw Sushi and Sake Lounge,Bud Light,Bud Light,$5,Y,True,0.010544257591997026
-1518 Bar and Grill,Blue Margarita,Blue Moon,$7,Y,False,0.0066047130461735735
-1518 Bar and Grill,Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-1518 Bar and Grill,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-1518 Bar and Grill,Merlot,Merlot,$6,Y,True,0.010822755279730862
-1518 Bar and Grill,Kenzinger Bottle,Kenzinger,$5,Y,True,0.010822755279730855
-1518 Bar and Grill,Budweiser Bottle,Budweiser,$5,Y,True,0.010822755279730855
-1518 Bar and Grill,Coors Light Bottle,Coors Light,$5,Y,True,0.010544257591997026
-1518 Bar and Grill,Miller Lite Bottle,Miller Lite,$5,Y,False,0.006702782864140917
-Air Grille Garden at Dilworth Park,Passion Fruit Margarita made with Hornitos Tequila,Margarita,$7,Y,True,0.007765580020880669
-Air Grille Garden at Dilworth Park,House wine,Vermentino,$6,Y,False,0.007381321296964857
-Air Grille Garden at Dilworth Park,Kona Big Wave beer,Kona Big Wave,$5,Y,True,0.008133528269840274
-Ancient Spirits & Grille,Bee On Thyme,Bee On Thyme,$7,Y,True,0.010750780985557123
-Ancient Spirits & Grille,La Vie En Rose,Rosé,$7,Y,False,0.006165973291214425
-Ancient Spirits & Grille,Gin (Nikka Coffey or Toki Hibiscus),Gin (Nikka Coffey or Toki Hibiscus),$7,Y,True,0.010790156770882403
-Ancient Spirits & Grille,Pinot Grigio Bottle,Pinot Gris / Pinot Grigio,$6,Y,False,0.008995808686030641
-Ancient Spirits & Grille,Red Blend,Red,$6,Y,False,0.010732369699209224
-Ancient Spirits & Grille,Draft Sparkling,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Ancient Spirits & Grille,Love City Lager,Love City Lager,$5,Y,True,0.010382743336380548
-Ancient Spirits & Grille,Downeast Cider,Downeast Cider,$5,Y,True,0.008836892314756109
-Ancient Spirits & Grille,New Belgium Voodoo Ranger Juicy Haze,New Belgium Voodoo Ranger,$5,Y,True,0.010738511965773809
-ArtBar at Sonesta Hotel,Man With No Name,Man With No Name,$7,Y,True,0.01077284621501906
-ArtBar at Sonesta Hotel,Rum Swizzle,Rum Swizzle,$7,Y,True,0.010736454589414328
-ArtBar at Sonesta Hotel,Craft Cosmo,Cosmopolitan,$7,Y,True,0.010822755279730856
-ArtBar at Sonesta Hotel,Joel Gott Sauvignon Blanc,Sauvignon Blanc,$6,Y,True,0.010722889802969046
-ArtBar at Sonesta Hotel,Cantina Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.010718466397010155
-ArtBar at Sonesta Hotel,Collier Creek Cabernet,Cabernet Sauvignon,$6,Y,True,0.01070571753147801
-ArtBar at Sonesta Hotel,Day Owl Rose,Rosé,$6,Y,False,0.007226693578424252
-ArtBar at Sonesta Hotel,Michelob Ultra,Michelob Ultra,$5,Y,True,0.010822755279730844
-ArtBar at Sonesta Hotel,Modelo Especial,Modelo,$5,Y,True,0.009766014336294059
-ArtBar at Sonesta Hotel,Yards IPA,Yards IPA,$5,Y,True,0.010298814540852628
-ArtBar at Sonesta Hotel,Sam Adams Summer Love,Sam Adams,$5,Y,True,0.010647928926406007
-The Balcony Bar at the Kimmel Center,The Overture,The Great Eye,$7,Y,False,0.0066445192558686255
-The Balcony Bar at the Kimmel Center,The Chorus,The Great Eye,$7,Y,False,0.0066445192558686255
-The Balcony Bar at the Kimmel Center,The Crescendo,The Great Eye,$7,Y,False,0.0066445192558686255
-The Balcony Bar at the Kimmel Center,Plus a variety of adult sno,Neshaminy Creek Shape of Hops,$7,Y,False,0.005933893775136833
-The Balcony Bar at the Kimmel Center,House Red,Red,$6,Y,False,0.010732369699209224
-The Balcony Bar at the Kimmel Center,House White,White,$6,Y,False,0.010458663056224338
-The Balcony Bar at the Kimmel Center,Tecate,Tecate,$5,Y,True,0.010822755279730848
-Bank and Bourbon,"Philly Sunrise: tequila, house",Tequila Sunrise,$7,Y,False,0.009309714897100342
-Bank and Bourbon,Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-Bank and Bourbon,Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-Bank and Bourbon,Miller Light,Miller Lite,$5,Y,True,0.0104717702161437
-Bar Bombón,La Paloma with Hornitos,Paloma,$7,Y,False,0.005959252788029017
-Bar Bombón,Rosa,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Bar Bombón,Tecate,Tecate,$5,Y,True,0.010822755279730848
-Bar-Ly Chinatown,Hornitos Margarita,Margarita,$7,Y,False,0.007183198406251276
-Bar-Ly Chinatown,Hornitos Sunrise,Tequila Sunrise,$7,Y,False,0.007241604679033203
-Bar-Ly Chinatown,Hornitos Spritzer,Spritzer,$7,Y,False,0.0069103050350304614
-Bar-Ly Chinatown,Cabernet,Cabernet Sauvignon,$6,Y,False,0.007379413387656804
-Bar-Ly Chinatown,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Bar-Ly Chinatown,White Zinfandel,Zinfandel,$6,Y,True,0.010590901018628997
-Bar-Ly Chinatown,Yuengling,Yuengling,$5,Y,True,0.00906982609758991
-Bar-Ly Chinatown,Corona Premier,Corona Premier,$5,Y,True,0.010654376181955881
-Bar-Ly Chinatown,Miller Lite,Miller Lite,$5,Y,True,0.006702782864140917
-Barbuzzo,Passionfruit Tequila Punch,Tequila Punch,$7,Y,True,0.010618427815044806
-Barbuzzo,Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-Barbuzzo,Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-Barbuzzo,Troegs Sunshine Pils,Troegs Sunshine Pils,$5,Y,True,0.010686553730222445
-Barstool Sansom Street,Barstool Margarita (with Hornitos),Margarita,$7,Y,False,0.008036411349290243
-Barstool Sansom Street,Watermelon Margarita (with Hornitos & Watermelon Red Bull),The Secret Garden,$7,Y,False,0.006024133554833657
-Barstool Sansom Street,Tropical Tequila (with Hornitos and Tropical Red Bull),Red,$7,Y,False,0.0064719120499184685
-Barstool Sansom Street,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Barstool Sansom Street,Victory Brothery Love,Victory Brothery Love,$5,Y,True,0.010549475275425603
-The Black Sheep,Hornitos Paloma,Paloma,$7,Y,False,0.0054020452008847536
-The Black Sheep,Cabernet,Cabernet Sauvignon,$6,Y,False,0.007379413387656804
-The Black Sheep,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-The Black Sheep,Carlsberg,Carlsberg,$5,Y,True,0.010822755279730844
-The Black Sheep,Yards,Yards IPA,$5,Y,True,0.008194497260953703
-The Black Sheep,Hoegarrden,Hoegarrden,$5,Y,True,0.010822755279730844
-Blume Burger,"Blue Margarita: Hornitos Tequila, Orange Liqueur, Blueberry",Margarita,$7,Y,False,0.006198313717429379
-Blume Burger,Pull Cabernet,Cabernet Sauvignon,$6,Y,False,0.007379413387656804
-Blume Burger,Vin Blanc Chardonnay,Chardonnay,$6,Y,True,0.010603557460916733
-Blume Burger,Sutter Home Rose,Corvina,$6,Y,False,0.006601132065475315
-Blume Burger,2SP Delco Lager,2SP Delco Lager,$5,Y,True,0.010608010572014225
-Blume Burger,Firestone Walker Union Jack IPA,Firestone Walker Union Jack IPA,$5,Y,True,0.010683626760616715
-Blume Burger,Sierra Nevada Pale Ale,Sierra Nevada Pale Ale,$5,Y,True,0.010675151030294053
-Bodega Taco Bar,"Maragritas (Regular, Spicy, Blood Orange, Strawberry)",Orange Crush,$7,Y,False,0.006922478137353723
-Bodega Taco Bar,Mojito,Mojito,$7,Y,False,0.006108230132776698
-Bodega Taco Bar,Twin Vines Vinho Verde,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Bodega Taco Bar,House Malbec,Malbec,$6,Y,False,0.0063107780649441815
-Bodega Taco Bar,Miller Lite,Miller Lite,$5,Y,True,0.006702782864140917
-Brü Craft & Wurst,Spicy Paloma,Paloma,$7,Y,False,0.0050669351576461295
-Brü Craft & Wurst,House Red,Red,$6,Y,False,0.010732369699209224
-Brü Craft & Wurst,House White,White,$6,Y,False,0.010458663056224338
-Brü Craft & Wurst,House Rose,Rosé,$6,Y,False,0.007226693578424252
-Buca D'oro Ristorante,"Madagascar: Fresh lemon juice, hot iris tequila blanco and tamarindo extract",Martini,$7,Y,False,0.006790423741650749
-Buca D'oro Ristorante,"Aperol spritz: Aperol, splash of club soda and prosseco",Aperol Spritz,$7,Y,True,0.010721576607381211
-Buca D'oro Ristorante,Lemon drop martini: vodka lemon juice and simple syrup,Martini,$7,Y,True,0.010630179069051868
-Buca D'oro Ristorante,House Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,False,0.008995808686030641
-Buca D'oro Ristorante,House Chianti,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Buca D'oro Ristorante,House Merlot,Merlot,$6,Y,False,0.010822755279730862
-Butcher Bar,"Aventador: Hornitos Reposado, mango, lime, lemon lime soda",Sheet Bend,$7,Y,False,0.005727706725086113
-Butcher Bar,Red Wine,Red,$6,Y,False,0.007839454463750185
-Butcher Bar,White Wine,Vermentino,$6,Y,False,0.008598877453753324
-Butcher Bar,Michelob Ultra Cans,Michelob Ultra,$5,Y,True,0.010822755279730844
-The Cauldron Philly,Centaur's Cordial: white sangria,White,$7,Y,False,0.007217573706510648
-The Cauldron Philly,"The Blob: Hornitos Blanco, Italicus, Blue Curacao, Creme de violette, lime. Big, Blue, and Bold, it's coming to get you!",Blue Moon,$7,Y,False,0.006303829276882101
-The Cauldron Philly,"The Cauldron Truth Serum: Cucumber and Citrus Infused Gin, elderflower, pink peppercorn, simple, lime",Gin and Tonic,$7,Y,False,0.005344703813620557
-The Cauldron Philly,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-The Cauldron Philly,Cabernet,Cabernet Sauvignon,$6,Y,False,0.007379413387656804
-The Cauldron Philly,Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-The Cauldron Philly,Peroni,Peroni,$5,Y,False,0.005534733786327716
-The Cauldron Philly,Fat Heads Sunshine Daydream,Fat Heads Sunshine Daydream,$5,Y,True,0.010669875412293323
-The Cauldron Philly,Mango Cart,Mango Tango,$5,Y,False,0.007871104204631604
-Cavanaugh's Rittenhouse,Paloma,Paloma,$7,Y,False,0.0050669351576461295
-Cavanaugh's Rittenhouse,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Cavanaugh's Rittenhouse,Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-Cavanaugh's Rittenhouse,Warsteiner Pilsner,Warsteiner Pilsner,$5,Y,True,0.010822755279730843
-Cavanaugh's Rittenhouse,White Claw,White Claw,$5,Y,False,0.00797439953492107
-City Tap House Logan Square,City Tap Margarita with Hornitos Tequila,Margarita,$7,Y,True,0.010579033258710582
-City Tap House Logan Square,Hey Mama Bourbon Punch,Bourbon Punch,$7,Y,True,0.010703943878706245
-City Tap House Logan Square,Oak Grove Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-City Tap House Logan Square,Bollini Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-City Tap House Logan Square,C'est La Vie Rose,Rosé,$6,Y,False,0.006165973291214425
-City Tap House Logan Square,Kenwood Lager,Kenwood Lager,$5,Y,False,0.007354876540481298
-City Tap House Logan Square,PBC Walt Wit,PBC Walt Wit,$5,Y,True,0.010822755279730844
-City Tap House Logan Square,New Trail Crisp Lager,New Trail Crisp Lager,$5,Y,True,0.010366884319146773
-Con Murphy's Irish Pub,"Ranch Wooder with Hornitos Tequila, club soda, lime",Ranch Wooder,$7,Y,True,0.0099879137298871
-Con Murphy's Irish Pub,"Paloma with Hornitos Tequila, grapefruit juice, lime, agave nectar, club soda Blueberry Lemonade with blueberry vodka, lemonade, simple syrup",Paloma,$7,Y,True,0.009625195444550098
-Con Murphy's Irish Pub,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Con Murphy's Irish Pub,Merlot,Merlot,$6,Y,True,0.010822755279730862
-Con Murphy's Irish Pub,Golden Road Mango Cart Can,Golden Road Mango Cart,$5,Y,True,0.009275195286235037
-Continental Midtown,'Wooder Melon Margarita',Margarita,$7,Y,False,0.005518816995333407
-Continental Midtown,'Northern Lights',Northern Lights,$7,Y,True,0.010822755279730862
-Continental Midtown,'Frozen Astronaut',Frozen Astronaut,$7,Y,True,0.010822755279730862
-Continental Midtown,Domaine De La Patience Red Blend,Red,$6,Y,False,0.008037356604417444
-Continental Midtown,Domaine De La Patience Chardonnay,Chardonnay,$6,Y,False,0.0063723966538870025
-Continental Midtown,House Sparkling,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Continental Midtown,Bud Light,Bud Light,$5,Y,True,0.010544257591997026
-Craftsman Row Saloon,Hornitos Mango Margarita,Margarita,$7,Y,False,0.006408206980699141
-Craftsman Row Saloon,Vodka Mule,Moscow Mule,$7,Y,True,0.01059440602173877
-Craftsman Row Saloon,House Red,Red,$6,Y,False,0.010732369699209224
-Craftsman Row Saloon,House White,White,$6,Y,False,0.010458663056224338
-Craftsman Row Saloon,Modelo Especial lager,Modelo,$5,Y,True,0.010608010572014225
-Craftsman Row Saloon,Kona Big Wave golden ale,Kona Big Wave,$5,Y,True,0.010698058316441267
-Darling Jack's Tavern,Blood Orange Margarita,Orange Crush,$7,Y,False,0.005819090875303263
-Darling Jack's Tavern,Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-Darling Jack's Tavern,Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-Darling Jack's Tavern,Victory Prima Pils,Victory Prima Pils,$5,Y,True,0.007384939792253851
-Devil's Alley,Paloma,Paloma,$7,Y,False,0.0050669351576461295
-Devil's Alley,"Spicy Margarita,",Margarita,$7,Y,False,0.006323830470358469
-Devil's Alley,Mexican Mule,Moscow Mule,$7,Y,False,0.008533463717651174
-Devil's Alley,House Cabernet,Cabernet Sauvignon,$6,Y,False,0.007379413387656804
-Devil's Alley,House Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-Devil's Alley,Bud Light,Bud Light,$5,Y,True,0.010544257591997026
-Devil's Alley,Estralla Jalisco,Estralla Jalisco,$5,Y,True,0.010822755279730856
-Dim Sum House by Jane G's,Hibiscus Margarita,Margarita,$7,Y,False,0.0055208968105364235
-Dim Sum House by Jane G's,Starwberry Margarita,Margarita,$7,Y,False,0.006323830470358469
-Dim Sum House by Jane G's,House White,White,$6,Y,False,0.010458663056224338
-Dim Sum House by Jane G's,House Red,Red,$6,Y,False,0.010732369699209224
-Dim Sum House by Jane G's,New Trails Crisp Lager,New Trails Crisp Lager,$5,Y,True,0.010459183917908066
-Dolce Italian,Italian Paloma,Hugo,$7,Y,False,0.005069599273056903
-Dolce Italian,Rose',Rosé,$6,Y,False,0.007226693578424252
-Dolce Italian,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Dolce Italian,Barbera D'Asti,Barbera,$6,Y,False,0.010822755279730862
-Dolce Italian,Sauvignon Blanc,Sauvignon Blanc,$6,Y,True,0.007715931557180448
-Dolce Italian,Cabernet Sauvignon,Cabernet Sauvignon,$6,Y,False,0.006166519932346723
-Dolce Italian,Peroni,Peroni,$5,Y,False,0.005534733786327716
-Dolce Italian,Yards Summer Crush,Yards Summer Crush,$5,Y,True,0.010625061131679018
-Double Knot,"Sheet Bend: Hornitos Tequila, amarena, lime",Sheet Bend,$7,Y,True,0.010642935925545884
-Double Knot,"Barrel Hitch: bourbon, blackberry, lemon",Barrel Hitch,$7,Y,True,0.01076164135718128
-Double Knot,House red wine,Red,$6,Y,False,0.007839454463750185
-Double Knot,House white wine,Vermentino,$6,Y,False,0.008598877453753324
-Double Knot,House rose,Rosé,$6,Y,False,0.007226693578424252
-Double Knot,Montucky Cold Snacks Lage,Montucky Cold Snacks,$5,Y,True,0.010059800471784522
-Drinker's Pub,Hornitos Paloma,Paloma,$7,Y,False,0.0054020452008847536
-Drinker's Pub,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Drinker's Pub,Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-Drury Beer Garden (DBG),"Sansom St Mule: vodka, lime, ginger beer",Moscow Mule,$7,Y,False,0.006687982111932427
-Drury Beer Garden (DBG),"Hornitos Pear Margarita: tequila, pear, lime, club",Margarita,$7,Y,False,0.006700573092595618
-Drury Beer Garden (DBG),House White,White,$6,Y,False,0.010458663056224338
-Drury Beer Garden (DBG),House Red,Red,$6,Y,False,0.010732369699209224
-Drury Beer Garden (DBG),Modelo Especial lager,Modelo,$5,Y,True,0.010608010572014225
-Drury Beer Garden (DBG),Kona Big Wave golden ale,Kona Big Wave,$5,Y,True,0.010698058316441267
-Fado Irish Pub,Mango Jalapeño Margarita,Mango Tango,$7,Y,False,0.006350978735211747
-Fado Irish Pub,Sycamore Lane Chardonnay 6oz glass,Chardonnay,$6,Y,False,0.0064324128810464894
-Fado Irish Pub,Modelo,Modelo,$5,Y,False,0.007522920989048907
-Fahrenheit 451 Pizza and Bar,Margarita,Margarita,$7,Y,False,0.006323830470358469
-Fahrenheit 451 Pizza and Bar,House wines,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Flambo Caribbean Restaurant,"Hornitos and select vodka, gin and rum cocktails",Gin and Tonic,$7,Y,False,0.006636066961379636
-Flambo Caribbean Restaurant,Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-Flambo Caribbean Restaurant,Cabernet,Cabernet Sauvignon,$6,Y,False,0.007379413387656804
-Giovani's Bar & Grill,Gio's Tea,Gio's Tea,$7,Y,True,0.01067933805485283
-Giovani's Bar & Grill,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Giovani's Bar & Grill,Michelob Ultra,Michelob Ultra,$5,Y,True,0.010822755279730844
-Giuseppe and Sons,"La Grenada Hornitos Tequila, Pomegranate, Soda Hotel Nacional Rum, Pineapple, Apricot",La Grenada,$7,Y,True,0.009619824930815753
-Giuseppe and Sons,Vino Rosso,Vino Rosso,$6,Y,False,0.009465363154100376
-Giuseppe and Sons,Vino Bianco,Vino Bianco,$6,Y,False,0.007997394986819012
-The Goat Rittenhouse,Pomegranate Margarita,Margarita,$7,Y,False,0.005520963668704956
-The Goat Rittenhouse,Spinelli Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-The Goat Rittenhouse,Arizona Hard Ice Tea,Arizona Hard Ice Tea,$5,Y,True,0.010724021262025166
-Gran Caffe L'Aquila,Margarita Calabrese,Margarita,$7,Y,False,0.006323830470358469
-Gran Caffe L'Aquila,"Hornitos Tequila, Caffo Orange Liqueur, Lemon, Limoncello Kiss.",Rosemarina,$7,Y,False,0.0055876077442329475
-Gran Caffe L'Aquila,"Hugo: The cocktail of Italian summer Prosecco, Fresh Mint, Elderflower",Hugo,$7,Y,True,0.010672066776158989
-Gran Caffe L'Aquila,"Aperol Spritz: The official Aperitivo of Italy! Prosecco, Aperol & a spritz of club soda",Aperol Spritz,$7,Y,False,0.008430300135513194
-Gran Caffe L'Aquila,Vino Bianco: Falanghina sannino,Vino Bianco,$6,Y,True,0.01080436427347521
-Gran Caffe L'Aquila,Vino Rosso: Veneto rosso,Vino Rosso,$6,Y,True,0.01080436427347521
-Gran Caffe L'Aquila,Peroni (Lombardia) 5.10% the original Italian lager. a high quality malt and hop lager,Peroni,$5,Y,True,0.009660160025667525
-Hard Rock Cafe,Hornitos Jalapeno Infused Spicy Margarita,Margarita,$7,Y,False,0.007183198406251276
-Hard Rock Cafe,White Peach Sangria,White,$7,Y,False,0.006347799067105161
-Hard Rock Cafe,House wine,Vermentino,$6,Y,False,0.007381321296964857
-Harp & Crown,"The Secret Garden Hornitos Tequila, Watermelon, Lime",The Secret Garden,$7,Y,True,0.01058865124808233
-Harp & Crown,House Cocktail,Hugo,$7,Y,False,0.005591958797109465
-The Hayes,Hornitos Tequila Margarita,Margarita,$7,Y,False,0.007821008806563964
-The Hayes,White,White,$6,Y,True,0.010458663056224338
-The Hayes,Rose,Rosé,$6,Y,False,0.007226693578424252
-The Hayes,Red,Red,$6,Y,True,0.010732369699209224
-The Hayes,Coors Light Draft,Coors Light,$5,Y,True,0.010544257591997026
-The Hayes,Pacifico,Pacifico,$5,Y,True,0.010822755279730853
-The Hayes,Miller High Life,Miller High Life,$5,Y,True,0.010650521099655422
-The Hayes,Michelob Ultra,Michelob Ultra,$5,Y,True,0.010822755279730844
-Independence Beer Garden,"Paloma Hornitos tequila, grapefruit, soda",Rosemarina,$7,Y,False,0.006699192417502322
-Independence Beer Garden,"Down the Shore Vodka, Raspberry, Lemon",Martini,$7,Y,False,0.006652425795400997
-Independence Beer Garden,House Red,Red,$6,Y,False,0.010732369699209224
-Independence Beer Garden,House Rose,Rosé,$6,Y,False,0.007226693578424252
-Independence Beer Garden,House White,White,$6,Y,False,0.010458663056224338
-Independence Beer Garden,Miller High Life draft,Miller High Life,$5,Y,True,0.010650521099655422
-Iron Hill Brewery & Restaurant,"Margarita: Hornitos Plata, Triple Sec, Sour Mix",Whiskey Sour,$7,Y,False,0.007847115951258069
-Iron Hill Brewery & Restaurant,"Mojito: Rum, Lime Juice, Simple Syrup, Mint",Mojito,$7,Y,True,0.010631064903888866
-Iron Hill Brewery & Restaurant,"Vodka Lemonade: Vodka, Triple Sec, House Lemonade",Surfside Lemonade,$7,Y,False,0.007842375686635381
-Iron Hill Brewery & Restaurant,"Whiskey Sour: Bourbon, Triple Sec, Sour Mix",Whiskey Sour,$7,Y,True,0.010657986569448046
-Iron Hill Brewery & Restaurant,House Red,Red,$6,Y,False,0.010732369699209224
-Iron Hill Brewery & Restaurant,House White,White,$6,Y,False,0.010458663056224338
-Iron Hill Brewery & Restaurant,House Rose,Rosé,$6,Y,False,0.007226693578424252
-Iron Hill Brewery & Restaurant,Sunny in Pils,Sunny in Pils,$5,Y,True,0.010785762879252135
-Iron Hill Brewery & Restaurant,Iron Hill Light Lager,Iron Hill Light Lager,$5,Y,True,0.0104017543414261
-Iron Hill Brewery & Restaurant,Vienna Red Lager,Vienna Red Lager,$5,Y,True,0.010512789647710703
-Iron Hill Brewery & Restaurant,Brambleberry,Brambleberry,$5,Y,True,0.010822755279730853
-Iron Hill Brewery & Restaurant,Homestead,Homestead,$5,Y,True,0.010822755279730855
-Iron Hill Brewery & Restaurant,Pig Iron Porter,Pig Iron Porter,$5,Y,True,0.010789517026727006
-Kook Burger & Bar,Spicy Peach Margarita,Surfside Iced Tea,$7,Y,False,0.0059727655353394435
-Kook Burger & Bar,Echo Bay Sauvignon Blanc,Sauvignon Blanc,$6,Y,True,0.007715931557180448
-Kook Burger & Bar,Philly United,Philly Uniteds,$5,Y,True,0.010661593445890898
-Ladder 15,Hornitos Paloma,Paloma,$7,Y,False,0.0054020452008847536
-Ladder 15,Surfside,Surfside Lemonade,$7,Y,False,0.007114642440873104
-Ladder 15,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Ladder 15,Micholob ultra,Michelob Ultra,$5,Y,True,0.008113221451786374
-Leda and the Swan Cocktail Lounge,Raging Bull,Syrah / Shiraz,$7,Y,False,0.00403627856791064
-Leda and the Swan Cocktail Lounge,Everyday is a Good Day,Syrah / Shiraz,$7,Y,False,0.00403627856791064
-Leda and the Swan Cocktail Lounge,My Passion is Your Passion,Syrah / Shiraz,$7,Y,False,0.00403627856791064
-Leda and the Swan Cocktail Lounge,Everyday Rose Seltzer Can,Rosé,$6,Y,False,0.006217038740132326
-Leda and the Swan Cocktail Lounge,Kirin Bottle,Kirin,$5,Y,False,0.010688993164285093
-Leda and the Swan Cocktail Lounge,Kirin Light Bottle,Kirin Light,$5,Y,True,0.010399435251289559
-Little Nonna's,Italian Paloma,Hugo,$7,Y,False,0.005069599273056903
-Little Nonna's,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Little Nonna's,Montepulciano,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Little Nonna's,Peroni Italian Lager,Peroni,$5,Y,False,0.005855780046944283
-Marathon 16th & Sansom,Blue Margarita,Blue Moon,$7,Y,False,0.0066047130461735735
-Marathon 16th & Sansom,House Merlot,Merlot,$6,Y,False,0.010822755279730862
-Marathon 16th & Sansom,House Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-Marathon 16th & Sansom,Michelob Ultra draft,Michelob Ultra,$5,Y,True,0.010822755279730844
-Misconduct Tavern,Paloma,Paloma,$7,Y,False,0.0050669351576461295
-Misconduct Tavern,Bud Light,Bud Light,$5,Y,True,0.010544257591997026
-The Mulberry on Arch,Dragonfruit Spritz,Aperol Spritz,$7,Y,False,0.0055054722664958245
-The Mulberry on Arch,Rose,Rosé,$6,Y,False,0.007226693578424252
-The Mulberry on Arch,PBR,PBR,$5,Y,True,0.010822755279730853
-The Mulberry on Arch,Solid Gold Founders,Solid Gold Founders,$5,Y,True,0.010787572415559806
-Pagano's Market and Bar,Hornitos Margaritas,Rosemarina,$7,Y,False,0.005922773414793367
-Patchwork,Tamarind Spritz,Aperol Spritz,$7,Y,False,0.0055054722664958245
-Patchwork,House Red,Red,$6,Y,False,0.010732369699209224
-Patchwork,House White,White,$6,Y,False,0.010458663056224338
-The Patio @ Thirteen Restaurant,Hornitos Paloma,Paloma,$7,Y,False,0.0054020452008847536
-The Patio @ Thirteen Restaurant,Blue Margarita,Blue Moon,$7,Y,False,0.0066047130461735735
-The Patio @ Thirteen Restaurant,Ginger Rose,Ginger Spirit,$7,Y,False,0.006601132065475316
-The Patio @ Thirteen Restaurant,Pink Champagne Margarita,Champagne,$7,Y,False,0.007116255000873561
-The Patio @ Thirteen Restaurant,Cranberry Moscow Mule,Moscow Mule,$7,Y,False,0.008533463717651174
-The Patio @ Thirteen Restaurant,Woodbridge Chardonnay,Chardonnay,$6,Y,False,0.007579287520052462
-The Patio @ Thirteen Restaurant,Don Miguel Gascon Malbec,Malbec,$6,Y,False,0.0063107780649441815
-The Patio @ Thirteen Restaurant,Line 30 California Rosé,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-The Patio @ Thirteen Restaurant,Nobilo Sauvignon Blanc,Sauvignon Blanc,$6,Y,True,0.007715931557180448
-The Patio @ Thirteen Restaurant,Mark West Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-The Patio @ Thirteen Restaurant,Coors Light,Coors Light,$5,Y,True,0.010544257591997026
-The Patio @ Thirteen Restaurant,Miller Light,Miller Lite,$5,Y,True,0.0104717702161437
-The Patio @ Thirteen Restaurant,Michelob Ultra,Michelob Ultra,$5,Y,True,0.010822755279730844
-The Patio @ Thirteen Restaurant,Stella Artois,Stella Artois,$5,Y,True,0.01076187335593106
-The Patio @ Thirteen Restaurant,Dogfish Head IPA,Dogfish Head IPA,$5,Y,True,0.00863394116414114
-The Patio @ Thirteen Restaurant,Victory Dirtwolf Double IPA,Victory Dirtwolf Double IPA,$5,Y,True,0.01052065678449097
-Pearl & Mary,"Gimlet: Vodka, Lime, Simple",Mojito,$7,Y,False,0.006057214729267523
-Pearl & Mary,"Paloma: Hornitos Tequila, Grapefruit, Soda",Rosemarina,$7,Y,True,0.006699192417502322
-Pearl & Mary,White,White,$6,Y,True,0.010458663056224338
-Pearl & Mary,Red,Red,$6,Y,True,0.010732369699209224
-Pearl & Mary,Rosé,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Pearl & Mary,Sparkling,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Prunella,Pistola Rosa,Syrah / Shiraz,$7,Y,False,0.00403627856791064
-Prunella,"Hornitos Tequila, Cocchi, Grapefruit",Rosemarina,$7,Y,True,0.008021708113402653
-Prunella,Honey Fitzgerald,Syrah / Shiraz,$7,Y,False,0.00403627856791064
-Prunella,"Gin, Grappa, Lemon",Martini,$7,Y,False,0.006218062000330732
-Prunella,House White,White,$6,Y,False,0.010458663056224338
-Prunella,House Rosé,Syrah / Shiraz,$6,Y,False,0.00403627856791064
-Prunella,House Red,Red,$6,Y,False,0.010732369699209224
-Sampan,Prickly Pear Margarita,Margarita,$7,Y,False,0.006323830470358469
-Sampan,"Hornitos Tequila, Prickly Pear",Rosemarina,$7,Y,False,0.006771448001673577
-Sampan,Ming Mule,Moscow Mule,$7,Y,False,0.008533463717651174
-Sampan,"Vodka, Mint, Lychee, Ginger",Ginger Spirit,$7,Y,False,0.006302372554439116
-Sampan,House Rose wine and Pinenapple wine,Vermentino,$6,Y,False,0.006662469571969999
-Sueno,Spicy Paloma,Paloma,$7,Y,False,0.0050669351576461295
-Sueno,House Red,Red,$6,Y,False,0.010732369699209224
-Sueno,House White,White,$6,Y,False,0.010458663056224338
-Sueno,House Rose,Rosé,$6,Y,False,0.007226693578424252
-Thanal Indian Tavern,Classic Margarita with Hornitos Tequila,Margarita,$7,Y,True,0.007768084402757551
-Thanal Indian Tavern,Cocktail of the day,Hugo,$7,Y,False,0.006685054842258521
-Thanal Indian Tavern,House wines and daily special wines,Mai Tai,$6,Y,False,0.005694193313807523
-Time Restaurant,The Great Eye,The Great Eye,$7,Y,True,0.010773939418241164
-Time Restaurant,Merlot,Merlot,$6,Y,True,0.010822755279730862
-Time Restaurant,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Time Restaurant,Love City Lager,Love City Lager,$5,Y,True,0.010382743336380548
-Tir Na Nog Irish Bar & Grill,"Fresh Squeezed Margarita: Hornitos Tequila, Orange Juice, Fresh Squeezed Lemon & Lime Juice, Agave & Grand Marnier with a Salted Rim",Paloma,$7,Y,False,0.005766557406266241
-Tir Na Nog Irish Bar & Grill,"Peach Martini: Vodka, Orange Juice, Peach Schnapps, Triple Sec & Lime Juice",Surfside Iced Tea,$7,Y,False,0.006045886973792563
-Tir Na Nog Irish Bar & Grill,Starborough Sauvignon Blanc,Sauvignon Blanc,$6,Y,False,0.007715931557180448
-Tir Na Nog Irish Bar & Grill,Dark Horse Rose,Rosé,$6,Y,False,0.006080048308482488
-Tir Na Nog Irish Bar & Grill,Stateside Orange Seltzer,Stateside Seltzer,$5,Y,True,0.007830586729217938
-Tir Na Nog Irish Bar & Grill,Strongbow Cider,Strongbow Cider,$5,Y,False,0.00627439482556642
-Top Tomato Bar & Pizza,Sunset On Top,Sunset On Top,$7,Y,True,0.010787594761482626
-Top Tomato Bar & Pizza,High Noon,High Noon,$7,Y,False,0.008932710801762667
-Top Tomato Bar & Pizza,Espresso Martini,Espresso Martini,$7,Y,True,0.008934706053347893
-Top Tomato Bar & Pizza,Classic Mule,Moscow Mule,$7,Y,False,0.006692194385394501
-Top Tomato Bar & Pizza,Hammered Hulk,Hammered Hulk,$7,Y,True,0.010822755279730862
-Top Tomato Bar & Pizza,Mango Tango,Mango Tango,$7,Y,True,0.010784245995537059
-Top Tomato Bar & Pizza,Philly Flush,Philly Flush,$7,Y,True,0.0106615934458909
-Top Tomato Bar & Pizza,House wine,Vermentino,$6,Y,False,0.007381321296964857
-Tradesman's,Trading Sunrises,Syrah / Shiraz,$7,Y,False,0.00403627856791064
-Tradesman's,House Red,Red,$6,Y,False,0.010732369699209224
-Tradesman's,House White,White,$6,Y,False,0.010458663056224338
-Tradesman's,House Rose,Rosé,$6,Y,False,0.007226693578424252
-Uptown Beer Garden,Pineapple Lemonade,Lemonade,$7,Y,True,0.010716308868640188
-Uptown Beer Garden,House Red,Red,$6,Y,False,0.010732369699209224
-Uptown Beer Garden,House White,White,$6,Y,False,0.010458663056224338
-Uptown Beer Garden,House Rose,Rosé,$6,Y,False,0.007226693578424252
-Veda - Modern Indian Bistro,Spicy Margarita,Margarita,$7,Y,False,0.006323830470358469
-Veda - Modern Indian Bistro,Stemmari Red Wine,Red,$6,Y,False,0.007839454463750185
-Veda - Modern Indian Bistro,Povero Favorita White Wine,Vermentino,$6,Y,False,0.008598877453753324
-Veda - Modern Indian Bistro,Rupee Lager,Rupee Lager,$5,Y,True,0.010538718134071513
-Via Locusta,"Rosemarina: Hornitos Tequila, Rosemary, Grapefruit",Rosemarina,$7,Y,True,0.0106720523333339
-Via Locusta,"Hugo Spritz: Elderflower, Mint, Lemon",Hugo,$7,Y,False,0.006126540370758304
-Via Locusta,White,White,$6,Y,True,0.010458663056224338
-Via Locusta,Oskar Blues,Oskar Blues,$5,Y,True,0.010822755279730834
-Vintage Wine Bar & Bistro,Roots & Culture,Roots & Culture,$7,Y,True,0.010822755279730862
-Vintage Wine Bar & Bistro,Barbera (Red wine),Barbera,$6,Y,False,0.007189292164462955
-Vintage Wine Bar & Bistro,Vermentino (White wine),Vermentino,$6,Y,True,0.010646507744560054
-Vintage Wine Bar & Bistro,Love City Lager,Love City Lager,$5,Y,True,0.010382743336380548
-Walnut Garden - Temporarily Closed,"A Walk in the Park: Hornitos Plata Tequila, Strawberry, Watermelon, Lime",The Secret Garden,$7,Y,False,0.00800420112483043
-Walnut Garden - Temporarily Closed,Rose (Grenache | Cinsauly),Grenache,$6,Y,False,0.008096452443039392
-Walnut Garden - Temporarily Closed,Walnut Garden Lager,Walnut Garden Lager,$5,Y,True,0.01057658653090902
-The Wayward,"Wooder Melon (Hornitos blanco tequila, salted watermelon, combier, lime, jalepeno oil",The Secret Garden,$7,Y,False,0.007319012525879709
-The Wayward,Proverb Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,False,0.008995808686030641
-The Wayward,Proverb Pinot Noir,Pinot Noir,$6,Y,False,0.007982499000268452
-The Wayward,Love City Lager,Love City Lager,$5,Y,True,0.010382743336380548
-Wicked Wolf,Hornitos Paloma,Paloma,$7,Y,False,0.0054020452008847536
-Wrap Shack,Hornitos Tequila Paloma,Rosemarina,$7,Y,False,0.005906377308328626
-Wrap Shack,Well Liquor,Well Liquor,$7,Y,True,0.010822755279730862
-Wrap Shack,Pinot Grigio,Pinot Gris / Pinot Grigio,$6,Y,True,0.008995808686030641
-Wrap Shack,PBR,PBR,$5,Y,True,0.010822755279730853
-Tir Na Nog Irish Bar & Grill,Signature Old Fashioned,Old Fashioned,$12.00,N,True,0.0107016938143779
-Tir Na Nog Irish Bar & Grill,Signature Manhattan,Manhattan,$12.00,N,True,0.010671488831065739
-Tir Na Nog Irish Bar & Grill,Signature Irish Whiskey Sour,Irish Coffee,$12.00,N,False,0.00672512619839121
-Tir Na Nog Irish Bar & Grill,Signature Irish Coffee,Irish Coffee,$9.50,N,True,0.010660311273592092
-Tir Na Nog Irish Bar & Grill,Signature Gin & Tonic,Gin and Tonic,$11.00,N,True,0.009457681607781513
-Tir Na Nog Irish Bar & Grill,Irish Coffee,Irish Coffee,$9.50,N,True,0.009344302983253363
-Tir Na Nog Irish Bar & Grill,Guinness,Guinness,$7.25,N,True,0.010744854360151984
-Tir Na Nog Irish Bar & Grill,Harp,Harp,$5.00,N,True,0.010822755279730834
-Tir Na Nog Irish Bar & Grill,Strongbow Gold Apple,Strongbow Cider,$7.00,N,True,0.010760995375299062
-Tir Na Nog Irish Bar & Grill,Smithwicks,Smithwicks,$5.50,N,True,0.010822755279730834
-Tir Na Nog Irish Bar & Grill,Sam Adams Winter Lager- Beer of the Month,Sam Adams Winter Lager,$7.00,N,True,0.01058688986807368
-Tir Na Nog Irish Bar & Grill,Golden Road Mango Kart,Golden Road Mango Cart,$7.00,N,True,0.010740350227864967
-Tir Na Nog Irish Bar & Grill,Victory Brotherly Love,Victory Brotherly Love,$7.00,N,True,0.010549475275425615
-Tir Na Nog Irish Bar & Grill,Cape May Crushin It Orange IPA,Cape May Crushin It Orange IPA,$8.00,N,True,0.01056135072014797
-Tir Na Nog Irish Bar & Grill,Two Roads Lil Heaven IPA,Two Roads Lil Heaven IPA,$7.00,N,True,0.010602272455444386
-Tir Na Nog Irish Bar & Grill,Yards Philly Pale Ale,Yards Philly Pale Ale,$7.00,N,True,0.010388595911586248
-Tir Na Nog Irish Bar & Grill,Yuengling,Yuengling,$5.75,N,True,0.00906982609758991
-Tir Na Nog Irish Bar & Grill,Allagash,Allagash,$7.00,N,True,0.008696686281939639
-Tir Na Nog Irish Bar & Grill,Carlsberg,Carlsberg,$6.75,N,True,0.010822755279730844
-Tir Na Nog Irish Bar & Grill,Stella Artois,Stella Artois,$7.25,N,True,0.01076187335593106
-Tir Na Nog Irish Bar & Grill,Kronenberg,Kronenberg,$7.00,N,True,0.010822755279730834
-Tir Na Nog Irish Bar & Grill,Lagunitas IPA,Lagunitas IPA,$7.00,N,True,0.010573139300727933
-Tir Na Nog Irish Bar & Grill,Cigar City Jai Alai,Cigar City Jai Alai,$7.00,N,True,0.010753952297914461
-Tir Na Nog Irish Bar & Grill,Sierra Nevada Pale Ale,Sierra Nevada Pale Ale,$6.75,N,True,0.010675151030294053
-Tir Na Nog Irish Bar & Grill,Yards Philty Hazy IPA,Yards Philty Hazy IPA,$7.00,N,True,0.010505217737807422
-Tir Na Nog Irish Bar & Grill,Lancaster Milk Stout,Lancaster Milk Stout,$6.75,N,True,0.010725890583098857
-Tir Na Nog Irish Bar & Grill,Lefthand Milk Stout,Lefthand Milk Stout,$6.75,N,True,0.010725890583098863
-Tir Na Nog Irish Bar & Grill,St. Bernardus ABT 12,St. Bernardus ABT 12,$10.00,N,True,0.01082275527973084
-Tir Na Nog Irish Bar & Grill,Angry Orchard Crisp Apple Cider,Angry Orchard Apple Cider,$6.50,N,True,0.010704504939548004
-Tir Na Nog Irish Bar & Grill,Angry Orchard Rose Cider,Angry Orchard Apple Cider,$6.50,N,True,0.007826556345872026
-Tir Na Nog Irish Bar & Grill,Dogfish Head Seaquench Sour Ale,Dogfish Head Seaquench Sour Ale,$6.50,N,True,0.01049248573254476
-Tir Na Nog Irish Bar & Grill,Magners Irish Cider,Magners Apple Cider,$7.00,N,True,0.010728754989875166
-Tir Na Nog Irish Bar & Grill,Magners Pear Irish Cider,Magners Apple Cider,$7.00,N,True,0.010728754989875166
-Tir Na Nog Irish Bar & Grill,White Claw Mango,White Claw,$7.25,N,False,0.006957348841521216
-Tir Na Nog Irish Bar & Grill,White Claw Black Cherry,White Claw,$7.25,N,False,0.00797439953492107
-Tir Na Nog Irish Bar & Grill,Amstel Light,Amstel Light,$6.25,N,True,0.010544257591997026
-Tir Na Nog Irish Bar & Grill,Budweiser,Budweiser,$6.00,N,True,0.010822755279730855
-Tir Na Nog Irish Bar & Grill,Bud Light,Bud Light,$6.00,N,True,0.010544257591997026
-Tir Na Nog Irish Bar & Grill,Coors Light,Coors Light,$6.00,N,True,0.010544257591997026
-Tir Na Nog Irish Bar & Grill,Corona,Corona,$6.50,N,True,0.010593787392126814
-Tir Na Nog Irish Bar & Grill,Corona Light,Corona Light,$6.50,N,True,0.010330536237331246
-Tir Na Nog Irish Bar & Grill,Heineken,Heineken,$6.50,N,True,0.010612354203486888
-Tir Na Nog Irish Bar & Grill,Heinken Light,Heinken Light,$6.50,N,True,0.010544257591997026
-Tir Na Nog Irish Bar & Grill,Heineken 0.0,Heineken,$6.00,N,True,0.010612354203486888
-Tir Na Nog Irish Bar & Grill,Michelob Ultra,Michelob Ultra,$5.50,N,True,0.010822755279730844
-Tir Na Nog Irish Bar & Grill,Miller Lite,Miller Lite,$6.00,N,True,0.006702782864140917
-Tir Na Nog Irish Bar & Grill,Miller Highlife,Miller Lite,$5.00,N,True,0.008575232688551619
-Tir Na Nog Irish Bar & Grill,Twisted Tea,Twisted Tea,$6.00,N,True,0.008658605984121276
-Tir Na Nog Irish Bar & Grill,Yuengling,Yuengling,$5.00,N,True,0.00906982609758991
-Tir Na Nog Irish Bar & Grill,"Elmo Pio Pinot Grigio 2018 (Veneto, Italy)",Pinot Gris / Pinot Grigio,$9.75,N,False,0.007037172225556536
-Tir Na Nog Irish Bar & Grill,"BV Century Cellars Chardonnay 2019 (Napa Valley, CA)",Chardonnay,$9.75,N,False,0.007579287520052462
-Tir Na Nog Irish Bar & Grill,J. Roget Brut Sparkling White,White,$8.00,N,False,0.010458663056224338
-Tir Na Nog Irish Bar & Grill,"Rosehaven Rosé 2018 (Modesto, CA)",Rosé,$9.25,N,False,0.008927261822253861
-Tir Na Nog Irish Bar & Grill,"Proverb Merlot 2018 (Nappa Valley, CA)",Merlot,$11.25,N,False,0.008289492655805674
-Tir Na Nog Irish Bar & Grill,"Conquista Malbec 2018 (Mendoza, Argentina)",Malbec,$11.25,N,True,0.010798178422531888
+Restaurant Name,Address,Url,Restaurant Website,Latitude,Longitude,Details,Deals Offered,Deal Website,Open Table Link,Rating,Review Count,Price,Categories
+1225 Raw Sushi and Sake Lounge,"1225 Sansom St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#1225-raw-sushi-and-sake-lounge,https://1225rawnledas.com,39.94977844897959,-75.16082181632653,Participating in dinner only. Offering indoor and outdoor dining. Closed Monday.,$45 DINNER,https://centercityphila.org/uploads/attachments/clly71s7mbf9jwnqdars7fk7y-raw1225.pdf,,3.5,582,$$,"['Japanese', 'Sushi Bars', 'Korean']"
+Aki Nom Nom,"1210 Walnut St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#aki-nom-nom,http://akisushi.com,39.9487415,-75.16115765518246,Participating in lunch and dinner. Offering indoor dining.,Coming soon,,,3.5,630,$$,"['Sushi Bars', 'Ramen']"
+Alice Pizza,"235 S 15th Street, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#alice-pizza,http://www.alicephilly.com,39.9481842,-75.16605169537605,"Participating in lunch, dinner and takeout. Offering indoor dining.",$45 DINNER,https://centercityphila.org/uploads/attachments/clksc8v1pacvf0vqd4bn1k9ue-alice.pdf,,4.5,311,$$,"['Pizza', 'Italian', 'Gelato']"
+Amada,"217-219 Chestnut St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#amada,http://www.amadarestaurant.com,39.9485657,-75.1448374,Participating in dinner only. Offering indoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clluwrm2pbalcjnqd3va3v0dl-amada.pdf,https://www.opentable.com/restaurant/profile/5129/reserve?ref=939,4.0,2259,$$,"['Tapas Bars', 'Spanish', 'Iberian']"
+Amina,"104 Chestnut St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#amina,http://aminaphilly.com,39.948127,-75.14276525,"Participating in lunch, dinner, and takeout. Offering indoor dining. Closed on Mondays. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clkwusrusa39rjnqdaqm003vc-amina.pdf,https://www.opentable.com/restaurant/profile/1239313/reserve?ref=9169,4.0,131,,['Southern']
+Ancient Spirits & Grille,"1726 Chestnut St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#ancient-spirits-grille,https://asgphilly.com,39.9515042,-75.1698515,"Participating in lunch, dinner and takeout. Offering indoor and outdoor dining. ",$45 DINNER | $20 LUNCH | COCKTAILS,https://centercityphila.org/uploads/attachments/clkjrtuzr9mfdm8qd9woymj2v-ancientdinner.pdf,https://www.opentable.com/restaurant/profile/1177882/reserve?ref=9169,3.5,73,$$,"['Lounges', 'Cocktail Bars', 'Modern European']"
+Bahn Mi and Bottles,"712-14 South St, Philadelphia, PA 19147",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bahn-mi-and-bottles,https://www.banhmiandbottles.com,39.9420217,-75.1523396,Participating in dinner only. Offering indoor dining.,$60 DINNER,https://centercityphila.org/uploads/attachments/clm0u8wzibpvqhnqds517lu33-banhmi2.pdf,,4.0,294,$$,"['Vietnamese', 'Beer, Wine & Spirits', 'Cocktail Bars']"
+Bank and Bourbon,"1200 Market St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bank-and-bourbon,http://bankandbourbon.com,39.9515897,-75.160309,Participating in lunch and dinner. Offering indoor dining.,$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/cllgspi5hasp4m8qd12vpri4h-bank-bourbondinner.pdf,,3.5,432,$$$,"['American (New)', 'Gastropubs']"
+Barbuzzo,"110 S 13th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#barbuzzo,http://www.barbuzzo.com,39.9500257,-75.1620492,,$45 DINNER,https://centercityphila.org/uploads/attachments/clle1p8a8anenomqd0zww53ap-barbuzzo.pdf,https://www.opentable.com/restaurant/profile/47290/reserve?ref=9169,4.5,3193,$$,"['Mediterranean', 'Pizza', 'Italian']"
+Bellini,"220 S 16th St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bellini,https://belliniphiladelphia.com,39.94909595,-75.16787067802703,Participating in dinner and takeout. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllbbv3g2aqmghnqdihnra36o-bellini.pdf,https://www.opentable.com/restaurant/profile/17053/reserve?ref=9169,3.0,370,$$,"['Italian', 'Cocktail Bars', 'Wine Bars']"
+Bistro La Baia,"1700 Lombard St, Philadelphia, PA 19146",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bistro-la-baia,https://www.bistrolabaia.com,39.945205,-75.17028,"Participating in lunch, dinner and takeout. Offering indoor and outdoor dining. BYOB.",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clkcv5g3s9es2saqdbqwggo6j-bistrolabaiadinner.pdf,https://www.opentable.com/restaurant/profile/116446/reserve?ref=9169,3.5,245,,['Italian']
+Bistro Romano,"120 Lombard St, Philadelphia, PA 19147",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bistro-romano,http://www.bistroromano.com,39.94190354028374,-75.14426640234197,Participating in dinner and takeout. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clksc9wckacvi0vqdn5waxgaf-bistroromano.pdf,https://www.opentable.com/restaurant/profile/1638/reserve?ref=9169,4.0,605,$$,"['Italian', 'Wine Bars']"
+Bistrot La Minette,"623 S 6th St, Philadelphia, PA 19147",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bistrot-la-minette,http://www.bistrotlaminette.com,39.94142580952381,-75.15236566666667,Participating in dinner only. Offering indoor and outdoor dining. Closed Sundays and Mondays.,$45 DINNER,https://centercityphila.org/uploads/attachments/clkr10b7sab5d0vqduolc3nbm-bistrotlaminettedinner.pdf,https://www.opentable.com/restaurant/profile/26455/reserve?ref=9169,4.5,659,$$$,"['French', 'Breakfast & Brunch']"
+Bleu Sushi,"262 S 10th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bleu-sushi,http://bleusushiphilly.com,39.9464973,-75.15798321680501,"Participating in lunch, dinner and takeout. Offering indoor and outdoor dining. BYOB.",Coming Soon,,https://www.opentable.com/restaurant/profile/148756/reserve?ref=9169,4.5,1083,$$,"['Sushi Bars', 'Japanese', 'Asian Fusion']"
+Blume Food & Cocktail,"1500 Locust Street, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#blume-food-cocktail,http://blumephilly.com,39.94824265,-75.16654758167297,Participating in dinner only. Offering indoor and outdoor dining.,Coming soon.,,,2.5,201,$$,"['Bars', 'Breakfast & Brunch', 'Burgers']"
+Bolo,"2025 Sansom St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bolo,http://www.bolophl.com,39.95143973469388,-75.17418559183673,Participating in dinner only. Offering indoor dining.,$60 DINNER,https://centercityphila.org/uploads/attachments/clm85iiisbua8omqda4yvcvar-bolo.pdf,,4.0,30,,['Latin American']
+Brauhaus Schmitz,"718 South St, Philadelphia, PA 19147",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#brauhaus-schmitz,http://BrauhausSchmitz.com,39.94207565000001,-75.15461395963062,"Participating in dinner only. Offering indoor dining. Not participating on Saturday, September 16.",$45 DINNER,https://centercityphila.org/uploads/attachments/cll6onygragcdm8qd3r034bdp-brauhahus.pdf,,4.0,813,$$$,"['German', 'Bars']"
+Bridget Foy's,"200 South Street, Philadelphia, PA 19147",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#bridget-foy-s,http://www.bridgetfoys.com,39.941137,-75.145962,"Participating in lunch, dinner and takeout. Closed on Monday and Tuesday. Offering indoor and outdoor dining.",$45 DINNER AND $20 LUNCH,https://centercityphila.org/uploads/attachments/cllo3qgfab1ilm8qdnhyyaz7d-bridgetfoy.pdf,https://www.opentable.com/restaurant/profile/11809/reserve?ref=9169,3.5,322,$$,"['Breakfast & Brunch', 'American (Traditional)', 'Bars']"
+Buca D'oro Ristorante,"711 Locust St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#buca-d-oro-ristorante,http://bucadororistorante.com,39.94676037755102,-75.15363423469387,"Participating in lunch, dinner and takeout. Offering indoor dining.",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clmgcy1f5d4rc0vqd015d322u-bucadinner.pdf,https://www.opentable.com/restaurant/profile/1207885/reserve?ref=9169,3.5,118,$$$,"['Italian', 'Wine Bars', 'Seafood']"
+Buddakan,"325 Chestnut St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#buddakan,http://www.buddakan.com,39.9488836,-75.1470298,"Participating in dinner only. Offering indoor seating. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER | $45 VEGAN DINNER,https://centercityphila.org/uploads/attachments/clm0u2i0obka8ypqdrvya2sh5-buddakandin.pdf,https://www.opentable.com/restaurant/profile/2860/reserve?ref=9169,4.0,1718,$$$,"['Asian Fusion', 'Chinese']"
+Butcher Bar,"2034 Chestnut St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#butcher-bar,http://www.butcherbarphilly.com,39.9521242,-75.174893,Participating in dinner only. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllntmgoqb021saqdx4mq8n1m-butcher.pdf,https://www.opentable.com/restaurant/profile/269854/reserve?ref=9169,4.0,757,$$,"['Steakhouses', 'Bars', 'Comfort Food']"
+Caribou Café,"1126 Walnut St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#caribou-café,http://www.cariboucafe.com,39.948647,-75.16027061637016,Participating in lunch and dinner. Offering indoor and outdoor dining.,$45 DINNER AND $20 LUNCH,https://centercityphila.org/uploads/attachments/clkcvdr049xkx0vqd4so0rr44-cariboucafedinnerlunch.pdf,https://www.opentable.com/restaurant/profile/113221/reserve?ref=9169,,0,,
+Chart House,"555 S. Columbus Blvd, Philadelphia, PA 19147",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#chart-house,https://www.chart-house.com/location/chart-house-philad,39.941185,-75.1404988,"Participating in dinner only. Offering indoor dining.  Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clmexrjffcajhsaqdibo2hhx7-charthouse.pdf,https://www.opentable.com/r/chart-house-restaurant-philadelphia?ref=9169#reserve,2.5,418,$$$,"['Seafood', 'Steakhouses', 'Venues & Event Spaces']"
+Chez Colette,"120 S 17th St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#chez-colette-2,https://www.sofitel-philadelphia.com/dining-lounge,39.95093385,-75.16964767951899,Participating in dinner only. Closed Sunday and Monday. Offering indoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clmgcq3f1chj5m8qdir86oq2q-chezcollette.pdf,https://www.opentable.com/restaurant/profile/7299/reserve?ref=9169,3.5,38,$$,"['French', 'Breakfast & Brunch', 'Cocktail Bars']"
+Chez Hansi,"1610 South St, Philadelphia, PA 19146",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#chez-hansi,,39.9439603,-75.16920174644446,Participating in dinner. Offering indoor dining and BYOB.,$45 DINNER,https://centercityphila.org/uploads/attachments/clluwuwaab8disaqdu1fy759a-chezhansi.pdf,https://www.opentable.com/restaurant/profile/1262203/reserve?ref=9169,4.5,23,,"['Modern European', 'Desserts', 'American (New)']"
+Chubby Cattle,"146 N 10th Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#chubby-catt,,39.9548883,-75.1561251,"Participating in lunch, dinner, and takeout. Offering indoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clm6l5gvubr4oomqdzbfysxia-chubbycattledinner.pdf,,4.5,1481,$$,"['Chinese', 'Hot Pot', 'Asian Fusion']"
+City Winery,"990 Filbert St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#city-winery,https://citywinery.com/philadelphia,39.9522713,-75.156091,Participating in dinner only. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllkwb958awa5saqdna2mb8ub-citywinery.pdf,,2.5,242,$$$,"['Wine Bars', 'Venues & Event Spaces', 'American (New)']"
+Con Murphy's Irish Pub,"1700 Ben Franklin Pkwy, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#con-murphy-s-irish-pub,http://www.conmurphyspub.com,39.9556532,-75.16821887769059,Participating in dinner only. Offering indoor and outdoor dining.,$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clmcvj2l5c6gjypqd2aw9cx6l-conmurphy-dinner.pdf,https://www.opentable.com/restaurant/profile/67228/reserve?ref=9169,3.5,352,$$,"['Irish', 'Pubs', 'Sports Bars']"
+Continental Midtown,"1801 Chestnut St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#continental-midtown-2,https://continentalmidtown.com,39.95176,-75.170475,"Participating in dinner only. Offering indoor and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",Coming soon,,https://www.opentable.com/restaurant/profile/114355/reserve?ref=9169,3.5,1845,$$,"['American (New)', 'Breakfast & Brunch', 'Cocktail Bars']"
+Cuba Libre Restaurant & Rum Bar,"10 S 2nd St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#cuba-libre-restaurant-rum-bar,http://www.cubalibrerestaurant.com,39.94970711764706,-75.14389658823531,"Participating in dinner only. Offering indoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clksby1nb9u88saqd0s7n4gt6-cubalibre.pdf,,3.5,1357,$$$,"['Cuban', 'Latin American', 'Dance Clubs']"
+D'Angelo's Ristorante Italiano & Lounge,"256 S. 20th St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#d-angelo-s-ristorante-italiano-lounge,http://www.dangeloristorante.com,39.94872,-75.174318,"Participating in dinner and takeout. Offering indoor and outdoor dining. Closed Sunday and Monday. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clkgx3a539jmcm8qdqb96dy9t-dangelo.pdf,https://www.opentable.com/restaurant/profile/37825/reserve?ref=9169,3.5,180,$$$,"['Lounges', 'Italian']"
+The Dandelion,"124 S 18th St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#the-dandelion,http://thedandelionpub.com,39.95101485,-75.17074136802594,"Participating in dinner only. Offering indoor and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clly0wjgebctpomqdiu0zjop8-dandelion.pdf,https://www.opentable.com/restaurant/profile/54712/reserve?ref=9169,4.0,2822,$$,"['Gastropubs', 'British']"
+Darling Jack's Tavern,"104 South 13th Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#darling-jack-s-tavern,http://www.darlingjacks.com,39.94968529591837,-75.1618743979592," dinner, and takeout. Offering indoor and outdoor dining. ",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clmb0p5ngc1z1m8qdi90sr2t8-darling1.pdf,,4.5,33,,"['American (New)', 'American (Traditional)', 'Wine Bars']"
+Del Frisco's Double Eagle Steakhouse,"1426 Chestnut St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#del-frisco-s-double-eagle-steakhouse,http://www.delfriscos.com,39.95085512244898,-75.16452585714286,"Participating in dinner only. Offering indoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$60 DINNER,https://centercityphila.org/uploads/attachments/clmb0bv7pc0essaqd1xmpphb7-delfrsico1.pdf,https://www.opentable.com/r/del-friscos-double-eagle-steak-house-philadelphia?ref=9169#reserve,4.0,1246,$$$$,"['Steakhouses', 'Seafood', 'American (Traditional)']"
+Del Frisco's Grille,"225 South Broad Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#del-frisco-s-grille,https://delfriscosgrille.com,39.94865414607718,-75.16459353349245,Participating in dinner only. Offering indoor dining.,Coming soon.,,https://www.opentable.com/r/del-friscos-grille-philadelphia?ref=9169#reserve,3.0,193,$$$,"['Bars', 'Diners', 'Breakfast & Brunch']"
+Devil's Alley,"1907 Chestnut St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#devil-s-alley,http://www.devilsalleybarandgrill.com,39.9521305,-75.17220074921535,Participating in dinner and takeout. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clle20i5zapirypqdlwgi9oud-devilsalley.pdf,,3.5,857,$$,"['American (New)', 'Bars', 'Breakfast & Brunch']"
+Devon Seafood Grill,"225 S 18th St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#devon-seafood-grill,http://www.devonseafood.com,39.949230400000005,-75.17026505176388,Participating in dinner and takeout. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clmdl8ib2c7amwnqdr85x7nc7-devon.pdf,https://www.opentable.com/devon-seafood-grill-philadelphia?ref=9169#reserve,3.5,1278,$$$,"['Bars', 'Seafood']"
+Dim Sum House by Jane G's,"1930 Chestnut St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#dim-sum-house-by-jane-g-s,http://dimsum.house,39.95182435,-75.1733266192953, only. Closed Mondays. Offering indoor and outdoor dining.,$60 DINNER,https://centercityphila.org/uploads/attachments/clm81avc5buj3saqdhf225q0o-dimsum.pdf,,4.0,559,$$,"['Szechuan', 'Dim Sum', 'Cantonese']"
+Dolce Italian,"1437 Chestnut Street, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#dolce-italian,http://www.dolceitalianrestaurant.com/location/philadelphia,39.95103293877551,-75.16462357142858,Participating in lunch and dinner. Offering indoor dining.,$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/cllxrvn71be74m8qd69fx6tih-dolcedinner.pdf,https://www.opentable.com/restaurant/profile/1193428/reserve?ref=9169,4.0,39,,"['Italian', 'Pizza', 'Breakfast & Brunch']"
+Double Knot,"120 S 13th St., Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#doubleknot,https://www.doubleknotphilly.com,39.949601540816325,-75.16189252040817,"Participating in dinner only. Offering indoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clm9926hkbxy7wnqdgiorugh2-doubleknot.pdf,,4.5,1340,$$$,"['Sushi Bars', 'Bars', 'Japanese']"
+El Vez,"121 S. 13th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#el-vez,http://www.elvezrestaurant.com,39.9497016,-75.161896,"Participating in dinner only. Offering indoor and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clm81sgiubw75ypqd7pspe0of-elvez1.pdf,https://www.opentable.com/el-vez?ref=9169#reserve,4.0,3554,$$,"['Mexican', 'Breakfast & Brunch']"
+Entrée BYOB,"1608 South St, Philadelphia, PA 19146",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#entrée-byob,http://www.entreebyob.com,39.9439399,-75.16915755673173,Participating in dinner and takeout. Offering indoor and outdoor dining. BYOB. Closed Mondays.,$45 DINNER,https://centercityphila.org/uploads/attachments/clm6jwijybsymm8qdeuflxxxw-entree.pdf,https://www.opentable.com/restaurant/profile/111997/reserve?ref=9169,,0,,
+Estia Restaurant,"1405 Locust Street, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#estia-restaurant,http://www.estiarestaurant.com,39.9484091,-75.1653065, only. Offering indoor and outdoor dining.,$60 DINNER,https://centercityphila.org/uploads/attachments/clluwxjpzbexghnqd59kinb8j-estia.pdf,https://www.opentable.com/restaurant/profile/5989/reserve?ref=9169,4.0,834,$$$,"['Greek', 'Mediterranean', 'Seafood']"
+Flambo Caribbean Restaurant,"205 S 13th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#flambo-caribbean-restaurant,http://www.flamboh.com,39.9485068,-75.16197684943853,Participating in lunch and dinner. Offering indoor dining.,$45 DINNER \ $20 LUNCH,https://centercityphila.org/uploads/attachments/clmdlk2vwc8swjnqd5z8tmulq-flambo.pdf,,3.5,24,,['Trinidadian']
+Fork,"306 Market Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#fork,https://forkrestaurant.com,39.9500306,-75.1461104,"Participating in dinner only. Offering indoor and outdoor dining. Closed Monday. Not participating on Saturday, September 16 and Saturday, September 23.",Coming soon.,,https://www.opentable.com/restaurant/profile/20035/reserve?ref=9169,4.0,728,$$$,['American (New)']
+Forsythia,"233 Chestnut Street, Philadelphia, PA 19105",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#forsythia,https://www.forsythiaphilly.com,39.9486523,-75.1453872,Participating in dinner only. Offering indoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllawsjkfam3mjnqdqwfojym5-forsythia.pdf,,4.5,179,$$$,"['Modern European', 'French', 'American (New)']"
+Franklin Social Kitchen & Bar,"401 Chestnut St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#franklin-social-kitchen-bar,https://www.franklinsocialphilly.com,39.94905035,-75.14788373251807,Participating in dinner and takeout. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cll2rthu1a78bsaqdc0ebvx4s-franklinsocial.pdf,https://www.opentable.com/restaurant/profile/1005361/reserve?ref=9169,3.5,13,,"['Lounges', 'Breakfast & Brunch', 'Cafes']"
+Fringe Bar,"140 N Christopher Columbus Blvd, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#fringe-bar,https://fringebarphilly.com,39.9533718,-75.1404129, only. Offering indoor and outdoor dining. Closed Monday and Tuesday.,$45 DINNER,https://centercityphila.org/uploads/attachments/clmexu6e0cbqewnqdpqx1cp2x-fringe2.pdf,https://www.opentable.com/restaurant/profile/1281529/reserve?ref=9169,3.5,6,,"['American (New)', 'Bars', 'Beer Gardens']"
+Garden Grille and Bar,"1100 Arch St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#garden-grille-and-bar,http://www.philadelphiaCenterCity.HGI.com,39.9532537,-75.1581150339692,Participating in dinner only. Offering indoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cll2om1zna787wnqdhftsu2r2-gardengrille.pdf,https://www.opentable.com/restaurant/profile/1259788/reserve?ref=9169,,0,,
+Giuseppe and Sons,"1523 Sansom St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#giuseppe-and-sons,https://giuseppesons.com,39.950452346938775,-75.16619875510204,"Participating in dinner only. Offering indoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clm993xytbw9fomqdwnlxbtaw-guiseppe.pdf,,4.0,412,$$,"['Italian', 'Bars']"
+The Goat Rittenhouse,"1907 Sansom St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#the-goat-rittenhouse,https://www.thegoatrittenhouse.com,39.95120836734694,-75.17230359183674,Participating in dinner only. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllntfkscb01osaqddoppjhis-goat.pdf,,3.5,45,,"['Bars', 'American (Traditional)']"
+Gran Caffe L'Aquila,"1716 Chestnut St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#gran-caffe-l-aquila,http://grancaffelaquila.com,39.95118775,-75.16953315949416,"Participating in lunch, dinner and takeout. Offering indoor and outdoor dining.",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/cll2oykrma89gm8qdmv3eaxru-grancaffe.pdf,https://www.opentable.com/restaurant/profile/1177819/reserve?ref=9169,4.5,1399,$$,"['Coffee & Tea', 'Italian', 'Gelato']"
+Hard Rock Cafe,"1113 Market St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#hard-rock-cafe,https://www.hardrockcafe.com/location/philadelphia,39.9520644,-75.1595415,Participating in lunch and dinner. Offering indoor dining.,$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clmb096n1bzuiomqd7jc8oynr-23-hrcne-07600-rw-menu-edits-dinner-8-5x11-no-bleeds.pdf,https://www.opentable.com/restaurant/profile/192508/reserve?ref=9169,2.5,440,$$,"['American (Traditional)', 'Burgers']"
+Harp & Crown,"1525 Sansom St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#harp-crown1,http://harpcrown.com,39.9505401,-75.1668604,"Participating in dinner only. Offering indoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clm995pm6bxybwnqdtriuc8rt-harp-crown.pdf,,4.0,1116,$$,"['American (New)', 'Gastropubs']"
+Harper's Garden,"31 S. 18th Street, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#harpers-garden6,https://harpersgardenphilly.com,39.9521432244898,-75.17012914285714,"Participating in dinner only. Offering indoor and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/cllaxsp72akupm8qd72mr7xem-harpersgarden.pdf,,4.0,718,$$,"['American (New)', 'Tapas/Small Plates', 'Cocktail Bars']"
+The Hayes,"1123 Walnut Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#the-hayes,http://www.thehayesphl.com,39.9489302,-75.1600819,Participating in lunch and dinner. Offering indoor and outdoor dining.,Coming soon.,,,4.0,11,$$,"['American (New)', 'Desserts', 'Cocktail Bars']"
+Iron Hill Brewery & Restaurant,"1150 Market Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#iron-hill-brewery-restaurant,https://www.ironhillbrewery.com/center-city-pa,39.9517161,-75.1595773,Participating in lunch and dinner. Offering indoor and outdoor dining.,$45 DINNER AND $20 LUNCH,https://centercityphila.org/uploads/attachments/cllf6vz6dapy3saqd4g3xwkb9-ironhill.pdf,https://www.opentable.com/restaurant/profile/1017319/reserve?ref=9169,4.0,470,$$,"['American (Traditional)', 'Brewpubs']"
+Jasmine Rice Rittenhouse,"306 South 16th St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#jasmine-rice-rittenhouse,http://www.jasminericephilly.com,39.9470731,-75.1682365,"Participating in lunch, dinner and takeout. Offering indoor, outdoor dining and BYOB. Call about oudoor seating.",$45 DINNER AND $20 LUNCH,https://centercityphila.org/uploads/attachments/clkk2x7fn9ltpsaqdxjp97vly-jasminedinnerlunch.pdf,https://www.opentable.com/restaurant/profile/1158349/reserve?ref=9169,3.5,340,$$,['Thai']
+Jomon Japanese BBQ,"1310 Walnut Street, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#jomon-japanese-bb,https://jomonbbq.com,39.9489277,-75.1626609643408,Participating in dinner only. Offering indoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllgsje6vasoim8qdz57lcntq-jomon.pdf,,4.0,273,$$$,"['Barbeque', 'Japanese', 'Cocktail Bars']"
+Knock Restaurant & Bar,"225 S 12th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#knock-restaurant-bar,http://www.knockphl.com,39.94826028571429,-75.16056421428573,Participating in dinner only. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cll2p21f3a89om8qd0uczac2f-knock.pdf,,3.5,174,$$,"['American (New)', 'Gay Bars']"
+Koto Sushi,"719 Sansom St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#koto-sushi,http://www.kotosushipa.com,39.9488864,-75.1532407,"Participating in lunch, dinner and takeout. Offering indoor seating",$45 DINNER AND $20 LUNCH,https://centercityphila.org/uploads/attachments/clkr0pg5p9tdbm8qdtdpssky8-koto.pdf,https://www.opentable.com/restaurant/profile/995407/reserve?ref=9169,4.5,309,$$,"['Japanese', 'Sushi Bars']"
+La Famiglia Ristorante,"8 S Front St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#la-famiglia-ristorante,http://www.lafamiglia.com,39.9494313,-75.1423084,Participating in dinner and takeout. Offering indoor and outdoor dining. Closed Sunday and Monday,$45 DINNER,https://centercityphila.org/uploads/attachments/clksc81r39uzpypqdwuvakh4n-lafamiglia.pdf,https://www.opentable.com/restaurant/profile/862/reserve?ref=9169,4.0,164,$$$,['Italian']
+La Fontana Della Citta,"1701 Spruce St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#la-fontana-della-citta,http://www.lafontanadellacitta.com,39.947682,-75.169754,Participating in lunch and dinner. Offering indoor and outdoor dining and BYOB.,$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/cllawtxhsb4zw0vqdvz5awogj-lafontanadinner.pdf,https://www.opentable.com/restaurant/profile/20362/reserve?ref=9169,3.0,431,$$,['Italian']
+La Nonna,"214 South St, Philadelphia, PA 19147",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#la-nonna,https://www.ristorantelanonna.com,39.94110845,-75.14623811821356,Participating in dinner only. Offering indoor dining and BYOB. Closed Monday.,Coming soon.,,,4.5,190,$$,"['Italian', 'Comfort Food', 'Pasta Shops']"
+La Viola Bistro,"253 S 16th St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#la-viola-bistro,http://laviolaphiladelphia.com,39.94778635,-75.1677798,"Participating in lunch, dinner and takeout. Offering indoor and outdoor dining. BYOB.",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clly1pvr0bdz2saqd4xbh5zs6-lavioladinner.pdf,https://www.opentable.com/restaurant/profile/224086/reserve?ref=9169,3.5,556,$$,['Italian']
+La Viola Ovest,"252 S 16th St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#la-viola-ovest,http://laviolaphiladelphia.com,39.94789403125,-75.16803021874999,"Participating in lunch, dinner and takeout. Offering indoor and outdoor dining. BYOB.",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clly1pvr0bdz2saqd4xbh5zs6-lavioladinner.pdf,https://www.opentable.com/restaurant/profile/224713/reserve?ref=9169,3.5,228,$$,['Italian']
+Lacroix,"210 West Rittenhouse Square, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#lacroix,https://www.lacroixrestaurant.com,39.9498637,-75.17347519912886,"Participating in dinner only. Offering indoor dining. Closed Monday, Tuesday, and Wednesday.",$60 DINNER,https://centercityphila.org/uploads/attachments/cllux0tnsb7a7omqdchcf2o4i-lacroix.pdf,,4.5,464,$$$$,['American (New)']
+LaScala's Fire,"615 Chestnut St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#lascalas,http://www.lascalasphilly.com,39.9494538,-75.1517332,Participating in dinner only. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clkv9ezqy9zukypqdn5aqyueb-lascala.pdf,https://www.opentable.com/restaurant/profile/7365/reserve?ref=9169,3.5,109,$$,"['Italian', 'Venues & Event Spaces']"
+Libertine,"261 S. 13th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#libertine,http://www.libertinephilly.com,39.9468945,-75.16240773570618,Participating in dinner only. Closed for dinner on Sunday and Monday. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clkcvgoq89etfsaqdav2wv6uf-libertine.pdf,https://www.opentable.com/restaurant/profile/991582/reserve?ref=9169,4.0,138,,"['American (New)', 'Cocktail Bars']"
+Little Nonna's,"1234 Locust St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#little-nonna-s,http://www.littlenonnas.com,39.947784842105264,-75.16182389473684,Participating in dinner and takeout. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clle1sbydaoe6saqdqmlp0oqx-littlenonna.pdf,,4.0,1326,$$,['Italian']
+Malbec Argentine Steakhouse,"400 South 2nd St, Philadelphia, PA 19147",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#malbec-argentine-steakhouse,http://www.malbecsteakhouse.com,39.9430129,-75.1455311,Participating in dinner and takeout. Offering indoor and outdoor dining. Closed Monday.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllbbwi5zal8mypqdeilunxb2-malbec.pdf,,4.0,240,$$$,"['Argentine', 'Cocktail Bars', 'Steakhouses']"
+McCormick & Schmick's,"1 S Broad St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#mccormick-schmicks,http://www.mccormickandschmicks.com,39.95116265,-75.1635119626803,Participating in dinner and takeout. Offering indoor and outdoor dining.,Coming soon.,,https://www.opentable.com/restaurant/profile/6690/reserve?ref=9169,2.5,449,$$,"['Seafood', 'Steakhouses', 'Southern']"
+Melograno BYOB,"2012 Sansom St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#melograno-byob,https://melogranophilly.com,39.9512797,-75.1741414,"Participating in dinner only. Offering indoor and outdoor dining. BYOB. Closed Monday. Not participating on Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/clkk2yem29mpuypqd452bk0my-melograno.pdf,https://www.opentable.com/restaurant/profile/170020/reserve?ref=9169,3.5,491,$$$,['Italian']
+Mercato,"1216 Spruce St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#mercato,http://www.mercatobyob.com,39.94647845,-75.16177934305037,Participating in dinner only. Offering indoor and outdoor dining. BYOB.,$45 DINNER,https://centercityphila.org/uploads/attachments/clluwpbv4bthb0vqd5y4jxc6r-mercato.pdf,https://www.opentable.com/restaurant/profile/108127/reserve?ref=9169,4.0,757,$$$,['Italian']
+Monster Vegan,"1229 Spruce St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#monster-vegan,http://www.themonstervegan.com,39.9469083,-75.16218880127198,Participating in dinner only. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clmdl8iswc5hyomqd8c10xeb1-monster.pdf,,4.5,185,$$,"['Vegan', 'Italian', 'Sandwiches']"
+Morea,"110 South 11th St., Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#morea,https://moreaphilly.com,39.9498365,-75.1588215,Participating in dinner. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/clkwvfu5ba0x2saqdfsi1ojq5-morea.pdf,https://www.opentable.com/restaurant/profile/1178902/reserve?ref=9169,4.0,128,$$,"['Cocktail Bars', 'Seafood', 'American (New)']"
+The Morris,"225 S 8th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#the-morris,http://themorrisphilly.com,39.947374,-75.15429,Participating in dinner only. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllntidfob0pxwnqd3k9m2rbh-themorris.pdf,https://www.opentable.com/restaurant/profile/1281526/reserve?ref=9169,,0,,
+Moshulu,"401 S Columbus Blvd., Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#moshulu,http://www.moshulu.com,39.942047034999874,-75.14199813325844,"Participating in dinner only. Offering indoor dining and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$60 DINNER,https://centercityphila.org/uploads/attachments/clmgd3o5md4s20vqdcxaegku8-moshulu.pdf,https://www.opentable.com/restaurant/profile/2467/reserve?ref=9169,3.5,1019,$$$,"['Seafood', 'American (New)', 'Cocktail Bars']"
+Ocean Prime,"124 S 15th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#ocean-prime,https://www.ocean-prime.com/locations-menus/philadelphia,39.9504932244898,-75.16584565306123,Participating in dinner only. Offering indoor dining.,$60 DINNER,https://centercityphila.org/uploads/attachments/clm6l8ncxcd8f0vqdr6u4klmd-oceanprime.pdf,https://www.opentable.com/restaurant/profile/109042/reserve?ref=9169,4.0,576,$$$$,"['Seafood', 'Steakhouses', 'American (New)']"
+Oloroso Tapas and Sherry Bar,"1121 Walnut St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#oloroso-tapas-and-sherry-ba,http://olorosophl.com,39.9490983,-75.15998168203146,Participating in dinner only. Offering indoor and outdoor dining.,Coming soon.,,,4.0,236,$$,"['Spanish', 'Bars']"
+Osteria,"640 North Broad Street, Philadelphia, PA 19130",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#osteria,https://www.osteriaphilly.com,39.964982,-75.1611073,"Participating in dinner only. Offering indoor and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/cll5mtspsadc8saqdjkvlpui9-osteria.pdf,,4.0,984,$$$,"['Italian', 'Wine Bars']"
+Osteria Ama Philly,"1905 Chestnut Street, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#osteria-ama-philly,http://osteriama.com,39.95208125,-75.17214229999999,"Participating in lunch, dinner, and takeout. Offering indoor dining. BYOB.",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/cllaxt9raam57jnqdu7h862hi-osteriaamadinner.pdf,https://www.opentable.com/restaurant/profile/1317085/reserve?ref=9169,4.5,6,,['Italian']
+Oyster House,"1516 Sansom St, Philadelphia, PA 19102",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#oyster-house,http://www.oysterhousephilly.com,39.950302,-75.166539,"Participating in dinner only. Closed Sundays and Mondays. Offering indoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",$45 DINNER,https://centercityphila.org/uploads/attachments/cllzjvjr5bfpoomqd7d8b8xew-oyster-house-ccdrw-menu.pdf,,4.0,1572,$$$,['Seafood']
+Panorama,"14 N Front St, Philadelphia, PA 19106",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#panorama,http://www.panoramawinebar.com,39.95060014285714,-75.14201542857143,Participating in dinner only. Offering indoor dining. Closed Mondays,$45 DINNER,https://centercityphila.org/uploads/attachments/clkr12lh29sfownqd5zo89a0i-panorama.pdf,https://www.opentable.com/restaurant/profile/3644/reserve?ref=9169,3.5,361,$$$,"['Italian', 'Wine Bars']"
+Patchwork,"1620 Chancellor St., Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#patchwork,https://patchworkphilly.com,39.94923025,-75.16871865087047,Participating in dinner and takeout. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllxrzg2nbfi9jnqdmn5pze12-patchwork-1.pdf,https://www.opentable.com/r/patchwork-philadelphia?ref=9169#reserve,4.0,33,,"['American (New)', 'Bars', 'Breakfast & Brunch']"
+Pearl & Mary,"114 S 13th St., Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#pearl-mary,https://www.pearlandmary.com,39.94963294897959,-75.1618857244898,"Participating in dinner only. Offering indoor and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",Coming soon,,,4.5,119,,"['Bars', 'Seafood', 'Sandwiches']"
+Picanha Brazilian Steakhouse,"1111 Locust St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#picanha-brazilian-steakhouse,https://picanhasteakhouse.com/?utm_source=GMB&utm_medium=organic&utm_campaign=1SEO_SM_GMB,39.94757815909091,-75.16012427272727,"Participating in lunch, dinner, and takeout. Offering indoor dining.",$45 DINNER,https://centercityphila.org/uploads/attachments/cllpaebqub283saqd2vgt1q36-picanha.pdf,,4.0,118,$$$,"['Steakhouses', 'Brazilian', 'Buffets']"
+Porcini,"2048 Sansom St, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#porcini,http://www.porcinirestaurant.com,39.95139465,-75.17510576767378,Participating in dinner only. Offering indoor dining and BYOB. Closed on  Sunday.,$45 DINNER,https://centercityphila.org/uploads/attachments/clmf98oeicj87hnqdzocdu5tr-porcini.pdf,https://www.opentable.com/restaurant/profile/47305/reserve?ref=9169,3.5,336,$$,['Italian']
+Prunella,"112 S 13th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#prunella,https://prunellaphl.com,39.949643418367344,-75.16188345918368,"Participating in dinner only. Offering indoor and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",Coming soon,,,4.5,156,$$,"['Italian', 'Pizza', 'Wine Bars']"
+Pumpkin BYOB,"1713 South St, Philadelphia, PA 19146",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#pumpkin-byob,http://www.pumpkinphilly.com,39.9444235,-75.17079556044915,"Participating in dinner only. Offering indoor, outdoor dining and BYOB. Closed Mondays. ",$45 DINNER,https://centercityphila.org/uploads/attachments/clksbwnrxa07bhnqdq7fytoho-pumpkinbyob.pdf,https://www.opentable.com/restaurant/profile/63118/reserve?ref=9169,4.0,454,$$$,['American (New)']
+Restaurant Aleksandar,"126 S 19th Street, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#restaurant-aleksandar-2,https://restaurantaleksandar.com,39.9513407,-75.1705557," dinner, and takeout. Offering indoor and outdoor dining. Closed on Sunday and Monday.",$45 DINNER | $20 LUNCH,https://centercityphila.org/uploads/attachments/clktr5u4la2vrhnqdwvj1isjk-restaleksanderdinner.pdf,https://www.opentable.com/restaurant/profile/1164322/reserve?ref=9169,4.0,45,,"['Modern European', 'American (New)']"
+Rex at The Royal,"1524 South St, Philadelphia, PA 19146",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#rex-at-the-royal,http://www.rexphl.com,39.94382667346939,-75.1676665510204,Participating in dinner only. Closed Mondays. Offering indoor and outdoor dining.,$45 DINNER,https://centercityphila.org/uploads/attachments/cllntdiheb0x4m8qdalniflq1-rex1.pdf,,4.5,566,$$$,"['Southern', 'American (New)', 'Seafood']"
+Sampan,"124 S 13th St, Philadelphia, PA 19107",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#sampan7,http://www.sampanphilly.com,39.9495191,-75.1622021,"Participating in dinner only. Offering indoor and outdoor dining. Not participating on Saturday, September 16 and Saturday, September 23.",Coming soon,,,4.0,2212,$$,"['Asian Fusion', 'Chinese']"
+Scarpetta Philadelphia,"210 W Rittenhouse Square, Philadelphia, PA 19103",https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view#scarpetta7,http://www.scarpettarestaurants.com/philadelphia,39.9498637,-75.17347519912886,Participating in dinner only. Offering indoor dining. Not participating on 9/10 and 9/17.,$60 DINNER,https://centercityphila.org/uploads/attachments/clkr0qcs89sezwnqdr1uj3eu2-sacrpetta.pdf,https://www.opentable.com/restaurant/profile/1033786/reserve?ref=9169,4.0,249,$$$,['Italian']
