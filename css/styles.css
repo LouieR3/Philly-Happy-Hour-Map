@@ -11124,7 +11124,15 @@ html {
     /* box-shadow: 10px 15px 25px 0 rgba(0,0,0,.2); */
   }
 }
-
+.parallax-section {
+  position: relative;
+  height: 40vh; /* Adjust the height as needed */
+  background-image: url('../assets/img/smear2.jpg'); /* Replace 'your-image.jpg' with your image file path */
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  color: #fff; /* Text color on top of the background */
+}
 @media (min-width: 992px) {
   .masthead {
     /* padding-top: calc(6rem + 104px); */

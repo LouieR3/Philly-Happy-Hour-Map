@@ -73,9 +73,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto">
+            <!-- <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-2 px-0 px-lg-3 rounded" href="#deals"
+                >Happy Hour Deals</a
+              >
+            </li> -->
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sips"
-                >Sips Deals</a
+              <a class="nav-link py-2 px-0 px-lg-3 rounded" href="#restaurant-week"
+                >Restaurant Week</a
               >
             </li>
             <li class="nav-item mx-0 mx-lg-1">
@@ -86,8 +91,8 @@
               >
             </li>
             <li class="nav-item mx-0 mx-lg-1">
-              <a class="nav-link py-2 px-0 px-lg-3 rounded" href="#deals"
-                >Happy Hour Deals</a
+              <a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sips"
+                >Sips Deals</a
               >
             </li>
           </ul>
@@ -125,6 +130,167 @@
         </div>
       </div>
     </header>
+    <!-- Restaurant Week Map -->
+    <section class="page-section" id="restaurant-week">
+      <div class="container">
+        <!-- Contact Section Heading-->
+        <h2
+          class="page-section-heading text-center text-uppercase text-secondary mb-0"
+        >
+          Restaurant Week Deals
+        </h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+        <h3 style="text-align: center" class="mb-4">
+          Visit the map in full screen
+          <a
+            href="https://experience.arcgis.com/experience/d6571352356d4597ad4f5c6937d034cd/"
+            target="_blank"
+            class="link"
+            >here</a
+          >
+        </h3>
+        <!-- iFrame-->
+        <div class="iframe-container">
+          <iframe
+            src="rw_map.html"
+            width="100%"
+            height="700px"
+          ></iframe>
+        </div>
+        <h3 style="text-align: center; margin-top: 2rem">
+          See the full list of restaurants participating in Restaurant Week 
+          <a
+            href="https://centercityphila.org/explore-center-city/ccd-restaurant-week"
+            target="_blank"
+            class="link"
+            >here</a
+          >
+        </h3>
+        
+      </div>
+    </section>
+    
+    <!-- About Section-->
+    <section class="page-section bg-primary text-white mb-0" id="meet-the-team">
+      <div class="container">
+        <!-- About Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-white">
+          Meet The Team
+        </h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+        <!-- About Section Content-->
+        <div class="row">
+          <div class="col-2"></div>
+          <img
+            class="custom-col mb-3 align-items-center"
+            src="assets/img/Meet The Team 2.jpg"
+            alt="..."
+          />
+          <div class="col-2"></div>
+        </div>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-2"></div>
+          <div class="col-lg-8 text-center ms-auto">
+            <p class="lead">
+              Meet Louie and Ava, the dynamic duo behind our mapping project.
+              Louie, the coding whiz, and Ava, the GIS specialist, joined forces
+              to create a cutting-edge mapping application. Their app helps you
+              easily find the best happy hour spots in Philly, showing all the
+              options on a single map with the latest deals and cool insights.
+              Say goodbye to decision paralysis and hello to a seamless,
+              data-driven way of discovering the city's hottest happy hour
+              deals.
+            </p>
+          </div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-2"></div>
+          <div class="col-lg-8 me-auto text-center">
+            <p class="lead">
+              You can find them next year at ESRI's famed User Conference in San
+              Diego!
+            </p>
+          </div>
+          <div class="col-2"></div>
+        </div>
+        <!-- About Section Button-->
+        <!-- <div class="text-center mt-4">
+                    <a class="btn btn-xl btn-outline-light" href="https://startbootstrap.com/theme/freelancer/">
+                        <i class="fas fa-download me-2"></i>
+                        Free Download!
+                    </a>
+                </div> -->
+      </div>
+    </section>
+
+    <!-- Happy Hour Map -->
+    <!-- <section class="page-section" id="deals">
+      <div class="container">
+        <h2
+          class="page-section-heading text-center text-uppercase text-secondary mb-0"
+        >
+          Happy Hour Deals (UNDER CONSTRUCTION)
+        </h2>
+        <h3 class="text-center text-uppercase text-secondary mt-5 mb-0">
+          Exciting things are coming!
+        </h3>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-lg-10 ms-auto">
+            <p class="lead">
+              We are currently developing an exciting feature to our website - a
+              web map encompassing all Philly happy hour options.
+            </p>
+            <p class="lead">
+              Soon, you'll have the ability to explore a comprehensive list of
+              Philadelphia bars, complete with a range of filters such as
+              pricing, bar reviews, categorization, contact details including
+              the bar's website and phone number, operational hours, and
+              searchable menu keywords.
+            </p>
+            <p class="lead">
+              We are also excited to introduce a feature that will enable users
+              to explore these bars' happy hour specials. This will allow you to
+              see the value of these deals by comparing the prices of the drinks
+              to the average prices of similar drinks in the area.
+            </p>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+      </div>
+    </section> -->
+    <!-- <section class="parallax-section">
+    </section> -->
     <!-- Sips Section-->
     <section class="page-section portfolio" id="sips">
       <div class="container">
@@ -151,14 +317,6 @@
             >here</a
           >
         </h3>
-        <!-- iFrame-->
-        <!-- <div class="iframe-container">
-          <iframe
-            src="https://experience.arcgis.com/experience/d6571352356d4597ad4f5c6937d034cd/"
-            width="100%"
-            height="700px"
-          ></iframe>
-        </div> -->
         <div class="row">
           <div class="col-2"></div>
           <img
@@ -1890,119 +2048,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-    </section>
-    <!-- About Section-->
-    <section class="page-section bg-primary text-white mb-0" id="meet-the-team">
-      <div class="container">
-        <!-- About Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-white">
-          Meet The Team
-        </h2>
-        <!-- Icon Divider-->
-        <div class="divider-custom divider-light">
-          <div class="divider-custom-line"></div>
-          <div class="divider-custom-icon">
-            <i class="fa-solid fa-earth-americas"></i>
-          </div>
-          <div class="divider-custom-line"></div>
-        </div>
-        <!-- About Section Content-->
-        <div class="row">
-          <div class="col-2"></div>
-          <img
-            class="custom-col mb-3 align-items-center"
-            src="assets/img/Meet The Team 2.jpg"
-            alt="..."
-          />
-          <div class="col-2"></div>
-        </div>
-        <!-- Icon Divider-->
-        <div class="divider-custom divider-light">
-          <div class="divider-custom-line"></div>
-          <div class="divider-custom-icon">
-            <i class="fa-solid fa-earth-americas"></i>
-          </div>
-          <div class="divider-custom-line"></div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-2"></div>
-          <div class="col-lg-8 text-center ms-auto">
-            <p class="lead">
-              Meet Louie and Ava, the dynamic duo behind our mapping project.
-              Louie, the coding whiz, and Ava, the GIS specialist, joined forces
-              to create a cutting-edge mapping application. Their app helps you
-              easily find the best happy hour spots in Philly, showing all the
-              options on a single map with the latest deals and cool insights.
-              Say goodbye to decision paralysis and hello to a seamless,
-              data-driven way of discovering the city's hottest happy hour
-              deals.
-            </p>
-          </div>
-          <div class="col-2"></div>
-        </div>
-        <div class="row mt-3">
-          <div class="col-2"></div>
-          <div class="col-lg-8 me-auto text-center">
-            <p class="lead">
-              You can find them next year at ESRI's famed User Conference in San
-              Diego!
-            </p>
-          </div>
-          <div class="col-2"></div>
-        </div>
-        <!-- About Section Button-->
-        <!-- <div class="text-center mt-4">
-                    <a class="btn btn-xl btn-outline-light" href="https://startbootstrap.com/theme/freelancer/">
-                        <i class="fas fa-download me-2"></i>
-                        Free Download!
-                    </a>
-                </div> -->
-      </div>
-    </section>
-    <!-- Happy Hour Map -->
-    <section class="page-section" id="deals">
-      <div class="container">
-        <!-- Contact Section Heading-->
-        <h2
-          class="page-section-heading text-center text-uppercase text-secondary mb-0"
-        >
-          Happy Hour Deals (UNDER CONSTRUCTION)
-        </h2>
-        <h3 class="text-center text-uppercase text-secondary mt-5 mb-0">
-          Exciting things are coming!
-        </h3>
-        <div class="row mt-4">
-          <div class="col-1"></div>
-          <div class="col-lg-10 ms-auto">
-            <p class="lead">
-              We are currently developing an exciting feature to our website - a
-              web map encompassing all Philly happy hour options.
-            </p>
-            <p class="lead">
-              Soon, you'll have the ability to explore a comprehensive list of
-              Philadelphia bars, complete with a range of filters such as
-              pricing, bar reviews, categorization, contact details including
-              the bar's website and phone number, operational hours, and
-              searchable menu keywords.
-            </p>
-            <p class="lead">
-              We are also excited to introduce a feature that will enable users
-              to explore these bars' happy hour specials. This will allow you to
-              see the value of these deals by comparing the prices of the drinks
-              to the average prices of similar drinks in the area.
-            </p>
-          </div>
-          <div class="col-1"></div>
-        </div>
-        <!-- Icon Divider-->
-        <div class="divider-custom">
-          <div class="divider-custom-line"></div>
-          <div class="divider-custom-icon">
-            <i class="fa-solid fa-earth-americas"></i>
-          </div>
-          <div class="divider-custom-line"></div>
-        </div>
       </div>
     </section>
     <!-- Footer-->
