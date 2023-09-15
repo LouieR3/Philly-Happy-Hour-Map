@@ -484,6 +484,65 @@ legend + * {
   -webkit-appearance: textfield;
 }
 
+/* @media (min-width: 52rem){
+  .o-button--openTable {
+      -ms-flex-pack: center;
+      justify-content: center;
+      -ms-flex-direction: row;
+      flex-direction: row;
+  }
+}
+.o-button__text {
+  width: 50%;
+  -ms-flex-item-align: center;
+  -ms-grid-row-align: center;
+  align-self: center;
+  margin-bottom: 0;
+}
+.o-button--openTable .o-icon {
+  width: 50%;
+}
+.o-icon--openTable svg {
+  height: 3rem;
+  width: 18rem;
+}
+.o-button, .atcb-link {
+  transition: all .5s ease-out;
+  margin-bottom: 1.6rem;
+  height: auto;
+  display: inline-block;
+  color: inherit;
+  font-family: 'Din Pro Condensed Bold','Helvetica';
+  font-size: 1.6rem;
+  text-decoration: none;
+  cursor: pointer;
+  line-height: 1.6rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+.o-button--openTable {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-bottom: 4.3rem;
+  padding: 2.5rem 2rem;
+  background-color: #DD353F;
+  color: #FFF;
+  text-align: center;
+}
+.o-button--openTable {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  margin-bottom: 4.3rem;
+  padding: 2.5rem 2rem;
+  background-color: #DD353F;
+  color: #FFF;
+  text-align: center;
+} */
+
 /* rtl:raw:
 [type="tel"],
 [type="url"],
