@@ -11186,10 +11186,13 @@ html {
 .parallax-section {
   position: relative;
   height: 40vh; /* Adjust the height as needed */
-  background-image: url('../assets/img/smear2.jpg'); /* Replace 'your-image.jpg' with your image file path */
+  /* background-image: url('../assets/img/smear2.jpg');  */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../assets/img/pixelate.jpg');
   background-size: cover;
+  opacity: 0.9; /* 50% opacity */
   background-attachment: fixed;
   background-position: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Black background with 50% opacity */
   color: #fff; /* Text color on top of the background */
 }
 @media (min-width: 992px) {
