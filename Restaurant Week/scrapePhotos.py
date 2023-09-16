@@ -12,8 +12,9 @@ import json
 # ------------------------------------------------
 # This script does = Scraps the basic data from the Sips list site and get Lat and Long
 # ------------------------------------------------
-
-html = "https://centercityphila.org/explore-center-city/ccd-restaurant-week"
+run_on = "ccd-sips"
+# run_on = "ccd-restaurant-week"
+html = "https://centercityphila.org/explore-center-city/" + run_on
 base_html = "https://centercityphila.org"
 source = requests.get(html).text
 soup = BeautifulSoup(source, "lxml")
@@ -41,10 +42,10 @@ while True:
         if img and img['alt'] != '':
             alt_text = img['alt'].rstrip('*')
             src_link = base_html + img['src']
-            restaurant_info_list.append({'Restaurant Name': alt_text, 'Photo': src_link})
+            restaurant_info_list.append({'Bar Name': alt_text, 'Photo': src_link})
             # print({'alt_text': alt_text, 'src_link': src_link})
     pager = soupIter.find('div', class_='c-pager')
-    next_page_link = pager.find('a', href=f"/explore-center-city/ccd-restaurant-week?page={page_number + 1}")
+    next_page_link = pager.find('a', href=f"/explore-center-city/{run_on}?page={page_number + 1}") # type: ignore
     
     if not next_page_link:
         break  # No more pages, exit the loop
@@ -55,12 +56,14 @@ while True:
 df1 = pd.DataFrame(restaurant_info_list)
 
 # Read the DataFrame from the CSV file
+df2 = pd.read_csv('AllSipsLocations.csv')
 df2 = pd.read_csv('RestaurantWeek.csv')
 
 # Merge the two DataFrames on 'Restaurant Name' column
-merged_df = pd.merge(df2, df1, on='Restaurant Name', how='inner')
+merged_df = pd.merge(df2, df1, on='Bar Name', how='inner')
 # Print the resulting DataFrame with the new "Bar Website" column
 print(df1)
 print(merged_df)
+csvName = "AllSipsLocations2.csv"
 csvName = "RestaurantWeek2.csv"
 merged_df.to_csv(csvName, index=False)
