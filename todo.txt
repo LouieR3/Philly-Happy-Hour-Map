@@ -26,3 +26,10 @@ best deal by Drink
 - Get a generic bar score down
 - Get a few more bars
 - Look towards happy hour menu
+
+Restaurant Week Map -
+* Get hours of operations, delivery, pickup, phone, amenities from yelp
+* Get menu from menu link for restaurants
+* Resy link for restaurant
+* Popularity score for reviews x price x rating
+* Get reviews and look for keywords or word map
