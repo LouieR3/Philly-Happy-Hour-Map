@@ -67,7 +67,29 @@ for index, row in df.iterrows():
             # Store in business_properties
             display_text = value["displayText"]
             is_active = value["isActive"]
-            business_properties[display_text] = is_active
+            if "&amp;" in display_text:
+                display_text = display_text.replace("&amp;", "and")
+
+            if "Not Good" in display_text:
+                display_text = display_text.replace("Not Good", "Good")
+                is_active = not is_active
+
+            if "No " in display_text:
+                display_text = display_text.replace("No ", "")
+                is_active = not is_active
+
+            # Check if "Best nights on" is present
+            if "Best nights on" in display_text:
+                # Split by "Best nights on " and then split by comma
+                parts = display_text.split("Best nights on ")[1].split(',')
+                for part in parts:
+                    # Construct the new display text with the day and is_active value
+                    new_display_text = "Best nights on " + part.strip()
+                    business_properties[new_display_text] = is_active
+            else:
+                display_texts = [text.strip() for text in display_text.split(',')]
+                for text in display_texts:
+                    business_properties[text] = is_active
 
     neighborhoods_json = None
     for key, value in json_object.items():
@@ -86,13 +108,27 @@ for index, row in df.iterrows():
         if isinstance(value, dict) and "regularHours" in value and "dayOfWeekShort" in value:
             Hours = value["regularHours"].get("json", [])[0]
             day = value["dayOfWeekShort"]
+            if day == "Mon":
+                day += "day"
+            elif day == "Tue":
+                day += "sday"
+            elif day == "Wed":
+                day += "nesday"
+            elif day == "Thu":
+                day += "rsday"
+            elif day == "Fri":
+                day += "day"
+            elif day == "Sat":
+                day += "urday"
+            elif day == "Sun":
+                day += "day"
             hours_properties[day] = Hours
 
     df_data = {
         "Name": restaurant_name,
         **business_properties,
-        "Neighborhoods": [neighborhoods_json],
-        "Rating": [rating],
+        "Neighborhoods": neighborhoods_json,
+        "Yelp Rating": rating,
         **hours_properties
     }
     data_list.append(df_data)

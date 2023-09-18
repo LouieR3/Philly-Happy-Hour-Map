@@ -34,7 +34,7 @@ min_popularity_score = restaurant_df['Popularity_Score'].min()
 max_popularity_score = restaurant_df['Popularity_Score'].max()
 
 # Perform the linear transformation to map it to the range [1, 50]
-restaurant_df['Popularity_Score'] = 1 + (restaurant_df['Popularity_Score'] - min_popularity_score) / (max_popularity_score - min_popularity_score) * 99
+restaurant_df['Popularity_Score'] = round(1 + (restaurant_df['Popularity_Score'] - min_popularity_score) / (max_popularity_score - min_popularity_score) * 99)
 
 # Print or use the modified DataFrame as needed
 print(restaurant_df)
@@ -46,4 +46,4 @@ restaurant_df.sort_values(by='Popularity_Score', ascending=False, inplace=True)
 restaurant_df.reset_index(drop=True, inplace=True)
 
 # Print the DataFrame with the calculated score
-print(restaurant_df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity_Score", ]].head(50))
+print(restaurant_df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity_Score", "Deals Offered"]].head(50))

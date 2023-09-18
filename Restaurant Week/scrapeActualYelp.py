@@ -4,7 +4,7 @@ import json
 import html
 import re
 
-url = "https://www.yelp.com/biz/ocean-prime-philadelphia"
+url = "https://www.yelp.com/biz/veda-modern-indian-bistro-philadelphia-3"
 
 # Fetch page HTML
 response = requests.get(url)

@@ -11,10 +11,18 @@ import json
 
 
 extra_df = pd.read_csv('ExtraYelp2.csv')
-# print(extra_df[['Yelp Rating']])
-extra_df['Yelp Rating'] = extra_df['Yelp Rating'].str.strip("[]")
-# print(extra_df[['Yelp Rating']])
-mt_df = pd.read_csv('MasterTable.csv')
+extra_df['Good For Groups'] = extra_df['Good For Groups'].fillna(extra_df['Good for Groups'])
+extra_df['Good For Working'] = extra_df['Good For Working'].fillna(extra_df['Good for Working'])
+extra_df['Loud'] = extra_df['Loud'].fillna(extra_df['Very Loud'])
+columns_to_drop = ["Good for Working", "Good for Groups", "Very Loud"]
+extra_df.drop(columns=columns_to_drop, inplace=True)
+# Loop through columns and count non-null values
+for column in extra_df.columns:
+    non_null_count = extra_df[column].count()
+    if non_null_count < 3:
+        extra_df.drop(columns=column, inplace=True)
+
+mt_df = pd.read_csv('MasterTableOld.csv')
 
 extra_columns = extra_df.columns
 
