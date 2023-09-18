@@ -3,7 +3,7 @@ import pandas as pd
 csvName = "MasterTable.csv"
 restaurant_df = pd.read_csv(csvName)
 
-weight_reviews = 0.4  # Adjust this weight to favor number of reviews
+weight_reviews = 0.3  # Adjust this weight to favor number of reviews
 weight_rating = 0.7   # Adjust this weight to favor average rating
 weight_price = 0.6   # Adjust this weight to favor price
 price_mapping = {
@@ -46,4 +46,4 @@ restaurant_df.sort_values(by='Popularity_Score', ascending=False, inplace=True)
 restaurant_df.reset_index(drop=True, inplace=True)
 
 # Print the DataFrame with the calculated score
-print(restaurant_df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity_Score", ]])
+print(restaurant_df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity_Score", ]].head(50))

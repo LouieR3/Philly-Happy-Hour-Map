@@ -17,6 +17,7 @@ def try_pdf(pdf_path):
             if response.status_code == 200:
                 pdf_data = BytesIO(response.content)
                 pdf_document = fitz.open(stream=pdf_data, filetype="pdf") # type: ignore
+                # print(pdf_document)
                 text = ""
                 for page_num in range(pdf_document.page_count):
                     page = pdf_document.load_page(page_num)
@@ -77,7 +78,12 @@ def try_pdf(pdf_path):
 if __name__ == "__main__":
     # "http://www.barbuzzo.com///Pdfs/menubrunch12_2_21.pdf""http://www.barbuzzo.com/Pdfs/barbuzzoBEVERAGE_MENU.pdf"
     # pdf_path = "https://www.hardrockcafe.com/location/philadelphia/files/5463/23-HRC-03255_-_Summer_Beverage_LTO_T3_1.pdf"
-    pdf_path = "http://www.barbuzzo.com/Pdfs/barbuzzoBEVERAGE_MENU.pdf"
+    # pdf_path = "https://centercityphila.org/uploads/attachments/clkjrtuzr9mfdm8qd9woymj2v-ancientdinner.pdf"
+    # pdf_path = "https://centercityphila.org/uploads/attachments/cllgspi5hasp4m8qd12vpri4h-bank-bourbondinner.pdf"
+    pdf_path = "https://centercityphila.org/uploads/attachments/clle1p8a8anenomqd0zww53ap-barbuzzo.pdf"
+    # pdf_path = "https://centercityphila.org/uploads/attachments/clmgcy1f5d4rc0vqd015d322u-bucadinner.pdf"
+    # pdf_path = "https://centercityphila.org/uploads/attachments/cllntmgoqb021saqdx4mq8n1m-butcher.pdf"
+    # pdf_path = "https://centercityphila.org/uploads/attachments/clmcvj2l5c6gjypqd2aw9cx6l-conmurphy-dinner.pdf"
     menu_df = try_pdf(pdf_path)
     
     print(menu_df)
