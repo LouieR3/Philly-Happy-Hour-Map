@@ -1,0 +1,24 @@
+{
+  "name": "philly-happy-hour-map",
+  "version": "1.0.0",
+  "description": "Mappy Hour is the creation of Louie and Ava to give people a better way to find the best bars near them for happy hour, with information and analysis on the bars and their deals, and displaying all of that information on a clean map.",
+  "main": "databasepg.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LouieR3/Philly-Happy-Hour-Map.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LouieR3/Philly-Happy-Hour-Map/issues"
+  },
+  "homepage": "https://github.com/LouieR3/Philly-Happy-Hour-Map#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "pg": "^8.11.3"
+  }
+}
