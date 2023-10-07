@@ -85,18 +85,18 @@ def get_yelp_data(row):
     return yelp_data
 
 # Create a new DataFrame to store the Yelp data
-# data = df.apply(get_yelp_data, axis=1)
-data = []
-with open('Yelp.txt') as f:
-    for line in f:
-        try:
-            # Try converting line to dict 
-            d = dict(eval(line)) 
-        except:
-            # On error, convert nan to None
-            d = dict(eval(line.replace('nan', 'None')))
+data = df.apply(get_yelp_data, axis=1)
+# data = []
+# with open('Yelp.txt') as f:
+#     for line in f:
+#         try:
+#             # Try converting line to dict 
+#             d = dict(eval(line)) 
+#         except:
+#             # On error, convert nan to None
+#             d = dict(eval(line.replace('nan', 'None')))
         
-        data.append(d)
+#         data.append(d)
 
 
 yelp_df = pd.DataFrame(data)
