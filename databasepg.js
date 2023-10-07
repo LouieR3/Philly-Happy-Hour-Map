@@ -1,37 +1,27 @@
-// const {Client} = require('pg')
+const { Pool } = require('pg');
 
-// const client = new Client({
-//     host: "localhost",
-//     user: "postgres",
-//     port: 5432,
-//     password: "P3NNON!G!S",
-//     database: "postgres",
-// })
+const pool = new Pool({
+  host: "localhost",
+  user: "postgres",
+  port: 5432,
+  password: "P3NNON!G!S",
+  database: "postgres",
+});
 
-// client.connect();
+module.exports = pool;
 
-// client.query('SELECT * FROM USERS', (err, res)=>{
+
+
+
+// pool.connect();
+// pool.query('SELECT * FROM TEST', (err, res)=>{
 //     if (!err){
 //         console.log(res.rows)
 //     } else {
 //         console.log(err.message)
 //     }
-//     client.end;
-// })
-
-const express = require('express');
-const { Pool } = require('pg');
-const app = express();
-
-const pool = new Pool({
-    host: "localhost",
-    user: "postgres",
-    port: 5432,
-    password: "P3NNON!G!S",
-    database: "postgres",
-});
-
-app.use(express.json());
+//     pool.end;
+// });
 
 // Define an endpoint to insert user data into the Users table
 // app.post('/addUser', async (req, res) => {
@@ -52,9 +42,3 @@ app.use(express.json());
 //     res.status(500).json({ error: 'Internal Server Error' });
 //   }
 // });
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});

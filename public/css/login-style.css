@@ -10,7 +10,7 @@ body{
 
 .main{
 	width: 380px;
-	height: 70vh;
+	height: 75vh;
 	overflow: hidden;
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
@@ -28,7 +28,7 @@ label{
 	font-size: 2.3em;
 	justify-content: center;
 	display: flex;
-	margin: 50px;
+	margin: 50px 0 30px;
 	font-weight: bold;
 	cursor: pointer;
 	transition: .5s ease-in-out;
@@ -72,16 +72,32 @@ button:hover{
 }
 
 .forgot-password a {
-    color: #2c3e50;
+    color: gray;
     text-decoration: none;
 }
 
 .forgot-password a:hover {
+    color: #2c3e50;
     text-decoration: underline; 
 }
 
+button[type="button"] {
+	/* background-color: #007bff; */
+	color: #fff; /* Text color when enabled */
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+}
+
+/* Style for the disabled button */
+button[type="button"]:disabled {
+	background-color: #ccc; /* Background color when disabled */
+	color: #999; /* Text color when disabled */
+	cursor: not-allowed;
+}
+
 .login{
-	height: 65vh;
+	height: 75vh;
 	background: #eee;
 	border-radius: 60% / 10%;
 	transform: translateY(-20vh);
@@ -92,8 +108,37 @@ button:hover{
 	transform: scale(.6);
 }
 
+.white {
+	background-color: white;
+}
+.reset{
+	height: 65vh;
+	transition: .8s ease-in-out;
+}
+.reset label{
+	color: #2c3e50;
+	font-size: 2.5em;
+	margin: 50px 0 30px;
+	cursor: auto;
+	transform: scale(.6);
+}
+.reset-main{
+	width: 380px;
+	height: 35vh;
+	overflow: hidden;
+	border-radius: 10px;
+	box-shadow: 5px 20px 50px #000;
+}
+
+.no-user-label {
+    display: none; /* Initially hidden */
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
 #chk:checked ~ .login{
-	transform: translateY(-70vh);
+	transform: translateY(-75vh);
 }
 #chk:checked ~ .login label{
 	transform: scale(1);	

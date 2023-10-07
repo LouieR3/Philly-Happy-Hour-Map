@@ -11136,7 +11136,7 @@ html {
   #mainNav .navbar-nav > li.nav-item > a.nav-link.active {
     color: #07B862;
     border-color: black black #07B862;
-    border-width: 3px;
+    border-width: 9px;
     border-style: none none solid;
     border-radius: 0px;
   }
