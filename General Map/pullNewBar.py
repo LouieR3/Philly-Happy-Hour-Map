@@ -102,6 +102,10 @@ def get_yelp_data(row):
                     if "Not Good" in display_text:
                         display_text = display_text.replace("Not Good", "Good")
                         is_active = not is_active
+                    if "Very Loud" in display_text:
+                        display_text = display_text.replace("Very ", "")
+                    if "Free Wi-fi" in display_text:
+                        display_text = display_text.replace("Free ", "")
                     if "No " in display_text:
                         display_text = display_text.replace("No ", "")
                         is_active = not is_active
@@ -110,7 +114,7 @@ def get_yelp_data(row):
                         for part in parts:
                             new_display_text = "Best nights on " + part.strip()
                             business_properties[new_display_text] = is_active
-                    else:
+                    elif "Paid Wi-Di" not in display_text:
                         display_texts = [text.strip() for text in display_text.split(',')]
                         business_properties.update({text: is_active for text in display_texts})
                 if "neighborhoods" in value:
@@ -139,12 +143,67 @@ def get_yelp_data(row):
                         day += "day"
                     hours_properties[day] = Hours
 
+        def check_links(url):
+            try:
+                response = requests.get(url)
+                # print(response.status_code)
+                if response.status_code == 200:
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    open_table_link = soup.find('a', {'href': lambda x: x and 'opentable' in x.lower()})
+                    resy_link = soup.find('a', {'href': lambda x: x and 'resy' in x.lower()})
+                    third_link = soup.find('a', {'href': lambda x: x and 'exploretock' in x.lower()})
+                    
+                    if open_table_link:
+                        return open_table_link.get('href') # type: ignore
+                    elif resy_link:
+                        return resy_link.get('href') # type: ignore
+                    elif third_link:
+                        return third_link.get('href') # type: ignore
+                    else:
+                        # If neither OpenTable nor Resy links found, check for a reservations page
+                        reservations_page = soup.find('a', {'href': lambda x: x and 'reservations' in x.lower()})
+                        print()
+                        # print(reservations_page)
+                        if reservations_page:
+                            # If a reservations page is found, try to extract links from there
+                            reservations_url = reservations_page.get('href') # type: ignore
+                            print(reservations_url)
+                            reservations_url = urljoin(url, reservations_url) # type: ignore
+                            print(reservations_url)
+                            print("-------------")
+                            reservations_response = requests.get(reservations_url) # type: ignore
+                            # print(reservations_response.status_code)
+                            if reservations_response.status_code == 200:
+                                reservations_soup = BeautifulSoup(reservations_response.text, 'html.parser')
+                                open_table_link = reservations_soup.find('a', {'href': lambda x: x and 'opentable' in x.lower()})
+                                resy_link = reservations_soup.find('a', {'href': lambda x: x and 'resy' in x.lower()})
+                                third_link = soup.find('a', {'href': lambda x: x and 'exploretock' in x.lower()})
+                                if open_table_link:
+                                    return open_table_link.get('href') # type: ignore
+                                elif resy_link:
+                                    return resy_link.get('href') # type: ignore
+                                elif third_link:
+                                    return third_link.get('href') # type: ignore
+                                else:
+                                    return reservations_url
+                            else:
+                                return reservations_url
+                    return None
+                else:
+                    return None
+            except Exception as e:
+                print(f"Error: {e}")
+                return None
+        res_link = None
+        if pd.isna(website) == False:
+            res_link = check_links(website)
         restaurant_name = row['Name']
         rating = find_first_rating(json_object)
         # Extract relevant data from the Yelp response (customize based on your needs)
         yelp_data = {
             'Name': restaurant_name,
             'Address': address,
+            'Open Table Link': res_link,
             'Latitude': response["coordinates"]["latitude"],
             'Longitude': response["coordinates"]["longitude"],
             "Website": website,
@@ -155,7 +214,9 @@ def get_yelp_data(row):
             **business_properties,
             "Neighborhoods": neighborhoods_json,
             **hours_properties,
-            "Yelp Rating": rating
+            "Yelp Rating": rating,
+            "Sips Participant": "N",
+            "Restaurant Week Participant": "N",
         }
         return yelp_data
     else:

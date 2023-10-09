@@ -19,25 +19,30 @@ import csv
 start_time = time.time()
 
 # Initialize GIS connection
-gisUser, gisPass = "GIS_Pennoni", "P3NNON!G!S"
-gis = GIS("https://pennoni.maps.arcgis.com/", gisUser, gisPass)
+gisUser, gisPass = "LouieAndAva", "esriUClover1!"
+gis = GIS("https://mappy-hour.maps.arcgis.com/", gisUser, gisPass)
 
-target_portal = "gis.pennoni.com/portal/"
-target_admin = "gis_integration"
-target_admin_password = "P3NNON!G!S"
-target = GIS(
-    "https://" + target_portal,
-    target_admin,
-    target_admin_password,
-    verify_cert=False,
-)
+# target_portal = "gis.pennoni.com/portal/"
+# target_admin = "gis_integration"
+# target_admin_password = "P3NNON!G!S"
+# target = GIS(
+#     "https://" + target_portal,
+#     target_admin,
+#     target_admin_password,
+#     verify_cert=False,
+# )
 
-merged_df = pd.read_csv("DeltekOffices.csv")
+df = pd.read_csv("MasterTable.csv")
 # pull the feature layer to append to
-lyr = target.content.get("336a2c5f0c584621960e64d29881cc7a").layers[0]
+lyr = gis.content.get("f51d537b0ef34adc960fb1833d91ea99").layers[0]
+lyr_df = lyr.query().sdf
+# print(lyr_df)
 # GeoAccessor class adds a spatial namespace that performs spatial operations on the given Pandas DataFrame
-sdf = GeoAccessor.from_xy(merged_df, "Longitude", "Latitude")
-
+sdf = GeoAccessor.from_xy(df, "Longitude", "Latitude")
+print(sdf)
+# Find bars in MasterTable not in lyr_df
+# missing_bars_df = df[~df['Name'].isin(lyr_df['NAME'])]
+# print(missing_bars_df)
 # truncate all records from the feature layer
 lyr.manager.truncate()
 
