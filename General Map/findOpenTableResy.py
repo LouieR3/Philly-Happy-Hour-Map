@@ -71,7 +71,7 @@ for index, row in df.iterrows():
         website_url = row['Website']
         if pd.isna(row['Website']) == False:
             result = check_links(website_url)
-            time.sleep(0.2)
+            # time.sleep(0.2)
             if result is None:
                 print(row['Name'])
                 print(row['Website'])

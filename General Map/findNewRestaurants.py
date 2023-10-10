@@ -72,7 +72,7 @@ def checkMasterForAlias():
     data = missing_bars_df.apply(get_yelp_data, axis=1) # type: ignore
 
 # Get general pull of bars and restaurants in philly
-Restaurants = yelp.search_query(location='North Philly, Philadelphia', categories='Bars', limit=50)
+Restaurants = yelp.search_query(location='Rittenhouse Square, Philadelphia', price=2, categories='Bars', limit=50)
 # Load the Yelp Aliases CSV into a DataFrame
 yelp_aliases_df = pd.read_csv('YelpAliases.csv')
 

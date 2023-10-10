@@ -202,8 +202,8 @@ def get_yelp_data(row):
         # Extract relevant data from the Yelp response (customize based on your needs)
         yelp_data = {
             'Name': restaurant_name,
-            'Address': address,
             'Open Table Link': res_link,
+            'Address': address,
             'Latitude': response["coordinates"]["latitude"],
             'Longitude': response["coordinates"]["longitude"],
             "Website": website,

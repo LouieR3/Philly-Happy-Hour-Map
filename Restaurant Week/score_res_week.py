@@ -5,7 +5,7 @@ restaurant_df = pd.read_csv(csvName)
 df = pd.read_csv(csvName)
 weight_reviews = 0.3  # Adjust this weight to favor number of reviews
 weight_rating = 0.7   # Adjust this weight to favor average rating
-weight_price = 0.6   # Adjust this weight to favor price
+weight_price = 0.7   # Adjust this weight to favor price
 price_mapping = {
     '$': 1,
     '$$': 2,
@@ -48,6 +48,6 @@ restaurant_df.sort_values(by='Popularity_Score', ascending=False, inplace=True)
 restaurant_df.reset_index(drop=True, inplace=True)
 
 # Print the DataFrame with the calculated score
-print(restaurant_df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity_Score", "Deals Offered"]].head(50))
-print(df[["Name", "Yelp Rating", "Review Count", "Price", "Restaurant Week Score", "Deals Offered"]].head(50))
-df.to_csv("Test2.csv", index=False)
+print(restaurant_df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity_Score"]].head(50))
+print(df[["Name", "Yelp Rating", "Review Count", "Price", "Restaurant Week Score"]].head(50))
+# df.to_csv("Test2.csv", index=False)

@@ -52,10 +52,7 @@ while i < len(sdf):
     fs = sdf.loc[i : i + 199].spatial.to_featureset()
     updt = lyr.edit_features(adds=fs)
     msg = updt["addResults"][0]
-    # print(fs)
-    # print(updt)
     print(msg)
-    print()
     # print(f"Rows {i:4} - {i+199:4} : {msg['success']}")
     if "error" in msg:
         print(f"Rows {i:4} - {i+199:4} : {msg['success']}")

@@ -2,8 +2,7 @@ import pandas as pd
 
 csvName = "MasterTable.csv"
 df = pd.read_csv(csvName)
-df = pd.read_csv(csvName)
-weight_reviews = 0.3  # Adjust this weight to favor number of reviews
+weight_reviews = 0.5  # Adjust this weight to favor number of reviews
 weight_rating = 0.7   # Adjust this weight to favor average rating
 df['Yelp Rating'] = pd.to_numeric(df['Yelp Rating'], errors='coerce')
 # df['Yelp Rating'] = df['Yelp Rating'] * 3
@@ -34,6 +33,6 @@ df.sort_values(by='Popularity Score', ascending=False, inplace=True)
 df.reset_index(drop=True, inplace=True)
 
 # Print the DataFrame with the calculated score
-print(df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity Score", "Deals Offered"]].head(50))
-print(df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity Score", "Deals Offered"]])
-df.to_csv("MasterTable.csv", index=False)
+print(df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity Score"]].head(50))
+print(df[["Name", "Yelp Rating", "Review Count", "Price", "Popularity Score"]])
+# df.to_csv("MasterTable.csv", index=False)
