@@ -58,14 +58,14 @@ df['Good For Groups'] = df['Good For Groups'].fillna(df['Good for Groups'])
 df.drop(columns='Good for Groups', inplace=True)
 df.drop(columns='Good For Working.1', inplace=True)
 def good_for(row):
-    good_for_types = ["Good For Dinner","Good For Kids","Good For Lunch","Good For Dancing","Good For Working","Good For Brunch","Good For Dessert","Good For Breakfast","Good For Groups","Good For Late Night"]
+    good_for_types = ["Good For Dinner","Good For Kids","Good For Lunch","Good For Dancing","Good For Working","Good For Brunch","Good For Dessert","Good For Breakfast","Good For Groups","Good For Late Night", "All Ages", "Late Night"]
     for good_for in good_for_types:
         if row[good_for]:
             return good_for.split("Good For ")[1]
     return None
 # Apply the function to create the column
 df['Good_For'] = df.apply(good_for, axis=1) # type: ignore
-good_for_types = ["Good For Dinner","Good For Kids","Good For Lunch","Good For Dancing","Good For Working","Good For Brunch","Good For Dessert","Good For Breakfast","Good For Groups","Good For Late Night"]
+good_for_types = ["Good For Dinner","Good For Kids","Good For Lunch","Good For Dancing","Good For Working","Good For Brunch","Good For Dessert","Good For Breakfast","Good For Groups","Good For Late Night", "All Ages", "Late Night"]
 # df[good_for_types] = df[good_for_types].fillna(False)
 # df['Good_For'] = df[good_for_types].apply(lambda x: ', '.join(x.index[x]).replace('Good For ',''), axis=1)  # type: ignore
 df.drop(columns=good_for_types, inplace=True)
@@ -85,7 +85,7 @@ df.drop(columns='Takeout', inplace=True)
 #     return None
 # # Apply the function to create the column
 # df['Offers'] = df.apply(offers, axis=1) # type: ignore
-offers_types = ["Offers Delivery","Offers Takeout","Offers Catering","Offers Military Discount"]
+offers_types = ["Offers Delivery","Offers Takeout","Offers Catering","Offers Military Discount","Online ordering-only"]
 df[offers_types] = df[offers_types].fillna(False)
 df['Offers'] = df[offers_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
 df.drop(columns=offers_types, inplace=True)
@@ -111,7 +111,7 @@ df.drop(columns=options_types, inplace=True)
 # -------------- VIBES -----------------
 df['Casual'] = df['Casual'].fillna(df['Casual Dress'])
 df.drop(columns='Casual Dress', inplace=True)
-vibes_types = ["Trendy", "Classy", "Intimate", "Romantic", "Upscale", "Dressy", "Hipster", "Touristy", "Divey", "Casual", "Quiet", "Loud", "Moderate Noise", "All Ages", "Late Night"]
+vibes_types = ["Trendy", "Classy", "Intimate", "Romantic", "Upscale", "Dressy", "Hipster", "Touristy", "Divey", "Casual", "Quiet", "Loud", "Moderate Noise"]
 df[vibes_types] = df[vibes_types].fillna(False)
 df['Vibes'] = df[vibes_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
 df.drop(columns=vibes_types, inplace=True)
@@ -155,7 +155,7 @@ df.drop(columns=res_types, inplace=True)
 # =========================================
 
 # -------------- SEATING -----------------
-seating_types = ["Outdoor Seating", "Heated Outdoor Seating", "Covered Outdoor Seating", "Private Dining"]
+seating_types = ["Outdoor Seating", "Heated Outdoor Seating", "Covered Outdoor Seating", "Private Dining", "Drive-Thru"]
 df[seating_types] = df[seating_types].fillna(False)
 df['Seating'] = df[seating_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
 df.drop(columns=seating_types, inplace=True)
@@ -191,21 +191,14 @@ df.drop(columns=music_types, inplace=True)
 # -------------- HAPPY HOUR -----------------
 df['Happy Hour'] = df['Happy Hour'].fillna(df['Happy Hour Specials'])
 df.drop(columns='Happy Hour Specials', inplace=True)
-# def reserv(row):
-#     res_types = ["By Appointment Only", "Walk-ins Welcome", "Reservations"]
-#     for res in res_types:
-#         if row[res]:
-#             return res
-#     return None
-# # Apply the function to create the column
-# df['Reservation_Type'] = df.apply(reserv, axis=1) # type: ignore
-# res_types = ["By Appointment Only", "Walk-ins Welcome", "Reservations"]
-# # Drop the original columns
-# df.drop(columns=res_types, inplace=True)
+alc_types = ["Alcohol", "Happy Hour", "Beer and Wine Only", "Full Bar"]
+df[alc_types] = df[alc_types].fillna(False)
+df['Alcohol_Options'] = df[alc_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
+df.drop(columns=alc_types, inplace=True)
 # =========================================
 
 # -------------- AMENITIES -----------------
-amenity_types = ["TV", "Full Bar", "Waiter Service", "Pool Table", "Wi-Fi", "Drive-Thru", "EV charging station available"]
+amenity_types = ["TV", "Pool Table", "Wi-Fi", "EV charging station available"]
 df[amenity_types] = df[amenity_types].fillna(False)
 df['Amenities'] = df[amenity_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
 df.drop(columns=amenity_types, inplace=True)
@@ -225,7 +218,9 @@ column_mapping = {
     "Photo": "RW_PHOTO",
     "Sips Participant": "SIPS_PARTICIPANT",
     "Restaurant Week Participant": "RW_PARTICIPANT",
-    "Open Table Link": "RESERVATION_LINK"
+    "Open Table Link": "RESERVATION_LINK",
+    "Restaurant Week Score": "RW_Score",
+    "Popularity Score": "Popularity"
 }
 df.rename(columns=column_mapping, inplace=True)
 print(df)
