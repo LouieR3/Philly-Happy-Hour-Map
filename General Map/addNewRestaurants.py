@@ -7,7 +7,7 @@ import html
 import re
 from bs4 import BeautifulSoup
 import time
-
+from get_scores import getScores
 # ------------------------------------------------
 # This script does = Gets the information from each Restaurant from yelp
 # ------------------------------------------------
@@ -102,10 +102,30 @@ def get_yelp_data(row):
                     if "Not Good" in display_text:
                         display_text = display_text.replace("Not Good", "Good")
                         is_active = not is_active
+                    if "Not Wheelchair Accessible" in display_text:
+                        display_text = display_text.replace("Not ", "")
+                        is_active = not is_active
+                    if "Dogs Not Allowed" in display_text:
+                        display_text = display_text.replace("Not ", "")
+                        is_active = not is_active
                     if "Very Loud" in display_text:
                         display_text = display_text.replace("Very ", "")
                     if "Free Wi-fi" in display_text:
                         display_text = display_text.replace("Free ", "")
+                    if "Smoking Allowed" in display_text:
+                        display_text = display_text.replace(" Allowed", "")
+                    if "Happy Hour Specials" in display_text:
+                        display_text = display_text.replace(" Specials", "")
+                    if "Reservations" == display_text:
+                        display_text = "Takes " + display_text
+                    if "Happy Hour Specials" in display_text:
+                        display_text = display_text.replace(" Specials", "")
+                    if "Takes Reservations" in display_text:
+                        display_text = display_text.replace("Takes ", "")
+                    if "Many Vegetarian Options" in display_text:
+                        display_text = display_text.replace("Many ", "")
+                    if "Casual Dress" in display_text:
+                        display_text = display_text.replace(" Dress", "")
                     if "No " in display_text:
                         display_text = display_text.replace("No ", "")
                         is_active = not is_active
@@ -114,7 +134,7 @@ def get_yelp_data(row):
                         for part in parts:
                             new_display_text = "Best nights on " + part.strip()
                             business_properties[new_display_text] = is_active
-                    elif "Paid Wi-Di" not in display_text:
+                    elif "Paid Wi-Fi" not in display_text:
                         display_texts = [text.strip() for text in display_text.split(',')]
                         business_properties.update({text: is_active for text in display_texts})
                 if "neighborhoods" in value:
@@ -258,8 +278,10 @@ print(master_table_df)
 print(data_df)
 print()
 # master_table_df = master_table_df.merge(data_df, on='Name', how='left')
-master_table_df = master_table_df.append(data_df, ignore_index=True) # type: ignore
+# master_table_df = master_table_df.append(data_df, ignore_index=True) # type: ignore
+master_table_df = pd.concat([master_table_df, data_df], ignore_index=True)
 print(master_table_df)
+master_table_df = getScores(master_table_df)
 # Save the updated master_table_df to a CSV file or perform further processing as needed
 master_table_df.to_csv('UpdatedMasterTable.csv', index=False)
 # If not:
@@ -267,3 +289,5 @@ master_table_df.to_csv('UpdatedMasterTable.csv', index=False)
 #   Pull the extra yelp data
 #   Enter in nulls for RW and Sips data
 #   Calculate scores or other fields
+
+print("Progam finished --- %s seconds ---" % (time.time() - start_time))

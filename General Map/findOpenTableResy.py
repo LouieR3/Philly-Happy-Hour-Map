@@ -7,7 +7,7 @@ import time
 start_time = time.time()
 
 # Function to check for OpenTable or Resy links on a webpage
-def check_links(url):
+def check_for_res_link(url):
     try:
         response = requests.get(url)
         # print(response.status_code)
@@ -62,7 +62,7 @@ def check_links(url):
 # List of bars with their websites
 df = pd.read_csv("MasterTable.csv")
 
-# result = check_links("http://www.akitchenandbar.com/")
+# result = check_for_res_link("http://www.akitchenandbar.com/")
 # print(result)
 
 # Check OpenTable and Resy links for each bar
@@ -70,7 +70,7 @@ for index, row in df.iterrows():
     if pd.isna(row['Open Table Link']) or row['Open Table Link'] == "":
         website_url = row['Website']
         if pd.isna(row['Website']) == False:
-            result = check_links(website_url)
+            result = check_for_res_link(website_url)
             # time.sleep(0.2)
             if result is None:
                 print(row['Name'])

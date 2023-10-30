@@ -73,6 +73,15 @@ def checkMasterForAlias():
 
 # Get general pull of bars and restaurants in philly
 Restaurants = yelp.search_query(location='Rittenhouse Square, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Centery City, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Old City, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Northern Liberties, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Fishtown, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='South Philly, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Fairmount, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Chinatown, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='University City, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Temple, Philadelphia', price=2, categories='Bars', limit=50)
 # Load the Yelp Aliases CSV into a DataFrame
 yelp_aliases_df = pd.read_csv('YelpAliases.csv')
 
@@ -89,7 +98,10 @@ for restaurant in Restaurants["businesses"]:
         print(name)
         # If not, add a new row to the DataFrame
         new_row = {'Name': name, 'Yelp Alias': alias}
-        yelp_aliases_df = yelp_aliases_df.append(new_row, ignore_index=True) # type: ignore
+        new_row_df = pd.DataFrame([new_row])
+        yelp_aliases_df = pd.concat([yelp_aliases_df, new_row_df], ignore_index=True)
+
+        # yelp_aliases_df = yelp_aliases_df.append(new_row, ignore_index=True) # type: ignore
 
 
 # Save the updated Yelp Aliases DataFrame back to the CSV file
@@ -108,3 +120,5 @@ print(yelp_aliases_df)
 
 # # Print the DataFrame with missing bars and their Yelp Aliases
 # print(missing_bars_df)
+
+print("Progam finished --- %s seconds ---" % (time.time() - start_time))
