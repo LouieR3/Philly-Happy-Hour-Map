@@ -129,8 +129,8 @@ df.drop(columns=access_types, inplace=True)
 
 # -------------- DOGS -----------------
 df['Dogs Allowed'] = df['Dogs Allowed'] | ~df['Dogs Not Allowed'].fillna(False)
-df['Dogs Allowed'] = df['Dogs Allowed'].mask(df['Dogs Allowed'] == False, np.nan)
-df.drop(columns='Dogs Not Allowed', inplace=True)
+df['Dogs_Allowed'] = df['Dogs Allowed'].mask(df['Dogs Allowed'] == False, np.nan)
+df.drop(columns=['Dogs Not Allowed', 'Dogs Allowed'], inplace=True)
 # =========================================
 
 # -------------- SMOKING -----------------
@@ -202,6 +202,8 @@ amenity_types = ["TV", "Pool Table", "Wi-Fi", "EV charging station available"]
 df[amenity_types] = df[amenity_types].fillna(False)
 df['Amenities'] = df[amenity_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
 df.drop(columns=amenity_types, inplace=True)
+df.drop(columns="Virtual restaurant", inplace=True)
+df.drop(columns="Waiter Service", inplace=True)
 # =========================================
 
 # -------------- RENAME -----------------
@@ -219,11 +221,14 @@ column_mapping = {
     "Sips Participant": "SIPS_PARTICIPANT",
     "Restaurant Week Participant": "RW_PARTICIPANT",
     "Open Table Link": "RESERVATION_LINK",
+    "Yelp Rating": "Yelp_Rating",
+    "Review Count": "Review_Count",
     "Restaurant Week Score": "RW_Score",
     "Popularity Score": "Popularity"
 }
 df.rename(columns=column_mapping, inplace=True)
 print(df)
+print(df.columns)
 # =========================================
 
 print("Progam finished --- %s seconds ---" % (time.time() - start_time))
