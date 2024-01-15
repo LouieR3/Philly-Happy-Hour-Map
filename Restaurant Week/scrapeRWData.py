@@ -10,7 +10,7 @@ import re
 import json
 
 # ------------------------------------------------
-# This script does = Scraps the basic data from the Sips list site and get Lat and Long
+# This script does = Scrapes the basic data from the Res Week list site and get Lat and Long
 # ------------------------------------------------
 
 html = "https://centercityphila.org/explore-center-city/ccd-restaurant-week/list-view"

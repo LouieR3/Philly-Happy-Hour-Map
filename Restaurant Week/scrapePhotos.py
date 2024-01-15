@@ -19,14 +19,6 @@ base_html = "https://centercityphila.org"
 source = requests.get(html).text
 soup = BeautifulSoup(source, "lxml")
 
-locations = []
-
-pages= []
-pager = soup.find('div', class_='c-pager')
-for link in pager.find_all('a'): # type: ignore
-    pages.append(base_html + link['href'])
-
-print(pages)
 page_number = 1
 restaurant_info_list = []
 while True:

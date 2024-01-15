@@ -231,4 +231,6 @@ print(df)
 print(df.columns)
 # =========================================
 
+df.to_csv("MasterTableNew.csv", index=False)
+
 print("Progam finished --- %s seconds ---" % (time.time() - start_time))

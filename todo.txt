@@ -28,6 +28,15 @@ best deal by Drink
 - Look towards happy hour menu
 
 Restaurant Week Map -
+1 MAKE NEW CSV WITH COMBINED COLUMNS
+2 MAKE SCRIPT FLUSH OUT RES WEEK FIELDS AND REPLACE WITH NEW, ADD IN NEW BARS IF NEEDED
+3 FIX DAY DATE FIELDS
+4 FIX CATEGORIES COLUMN:
+- DROP AMERICAN JUST LATIN
+- ONLY AMERICAN NO (NEW) or (TRADITIONAL)
+- COMBINE OPTIONS LIKE TAPAS
+5 ADD NEW BARS TO MAP
+
 * Get hours of operations, delivery, pickup, phone, amenities from yelp
 * Get menu from menu link for restaurants
 * Resy link for restaurant
