@@ -638,7 +638,7 @@ def checkandAddToMaster(rw_df, master_df):
                         df['Smoking'] = df['Smoking'].fillna(df['Smoking Allowed'])
                     else:
                         df['Smoking'] = df['Smoking']
-                if 'Smoking Outside Onlyd' in df.columns:
+                if 'Smoking Outside Only' in df.columns:
                     df.drop(columns=["Smoking Outside Only"], inplace=True)
                 if 'Smoking Allowed' in df.columns:
                     df.drop(columns=['Smoking Allowed'], inplace=True)
