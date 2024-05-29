@@ -11,7 +11,7 @@ import re
 # This script does = Added Sips deals and prices to SipsBarItems
 # ------------------------------------------------
 
-df = pd.read_csv("AllSipsOriginal.csv")
+df = pd.read_csv("MasterTable.csv")
 print(df)
 menu_data = []
 
@@ -25,7 +25,7 @@ for index, row in df.iterrows():
 
     sections = re.split(r"(\$[0-9]+\s\w+)", deals)
     sections = [s.strip() for s in sections if s.strip() != ""]
-    print(row["Bar Name"])
+    print(row["Name"])
     # Remove any empty or null sections
     # print(sections)
     sections = [s.split("Half-Priced Appetizers")[0] for s in sections if s]
@@ -82,7 +82,7 @@ for index, row in df.iterrows():
         for menu_item in individual_menu_items:
             menu_data.append(
                 {
-                    "Bar": row["Bar Name"],
+                    "Bar": row["Name"],
                     "Menu Item": menu_item.strip(),
                     "Price": price,
                     "Sips Deal": "Y",

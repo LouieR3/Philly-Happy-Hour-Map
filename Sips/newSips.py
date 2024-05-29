@@ -17,8 +17,8 @@ from geopy.geocoders import Nominatim
 # ------------------------------------------------
 start_time = time.time()
 
-csv_df = pd.read_csv('MasterTable.csv')
-geolocator = Nominatim(timeout=10, user_agent="my_app") # type: ignore
+# csv_df = pd.read_csv('MasterTable.csv')
+# geolocator = Nominatim(timeout=10, user_agent="my_app") # type: ignore
 
 def clearOldSips(df):
     # List of columns to be updated
@@ -39,7 +39,7 @@ def clearOldSips(df):
     # Display the modified DataFrame (for verification)
     return df
 
-csv_df = clearOldSips(csv_df)
+# csv_df = clearOldSips(csv_df)
 
 def scrapeSipsPage(geolocator):
     html = "https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view"
@@ -238,43 +238,40 @@ def readModalForDeals(df):
     return df
 
 # modal_df = readModalForDeals(site_df)
-site_df = pd.read_csv("Sips2024.csv")
-modal_df = site_df
+# site_df = pd.read_csv("Sips2024.csv")
+# modal_df = site_df
 # modal_df.to_csv("Sips2024.csv", index=False)
 
-# print(modal_df)
+def mergeData(csv_df):
+    # Merge the two DataFrames on 'Name' and 'Address' to find common records
+    merge_df = modal_df.merge(csv_df, on=['Name', 'Address'], how='left', indicator=True, suffixes=('', '_csv'))
+    merge_df["SIPS_PARTICIPANT"] = "Y"
+    # Create sub-df for records where 'Name' and 'Address' are in both DataFrames
+    in_both_df = merge_df[merge_df['_merge'] == 'both'].drop(columns=[col for col in merge_df.columns if col.endswith('_csv') or col == '_merge'])
+    # in_both_df["SIPS_PARTICIPANT"] = "Y"
+    # Create sub-df for records where 'Name' and 'Address' are only in the original df
+    not_in_csv_df = merge_df[merge_df['_merge'] == 'left_only'].drop(columns=[col for col in merge_df.columns if col.endswith('_csv') or col == '_merge'])
 
-print("csv_df:")
-print(csv_df)
+    # not_in_csv_df["SIPS_PARTICIPANT"] = "Y"
 
-# Merge the two DataFrames on 'Name' and 'Address' to find common records
-merge_df = modal_df.merge(csv_df, on=['Name', 'Address'], how='left', indicator=True, suffixes=('', '_csv'))
-merge_df["SIPS_PARTICIPANT"] = "Y"
-# Create sub-df for records where 'Name' and 'Address' are in both DataFrames
-in_both_df = merge_df[merge_df['_merge'] == 'both'].drop(columns=[col for col in merge_df.columns if col.endswith('_csv') or col == '_merge'])
-# in_both_df["SIPS_PARTICIPANT"] = "Y"
-# Create sub-df for records where 'Name' and 'Address' are only in the original df
-not_in_csv_df = merge_df[merge_df['_merge'] == 'left_only'].drop(columns=[col for col in merge_df.columns if col.endswith('_csv') or col == '_merge'])
+    # Display the sub-dataframes (for verification)
+    print("Records in both DataFrames:")
+    print(in_both_df)
+    print("\nRecords not in the csv DataFrame:")
+    print(not_in_csv_df)
 
-# not_in_csv_df["SIPS_PARTICIPANT"] = "Y"
+    print(csv_df[["Name", "SIPS_BEER", "SIPS_PARTICIPANT"]])
+    # Update records in csv_df with those in in_both_df
 
-# Display the sub-dataframes (for verification)
-print("Records in both DataFrames:")
-print(in_both_df)
-print("\nRecords not in the csv DataFrame:")
-print(not_in_csv_df)
+    csv_df.update(in_both_df)
+    # Add records from not_in_csv_df to csv_df
+    csv_df = pd.concat([csv_df, not_in_csv_df], ignore_index=True)
 
-print(csv_df[["Name", "SIPS_BEER", "SIPS_PARTICIPANT"]])
-# Update records in csv_df with those in in_both_df
+    csv_df.to_csv("MasterTable.csv", index=False)
+    return csv_df
 
-csv_df.update(in_both_df)
-# Add records from not_in_csv_df to csv_df
-csv_df = pd.concat([csv_df, not_in_csv_df], ignore_index=True)
-print(csv_df[["Name", "SIPS_BEER", "SIPS_PARTICIPANT"]])
-sgfd
-csv_df.to_csv("MasterTable.csv", index=False)
-
-
+# csv_df = mergeData(csv_df)
+csv_df = pd.read_csv('MasterTable.csv')
 
 def reformatYelpColumns(df):
     # -------------- PARKING -----------------

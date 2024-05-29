@@ -35,10 +35,14 @@ gis = GIS("https://mappy-hour.maps.arcgis.com/", gisUser, gisPass)
 df = pd.read_csv("MasterTable.csv")
 # df = pd.read_csv("UpdatedMasterTable.csv")
 # pull the feature layer to append to
+
 # TEST LAYER
-lyr = gis.content.get("f51d537b0ef34adc960fb1833d91ea99").layers[0]
+# lyr = gis.content.get("f51d537b0ef34adc960fb1833d91ea99").layers[0]
+# lyr = gis.content.get("08d602f3932243d3a27d1237f0753b7e").layers[0]
+
 # PROD LAYER
-# lyr = gis.content.get("8fe4839f300c45ca8deab275998f4632").layers[0]
+lyr = gis.content.get("8fe4839f300c45ca8deab275998f4632").layers[0]
+
 lyr_df = lyr.query().sdf
 # print(lyr_df)
 # GeoAccessor class adds a spatial namespace that performs spatial operations on the given Pandas DataFrame
