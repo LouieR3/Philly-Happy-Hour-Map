@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require("cors");
-const pool = require('./databasepg'); // Import the database module
+const pool = require('./databasepg');
 const app = express();
 const bcrypt = require('bcrypt');
 

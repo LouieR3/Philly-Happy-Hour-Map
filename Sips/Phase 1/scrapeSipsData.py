@@ -9,9 +9,9 @@ import folium
 import re
 import json
 
-# ------------------------------------------------
+# ---------------------------------------------------------------------------------------
 # This script does = Scraps the basic data from the Sips list site and get Lat and Long
-# ------------------------------------------------
+# ---------------------------------------------------------------------------------------
 
 html = "https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view"
 base_html = "https://centercityphila.org"
@@ -48,12 +48,12 @@ for page in pages:
             continue
 
 # Create dataframe  
-df = pd.DataFrame(bars, columns=['Bar Name', 'Address', 'Url'])
+df = pd.DataFrame(bars, columns=['Name', 'Address', 'Website'])
 
 mask = df['Address'].str.contains('Philadelphia')
 df = df[mask]
 df = df.reset_index(drop=True)
-df = df.drop_duplicates(subset=['Bar Name'])
+df = df.drop_duplicates(subset=['Name'])
 print(df)
 
 pattern = r'apos\.maps\["ccd-places"\]\.addMap\((.*?)\)'
@@ -82,8 +82,8 @@ for page in pages:
         url_website = item.get("urlWebsite", "")
         if url_website:
             url_website = url_website.rstrip('/')
-        bar_info = {"Bar Name": title, "Bar Website": url_website}
-        print(bar_info)
+        bar_info = {"Name": title, "Website": url_website}
+        # print(bar_info)
         bar_info_list.append(bar_info)
 
 new_df = pd.DataFrame(bar_info_list)
@@ -92,11 +92,11 @@ new_df = pd.DataFrame(bar_info_list)
 # Print the resulting DataFrame with the new "Bar Website" column
 print(new_df)
 
-df = pd.read_csv('AllSipsLocations.csv')
-merged_df = df.merge(new_df, on='Bar Name', how='left')
+# df = pd.read_csv('AllSipsLocations.csv')
+merged_df = df.merge(new_df, on='Name', how='left')
 print(merged_df)
-merged_df.to_csv("AllSipsLocations.csv", index=False)
-df = merged_df
+# merged_df.to_csv("AllSipsLocations.csv", index=False)
+# df = merged_df
 MAX_ATTEMPTS = 5
 
 def find_location(row):
@@ -118,10 +118,10 @@ df[['Latitude','Longitude']] = df.apply(find_location, axis="columns", result_ty
 
 print(df)
 
-# Get the current working directory
-current_directory = os.getcwd()
+# # Get the current working directory
+# current_directory = os.getcwd()
 
-# Combine the current directory with the filename
-file_path = os.path.join(current_directory, 'SipsLocations.csv')
+# # Combine the current directory with the filename
+# file_path = os.path.join(current_directory, 'SipsLocations.csv')
 
-df.to_csv("AllSipsLocations.csv", index=False)
+# df.to_csv("AllSipsLocations.csv", index=False)

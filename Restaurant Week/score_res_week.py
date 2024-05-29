@@ -51,6 +51,7 @@ restaurant_df.reset_index(drop=True, inplace=True)
 # Print the DataFrame with the calculated score
 print(restaurant_df[["Name", "Yelp_Rating", "Review_Count", "Price", "Popularity"]].head(50))
 df['Popularity'] = restaurant_df['Popularity']
+df.sort_values(by='RW_Score', ascending=False, inplace=True)
 print(df[["Name", "Yelp_Rating", "Review_Count", "Price", "RW_Score", "Popularity"]].head(50))
 
 # Replace values in main_df based on matching 'Name' column
@@ -63,4 +64,4 @@ for index, row in df.iterrows():
     main_df.loc[main_df['Name'] == name, 'RW_Score'] = restaurant_week_score
     main_df.loc[main_df['Name'] == name, 'Popularity'] = popularity_score
 
-main_df.to_csv("UpdatedMasterTable.csv", index=False)
+# main_df.to_csv("UpdatedMasterTable.csv", index=False)

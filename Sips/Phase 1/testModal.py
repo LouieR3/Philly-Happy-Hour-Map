@@ -17,7 +17,16 @@ from selenium.webdriver.common.by import By
 
 url = 'https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#cavanaugh-s-rittenhouse'
 
-df = pd.read_csv('AllSipsLocations.csv')
+df = pd.read_csv('Sips2024.csv')
+print(df[["Name", "SIPS_BEER", "SIPS_COCKTAILS"]].head(3))
+df = pd.read_csv('MasterTableApr.csv')
+print(df[["Name", "SIPS_BEER", "SIPS_COCKTAILS"]].head(3))
+df = pd.read_csv('MasterTable.csv')
+print(df[["Name", "SIPS_BEER", "SIPS_COCKTAILS"]].head(3))
+
+
+dsfg
+df = df.head(1)
 
 # driver = webdriver.Chrome()
 
@@ -64,6 +73,12 @@ wine = []
 beer = []
 appetizers = []
 
+def prepare_for_csv(text):
+    # Replace commas with " + " in cocktail text
+    text = re.sub(r', ', ' + ', text)
+    # Enclose the text in double quotes and escape existing double quotes
+    return f'''"{text.replace('"', '""')}"'''
+
 # Iterate through each row in the DataFrame
 for row in df.itertuples():
     # Use regular expressions to extract data for each deal type
@@ -73,31 +88,50 @@ for row in df.itertuples():
     appetizers_match = re.search(r'Half-Priced Appetizers(.*?)$', row.Deals, re.DOTALL) # type: ignore
     # Append extracted data to respective lists
     if cocktails_match:
-        cocktails.append(cocktails_match.group(1).strip())
+        cocktails_text = cocktails_match.group(1).strip()
+        # Replace commas with " + "
+        cocktails_text = prepare_for_csv(cocktails_text)
+        # Append to the cocktails list
+        cocktails.append(cocktails_text)
+        print(cocktails_text)
     else:
         cocktails.append(None)
     if wine_match:
-        wine.append(wine_match.group(1).strip())
+        wine_text = wine_match.group(1).strip()
+        # Replace commas with " + "
+        wine_text = prepare_for_csv(wine_text)
+        # Append to the cocktails list
+        wine.append(wine_text)
     else:
         wine.append(None)
     if beer_match:
-        beer.append(beer_match.group(1).strip())
+        beer_text = beer_match.group(1).strip()
+        # Replace commas with " + "
+        beer_text = prepare_for_csv(beer_text)
+        # Append to the cocktails list
+        beer.append(beer_text)
     else:
         beer.append(None)
     if appetizers_match:
-        appetizers.append(appetizers_match.group(1).strip())
+        app_text = appetizers_match.group(1).strip()
+        # Replace commas with " + "
+        app_text = prepare_for_csv(app_text)
+        # Append to the cocktails list
+        appetizers.append(app_text)
     else:
         appetizers.append(None)
 
 # Create a new DataFrame with the extracted data
 # Add the new columns to the DataFrame
-df['Cocktails'] = cocktails
-df['Wine'] = wine
-df['Beer'] = beer
-df['Half-Priced Appetizers'] = appetizers
+df['SIPS_COCKTAILS'] = cocktails
+df['SIPS_WINE'] = wine
+df['SIPS_BEER'] = beer
+df['SIPS_HALFPRICEDAPPS'] = appetizers
 
 # Drop the original 'Deals' column
 df.drop(columns=['Deals'], inplace=True)
 
+print(df)
+
 # Write the updated DataFrame to the same CSV file
-df.to_csv('AllSipsLocations.csv', index=False)
+df.to_csv('TestModal.csv', index=False)
