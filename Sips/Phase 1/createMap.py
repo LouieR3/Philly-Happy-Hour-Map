@@ -26,8 +26,17 @@ for index, row in df.iterrows():
     # popup_content += f"<p style='text-align: center; font-size: 16px; font-weight: bold;'>"
     # popup_content += f"<a style='color:darkgreen;'href='{row['Bar Website']}' target='_blank'>Go to their website</a></p>"
     popup_content += f"<p style='text-align: center; font-size: 14px;'>{row['Address']}</p><hr>"
-    # popup_content += f"<p style='text-align: center; font-size: 20px; font-weight: bold;'>Sips Deals</p>"
+    popup_content += f"<p style='text-align: center; font-size: 20px; font-weight: bold;'>Sips Deals</p>"
     # Split the 'Deals' column by newline character and join the parts with HTML line breaks
+    
+    popup_content += f"<p style='text-align: center; font-weight: bold; margin: 15px 5px 5px; font-size: 18px;'>$7 Cocktails</p>"
+    popup_content += f"<p style='text-align: center; margin: 4px 0; font-size: 15px;'>{row['SIPS_COCKTAILS']}</p>"
+    popup_content += f"<p style='text-align: center; font-weight: bold; margin: 15px 5px 5px; font-size: 18px;'>$6 Wine</p>"
+    popup_content += f"<p style='text-align: center; margin: 4px 0; font-size: 15px;'>{row['SIPS_WINE']}</p>"
+    popup_content += f"<p style='text-align: center; font-weight: bold; margin: 15px 5px 5px; font-size: 18px;'>$5 Beer</p>"
+    popup_content += f"<p style='text-align: center; margin: 4px 0; font-size: 15px;'>{row['SIPS_BEER']}</p>"
+    popup_content += f"<p style='text-align: center; font-weight: bold; margin: 15px 5px 5px; font-size: 18px;'>Half-Priced Appetizers</p>"
+    popup_content += f"<p style='text-align: center; margin: 4px 0; font-size: 15px;'>{row['SIPS_HALFPRICEDAPPS']}</p>"
     # deals_parts = row['Deals'].split('\n')
     # # Loop through the deals parts and apply bold to specific lines
     # for deal in deals_parts:

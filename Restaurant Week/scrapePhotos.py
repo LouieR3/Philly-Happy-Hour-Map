@@ -34,7 +34,7 @@ while True:
         if img and img['alt'] != '':
             alt_text = img['alt'].rstrip('*')
             src_link = base_html + img['src']
-            restaurant_info_list.append({'Bar Name': alt_text, 'Photo': src_link})
+            restaurant_info_list.append({'Name': alt_text, 'RW_PHOTO': src_link})
             # print({'alt_text': alt_text, 'src_link': src_link})
     pager = soupIter.find('div', class_='c-pager')
     next_page_link = pager.find('a', href=f"/explore-center-city/{run_on}?page={page_number + 1}") # type: ignore
@@ -52,7 +52,7 @@ df2 = pd.read_csv('AllSipsLocations.csv')
 df2 = pd.read_csv('RestaurantWeek.csv')
 
 # Merge the two DataFrames on 'Restaurant Name' column
-merged_df = pd.merge(df2, df1, on='Bar Name', how='inner')
+merged_df = pd.merge(df2, df1, on='Name', how='inner')
 # Print the resulting DataFrame with the new "Bar Website" column
 print(df1)
 print(merged_df)
