@@ -1,0 +1,17 @@
+[
+{"Name": "aMuse", "Rating": 3.6, "Review Count": 161, "Price": "$$$", "Categories": ["French", "Bars"], "Website": "http://amusephiladelphia.com"},
+{"Name": "Bar Lesieur", "Rating": 4.3, "Review Count": 33, "Price": "", "Categories": ["French", "Cocktail Bars"], "Website": "https://www.barlesieur.com"},
+{"Name": "Chris' Jazz Cafe", "Rating": 3.6, "Review Count": 286, "Price": "$$", "Categories": ["Jazz & Blues"], "Website": "http://www.PhillyJazz.com"},
+{"Name": "Elephant", "Rating": "", "Review Count": "", "Price": "", "Yelp URL": "", "Categories": "", "Website": ""},
+{"Name": "The Franklin Mortgage & Investment Company", "Rating": 4.1, "Review Count": 886, "Price": "$$$", "Categories": ["Cocktail Bars"], "Website": "http://thefranklinbar.com"},
+{"Name": "Hi-lo Taco Co.", "Rating": 4.7, "Review Count": 44, "Price": "", "Categories": ["Tacos", "Tex-Mex", "Cocktail Bars"], "Website": "https://www.hilotacoco.com"},
+{"Name": "Howl at the Moon", "Rating": 3.3, "Review Count": 236, "Price": "$$", "Categories": ["Bars", "Venues & Event Spaces", "Music Venues"], "Website": "http://howlatthemoon.com"},
+{"Name": "Lucky Strike", "Rating": 3.1, "Review Count": 356, "Price": "$$", "Categories": ["Bowling", "New American", "Venues & Event Spaces"], "Website": "https://www.luckystrikeent.com/?gad_source=1&radius=25"},
+{"Name": "Lucy's Bar", "Rating": "", "Review Count": "", "Price": "", "Yelp URL": "", "Categories": "", "Website": "http://lucysphiladelphia.com"},
+{"Name": "Nabrasa Brazilian Steakhouse", "Rating": 4.3, "Review Count": 3, "Price": "", "Categories": ["Brazilian", "Steakhouses", "Bars"], "Website": "http://nabrasa.com"},
+{"Name": "Sura Indian Bistro", "Rating": 4.0, "Review Count": 3, "Price": "", "Categories": ["Lounges", "Indian", "Venues & Event Spaces"], "Website": "https://www.surabistro.com"},
+{"Name": "Taste Cheesesteak Bar", "Rating": 3.7, "Review Count": 68, "Price": "$$", "Categories": ["Cheesesteaks"], "Website": "https://www.tastecheesesteaks.com"},
+{"Name": "Treble & Bass", "Rating": 2.5, "Review Count": 2, "Price": "", "Categories": ["Cocktail Bars"], "Website": "https://www.cambriaphiladelphia.com/en-us/dining"},
+{"Name": "Vinyl", "Rating": 3.7, "Review Count": 31, "Price": "", "Categories": ["Cocktail Bars", "Music Venues", "Wine Bars"], "Website": "https://www.vinylphilly.com"},
+{"Name": "Walnut Garden", "Rating": 3.9, "Review Count": 14, "Price": "$$", "Categories": ["Beer Gardens", "Cocktail Bars", "Desserts"], "Website": "https://www.walnutphl.com"}
+]
