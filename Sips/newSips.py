@@ -429,27 +429,32 @@ def pullBasicYelp(df, csv_df):
     yelp_df = pd.read_csv("Yelp.csv")
 
     # Merge the two DataFrames on the 'Name' column
-    combined_df = df.merge(yelp_df, on='Name', how='left')
+    suffixes = ('_df', '')  # Keep suffixes empty for the left table (df) and '_df' for the right table (yelp_df)
+
+    # Perform left join on Name
+    combined_df = df.merge(yelp_df, on='Name', how='left', suffixes=suffixes)
+
+    # Drop columns with '_df' suffix (assuming the merged DataFrame is stored in 'combined_df')
+    dropped_df = combined_df.select_dtypes(exclude='object').filter(like='_df')  # Filter for '_df' and exclude object dtype
+    combined_df = combined_df.drop(dropped_df.columns, axis=1)  # Drop the filtered columns
+
     print(combined_df)
-    print(combined_df.columns)
-    # print(combined_df[[""]])
 
-    # Update the desired columns in df with data from yelp_df
-    combined_df['Yelp_Rating'] = combined_df['Yelp_Rating_y']
-    combined_df['Review_Count'] = combined_df['Review_Count_y']
-    combined_df['Price'] = combined_df['Price_y']
-    combined_df['Categories'] = combined_df['Categories_y']
+    columns_to_update = ['Yelp_Rating', 'Review_Count', 'Price', 'Categories']
 
-    # Drop the unnecessary columns from the combined DataFrame
-    combined_df = combined_df.drop(columns=['Yelp_Rating_y', 'Review_Count_y', 'Price_y', 'Categories_y'])
+    # Update records in csv_df with those in in_both_df for specific columns
+    for i, row in combined_df.iterrows():
+        for column in columns_to_update:
+            csv_df.loc[(csv_df['Name'] == row['Name']) & (csv_df['Address'] == row['Address']), column] = row[column]
 
-    csv_df = pd.concat([csv_df, combined_df], ignore_index=True)
-    csv_df = csv_df.drop_duplicates(subset=['Name', 'Address'])
+
+    # csv_df = pd.concat([csv_df, combined_df], ignore_index=True)
+    # csv_df = csv_df.drop_duplicates(subset=['Name', 'Address'])
 
     csv_df.to_csv("MasterTableNew.csv", index=False)
     # Display the updated DataFrame
-    print(combined_df)
-    print(csv_df)
+    print(csv_df[["Name", 'Yelp_Rating', 'Review_Count', 'Price', 'Categories']])
+    # print(csv_df)
 
 pullBasicYelp(df, csv_df)
 
