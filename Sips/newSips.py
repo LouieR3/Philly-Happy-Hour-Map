@@ -54,6 +54,8 @@ def scrapeSipsPage(geolocator):
         pages.append(base_html + link['href'])
     print(pages)
 
+    pages = ['https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view?page=5']
+
     pattern = r'apos\.maps\["ccd-places"\]\.addMap\((.*?)\)'
     bar_info_list = []
     for page in pages:
@@ -238,7 +240,7 @@ def readModalForDeals(df):
     return df
 
 # modal_df = readModalForDeals(site_df)
-# modal_df = pd.read_csv("Sips2024.csv")
+modal_df = pd.read_csv("Sips2024.csv")
 # modal_df = site_df
 # modal_df.to_csv("Sips2024.csv", index=False)
 
@@ -285,9 +287,9 @@ def scrapePhotos(modal_df):
     print(merged_df)
     return merged_df
 
-# merged_df = scrapePhotos(modal_df)
-# merged_df.to_csv("Sips2024.csv", index=False)
-merged_df = pd.read_csv("Sips2024.csv")
+merged_df = scrapePhotos(modal_df)
+merged_df.to_csv("Sips2024.csv", index=False, mode='a', header=False)
+# merged_df = pd.read_csv("Sips2024.csv")
 
 def mergeData(csv_df, modal_df):
     # Merge the two DataFrames on 'Name' and 'Address' to find common records
@@ -313,6 +315,7 @@ def mergeData(csv_df, modal_df):
     csv_df.update(in_both_df)
     # Add records from not_in_csv_df to csv_df
     csv_df = pd.concat([csv_df, not_in_csv_df], ignore_index=True)
+    csv_df = csv_df.drop_duplicates(subset=['Name'])
 
     csv_df.to_csv("MasterTable.csv", index=False)
     return csv_df
