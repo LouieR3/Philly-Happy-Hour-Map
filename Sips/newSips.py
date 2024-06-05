@@ -17,8 +17,8 @@ from geopy.geocoders import Nominatim
 # ------------------------------------------------
 start_time = time.time()
 
-# csv_df = pd.read_csv('MasterTable.csv')
-# geolocator = Nominatim(timeout=10, user_agent="my_app") # type: ignore
+csv_df = pd.read_csv('MasterTable.csv')
+geolocator = Nominatim(timeout=10, user_agent="my_app") # type: ignore
 
 def clearOldSips(df):
     # List of columns to be updated
@@ -39,7 +39,7 @@ def clearOldSips(df):
     # Display the modified DataFrame (for verification)
     return df
 
-# csv_df = clearOldSips(csv_df)
+csv_df = clearOldSips(csv_df)
 
 def scrapeSipsPage(geolocator):
     html = "https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view"
@@ -238,11 +238,58 @@ def readModalForDeals(df):
     return df
 
 # modal_df = readModalForDeals(site_df)
-# site_df = pd.read_csv("Sips2024.csv")
+# modal_df = pd.read_csv("Sips2024.csv")
 # modal_df = site_df
 # modal_df.to_csv("Sips2024.csv", index=False)
 
-def mergeData(csv_df):
+def scrapePhotos(modal_df):
+    run_on = "ccd-sips"
+    html = "https://centercityphila.org/explore-center-city/" + run_on
+    base_html = "https://centercityphila.org"
+    source = requests.get(html).text
+    soup = BeautifulSoup(source, "lxml")
+
+    page_number = 1
+    restaurant_info_list = []
+    while True:
+        # Create the URL for the current page
+        current_url = f"{html}?page={page_number}"
+        # Request and parse HTML for each page 
+        page_html = requests.get(current_url, allow_redirects=False).text
+        soupIter = BeautifulSoup(page_html, 'lxml')
+        # print(soupIter.find_all('tr')[1])
+        card_media_divs = soupIter.find_all('div', class_='o-card__media')
+        for card_media in card_media_divs:
+            img = card_media.find('img')
+            if img and img['alt'] != '':
+                alt_text = img['alt'].rstrip('*')
+                src_link = base_html + img['src']
+                restaurant_info_list.append({'Name': alt_text, 'RW_PHOTO': src_link})
+                # print({'alt_text': alt_text, 'src_link': src_link})
+        pager = soupIter.find('div', class_='c-pager')
+        next_page_link = pager.find('a', href=f"/explore-center-city/{run_on}?page={page_number + 1}") # type: ignore
+        
+        if not next_page_link:
+            break  # No more pages, exit the loop
+        else:
+            page_number += 1
+
+    # Create dataframe  
+    df1 = pd.DataFrame(restaurant_info_list)
+
+    # Merge the two DataFrames on 'Restaurant Name' column
+    merged_df = modal_df.merge(df1[['Name', 'RW_PHOTO']], on='Name', how='left')
+
+    # Print the resulting DataFrame with the new "Bar Website" column
+    print(df1)
+    print(merged_df)
+    return merged_df
+
+# merged_df = scrapePhotos(modal_df)
+# merged_df.to_csv("Sips2024.csv", index=False)
+merged_df = pd.read_csv("Sips2024.csv")
+
+def mergeData(csv_df, modal_df):
     # Merge the two DataFrames on 'Name' and 'Address' to find common records
     merge_df = modal_df.merge(csv_df, on=['Name', 'Address'], how='left', indicator=True, suffixes=('', '_csv'))
     merge_df["SIPS_PARTICIPANT"] = "Y"
@@ -270,8 +317,8 @@ def mergeData(csv_df):
     csv_df.to_csv("MasterTable.csv", index=False)
     return csv_df
 
-# csv_df = mergeData(csv_df)
-csv_df = pd.read_csv('MasterTable.csv')
+csv_df = mergeData(csv_df, merged_df)
+# csv_df = pd.read_csv('MasterTable.csv')
 
 def reformatYelpColumns(df):
     # -------------- PARKING -----------------
