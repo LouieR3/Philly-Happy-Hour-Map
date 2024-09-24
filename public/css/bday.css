@@ -1,0 +1,364 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body,
+html {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+.container {
+  /* height: 100vh; */
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  height: 88vh;
+  position: relative;
+  background-image: url("../assets/img/louie.JPG");
+  background-size: cover;
+  background-position: center;
+  border-radius: 2rem;
+  padding: 10px;
+}
+.section {
+    /* width: 100%; */
+    max-width: 1700px;
+    padding: 6px;
+    display: block;
+}
+
+.future-description {
+    grid-column-gap: 40px;
+    grid-row-gap: 40px;
+    border: 1px solid rgb(255, 0, 0);
+    /* border-radius: 200px; */
+    border-radius: 3rem;
+    flex-flow: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 187px;
+    padding: 36px 70px;
+    display: flex;
+}
+.secondary-button {
+  text-align: center;
+  text-transform: uppercase;
+  background-color: #0000;
+  border: 1px solid #fff;
+  border-radius: 200px;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 1rem;
+  font-family: Staff X Wide, Arial, sans-serif;
+  transform: scale(1.4, 1.1);
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex; 
+  margin-bottom: 85%;
+}
+.w-background-video > img {
+  object-fit: cover;
+  z-index: -100;
+  background-position: 50%;
+  background-size: cover;
+  /* width: 100%; */
+  height: 100%;
+  margin: auto;
+  position: absolute;
+  inset: -100%;
+}
+.gradient {
+  background: linear-gradient(-45deg, #000000, #ffffff, #ff4a4a, #000000);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  height: 100vh;
+}
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+.section-title {
+    font-family: "Times New Roman", serif; /* Set font family */
+    font-size: 4rem; /* Set font size */
+    font-weight: 300; /* Set font weight */
+    transform: scale(1, 1.5); /* Scale the text */
+    margin: 0; /* Remove default margin */
+}
+.section-title-h3 {
+    font-family: "Times New Roman", serif; /* Set font family */
+    font-size: 2.5rem; /* Set font size */
+    font-weight: 300; /* Set font weight */
+    transform: scale(1, 1.5); /* Scale the text */
+    margin: 0; /* Remove default margin */
+}
+.where{
+    background-color: black; /* Set background color to black */
+    border-radius: 3rem; /* Set border radius */
+    padding: 20px; /* Add some padding for spacing */
+    text-align: center; /* Center the text */
+    color: white; /* Set text color to white */
+    /* height: 80vh; */
+}
+
+.bg-video {
+    z-index: 1;
+    aspect-ratio: 1;
+    background-color: var(--mint);
+    border-radius: 36px;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    height: 100%;
+    margin-bottom: 24px;
+    margin-right: 24px;
+    padding: 20px;
+    display: flex;
+}
+.w-background-video {
+    color: #fff;
+    height: 500px;
+    position: relative;
+    overflow: hidden;
+}
+.w-background-video > video {
+    width: 120%;
+    height: 120%;
+}
+.w-background-video > video {
+    object-fit: cover;
+    z-index: -100;
+    background-position: 50%;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    position: absolute;
+    inset: -100%;
+}
+.gif-image {
+    border-radius: 3rem; /* Set border radius */
+    display: block; /* Optional: centers the image if it's a block element */
+    margin: 0 auto; /* Optional: centers the image horizontally */
+    max-width: 100%; /* Ensures the GIF is responsive */
+    height: auto; /* Keeps the aspect ratio */
+}
+.red {
+    color: red;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: 0;
+    font-family: Staff X Wide, Arial, sans-serif;
+    font-weight: 800;
+    text-align: center;
+}
+/* Phone-specific styles */
+@media only screen and (max-width: 600px) {
+    .future-description {
+        grid-column-gap: 36px;
+        grid-row-gap: 36px;
+        text-align: left;
+        height: 40%;
+        min-height: auto;
+        padding-left: 48px;
+        padding-right: 48px;
+    }
+  .header {
+    /* height: 10vh; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Times New Roman", serif;
+    font-size: 4rem;
+    font-weight: 300;
+    transform: scale(1, 1.5);
+  }
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    width: 50%;
+    /* height: 50%; */
+    vertical-align: center;
+    border-radius: 3rem;
+    text-align: center;
+    color: rgb(255, 0, 0);
+    font-size: 1.5rem;
+  }
+  .overlay-text {
+    position: absolute;
+    /* bottom: 20px; */
+    top: 6rem;
+    left: 0;
+    width: 100%;
+    color: #ff0000;
+    /* color: #CEBBBE; */
+    font-size: 4vh;
+    font-weight: 900;
+    -webkit-text-stroke: 1px black;
+    text-stroke: 3px black;
+    text-align: center;
+    font-family: "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif";
+    transform: scale(1.58, 1.6);
+  }
+
+  .email-input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #ff0000;
+    border-radius: 3rem;
+    margin-right: 10px;
+    width: 80%;
+    background-color: transparent;
+    color: #ff0000;
+  }
+  .overlay-text {
+    position: absolute;
+    /* bottom: 20px; */
+    top: 6rem;
+    left: 0;
+    /* width: 90%; */
+    color: #ff0000;
+    /* color: #CEBBBE; */
+    font-size: 4vh;
+    font-weight: 900;
+    -webkit-text-stroke: 1px black;
+    text-stroke: 3px black;
+    text-align: center;
+    font-family: "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif";
+    transform: scale(1.58, 1.6);
+    /* padding: 0 7px; */
+  }
+  .email-bar {
+    position: absolute;
+    bottom: 100px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+  }
+  .email-input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #ff0000;
+    border-radius: 3rem;
+    margin-right: 10px;
+    width: 80%; /* Twice the default width */
+    background-color: transparent; /* Transparent background */
+    color: #ff0000; /* Text color */
+  }
+  .submit-btn {
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    background-color: #ff0000;
+    color: white;
+    border-radius: 3rem;
+    cursor: pointer;
+    display: inline-block; /* Ensure the button occupies full space */
+  }
+}
+
+/* ALL OTHER SCREENS */
+@media only screen and (min-width: 601px) {
+  .header {
+    height: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Times New Roman", serif;
+    font-size: 5rem;
+    font-weight: 300; /* Slightly skinny */
+    transform: scale(1, 1.5); /* Stretches the text taller */
+  }
+  .overlay-text {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    width: 100%;
+    color: #ff0000;
+    /* color: #CEBBBE; */
+    font-size: 4rem;
+    font-weight: 900;
+    -webkit-text-stroke: 1px black;
+    text-stroke: 3px black;
+    text-align: center;
+    font-family: "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif";
+    transform: scale(1.58, 1.6);
+  }
+
+  .email-bar {
+    position: absolute;
+    bottom: 100px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+  }
+  .email-input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 2px solid #ff0000;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 400px; /* Twice the default width */
+    background-color: transparent; /* Transparent background */
+    color: #ff0000; /* Text color */
+  }
+  .submit-btn {
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    background-color: #ff0000;
+    color: white;
+    border-radius: 1rem;
+    cursor: pointer;
+    display: inline-block; /* Ensure the button occupies full space */
+  }
+  .submit-btn:hover {
+    background-color: darkred; /* Button hover effect */
+  }
+
+  /* Modal styling */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    width: 30vw; /* Adjust width to 60% of the viewport */
+    border-radius: 10px;
+    text-align: center;
+    color: rgb(255, 0, 0);
+    font-size: 1.5rem;
+  }
+}

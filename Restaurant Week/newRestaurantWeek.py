@@ -39,7 +39,8 @@ def getPages(pages):
     pages = sorted(pages, key=lambda x: int(x.split("=")[-1]))
     print(pages)
     return pages
-# pages = getPages(pages)
+pages = getPages(pages)
+# print(pages)
 
 bars = []
 # Go through each page and pull the basic info for each item
@@ -112,9 +113,8 @@ def getListofRestaurants():
     # print(merged_df.columns)
     return merged_df
 
-# df = getListofRestaurants()
+df = getListofRestaurants()
 # print(df)
-
 # Use the basic page so you can pull the restaurants photo for each page
 def getPhotos(df):
     run_on = "ccd-restaurant-week"
@@ -149,7 +149,7 @@ def getPhotos(df):
     merged_df = pd.merge(df, df1, on='Name', how='inner')
     return merged_df
 
-# df = getPhotos(df)
+df = getPhotos(df)
 # print("After photos:")
 # print(df)
 # print()
@@ -251,8 +251,10 @@ def getModalInfo(df):
 # print("Done with Modal part")
 
 # rw_df.to_csv("NewResWeek.csv", index=False)
+
 rw_df = pd.read_csv("NewResWeek.csv")
-master_df = pd.read_csv('MasterTableNew.csv')
+# master_df = pd.read_csv('MasterTableNew.csv')
+master_df = pd.read_csv('MasterTable.csv')
 # Clear out RW details in master and replace them with those from rw_df if the restaurant is already in master, otherwise add the new restaurant
 def checkandAddToMaster(rw_df, master_df):
     # Update rows where RW_PARTICIPANT is 'Y' in master_df
