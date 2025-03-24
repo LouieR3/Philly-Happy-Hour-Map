@@ -4,6 +4,10 @@ from geopy.geocoders import Nominatim
 import folium
 from folium import IFrame
 from folium.plugins import MarkerCluster
+from folium.utilities import JsCode
+from folium.features import GeoJsonPopup
+from folium.plugins import TimestampedGeoJson
+from folium.plugins import TagFilterButton
 from geopy.extra.rate_limiter import RateLimiter
 import time
 import pandas as pd
@@ -33,8 +37,8 @@ def geocode_addresses():
             try:
                 location = geolocator.geocode(place)
                 if location:
-                    print(f"Geocoded (Full Address): {location.latitude}, {location.longitude}")
-                    return location.latitude, location.longitude
+                    print(f"Geocoded (Full Address): {location.latitude}, {location.longitude}") # type: ignore
+                    return location.latitude, location.longitude # type: ignore
             except:
                 pass  # Continue to retry
             attempts += 1
@@ -49,8 +53,8 @@ def geocode_addresses():
             try:
                 location = geolocator.geocode(place)
                 if location:
-                    print(f"Geocoded (Simplified): {location.latitude}, {location.longitude}")
-                    return location.latitude, location.longitude
+                    print(f"Geocoded (Simplified): {location.latitude}, {location.longitude}") # type: ignore
+                    return location.latitude, location.longitude # type: ignore
             except:
                 pass  # Continue to retry
             attempts += 1
@@ -69,18 +73,25 @@ def geocode_addresses():
 
 def create_map():
     df = pd.read_csv('The Quizzo List - PHL FINAL.csv')
+    # Create a list of unique weekdays and order them by the days of the week
+    weekdays_order = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
+    weekdays = sorted(df['WEEKDAY'].unique().tolist(), key=lambda x: weekdays_order.index(x))
+
+    print(weekdays)
 
     map = folium.Map(location=[39.951, -75.163], zoom_start=10, tiles='CartoDB Positron')
+    marker_cluster =  MarkerCluster().add_to(map)
 
     for index, row in df.iterrows():
-        print(row['BUSINESS'])
-        print(row['PRIZE_1_TYPE'])
-        print()
         popup_content = f"<div style='width: auto; height: auto; font-family: Arial;'>"
         popup_content += f"<p style='text-align: center; font-size: 18px; font-weight: bold;'>{row['BUSINESS']}</p>"
-        popup_content += f"<p style='text-align: center; font-size: 14px;'>{row['ADDRESS_STREET']}, {row['ADDRESS_CITY']}, {row['ADDRESS_STATE']} {row['ADDRESS_ZIP']}</p>"
+        popup_content += f"<p style='text-align: center; font-size: 16px;'>{row['ADDRESS_STREET']}, {row['ADDRESS_CITY']}, {row['ADDRESS_STATE']} {row['ADDRESS_ZIP']}</p>"
         popup_content += f"<p style='text-align: center; font-size: 16px;'>{row['WEEKDAY']} - {row['TIME']}</p>"
-        popup_content += f"<p style='text-align: center; font-size: 16px;'>Host: {row['HOST']} <br> Event Type: {row['EVENT_TYPE']}</p>"
+        if pd.notna(row['HOST']) and row['HOST'] != '':
+            popup_content += f"<p style='text-align: center; font-size: 16px;'>Host: {row['HOST']} <br> Event Type: {row['EVENT_TYPE']}</p>"
+        else:
+            popup_content += f"<p style='text-align: center; font-size: 16px;'>Event Type: {row['EVENT_TYPE']}</p>"
+
         if pd.notna(row['PRIZE_1_TYPE']) and row['PRIZE_1_TYPE'] != '':
             popup_content += f"<p style='text-align: center; font-size: 16px;'>First Prize: {row['PRIZE_1_TYPE']} - {row['PRIZE_1_AMOUNT']}"
         if pd.notna(row['PRIZE_2_TYPE']) and row['PRIZE_2_TYPE'] != '':
@@ -89,9 +100,16 @@ def create_map():
             popup_content += f"</p>"
         popup_content += "</div>"
 
-        popup = folium.Popup(IFrame(popup_content, width=280, height=240), max_width=280)
+        popup = folium.Popup(IFrame(popup_content, width=280, height=240), lazy=True, max_width=280) # type: ignore
+        
+        folium.Marker(
+                [row['Latitude'], row['Longitude']],
+                popup=popup,
+                icon=folium.Icon(color="darkgreen", icon="glyphicon-glass"),
+                tags=[row['WEEKDAY']]
+            ).add_to(marker_cluster)
 
-        folium.Marker([row['Latitude'], row['Longitude']], popup=popup, icon=folium.Icon(color="darkgreen", icon="glyphicon-glass")).add_to(map)
-
+    # Add the TagFilterButton to the map
+    TagFilterButton(weekdays).add_to(map)
     map.save('public/quizzo_map.html')
 create_map()
