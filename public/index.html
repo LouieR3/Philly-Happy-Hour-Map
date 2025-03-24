@@ -393,11 +393,13 @@
       const popup = new mapboxgl.Popup({ offset: [0, -15] })
         .setLngLat(feature.geometry.coordinates)
         .setHTML(
-          `<h5 style="text-align: center;">${feature.properties.Name}</h5>
+          `
+          <h5 style="text-align: center;">${feature.properties.Name}</h5>
           <p style="text-align: center;">${feature.properties.Address}</p>
           <a  style="text-align: center; display: block;" href="${feature.properties.Website}" target="_blank" class="link">View their Website</a>
+          <p style="text-align: center;"><b>Sips Deals:</b><br><b>$7 Cocktails:</b><br>${feature.properties.SIPS_COCKTAILS}<br><b>$6 Wine:</b><br>${feature.properties.SIPS_WINE}<br><b>$5 Beer:</b><br>${feature.properties.SIPS_BEER}<br><b>Half Priced Apps:</b><br>${feature.properties.SIPS_HALFPRICEDAPPS}</p>
           `
-          // `<h5 style="text-align: center;">${feature.properties.Name}</h5>
+          // `<h5 style="text-align: center;">${feature.properties.Name}</h5>SIPS_COCKTAILS,SIPS_WINE,SIPS_BEER,SIPS_HALFPRICEDAPPS
           // <p style="text-align: center;">${feature.properties.Address}</p>
           // <a  style="text-align: center; display: block;" href="${feature.properties.Website}" target="_blank" class="link">View their Website</a>
           // <img src="${feature.properties.RW_PHOTO}" style="width: 80%; display: block; margin: auto; padding-top: 1rem;" alt="Photo of restaurant front">
