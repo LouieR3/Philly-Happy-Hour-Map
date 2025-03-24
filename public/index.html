@@ -23,6 +23,10 @@
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     
     <script src="https://use.fontawesome.com/releases/v6.7.2/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- MAPBOX -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
+
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
@@ -34,45 +38,24 @@
   </head>
   <body id="page-top">
     <!-- Navigation-->
-    <div class="no-overflow site-mobile-menu site-navbar-target">
-      <div class="site-mobile-menu-header">
-          <div class="site-mobile-menu-close mt-3">
-              <span class="icon-close2 js-menu-toggle"></span>
-          </div>
-      </div>
-      <div class="site-mobile-menu-body"></div>
-    </div> <!-- .site-mobile-menu -->
-    <div class="no-overflow site-navbar-wrap">
-        <div class="site-navbar site-navbar-target js-sticky-header" style="overflow-x: hidden !important;">
-            <div class="">
-                <div class="row align-items-center">
-                    <div class="col-9 col-lg-3 pl-3">
-                    <!-- <div class="col-4 pl-3"> -->
-                        <a class="navbar-brand midImage" href="#page-top">
-                        <!-- <img class="lazy img-fluid ps-2" src="assets/img/mappyHour.png" alt="Logo for PennDOT"> -->
-                        <span class=" site-name desktop-only header-text">Mappy Hour</span>
-                        </a>
-                    </div>
-                    <div class="col-3 col-lg-9">
-                    <!-- <div class="col-8"> -->
-                        <nav class="site-navigation text-right" role="navigation">
-                            <div class="container">
-                                <div class="d-inline-block d-lg-none ml-md-0 mr-auto py-3"><a href="#" class="site-menu-toggle js-menu-toggle text-white"><span class="icon-menu h3"></span></a></div>
-                                <ul class="site-menu main-menu js-clone-nav d-none d-lg-block">
-                                  <li><a class="nav-link" href="#quizzo">Quizzo</a></li>
-                                  <!-- <li><a class="nav-link" href="#restaurant-week">Restaurant Week</a></li> -->
-                                  <li><a class="nav-link" href="#meet-the-team">Meet The Team</a></li>
-                                  <!-- <li><a class="nav-link" href="#sips">Sips Deals</a></li> -->
-                                  <li><a class="nav-link" href="#deals">Happy Hour Deals</a></li>
-                                </ul>
-                            </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand" href="#page-top">Mappy Hour</a>
+        <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#quizzo">Quizzo Map</a></li>
+            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#restaurant-week">Restaurant Week</a></li> -->
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded"href="#meet-the-team">Meet The Team</a></li>
+            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sips">Sips Deals</a></li> -->
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#deals">Happy Hour Deals</a></li>
+          </ul>
         </div>
-    </div>
-
+      </div>
+    </nav>
     <!-- Masthead -->
     <!-- <header class="masthead text-white text-center "> -->
     <header class="masthead bg-primary text-white text-center gradient">
@@ -121,11 +104,17 @@
           <div class="divider-custom-line"></div>
         </div>
         
-        <div class="row">
+        <iframe
+          src="quizzo_map.html"
+          width="100%"
+          height="70vh"
+          class="maps"
+        ></iframe>
+        <!-- <div class="row">
           <div class="col-2"></div>
           <img class="custom-col mb-3 align-items-center" src="assets/img/error.png" />
           <div class="col-2"></div>
-        </div>
+        </div> -->
         <!-- iFrame-->
         <!-- <div class="iframe-container">
           <iframe src="https://experience.arcgis.com/experience/39acd9a477574c2081015cf3bd9edbe4" width="100%" height="800px"></iframe>
@@ -155,6 +144,7 @@
             class="custom-col mb-3 align-items-center"
             src="assets/img/Meet The Team 2.jpg"
             alt="..."
+            style="border-radius: 65.5rem;"
           />
           <div class="col-2"></div>
         </div>
@@ -199,6 +189,47 @@
                         Free Download!
                     </a>
                 </div> -->
+      </div>
+    </section>
+
+    <!-- Sips Section-->
+    <section class="page-section portfolio" id="sips">
+      <div class="container">
+        <!-- Portfolio Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
+          Center City Sips 2024 (6/5 - 8/28)
+        </h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+        <h3 style="text-align: center" class="mb-4">
+          Visit the map in full screen
+          <a href="https://api.mapbox.com/styles/v1/louie3r/cm8htqvrv00v901s5f6py6yfo.html?title=view&access_token=pk.eyJ1IjoibG91aWUzciIsImEiOiJjbGw0M3c5YXgwMjg5M2Nzc2twOXJ3M2tjIn0.vaR-SfpFZC26Go85Rv2leg&zoomwheel=true&fresh=true#13.71/39.9496/-75.16931" target="_blank" class="link">here</a>
+        </h3>
+        <div id="map"></div>
+
+        <!-- <iframe width='100%' src="https://api.mapbox.com/styles/v1/louie3r/cm8htqvrv00v901s5f6py6yfo/draft.html?title=false&access_token=pk.eyJ1IjoibG91aWUzciIsImEiOiJjbGw0M3c5YXgwMjg5M2Nzc2twOXJ3M2tjIn0.vaR-SfpFZC26Go85Rv2leg&zoomwheel=false#13.13/39.9536/-75.16355" title="Custom Style 1" style="border:none; border-radius: 1.5rem; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); height: 70vh;"></iframe>         -->
+        <!-- <div class="row">
+          <div id="map"></div>
+        </div> -->
+        <!-- iFrame-->
+        <!-- <div class="iframe-container">
+          <iframe
+            src="https://experience.arcgis.com/experience/39acd9a477574c2081015cf3bd9edbe4"
+            width="100%"
+            height="800px"
+          ></iframe>
+        </div> -->
+        <h3 style="text-align: center; margin-top: 2rem">
+          All listed bars host Sips deals from 5-7 pm. See the full list of bars
+          and deals
+          <a href="https://centercityphila.org/explore-center-city/ccd-sips" target="_blank" class="link">here</a>
+        </h3>
       </div>
     </section>
 
@@ -247,6 +278,7 @@
         </div>
       </div>
     </section>
+
     <!-- Footer-->
     <footer class="footer text-center">
       <div class="container">
@@ -259,7 +291,7 @@
               <br />
               PA, USA
             </p>
-            <a style="text-decoration: underline; font-size: 12px;" class="nav-link py-2 px-0 px-lg-3 rounded" href="birthday-invite.html"
+            <a style="text-decoration: underline; font-size: 12px;" class="nav-link py-2 px-0 px-lg-3 rounded" href="birthday.html"
                 >Birthday Boy</a
               >
           </div>
@@ -318,8 +350,59 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+    <script>
+      mapboxgl.accessToken = 'pk.eyJ1IjoibG91aWUzciIsImEiOiJjbGw0M3c5YXgwMjg5M2Nzc2twOXJ3M2tjIn0.vaR-SfpFZC26Go85Rv2leg';
+      const map = new mapboxgl.Map({
+          container: 'map', // container ID
+          style: 'mapbox://styles/louie3r/cm8htqvrv00v901s5f6py6yfo', // Map style
+          center: [-75.1652, 39.9526], // Center City, Philadelphia
+          zoom: 12 // Adjust zoom to show more of Center City
+      });
+
+    /*
+      Add an event listener that runs when a user clicks on the map element.
+    */
+    // map.on('load', () => {
+    //     // Get the style object
+    //     const style = map.getStyle();
+
+    //     // Print all layer IDs to the console
+    //     console.log('Layers in the current style:');
+    //     style.layers.forEach(layer => {
+    //         console.log(layer.id);
+    //     });
+    // });
+    map.on('click', (event) => {
+      // If the user clicked on one of your markers, get its information.
+      const features = map.queryRenderedFeatures(event.point, {
+        layers: ['center-city-sips-bars'] // replace with your layer name
+      });
+      if (!features.length) {
+        return;
+      }
+      const feature = features[0];
+      console.log(feature);
+      console.log(feature.properties);
+
+      
+      const popup = new mapboxgl.Popup({ offset: [0, -15] })
+        .setLngLat(feature.geometry.coordinates)
+        .setHTML(
+          `<h5 style="text-align: center;">${feature.properties.Name}</h5>
+          <p style="text-align: center;">${feature.properties.Address}</p>
+          <a  style="text-align: center; display: block;" href="${feature.properties.Website}" target="_blank" class="link">View their Website</a>
+          <img src="${feature.properties.RW_PHOTO}" style="width: 80%; display: block; margin: auto; padding-top: 1rem;" alt="Photo of restaurant front">`
+        )
+        .addTo(map);
+      });
+      /*
+        Create a popup, specify its options
+        and properties, and add it to the map.
+      */
+    </script>
     <!-- <script>
       $(document).ready(function () {
         $("#table_sort").DataTable({

@@ -48,8 +48,8 @@ df.drop(columns=pay_types, inplace=True)
 
 # -------------- MINORITY OWNED -----------------
 minority_types = ["Women-owned","Latinx-owned","Asian-owned","Black-owned","Veteran-owned","LGBTQ-owned"]
-df[minority_types] = df[minority_types].fillna(False)
-df['Minority_Owned'] = df[minority_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
+# df[minority_types] = df[minority_types].fillna(False)
+# df['Minority_Owned'] = df[minority_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
 df.drop(columns=minority_types, inplace=True)
 # =========================================
 
@@ -57,17 +57,16 @@ df.drop(columns=minority_types, inplace=True)
 df['Good For Groups'] = df['Good For Groups'].fillna(df['Good for Groups'])
 df.drop(columns='Good for Groups', inplace=True)
 df.drop(columns='Good For Working.1', inplace=True)
-def good_for(row):
-    good_for_types = ["Good For Dinner","Good For Kids","Good For Lunch","Good For Dancing","Good For Working","Good For Brunch","Good For Dessert","Good For Breakfast","Good For Groups","Good For Late Night", "All Ages", "Late Night"]
-    for good_for in good_for_types:
-        if row[good_for]:
-            return good_for.split("Good For ")[1]
-    return None
-# Apply the function to create the column
-df['Good_For'] = df.apply(good_for, axis=1) # type: ignore
+# def good_for(row):
+#     good_for_types = ["Good For Dinner","Good For Kids","Good For Lunch","Good For Dancing","Good For Working","Good For Brunch","Good For Dessert","Good For Breakfast","Good For Groups","Good For Late Night", "All Ages", "Late Night"]
+#     for good_for in good_for_types:
+#         if row[good_for]:
+#             return good_for.split("Good For ")[1]
+#     return None
+# # Apply the function to create the column
+# df['Good_For'] = df.apply(good_for, axis=1) # type: ignore
 good_for_types = ["Good For Dinner","Good For Kids","Good For Lunch","Good For Dancing","Good For Working","Good For Brunch","Good For Dessert","Good For Breakfast","Good For Groups","Good For Late Night", "All Ages", "Late Night"]
-# df[good_for_types] = df[good_for_types].fillna(False)
-# df['Good_For'] = df[good_for_types].apply(lambda x: ', '.join(x.index[x]).replace('Good For ',''), axis=1)  # type: ignore
+
 df.drop(columns=good_for_types, inplace=True)
 # =========================================
 
@@ -140,8 +139,8 @@ df.drop(columns=['Smoking Allowed', "Smoking Outside Only"], inplace=True)
 
 # -------------- PACKING -----------------
 package_types = ["Plastic-free packaging", "Provides reusable tableware", "Compostable containers available", "Bring your own container allowed"]
-df[package_types] = df[package_types].fillna(False)
-df['Packaging'] = df[package_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
+# df[package_types] = df[package_types].fillna(False)
+# df['Packaging'] = df[package_types].apply(lambda x: ', '.join(x.index[x]), axis=1)
 df.drop(columns=package_types, inplace=True)
 # =========================================
 

@@ -73,7 +73,15 @@ def checkMasterForAlias():
 
 # Get general pull of bars and restaurants in philly
 Restaurants = yelp.search_query(location='Rittenhouse Square, Philadelphia', price=2, categories='Bars', limit=50)
-# Restaurants = yelp.search_query(location='Centery City, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Gayborhood, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Grad Hospital, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Reading Terminal, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Italian Market, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Passyunk, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Queen Village, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Point Breeze, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Grays Ferry, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Center City, Philadelphia', price=2, categories='Bars', limit=50)
 # Restaurants = yelp.search_query(location='Old City, Philadelphia', price=2, categories='Bars', limit=50)
 # Restaurants = yelp.search_query(location='Northern Liberties, Philadelphia', price=2, categories='Bars', limit=50)
 # Restaurants = yelp.search_query(location='Fishtown, Philadelphia', price=2, categories='Bars', limit=50)
@@ -82,6 +90,8 @@ Restaurants = yelp.search_query(location='Rittenhouse Square, Philadelphia', pri
 # Restaurants = yelp.search_query(location='Chinatown, Philadelphia', price=2, categories='Bars', limit=50)
 # Restaurants = yelp.search_query(location='University City, Philadelphia', price=2, categories='Bars', limit=50)
 # Restaurants = yelp.search_query(location='Temple, Philadelphia', price=2, categories='Bars', limit=50)
+# Restaurants = yelp.search_query(location='Port Richmond, Philadelphia', price=2, categories='Bars', limit=50)
+
 # Load the Yelp Aliases CSV into a DataFrame
 yelp_aliases_df = pd.read_csv('YelpAliases.csv')
 
@@ -102,7 +112,6 @@ for restaurant in Restaurants["businesses"]:
         yelp_aliases_df = pd.concat([yelp_aliases_df, new_row_df], ignore_index=True)
 
         # yelp_aliases_df = yelp_aliases_df.append(new_row, ignore_index=True) # type: ignore
-
 
 # Save the updated Yelp Aliases DataFrame back to the CSV file
 yelp_aliases_df.to_csv('YelpAliases.csv', index=False)

@@ -25,7 +25,6 @@ yelp = yelpapi.YelpAPI(yelpapiKey)
 # Restaurants = yelp.search_query(location='Philadelphia', categories='Restaurants')
 # print(Restaurants)
 
-# print(Restaurants)
 base_url = "https://www.yelp.com/biz/"
 
 # response = yelp.business_query(id="harp-and-crown-philadelphia") # type: ignore
