@@ -18,20 +18,26 @@
     <meta name="author" content="" />
     <title>Mappy Hour</title>
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+
     <!-- Font Awesome icons (free version)-->
     <script src="https://code.jquery.com/jquery-3.6.0.js"
     integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    
     <script src="https://use.fontawesome.com/releases/v6.7.2/js/all.js" crossorigin="anonymous"></script>
 
     <!-- MAPBOX -->
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
+
+    <!-- LEAFLET -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
 
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" />
+
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/nav-style.css" rel="stylesheet" />
@@ -104,12 +110,29 @@
           <div class="divider-custom-line"></div>
         </div>
         
-        <iframe
+        <!-- <iframe
           src="quizzo_map.html"
           width="100%"
           height="70vh"
           class="maps"
-        ></iframe>
+        ></iframe> -->
+        <p></p>
+        
+        <div id="filter">
+          <label for="weekday">Filter by Weekday:</label>
+          <select id="weekday">
+            <option value="All">All</option>
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+          </select>
+        </div>
+
+        <div id="leaflet-map"></div>
         <!-- <div class="row">
           <div class="col-2"></div>
           <img class="custom-col mb-3 align-items-center" src="assets/img/error.png" />
@@ -344,16 +367,125 @@
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- <script src="js/jquery-3.0.0.min.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Include jQuery -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
     <script src="js/jquery.sticky.js"></script>
+    <!-- Main JS -->
     <script src="js/main.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- FIREBASE -->
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <!-- MAPBOX -->
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+    <!-- LEAFLET -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
+
+    <!-- Papa Parse -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <script>
+      var leafletmap = L.map('leaflet-map').setView([39.951, -75.163], 12);
+
+      // Add OpenStreetMap tile layer
+      // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      // }).addTo(leafletmap);
+
+      // L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      //   attribution: '&copy; OpenStreetMap & CartoDB',
+      //   subdomains: 'abcd'
+      // }).addTo(leafletmap);
+
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, FAO, NOAA, USGS',
+      }).addTo(leafletmap);
+
+      // Define custom icon
+      // var greenGlassIcon = L.icon({
+      //   html: `<div style="color: ${color}; font-size: 22px;"><i class="fa-solid fa-martini-glass"></i></div>`,
+      //   className: 'custom-fa-icon', // avoids default icon styling
+      //   iconSize: [25, 37], // Adjust size as needed
+      //   iconAnchor: [16, 37], // Adjust anchor point as needed
+      //   popupAnchor: [0, -37] // Adjust popup anchor as needed
+      // });
+
+      function createMartiniIcon(color = 'green') {
+        return L.divIcon({
+          html: `
+            <div class="custom-pin">
+              <div class="pin-circle" style="background-color: ${color};">
+                <i class="fa-solid fa-martini-glass"></i>
+              </div>
+              <div class="pin-tail" style="background-color: ${color};"></div>
+            </div>
+          `,
+          className: 'custom-fa-icon', // avoids default icon styling
+          iconSize: [30, 30],
+          iconAnchor: [15, 30],
+          popupAnchor: [0, -30]
+        });
+      }
+
+      // 2. Load CSV and add markers
+      var markers  = [];
+
+      Papa.parse('../Quizzo/quizzo_list.csv', {
+        download: true,
+        header: true,
+        complete: function(results) {
+          results.data.forEach(function(row) {
+            var lat = parseFloat(row.Latitude);
+            var lng = parseFloat(row.Longitude);
+            var weekday = row.WEEKDAY;
+            if (!isNaN(lat) && !isNaN(lng)) {
+              var popupContent = `
+                <div style="font-family: Arial;">
+                  <p style="text-align: center; font-size: 18px; font-weight: bold;">${row.BUSINESS}</p>
+                  <p style="text-align: center; font-size: 16px;">${row.ADDRESS_STREET}, ${row.ADDRESS_CITY}, ${row.ADDRESS_STATE} ${row.ADDRESS_ZIP}</p>
+                  <p style="text-align: center; font-size: 16px;">${row.WEEKDAY} - ${row.TIME}</p>
+                  ${row.HOST ? `<p style="text-align: center; font-size: 16px;">Host: ${row.HOST} <br> Event Type: ${row.EVENT_TYPE}</p>` : `<p style="text-align: center; font-size: 16px;">Event Type: ${row.EVENT_TYPE}</p>`}
+                  ${row.PRIZE_1_TYPE ? `<p style="text-align: center; font-size: 16px;">First Prize: ${row.PRIZE_1_TYPE} - ${row.PRIZE_1_AMOUNT}${row.PRIZE_2_TYPE ? `<br> Second Prize: ${row.PRIZE_2_TYPE} - ${row.PRIZE_2_AMOUNT}</p>` : '</p>'}` : ''}
+                </div>
+              `;
+              var marker = L.marker([lat, lng], {
+                icon: createMartiniIcon('darkgreen')
+              }).bindPopup(popupContent);
+              marker.weekday = weekday; // Store weekday in marker for filtering
+              markers.push(marker);
+              marker.addTo(leafletmap);
+            }
+          });
+        }
+      });
+      // Filter functionality
+      document.getElementById('weekday').addEventListener('change', function() {
+        var selectedWeekday = this.value;
+        markers.forEach(function(marker) {
+          if (selectedWeekday === 'All' || marker.weekday === selectedWeekday) {
+            marker.addTo(map);
+          } else {
+            map.removeLayer(marker);
+          }
+        });
+      });
+      
+      // Load Quizzo locations from JSON file
+      // fetch('quizzo_locations.json')
+      //     .then(response => response.json())
+      //     .then(data => {
+      //         data.forEach(location => {
+      //             L.marker([location.LATITUDE, location.LONGITUDE])
+      //                 .addTo(leafletmap)
+      //                 .bindPopup(`<b>${location["VENUE NAME"]}</b><br>${location.WEEKDAY}, ${location.TIME}`);
+      //         });
+      //     })
+      //     .catch(error => console.error('Error loading locations:', error));
+
+      // MAP BOX CODE
       mapboxgl.accessToken = 'pk.eyJ1IjoibG91aWUzciIsImEiOiJjbGw0M3c5YXgwMjg5M2Nzc2twOXJ3M2tjIn0.vaR-SfpFZC26Go85Rv2leg';
       const map = new mapboxgl.Map({
           container: 'map', // container ID
@@ -364,19 +496,6 @@
           maxzoom: 19 // Adjust zoom to show more of Center City
       });
 
-    /*
-      Add an event listener that runs when a user clicks on the map element.
-    */
-    // map.on('load', () => {
-    //     // Get the style object
-    //     const style = map.getStyle();
-
-    //     // Print all layer IDs to the console
-    //     console.log('Layers in the current style:');
-    //     style.layers.forEach(layer => {
-    //         console.log(layer.id);
-    //     });
-    // });
     map.on('click', (event) => {
       // If the user clicked on one of your markers, get its information.
       const features = map.queryRenderedFeatures(event.point, {

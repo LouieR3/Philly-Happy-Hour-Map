@@ -3,15 +3,15 @@ import pandas as pd
 from geopy.geocoders import Nominatim
 import folium
 from folium import IFrame
-from folium.plugins import MarkerCluster
 from folium.utilities import JsCode
 from folium.features import GeoJsonPopup
-from folium.plugins import TimestampedGeoJson
-from folium.plugins import TagFilterButton
+from folium.plugins import TimestampedGeoJson, TimeSliderChoropleth, TagFilterButton, MarkerCluster
 from geopy.extra.rate_limiter import RateLimiter
 import time
 import pandas as pd
 from tabulate import tabulate
+from folium import IFrame
+import json
 
 def geocode_addresses():
     # Read the CSV file
@@ -76,11 +76,12 @@ def create_map():
     # Create a list of unique weekdays and order them by the days of the week
     weekdays_order = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']
     weekdays = sorted(df['WEEKDAY'].unique().tolist(), key=lambda x: weekdays_order.index(x))
-
-    print(weekdays)
+    # Create a list of unique times
+    times = df['TIME'].unique().tolist()
+    # times = sorted(df['TIME'].unique().tolist(), key=lambda x: pd.to_datetime(x, format='%I:%M %p'))
 
     map = folium.Map(location=[39.951, -75.163], zoom_start=10, tiles='CartoDB Positron')
-    marker_cluster =  MarkerCluster().add_to(map)
+    # marker_cluster =  MarkerCluster().add_to(map)
 
     for index, row in df.iterrows():
         popup_content = f"<div style='width: auto; height: auto; font-family: Arial;'>"
@@ -106,10 +107,48 @@ def create_map():
                 [row['Latitude'], row['Longitude']],
                 popup=popup,
                 icon=folium.Icon(color="darkgreen", icon="glyphicon-glass"),
-                tags=[row['WEEKDAY']]
-            ).add_to(marker_cluster)
+                tags=[row['WEEKDAY'], row['TIME']]
+            ).add_to(map)
 
     # Add the TagFilterButton to the map
     TagFilterButton(weekdays).add_to(map)
+    # Add the TagFilterButton for times to the map
+    TagFilterButton(times).add_to(map)
+
+    
+    # Add custom JavaScript and CSS for toggling and alignment
+    custom_css = """
+    <style>
+    .tag-filter-button {
+        display: inline-block;
+        margin-right: 10px;
+    }
+    </style>
+    """
+    custom_js = """
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.tag-filter-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                buttons.forEach(btn => {
+                    if (btn !== button) {
+                        btn.classList.remove('active');
+                    }
+                });
+                button.classList.toggle('active');
+            });
+        });
+    });
+    </script>
+    """
+    map.get_root().html.add_child(folium.Element(custom_css + custom_js)) # type: ignore
+
     map.save('public/quizzo_map.html')
-create_map()
+# create_map()
+
+def get_yelp_data():
+    print()
+
+df = pd.read_csv('quizzo_list.csv')
+

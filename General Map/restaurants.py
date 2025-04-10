@@ -27,6 +27,8 @@ yelp = yelpapi.YelpAPI(yelpapiKey)
 
 base_url = "https://www.yelp.com/biz/"
 
+alias_df = pd.read_csv('YelpAliases.csv')
+
 
 
 print("Progam finished --- %s seconds ---" % (time.time() - start_time))
