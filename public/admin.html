@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <section id="admin-page" style="margin-top: 50px;">
+        <div class="container">
+          <h3 class="text-center">Admin Panel</h3>
+          <div id="submissions-container"></div>
+        </div>
+    </section>
+    <script>
+        // Fetch pending submissions
+        fetch("/get-submissions")
+          .then((response) => response.json())
+          .then((submissions) => {
+            const container = document.getElementById("submissions-container");
+            submissions.forEach((submission, index) => {
+              const submissionDiv = document.createElement("div");
+              submissionDiv.innerHTML = `
+                <div class="card mb-3">
+                  <div class="card-body">
+                    <h5 class="card-title">${submission.businessName}</h5>
+                    <p class="card-text">Address: ${submission.address}</p>
+                    <p class="card-text">Weekday: ${submission.weekday}</p>
+                    <p class="card-text">Time: ${submission.time}</p>
+                    <p class="card-text">Event Type: ${submission.eventType}</p>
+                    <p class="card-text">First Prize: ${submission.firstPrize}</p>
+                    <p class="card-text">Second Prize: ${submission.secondPrize}</p>
+                    <p class="card-text">Host: ${submission.host}</p>
+                    <button class="btn btn-success" onclick="approveSubmission(${index})">Approve</button>
+                    <button class="btn btn-danger" onclick="denySubmission(${index})">Deny</button>
+                  </div>
+                </div>
+              `;
+              container.appendChild(submissionDiv);
+            });
+          });
+      
+        // Approve submission
+        function approveSubmission(index) {
+          fetch(`/approve-submission/${index}`, { method: "POST" })
+            .then((response) => response.json())
+            .then((data) => {
+              alert(data.message);
+              location.reload();
+            });
+        }
+      
+        // Deny submission
+        function denySubmission(index) {
+          fetch(`/deny-submission/${index}`, { method: "POST" })
+            .then((response) => response.json())
+            .then((data) => {
+              alert(data.message);
+              location.reload();
+            });
+        }
+      </script>
+</body>
+</html>

@@ -150,5 +150,11 @@ def create_map():
 def get_yelp_data():
     print()
 
-df = pd.read_csv('quizzo_list.csv')
+df = pd.read_csv('Quizzo/quizzo_list.csv')
 
+unique_times = df['EVENT_TYPE'].unique()
+print("Unique values in EVENT_TYPE column:")
+print(unique_times)
+unique_times = df['PRIZE_1_AMOUNT'].unique()
+print("Unique values in PRIZE_1_AMOUNT column:")
+print(unique_times)

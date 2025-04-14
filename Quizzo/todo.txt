@@ -1,0 +1,8 @@
+List under map that you can search and see data  in tabulate
+On mobile you can swap from just map or list viewport
+Click point filters list to highlight that option
+On mobile (and maybe both) clicking point just has panel on bottom with info not popup
+filter for weekday, prize, event
+slider for time start
+also show yelp rating and num of reviews, maybe other stuff like hours
+Search bar in map that looks at data from csv fields if not geocode
