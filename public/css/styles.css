@@ -172,10 +172,86 @@
   margin-top: 20px;
 }
 
+#neighborhood-dropdown {
+  display: none;
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 200px;
+}
+
+#neighborhood-search {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+#neighborhood-options {
+  list-style: none;
+  margin: 0;
+  padding: 10px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.neighborhood-option {
+  padding: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.neighborhood-option:hover {
+  background-color: #f0f0f0;
+}
+#filters {
+  flex-wrap: nowrap; /* Prevent wrapping on larger screens */
+  /* justify-content: space-between;  */
+}
+#filters > div {
+  flex: 0 0 auto; /* Prevent resizing */
+}
+#add-bar-container  {
+  width: 60%; 
+}
+#edit-bar-container  {
+  width: 60%; 
+}
+
 /* Media query for mobile devices */
 @media (max-width: 768px) {
+  
+  #add-bar-container  {
+    width: 100%; 
+  }
+  #edit-bar-container  {
+    width: 100%; 
+  }
+  #filters {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping of items */
+    gap: 10px; /* Add spacing between filters */
+    justify-content: center; /* Align filters to the left */
+    align-items: center; /* Optional: vertically centers items */
+  }
+  
+  #filters > div {
+    flex: 1 1 calc(50% - 10px); /* Default: 2 filters per row */
+    min-width: 150px; /* Ensure filters don't shrink too much */
+    display: flex; /* Ensures proper alignment of child elements */
+    justify-content: center; /* Aligns items to the far left */
+    align-items: center; /* Optional: vertically centers items */
+
+  }
   .filter-box {
-    gap: 1px !important; 
+    display: flex;
+    gap: 5px; 
+    justify-content: flex-start;
+    margin-top: 20px;
   }
   #event-type-filter,
   #first-prize-filter,
@@ -183,7 +259,7 @@
   #weekday-filter,
   #neighborhood-filter {
     margin-left: 0; /* Remove left margin on mobile */
-    /* padding:4px; */
+    padding:4px;
   }
   .weekday-option,
   .time-option,
@@ -199,6 +275,7 @@
   #first-prize-button,
   #neighborhood-button {
     padding: 2px 7px; /* Reduce padding on mobile */
+    min-width: 9rem;
   }
   #mainNav {
     padding-top: 0.4rem !important;

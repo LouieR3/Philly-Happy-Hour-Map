@@ -118,7 +118,7 @@
         ></iframe> -->
         <p></p>
 
-        <div id="filters" class="filter-box" class="mb-2">
+        <div id="filters" class="filter-box mb-3">
           <!-- Weekday Filter -->
           <div id="weekday-filter">
             <button id="weekday-button" class="btn btn-primary rounded-pill">
@@ -177,7 +177,7 @@
           </div>
 
           <!-- Neighborhood Filter -->
-          <div id="neighborhood-filter">
+          <!-- <div id="neighborhood-filter">
             <button id="neighborhood-button" class="btn btn-primary rounded-pill">
               <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i>
               Neighborhood
@@ -186,6 +186,18 @@
             <div id="neighborhood-dropdown">
               <ul style="list-style: none; margin: 0; padding: 10px;" id="neighborhood-options"></ul>
             </div>
+          </div> -->
+          <div id="neighborhood-dropdown" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000; width: 200px;">
+            <input
+              type="text"
+              id="neighborhood-search"
+              placeholder="Search Neighborhood"
+              style="width: 100%; padding: 5px; border: none; border-bottom: 1px solid #ccc; box-sizing: border-box;"
+            />
+            <ul
+              id="neighborhood-options"
+              style="list-style: none; margin: 0; padding: 10px; max-height: 200px; overflow-y: auto;"
+            ></ul>
           </div>
         </div>
 
@@ -225,7 +237,7 @@
         </div>
         
         <!-- Add New Bar Form -->
-        <div id="add-bar-container" class="container mt-4" style="width: 60%; display: none;">
+        <div id="add-bar-container" class="container mt-4" style="display: none;">
           <h3 class="text-center">Submit a Bar Quizzo Information</h3>
           <form id="bar-submission-form">
             <div class="mb-3">
@@ -273,7 +285,7 @@
         </div>
         
         <!-- Edit Bar Info Form -->
-        <div id="edit-bar-container" class="container mt-4" style="width: 60%; display: none;">
+        <div id="edit-bar-container" class="container mt-4" style="display: none;">
           <h3 class="text-center">Edit Bar Quizzo Information</h3>
           <form id="edit-bar-form">
             <div class="mb-3">
@@ -803,21 +815,38 @@
 
           // Populate the Neighborhood dropdown
           const neighborhoodOptions = document.getElementById("neighborhood-options");
+          const selectedNeighborhoods = new Set(); // Store selected neighborhoods
+
           neighborhoods.forEach(neighborhood => {
             const li = document.createElement("li");
             li.className = "neighborhood-option";
             li.setAttribute("data-value", neighborhood);
             li.textContent = neighborhood;
+            li.style.cursor = "pointer";
+            li.style.padding = "5px";
 
+            // Handle selection toggle
             li.addEventListener("click", event => {
               const selectedNeighborhood = event.target.getAttribute("data-value");
-              console.log("Selected neighborhood:", selectedNeighborhood);
 
-              markers.forEach(function (marker) {
+              if (selectedNeighborhoods.has(selectedNeighborhood)) {
+                selectedNeighborhoods.delete(selectedNeighborhood);
+                li.style.backgroundColor = ""; // Deselect
+              } else {
+                selectedNeighborhoods.add(selectedNeighborhood);
+                li.style.backgroundColor = "#d3d3d3"; // Highlight selected
+              }
+
+              console.log("Selected neighborhoods:", Array.from(selectedNeighborhoods));
+
+              // Filter markers based on selected neighborhoods
+              markers.forEach(marker => {
                 if (!(marker instanceof L.Marker)) return;
 
-                // If "All" is selected, add all markers back to the map
-                if (selectedNeighborhood === "All" || marker.neighborhood === selectedNeighborhood) {
+                if (
+                  selectedNeighborhoods.size === 0 || // Show all markers if none selected
+                  selectedNeighborhoods.has(marker.neighborhood)
+                ) {
                   if (!leafletmap.hasLayer(marker)) {
                     marker.addTo(leafletmap);
                   }
@@ -828,30 +857,37 @@
                 }
               });
             });
+
             neighborhoodOptions.appendChild(li);
           });
-          // Add the "All" option to the Neighborhood dropdown
+
+          // Add the "All" option to reset selections
           const allNeighborhoodOption = document.createElement("li");
           allNeighborhoodOption.className = "neighborhood-option";
           allNeighborhoodOption.setAttribute("data-value", "All");
           allNeighborhoodOption.textContent = "All";
-          allNeighborhoodOption.addEventListener("click", event => {
-            const selectedNeighborhood = event.target.getAttribute("data-value");
-            console.log("Selected neighborhood:", selectedNeighborhood);
+          allNeighborhoodOption.style.cursor = "pointer";
+          allNeighborhoodOption.style.padding = "5px";
+          allNeighborhoodOption.style.fontWeight = "bold";
 
-            markers.forEach(function (marker) {
+          allNeighborhoodOption.addEventListener("click", () => {
+            selectedNeighborhoods.clear(); // Clear all selections
+            document.querySelectorAll(".neighborhood-option").forEach(option => {
+              option.style.backgroundColor = ""; // Reset background color
+            });
+
+            console.log("All neighborhoods selected");
+
+            // Show all markers
+            markers.forEach(marker => {
               if (!(marker instanceof L.Marker)) return;
 
-              // Add all markers back to the map when "All" is selected
               if (!leafletmap.hasLayer(marker)) {
                 marker.addTo(leafletmap);
               }
             });
-
-            // Close the dropdown after selection
-            const neighborhoodDropdown = document.getElementById("neighborhood-dropdown");
-            neighborhoodDropdown.style.display = "none";
           });
+
           neighborhoodOptions.prepend(allNeighborhoodOption);
 
           results.data.forEach(function (row) {
@@ -934,21 +970,19 @@
           timeDropdown.style.display = "none";
         }
       });
-
-      // Toggle Neighborhood dropdown visibility
-      const neighborhoodButton = document.getElementById("neighborhood-button");
-      const neighborhoodDropdown = document.getElementById("neighborhood-dropdown");
-      neighborhoodButton.addEventListener("click", () => {
-        const isVisible = neighborhoodDropdown.style.display === "block";
-        neighborhoodDropdown.style.display = isVisible ? "none" : "block";
+      // Add search functionality
+      const neighborhoodSearch = document.getElementById("neighborhood-search");
+      neighborhoodSearch.addEventListener("input", () => {
+        const query = neighborhoodSearch.value.toLowerCase();
+        document.querySelectorAll(".neighborhood-option").forEach(option => {
+          const neighborhood = option.getAttribute("data-value").toLowerCase();
+          if (neighborhood.includes(query) || option.getAttribute("data-value") === "All") {
+            option.style.display = "block";
+          } else {
+            option.style.display = "none";
+          }
+        });
       });
-      // Close dropdown if clicked outside
-      document.addEventListener("click", event => {
-        if (!neighborhoodButton.contains(event.target) && !neighborhoodDropdown.contains(event.target)) {
-          neighborhoodDropdown.style.display = "none";
-        }
-      });
-
       const weekdayButton = document.getElementById("weekday-button");
       const weekdayDropdown = document.getElementById("weekday-dropdown");
       // Toggle dropdown visibility
