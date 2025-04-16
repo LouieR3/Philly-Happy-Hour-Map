@@ -6,3 +6,41 @@ filter for weekday, prize, event
 slider for time start
 also show yelp rating and num of reviews, maybe other stuff like hours
 Search bar in map that looks at data from csv fields if not geocode
+
+
+// Initialize an empty object to store neighborhood bounds
+const neighborhoodBounds = {};
+
+// Load the GeoJSON file
+fetch('Quizzo/philadelphia-neighborhoods.geojson')
+  .then(response => response.json())
+  .then(data => {
+    // Parse the GeoJSON and extract bounds for each neighborhood
+    const neighborhoodLayer = L.geoJSON(data, {
+      onEachFeature: (feature, layer) => {
+        const neighborhoodName = feature.properties.NAME; // Adjust based on your GeoJSON property
+        const bounds = layer.getBounds(); // Get the bounds of the neighborhood
+        neighborhoodBounds[neighborhoodName] = bounds; // Store the bounds
+      }
+    });
+
+    console.log("Neighborhood bounds loaded:", neighborhoodBounds);
+  })
+  .catch(error => console.error("Error loading GeoJSON:", error));
+
+// Add event listener for neighborhood selection
+document.querySelectorAll(".neighborhood-option").forEach(option => {
+  option.addEventListener("click", event => {
+    const selectedNeighborhood = event.target.getAttribute("data-value");
+
+    if (selectedNeighborhood === "All") {
+      // Reset to default view if "All" is selected
+      leafletmap.setView([39.951, -75.163], 12); // Default center and zoom
+    } else if (neighborhoodBounds[selectedNeighborhood]) {
+      // Zoom to the selected neighborhood's bounds
+      leafletmap.fitBounds(neighborhoodBounds[selectedNeighborhood]);
+    } else {
+      console.warn("No bounds defined for the selected neighborhood:", selectedNeighborhood);
+    }
+  });
+});
