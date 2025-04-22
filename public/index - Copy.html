@@ -1,26 +1,908 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Mapbox GL JS map</title>
-<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
-<link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
-<script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
-<style>
-body { margin: 0; padding: 0; }
-#map { position: absolute; top: 0; bottom: 0; width: 100%; }
-</style>
-</head>
-<body>
-<div id="map" style='width: 400px; height: 300px;'></div>
-<script>
-	mapboxgl.accessToken = 'pk.eyJ1IjoibG91aWUzciIsImEiOiJjbGw0M3c5YXgwMjg5M2Nzc2twOXJ3M2tjIn0.vaR-SfpFZC26Go85Rv2leg';
-    const map = new mapboxgl.Map({
-        container: 'map', // container ID
-        center: [-74.5, 40], // starting position [lng, lat]. Note that lat must be set between -90 and 90
-        zoom: 9 // starting zoom
-    });
-</script>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTTNQMESXD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-</body>
+      gtag("config", "G-FTTNQMESXD");
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Mappy Hour</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v6.7.2/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- MAPBOX -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.css" rel="stylesheet">
+
+    <!-- LEAFLET -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <!-- Leaflet Search Plugin -->
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.css"
+    />
+
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/nav-style.css" rel="stylesheet" />
+  </head>
+  <body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand" href="#page-top">Mappy Hour</a>
+        <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#quizzo">Quizzo Map</a></li>
+            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#restaurant-week">Restaurant Week</a></li> -->
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded"href="#meet-the-team">Meet The Team</a></li>
+            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sips">Sips Deals</a></li> -->
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#deals">Happy Hour Deals</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Masthead -->
+    <!-- <header class="masthead text-white text-center "> -->
+    <header class="masthead bg-primary text-white text-center gradient">
+      <!-- <div class="background"></div> -->
+      <div class="container d-flex align-items-center flex-column">
+        <div class="px-5 pt-5 v-middle">
+          <!-- Masthead Avatar Image-->
+          <img
+            class="masthead-avatar mb-5"
+            src="assets/img/mappyHour.png"
+            alt="..."
+          />
+          <!-- Masthead Heading-->
+          <h1 class="masthead-heading text-uppercase mb-0 text-longshadow">
+            Mappy Hour
+          </h1>
+          <!-- Icon Divider-->
+          <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon">
+              <i class="fa-solid fa-earth-americas"></i>
+            </div>
+            <div class="divider-custom-line"></div>
+          </div>
+          <!-- Masthead Subheading-->
+          <p class="masthead-subheading font-weight-light">
+            A Louie and Ava Production (Version 0.9)
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Bar Trivia Section-->
+    <section class="page-section portfolio" id="quizzo">
+      <div class="container">
+        <!-- Portfolio Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
+          Philly Quizzo Map
+        </h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+        
+        <!-- <iframe
+          src="quizzo_map.html"
+          width="100%"
+          height="70vh"
+          class="maps"
+        ></iframe> -->
+        <p></p>
+
+        <div id="filters" class="filter-box mb-3">
+          <!-- Weekday Filter -->
+          <div id="weekday-filter">
+            <button id="weekday-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-calendar-week" style="margin-right: 8px;"></i>
+              Weekday
+              <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
+            </button>
+            <div id="weekday-dropdown">
+              <ul style="list-style: none; margin: 0; padding: 10px;">
+                <li class="weekday-option" data-value="All">All</li>
+                <li class="weekday-option" data-value="MONDAY">Monday</li>
+                <li class="weekday-option" data-value="TUESDAY">Tuesday</li>
+                <li class="weekday-option" data-value="WEDNESDAY">Wednesday</li>
+                <li class="weekday-option" data-value="THURSDAY">Thursday</li>
+                <li class="weekday-option" data-value="FRIDAY">Friday</li>
+                <li class="weekday-option" data-value="SATURDAY">Saturday</li>
+                <li class="weekday-option" data-value="SUNDAY">Sunday</li>
+              </ul>
+            </div>
+          </div>
+        
+          <!-- Start Time Filter -->
+          <div id="time-filter">
+            <button id="time-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-clock" style="margin-right: 8px;"></i>
+              Start Time
+              <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
+            </button>
+            <div id="time-dropdown">
+              <ul style="list-style: none; margin: 0; padding: 10px;" id="time-options">
+              </ul>
+            </div>
+          </div>
+          <!-- Event Type Filter -->
+          <div id="event-type-filter">
+            <button id="event-type-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-tags" style="margin-right: 8px;"></i>
+              Event Type
+              <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
+            </button>
+            <div id="event-type-dropdown">
+              <ul style="list-style: none; margin: 0; padding: 10px;" id="event-type-options"></ul>
+            </div>
+          </div>
+        
+          <!-- First Prize Filter -->
+          <div id="first-prize-filter">
+            <button id="first-prize-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-trophy" style="margin-right: 8px;"></i>
+              First Prize
+              <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
+            </button>
+            <div id="first-prize-dropdown">
+              <ul style="list-style: none; margin: 0; padding: 10px;" id="first-prize-options"></ul>
+            </div>
+          </div>
+
+          <!-- Neighborhood Filter -->
+          <!-- <div id="neighborhood-filter">
+            <button id="neighborhood-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i>
+              Neighborhood
+              <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
+            </button>
+            <div id="neighborhood-dropdown">
+              <ul style="list-style: none; margin: 0; padding: 10px;" id="neighborhood-options"></ul>
+            </div>
+          </div> -->
+          
+          <div id="neighborhood-filter">
+            <button id="neighborhood-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i>
+              Neighborhood
+              <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
+            </button>
+            <div id="neighborhood-dropdown" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000; width: 200px;">
+              <input
+                type="text"
+                id="neighborhood-search"
+                placeholder="Search Neighborhood"
+                style="width: 95%; padding: 5px; border: none; border-bottom: 1px solid #ccc; box-sizing: border-box;"
+              />
+              <ul
+                id="neighborhood-options"
+                style="list-style: none; margin: 0; padding: 10px; max-height: 200px; overflow-y: auto;"
+              ></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- <div id="time-filter" style="margin-top: 20px;">
+          <label for="time-slider" style="font-weight: bold; margin-bottom: 10px; display: block;">
+            <i class="fa-solid fa-clock" style="margin-right: 8px;"></i> Start Time
+          </label>
+          <input
+            id="time-slider"
+            type="range"
+            min="0"
+            max="1440"
+            step="30"
+            value="0"
+            style="width: 100%;"
+          />
+          <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+            <span id="time-slider-start">12:00 AM</span>
+            <span id="time-slider-end">11:59 PM</span>
+          </div>
+        </div> -->
+
+        <div id="leaflet-map"></div>
+
+        <div id="action-buttons" style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
+          <!-- Add New Bar Button -->
+          <button id="add-bar-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-plus" style="margin-right: 8px;"></i>
+            Add New Bar
+          </button>
+        
+          <!-- Edit Bar Info Button -->
+          <button id="edit-bar-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-edit" style="margin-right: 8px;"></i>
+            Edit Bar Info
+          </button>
+        </div>
+        
+        <!-- Add New Bar Form -->
+        <div id="add-bar-container" class="container mt-4" style="display: none;">
+          <h3 class="text-center">Submit a Bar Quizzo Information</h3>
+          <form id="bar-submission-form">
+            <div class="mb-3">
+              <label for="business-name" class="form-label">Business Name</label>
+              <input type="text" class="form-control" id="business-name" placeholder="Enter the bar's name" required />
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <input type="text" class="form-control" id="address" placeholder="Enter the bar's address" required />
+            </div>
+            <div class="mb-3">
+              <label for="weekday" class="form-label">Weekday</label>
+              <select class="form-control" id="weekday">
+                <option value="MONDAY">Monday</option>
+                <option value="TUESDAY">Tuesday</option>
+                <option value="WEDNESDAY">Wednesday</option>
+                <option value="THURSDAY">Thursday</option>
+                <option value="FRIDAY">Friday</option>
+                <option value="SATURDAY">Saturday</option>
+                <option value="SUNDAY">Sunday</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="time" class="form-label">Start Time</label>
+              <input type="time" class="form-control" id="time" required />
+            </div>
+            <div class="mb-3">
+              <label for="event-type" class="form-label">Event Type</label>
+              <input type="text" class="form-control" id="event-type" placeholder="Enter the event type" />
+            </div>
+            <div class="mb-3">
+              <label for="first-prize" class="form-label">First Prize</label>
+              <input type="text" class="form-control" id="first-prize" placeholder="Enter the first prize" />
+            </div>
+            <div class="mb-3">
+              <label for="second-prize" class="form-label">Second Prize</label>
+              <input type="text" class="form-control" id="second-prize" placeholder="Enter the second prize" />
+            </div>
+            <div class="mb-3">
+              <label for="host" class="form-label">Host</label>
+              <input type="text" class="form-control" id="host" placeholder="Enter the host's name" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+        
+        <!-- Edit Bar Info Form -->
+        <div id="edit-bar-container" class="container mt-4" style="display: none;">
+          <h3 class="text-center">Edit Bar Quizzo Information</h3>
+          <form id="edit-bar-form">
+            <div class="mb-3">
+              <label for="search-bar" class="form-label">Search Bar</label>
+              <input type="text" class="form-control" id="search-bar" placeholder="Search for a bar by name" />
+              <ul id="search-results" style="list-style: none; padding: 0; margin-top: 10px;"></ul>
+            </div>
+            <div id="edit-fields" style="display: none;">
+              <div class="mb-3">
+                <label for="edit-business-name" class="form-label">Business Name</label>
+                <input type="text" class="form-control" id="edit-business-name" required />
+              </div>
+              <div class="mb-3">
+                <label for="edit-address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="edit-address" required />
+              </div>
+              <div class="mb-3">
+                <label for="edit-weekday" class="form-label">Weekday</label>
+                <select class="form-control" id="edit-weekday">
+                  <option value="MONDAY">Monday</option>
+                  <option value="TUESDAY">Tuesday</option>
+                  <option value="WEDNESDAY">Wednesday</option>
+                  <option value="THURSDAY">Thursday</option>
+                  <option value="FRIDAY">Friday</option>
+                  <option value="SATURDAY">Saturday</option>
+                  <option value="SUNDAY">Sunday</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="edit-time" class="form-label">Start Time</label>
+                <input type="time" class="form-control" id="edit-time" required />
+              </div>
+              <div class="mb-3">
+                <label for="edit-event-type" class="form-label">Event Type</label>
+                <input type="text" class="form-control" id="edit-event-type" />
+              </div>
+              <div class="mb-3">
+                <label for="edit-first-prize" class="form-label">First Prize</label>
+                <input type="text" class="form-control" id="edit-first-prize" />
+              </div>
+              <div class="mb-3">
+                <label for="edit-second-prize" class="form-label">Second Prize</label>
+                <input type="text" class="form-control" id="edit-second-prize" />
+              </div>
+              <div class="mb-3">
+                <label for="edit-host" class="form-label">Host</label>
+                <input type="text" class="form-control" id="edit-host" />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit Changes</button>
+            </div>
+          </form>
+        </div>
+        <!-- <div class="row">
+          <div class="col-2"></div>
+          <img class="custom-col mb-3 align-items-center" src="assets/img/error.png" />
+          <div class="col-2"></div>
+        </div> -->
+
+      </div>
+    </section>
+
+    <!-- About Section-->
+    <section class="page-section bg-primary text-white mb-0" id="meet-the-team">
+      <div class="container">
+        <!-- About Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-white">
+          Meet The Team
+        </h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+        <!-- About Section Content-->
+        <div class="row">
+          <div class="col-2"></div>
+          <img
+            class="custom-col mb-3 align-items-center"
+            src="assets/img/Meet The Team 2.jpg"
+            alt="..."
+            style="border-radius: 65.5rem;"
+          />
+          <div class="col-2"></div>
+        </div>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-2"></div>
+          <div class="col-lg-8 text-center ms-auto">
+            <p class="lead">
+              Meet Louie and Ava, the dynamic duo behind our mapping project.
+              Louie, the coding whiz, and Ava, the GIS specialist, joined forces
+              to create a cutting-edge mapping application. Their app helps you
+              easily find the best happy hour spots in Philly, showing all the
+              options on a single map with the latest deals and cool insights.
+              Say goodbye to decision paralysis and hello to a seamless,
+              data-driven way of discovering the city's hottest happy hour
+              deals.
+            </p>
+          </div>
+          <div class="col-2"></div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-2"></div>
+          <div class="col-lg-8 me-auto text-center">
+            <p class="lead">
+              You can find them next year at ESRI's famed User Conference in San
+              Diego!
+            </p>
+          </div>
+          <div class="col-2"></div>
+        </div>
+        <!-- About Section Button-->
+        <!-- <div class="text-center mt-4">
+                    <a class="btn btn-xl btn-outline-light" href="https://startbootstrap.com/theme/freelancer/">
+                        <i class="fas fa-download me-2"></i>
+                        Free Download!
+                    </a>
+                </div> -->
+      </div>
+    </section>
+
+    <!-- Sips Section-->
+    <section class="page-section portfolio" id="sips">
+      <div class="container">
+        <!-- Portfolio Section Heading-->
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
+          Center City Sips 2024 (6/5 - 8/28)
+        </h2>
+        <!-- Icon Divider-->
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+        <h3 style="text-align: center" class="mb-4">
+          Visit the map in full screen
+          <a href="https://api.mapbox.com/styles/v1/louie3r/cm8htqvrv00v901s5f6py6yfo.html?title=view&access_token=pk.eyJ1IjoibG91aWUzciIsImEiOiJjbGw0M3c5YXgwMjg5M2Nzc2twOXJ3M2tjIn0.vaR-SfpFZC26Go85Rv2leg&zoomwheel=true&fresh=true#13.71/39.9496/-75.16931" target="_blank" class="link">here</a>
+        </h3>
+        <div id="map"></div>
+
+        <!-- <iframe width='100%' src="https://api.mapbox.com/styles/v1/louie3r/cm8htqvrv00v901s5f6py6yfo/draft.html?title=false&access_token=pk.eyJ1IjoibG91aWUzciIsImEiOiJjbGw0M3c5YXgwMjg5M2Nzc2twOXJ3M2tjIn0.vaR-SfpFZC26Go85Rv2leg&zoomwheel=false#13.13/39.9536/-75.16355" title="Custom Style 1" style="border:none; border-radius: 1.5rem; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3); height: 70vh;"></iframe>         -->
+        <!-- <div class="row">
+          <div id="map"></div>
+        </div> -->
+        <!-- iFrame-->
+        <!-- <div class="iframe-container">
+          <iframe
+            src="https://experience.arcgis.com/experience/39acd9a477574c2081015cf3bd9edbe4"
+            width="100%"
+            height="800px"
+          ></iframe>
+        </div> -->
+        <h3 style="text-align: center; margin-top: 2rem">
+          All listed bars host Sips deals from 5-7 pm. See the full list of bars
+          and deals
+          <a href="https://centercityphila.org/explore-center-city/ccd-sips" target="_blank" class="link">here</a>
+        </h3>
+      </div>
+    </section>
+
+    <!-- Happy Hour Map -->
+    <section class="page-section bg-primary text-white" id="deals">
+      <div class="container">
+        <h2
+          class="page-section-heading text-center text-uppercase text-secondary mb-0 text-white"
+        >
+          Happy Hour Deals (UNDER CONSTRUCTION)
+        </h2>
+        <h3
+          class="text-center text-uppercase text-secondary mt-5 mb-0 text-white"
+        >
+          Exciting things are coming!
+        </h3>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-lg-10 ms-auto">
+            <p class="lead">
+              We are currently developing an exciting feature to our website - a
+              web map encompassing all Philly happy hour options.
+            </p>
+            <p class="lead">
+              Soon, you'll have the ability to explore a comprehensive list of
+              Philadelphia bars, complete with a range of filters such as
+              pricing, bar reviews, categorization, contact details including
+              the bar's website and phone number, operational hours, and
+              searchable menu keywords.
+            </p>
+            <p class="lead">
+              We are also excited to introduce a feature that will enable users
+              to explore these bars' happy hour specials. This will allow you to
+              see the value of these deals by comparing the prices of the drinks
+              to the average prices of similar drinks in the area.
+            </p>
+          </div>
+          <div class="col-1"></div>
+        </div>
+        <div class="divider-custom divider-light">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+          <div class="divider-custom-line"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer-->
+    <footer class="footer text-center">
+      <div class="container">
+        <div class="row">
+          <!-- Footer Location-->
+          <div class="col-lg-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Location</h4>
+            <p class="lead mb-0">
+              Philadelphia
+              <br />
+              PA, USA
+            </p>
+            <a style="text-decoration: underline; font-size: 12px;" class="nav-link py-2 px-0 px-lg-3 rounded" href="birthday.html"
+                >Birthday Boy</a
+              >
+          </div>
+          <!-- Footer Social Icons-->
+          <div class="col-lg-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Around the Web</h4>
+            <a
+              class="btn btn-outline-light btn-social mx-1"
+              href="https://youtu.be/zsX-4LThKv4"
+              target="_blank"
+              ><i class="fab fa-fw fa-youtube"></i
+            ></a>
+            <a
+              class="btn btn-outline-light btn-social mx-1"
+              href="https://www.linkedin.com/in/ava-patterson-aip5302/"
+              target="_blank"
+              ><i class="fab fa-fw fa-linkedin-in"></i
+            ></a>
+            <a
+              class="btn btn-outline-light btn-social mx-1"
+              href="https://www.linkedin.com/in/louis-rodriguez-9b6187128/"
+              target="_blank"
+              ><i class="fab fa-fw fa-linkedin-in"></i
+            ></a>
+            <a
+              class="btn btn-outline-light btn-social mx-1"
+              href="https://github.com/LouieR3/Philly-Happy-Hour-Map"
+              target="_blank"
+              ><i class="fab fa-fw fa-github"></i
+            ></a>
+          </div>
+          <!-- Footer About Text-->
+          <div class="col-lg-4">
+            <h4 class="text-uppercase mb-4">Other Sites</h4>
+            <p class="lead mb-0">
+              Visit
+              <a
+                style="color: white"
+                href="https://louier3-fantasy-football-page.streamlit.app/"
+                target="_blank"
+              >
+                Louie's fantasy football web app here</a
+              >, with his world renowned "Louie Power Index (LPI)"
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="js/jquery-3.0.0.min.js"></script> -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script src="js/jquery.sticky.js"></script>
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <!-- MAPBOX -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+    <!-- LEAFLET -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fuse.js/1.2.2/fuse.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+
+    <!-- Papa Parse -->
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <script>
+      var leafletmap = L.map('leaflet-map').setView([39.951, -75.163], 12);
+
+      leafletmap.zoomControl.setPosition('bottomright');
+
+      // Add OpenStreetMap tile layer
+      // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      // }).addTo(leafletmap);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap & CartoDB',
+            subdomains: 'abcd'
+        }).addTo(leafletmap);
+
+
+        function createMartiniIcon(color = 'green') {
+            return L.divIcon({
+            html: `
+                <div class="custom-pin">
+                <div class="pin-circle" style="background-color: ${color};">
+                    <i class="fa-solid fa-martini-glass"></i>
+                </div>
+                <div class="pin-tail" style="background-color: ${color};"></div>
+                </div>
+            `,
+            className: 'custom-fa-icon', // avoids default icon styling
+            iconSize: [30, 30],
+            iconAnchor: [15, 30],
+            popupAnchor: [0, -30]
+            });
+        }
+
+        // Create a layer group for markers
+        const markerLayerGroup = L.layerGroup().addTo(leafletmap);
+
+        // Load CSV data and add markers
+        Papa.parse('quizzo_list.csv', {
+            download: true,
+            header: true,
+            complete: function (results) {
+                const markers = [];
+
+                // Process each row in the CSV
+                results.data.forEach(function (row) {
+                const lat = parseFloat(row.Latitude);
+                const lng = parseFloat(row.Longitude);
+                const businessName = row.BUSINESS;
+                const address = `${row.ADDRESS_STREET}, ${row.ADDRESS_CITY}, ${row.ADDRESS_STATE} ${row.ADDRESS_ZIP}`;
+                const popupContent = `
+                    <div style="font-family: Lato;">
+                    <h3>${businessName}</h3>
+                    <p>${address}</p>
+                    <p>${row.EVENT_TYPE.replace(/_/g, ' ')}</p>
+                    </div>
+                `;
+
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    const marker = L.marker([lat, lng], {
+                        icon: createMartiniIcon('darkgreen'),
+                    }).bindPopup(popupContent);
+
+                    // Add searchable properties to the marker
+                    marker.businessName = businessName;
+                    marker.address = address;
+
+                    markers.push(marker);
+                    markerLayerGroup.addLayer(marker); // Add marker to the layer group
+                }
+                });
+
+                // Initialize Fuse.js for fuzzy search
+                const fuse = new Fuse(results.data, {
+                    keys: ['BUSINESS', 'ADDRESS_STREET', 'ADDRESS_CITY', 'ADDRESS_STATE'],
+                });
+
+                // Add Leaflet Search control
+                const searchControl = new L.Control.Search({
+                layer: markerLayerGroup,
+                propertyName: 'businessName', // Search by business name
+                filterData: function (text, records) {
+                    const jsons = fuse.search(text);
+                    const ret = {};
+                    jsons.forEach((result) => {
+                    const key = result.item.BUSINESS;
+                    ret[key] = records[key];
+                    });
+                    return ret;
+                },
+                marker: false, // Disable default marker behavior
+                moveToLocation: function (latlng, title, map) {
+                    // Zoom to the marker and open its popup
+                    map.setView(latlng, 16); // Adjust zoom level as needed
+                    const marker = markers.find((m) => m.getLatLng().equals(latlng));
+                    if (marker) {
+                    marker.openPopup();
+                    }
+                },
+                });
+
+                // Add the search control to the map
+                leafletmap.addControl(searchControl);
+
+                // Handle search location found
+                searchControl.on('search:locationfound', function (e) {
+                e.layer.openPopup();
+                });
+
+                // Debug: Check if search control is added
+                console.log("Search control added to map.");
+            },
+      });
+
+      // Toggle Event Type dropdown visibility
+      const eventTypeButton = document.getElementById("event-type-button");
+      const eventTypeDropdown = document.getElementById("event-type-dropdown");
+      eventTypeButton.addEventListener("click", () => {
+        const isVisible = eventTypeDropdown.style.display === "block";
+        eventTypeDropdown.style.display = isVisible ? "none" : "block";
+      });
+      // Close dropdown if clicked outside
+      document.addEventListener("click", event => {
+        if (!eventTypeButton.contains(event.target) && !eventTypeDropdown.contains(event.target)) {
+          eventTypeDropdown.style.display = "none";
+        }
+      });
+
+      // Toggle First Prize dropdown visibility
+      const firstPrizeButton = document.getElementById("first-prize-button");
+      const firstPrizeDropdown = document.getElementById("first-prize-dropdown");
+      firstPrizeButton.addEventListener("click", () => {
+        const isVisible = firstPrizeDropdown.style.display === "block";
+        firstPrizeDropdown.style.display = isVisible ? "none" : "block";
+      });
+      // Close dropdown if clicked outside
+      document.addEventListener("click", event => {
+        if (!firstPrizeButton.contains(event.target) && !firstPrizeDropdown.contains(event.target)) {
+          firstPrizeDropdown.style.display = "none";
+        }
+      });
+
+      // Toggle Start Time dropdown visibility
+      const timeButton = document.getElementById("time-button");
+      const timeDropdown = document.getElementById("time-dropdown");
+      timeButton.addEventListener("click", () => {
+        const isVisible = timeDropdown.style.display === "block";
+        timeDropdown.style.display = isVisible ? "none" : "block";
+      });
+      // Close dropdown if clicked outside
+      document.addEventListener("click", event => {
+        if (!timeButton.contains(event.target) && !timeDropdown.contains(event.target)) {
+          timeDropdown.style.display = "none";
+        }
+      });
+      // Toggle Neighborhood dropdown visibility
+      const neighborhoodButton = document.getElementById("neighborhood-button");
+      const neighborhoodDropdown = document.getElementById("neighborhood-dropdown");
+      neighborhoodButton.addEventListener("click", () => {
+        const isVisible = neighborhoodDropdown.style.display === "block";
+        neighborhoodDropdown.style.display = isVisible ? "none" : "block";
+      });
+      // Close dropdown if clicked outside
+      document.addEventListener("click", event => {
+        if (!neighborhoodButton.contains(event.target) && !neighborhoodDropdown.contains(event.target)) {
+          neighborhoodDropdown.style.display = "none";
+        }
+      });
+      const weekdayButton = document.getElementById("weekday-button");
+      const weekdayDropdown = document.getElementById("weekday-dropdown");
+      // Toggle dropdown visibility
+      weekdayButton.addEventListener("click", () => {
+        const isVisible = weekdayDropdown.style.display === "block";
+        weekdayDropdown.style.display = isVisible ? "none" : "block";
+      });
+      // Handle weekday selection
+      document.querySelectorAll(".weekday-option").forEach((option) => {
+        option.addEventListener("click", (event) => {
+          const selectedWeekday = event.target.getAttribute("data-value");
+          console.log("Selected weekday:", selectedWeekday);
+          markers.forEach(function (marker) {
+            // Ensure marker is valid before acting on it
+            if (!(marker instanceof L.Marker)) return;
+
+            if (selectedWeekday === 'All' || marker.weekday === selectedWeekday) {
+              if (!leafletmap.hasLayer(marker)) {
+                marker.addTo(leafletmap);
+              }
+            } else {
+              if (leafletmap.hasLayer(marker)) {
+                leafletmap.removeLayer(marker);
+              }
+            }
+          });
+        });
+      });
+
+      // Close dropdown if clicked outside
+      document.addEventListener("click", (event) => {
+        if (!weekdayButton.contains(event.target) && !weekdayDropdown.contains(event.target)) {
+          weekdayDropdown.style.display = "none";
+        }
+      });
+      
+    </script>
+    <script>
+      // Toggle Add New Bar Form
+      const addBarButton = document.getElementById("add-bar-button");
+      const addBarContainer = document.getElementById("add-bar-container");
+      addBarButton.addEventListener("click", () => {
+        addBarContainer.style.display = addBarContainer.style.display === "none" ? "block" : "none";
+        editBarContainer.style.display = "none"; // Hide the edit form if visible
+      });
+
+      // Toggle Edit Bar Info Form
+      const editBarButton = document.getElementById("edit-bar-button");
+      const editBarContainer = document.getElementById("edit-bar-container");
+      editBarButton.addEventListener("click", () => {
+        editBarContainer.style.display = editBarContainer.style.display === "none" ? "block" : "none";
+        addBarContainer.style.display = "none"; // Hide the add form if visible
+      });
+
+      // Handle Search for Editing
+      const searchBar = document.getElementById("search-bar");
+      const searchResults = document.getElementById("search-results");
+      const editFields = document.getElementById("edit-fields");
+
+      searchBar.addEventListener("input", () => {
+        const query = searchBar.value.toLowerCase();
+        searchResults.innerHTML = ""; // Clear previous results
+
+        if (query.length > 0) {
+          const matchingBars = markers.filter(marker => marker.businessName.toLowerCase().includes(query));
+          matchingBars.forEach(marker => {
+            const li = document.createElement("li");
+            li.className = "search-option";
+            li.textContent = marker.businessName;
+            li.style.cursor = "pointer";
+            li.addEventListener("click", () => {
+              // Populate the edit fields with the selected bar's data
+              document.getElementById("edit-business-name").value = marker.businessName;
+              document.getElementById("edit-address").value = marker.address;
+              document.getElementById("edit-weekday").value = marker.weekday;
+              document.getElementById("edit-time").value = marker.time;
+              document.getElementById("edit-event-type").value = marker.eventType;
+              document.getElementById("edit-first-prize").value = marker.firstPrize;
+              document.getElementById("edit-second-prize").value = marker.secondPrize;
+              document.getElementById("edit-host").value = marker.host;
+
+              editFields.style.display = "block"; // Show the edit fields
+              searchResults.innerHTML = ""; // Clear search results
+            });
+            searchResults.appendChild(li);
+          });
+        }
+      });
+
+      document.getElementById("bar-submission-form").addEventListener("submit", function (event) {
+        event.preventDefault();
+    
+        // Collect form data
+        const submission = {
+          businessName: document.getElementById("business-name").value,
+          address: document.getElementById("address").value,
+          weekday: document.getElementById("weekday").value,
+          time: document.getElementById("time").value,
+          eventType: document.getElementById("event-type").value,
+          firstPrize: document.getElementById("first-prize").value,
+          secondPrize: document.getElementById("second-prize").value,
+          host: document.getElementById("host").value,
+        };
+    
+        // Send the data to the server
+        fetch("/submit-bar", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(submission),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            alert("Your submission has been sent for review!");
+            document.getElementById("bar-submission-form").reset();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("There was an error submitting your request. Please try again.");
+          });
+      });
+    </script>
+    <!-- <script>
+      $(document).ready(function () {
+        $("#table_sort").DataTable({
+          pageLength: 10,
+          lengthMenu: [10, 20, 40, 75],
+        });
+        $(".dataTables_length").addClass("bs-select");
+      });
+    </script> -->
+  </body>
 </html>

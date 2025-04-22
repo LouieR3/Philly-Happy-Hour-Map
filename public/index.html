@@ -31,6 +31,11 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
     crossorigin=""/>
+    <!-- Leaflet Search Plugin -->
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.css"
+    />
 
     <!-- Google fonts-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
@@ -592,6 +597,9 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fuse.js/1.2.2/fuse.min.js"></script>
     <!-- Core theme JS-->
     <script src="js/scripts.js"></script>
 
@@ -611,6 +619,7 @@
         attribution: '&copy; OpenStreetMap & CartoDB',
         subdomains: 'abcd'
       }).addTo(leafletmap);
+
 
       function createMartiniIcon(color = 'green') {
         return L.divIcon({
@@ -912,6 +921,9 @@
             });
           });
 
+          // Create a layer group for markers
+          const markerLayerGroup = L.layerGroup().addTo(leafletmap);
+
           results.data.forEach(function (row) {
             var lat = parseFloat(row.Latitude);
             var lng = parseFloat(row.Longitude);
@@ -929,6 +941,7 @@
                 <div style="font-family: Lato;">
                   <p style="text-align: center; font-size: 18px; font-weight: bold; margin: 15px 0;"><u>${row.BUSINESS}</u></p>
                   <p style="text-align: center; font-size: 14px; margin: 15px 0;">${address}</p>
+                  <p style="text-align: center; font-size: 14px; margin: 5px 0;">${neighborhood}</p>
                   <p style="text-align: center; font-size: 16px; margin: 15px 0;"><b>${row.WEEKDAY} - ${row.TIME}</b></p>
                   ${row.HOST ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">Host: ${row.HOST} <br> Event Type: ${eventType}</p>` : `<p style="text-align: center; font-size: 16px;">Event Type: ${row.EVENT_TYPE}</p>`}
                   ${row.PRIZE_1_TYPE ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">First Prize: ${firstPrize} - $${row.PRIZE_1_AMOUNT}0${secondPrize ? `<br> Second Prize: ${secondPrize} - $${row.PRIZE_2_AMOUNT}0</p>` : '</p>'}` : ''}
@@ -945,11 +958,50 @@
               marker.neighborhood = neighborhood;
               marker.address = address;
               markers.push(marker);
-              marker.addTo(leafletmap);
+              marker.addTo(leafletmap);   
+              markerLayerGroup.addLayer(marker); // Add marker to the layer group
             }
+          });
+
+          // Initialize Fuse.js for fuzzy search
+          const fuse = new Fuse(results.data, {
+            keys: ['BUSINESS', 'ADDRESS_STREET', 'ADDRESS_CITY', 'ADDRESS_STATE'],
+          });
+
+          // Add Leaflet Search control
+          const searchControl = new L.Control.Search({
+            layer: markerLayerGroup,
+            propertyName: 'businessName', // Search by business name
+            filterData: function (text, records) {
+              const jsons = fuse.search(text);
+              const ret = {};
+              jsons.forEach((result) => {
+                const key = result.item.BUSINESS;
+                ret[key] = records[key];
+              });
+              return ret;
+            },
+            marker: false, // Disable default marker behavior
+            moveToLocation: function (latlng, title, map) {
+              // Zoom to the marker and open its popup
+              map.setView(latlng, 16); // Adjust zoom level as needed
+              const marker = markers.find((m) => m.getLatLng().equals(latlng));
+              if (marker) {
+                marker.openPopup();
+              }
+            },
+          });
+
+          // Add the search control to the map
+          leafletmap.addControl(searchControl);
+
+          // Handle search location found
+          searchControl.on('search:locationfound', function (e) {
+            e.layer.openPopup();
           });
         }
       });
+      
 
       // Toggle Event Type dropdown visibility
       const eventTypeButton = document.getElementById("event-type-button");
