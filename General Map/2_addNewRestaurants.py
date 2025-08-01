@@ -27,8 +27,6 @@ yelp = yelpapi.YelpAPI(yelpapiKey)
 
 base_url = "https://www.yelp.com/biz/"
 
-# response = yelp.business_query(id="harp-and-crown-philadelphia") # type: ignore
-# print(response)
 # Define a function to get Yelp data
 def get_yelp_data(row):
     def find_first_rating(dictionary):

@@ -97,7 +97,8 @@
 #first-prize-filter,
 #time-filter,
 #weekday-filter,
-#neighborhood-filter {
+#neighborhood-filter,
+#reset-filter {
   position: relative; 
   display: inline-block; 
   /* margin-left: 10%;  */
@@ -109,7 +110,8 @@
 #time-button,
 #event-type-button,
 #first-prize-button,
-#neighborhood-button {
+#neighborhood-button,
+#reset-filters-button {
   display: flex; 
   align-items: center; 
   justify-content: center; 
@@ -172,7 +174,7 @@
   margin-top: 20px;
 }
 
-
+/* NEIGHBORHOOD OPTIONS */
 #neighborhood-search {
   width: 100%;
   padding: 5px;
@@ -247,7 +249,8 @@
   #first-prize-filter,
   #time-filter,
   #weekday-filter,
-  #neighborhood-filter {
+  #neighborhood-filter,
+  #reset-filter {
     margin-left: 0; /* Remove left margin on mobile */
     padding:4px;
   }
@@ -263,7 +266,8 @@
   #time-button,
   #event-type-button,
   #first-prize-button,
-  #neighborhood-button {
+  #neighborhood-button,
+  #reset-filters-button {
     padding: 2px 7px; /* Reduce padding on mobile */
     min-width: 9rem;
   }
@@ -272,6 +276,9 @@
     padding-bottom: 0.4rem !important;
   }
   #leaflet-map {
+    height: 80vh !important;
+  }
+  #neighborhood-map {
     height: 80vh !important;
   }
 }
@@ -311,6 +318,47 @@
   height: 70vh;
   border-radius: 1.5rem;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+#neighborhood-map {
+  width: 100%;
+  height: 70vh;
+  border-radius: 1.5rem;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+.neighborhood-label {
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  padding: 2px 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+#bar-table-container {
+  max-height: 70vh; /* Set the maximum height of the table container */
+  overflow-y: auto; /* Enable vertical scrolling for overflow */
+}
+
+#bar-table tbody {
+  display: block; /* Ensure the table body scrolls independently */
+}
+
+#bar-table thead, #bar-table tbody tr {
+  display: table; /* Keep the table layout intact */
+  width: 100%; /* Ensure rows take up full width */
+  table-layout: fixed; /* Prevent columns from resizing unevenly */
+}
+
+#bar-table tbody tr {
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.2s ease, border 0.2s ease; /* Smooth transition for hover and active effects */
+}
+
+#bar-table tbody tr:hover {
+  background-color: #f0f0f0; /* Slightly highlighted color on hover */
+}
+
+#bar-table tbody tr:active {
+  border: 2px solid #07B862; /* Green border on active click */
+  background-color: rgba(7, 184, 98, 0.1); /* Opaque green background on active click */
 }
 /* ----------------------------------------------------------------------- */
 

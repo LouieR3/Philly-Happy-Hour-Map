@@ -10,15 +10,48 @@ import re
 import json
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from PyPDF2 import PdfReader
+from io import BytesIO
 
 # ------------------------------------------------
 # This script does = Opens each sips bar modal for its information
 # ------------------------------------------------
 
-url = 'https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#cavanaugh-s-rittenhouse'
+url = 'https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#lucys-bar'
 
-df = pd.read_csv('AllSipsLocations.csv')
+# df = pd.read_csv('AllSipsLocations.csv')
 
+# Open the URL with the webdriver
+driver = webdriver.Chrome()
+driver.get(url)
+
+# Wait for modal to load
+driver.implicitly_wait(2) 
+
+# Find modal div
+modal = driver.find_element(By.CSS_SELECTOR, '.c-modal[data-role="modal-viewport"]')
+# Find title 
+title = modal.find_element(By.CSS_SELECTOR, '.c-modal__title')
+bar = title.text
+print(bar)
+# Get content
+# Get content
+content = modal.find_element(By.CSS_SELECTOR, '.apos-rich-text')
+
+# Check if content contains a <p> with an <a> tag
+try:
+    link_element = content.find_element(By.CSS_SELECTOR, 'p > a')
+    if link_element.text.strip() == "View SIPS menu":
+        deals = link_element.get_attribute('href')  # Get the link
+    else:
+        deals = content.text  # Get the text content
+except:
+    deals = content.text  # Fallback to text content if no <a> tag is found
+
+print(deals)
+driver.quit()
+
+AG
 # driver = webdriver.Chrome()
 
 # Create an empty list to store the extracted "Deals" content

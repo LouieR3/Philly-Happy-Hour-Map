@@ -96,3 +96,49 @@ $(function() {
 	setActiveLink(); // Set initial active link
 	window.addEventListener('scroll', setActiveLink);
   });
+
+//   // MAP BOX CODE
+//   mapboxgl.accessToken = 'pk.eyJ1IjoibG91aWUzciIsImEiOiJjbGw0M3c5YXgwMjg5M2Nzc2twOXJ3M2tjIn0.vaR-SfpFZC26Go85Rv2leg';
+//   const map = new mapboxgl.Map({
+// 	  container: 'map', // container ID
+// 	  style: 'mapbox://styles/louie3r/cm8htqvrv00v901s5f6py6yfo?optimize=true', // Map style
+// 	  center: [-75.1652, 39.9526], // Center City, Philadelphia
+// 	  zoom: 14,
+// 	  minzoom: 15, // Adjust zoom to show more of Center City
+// 	  maxzoom: 19 // Adjust zoom to show more of Center City
+//   });
+
+//   map.on('click', (event) => {
+// 	// If the user clicked on one of your markers, get its information.
+// 	const features = map.queryRenderedFeatures(event.point, {
+// 	  layers: ['center-city-sips-bars'] // replace with your layer name
+// 	});
+// 	if (!features.length) {
+// 	  return;
+// 	}
+// 	const feature = features[0];
+// 	console.log(feature);
+// 	console.log(feature.properties);
+
+	
+// 	const popup = new mapboxgl.Popup({ offset: [0, -15] })
+// 	  .setLngLat(feature.geometry.coordinates)
+// 	  .setHTML(
+// 		`
+// 		<h5 style="text-align: center;">${feature.properties.Name}</h5>
+// 		<p style="text-align: center;">${feature.properties.Address}</p>
+// 		<a  style="text-align: center; display: block;" href="${feature.properties.Website}" target="_blank" class="link">View their Website</a>
+// 		<p style="text-align: center;"><b>Sips Deals:</b><br><b>$7 Cocktails:</b><br>${feature.properties.SIPS_COCKTAILS}<br><b>$6 Wine:</b><br>${feature.properties.SIPS_WINE}<br><b>$5 Beer:</b><br>${feature.properties.SIPS_BEER}<br><b>Half Priced Apps:</b><br>${feature.properties.SIPS_HALFPRICEDAPPS}</p>
+// 		`
+// 		// `<h5 style="text-align: center;">${feature.properties.Name}</h5>SIPS_COCKTAILS,SIPS_WINE,SIPS_BEER,SIPS_HALFPRICEDAPPS
+// 		// <p style="text-align: center;">${feature.properties.Address}</p>
+// 		// <a  style="text-align: center; display: block;" href="${feature.properties.Website}" target="_blank" class="link">View their Website</a>
+// 		// <img src="${feature.properties.RW_PHOTO}" style="width: 80%; display: block; margin: auto; padding-top: 1rem;" alt="Photo of restaurant front">
+// 		// `
+// 	  )
+// 	  .addTo(map);
+//   });
+//   /*
+// 	Create a popup, specify its options
+// 	and properties, and add it to the map.
+//   */
