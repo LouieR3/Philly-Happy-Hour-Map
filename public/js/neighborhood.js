@@ -63,7 +63,7 @@ fetch('../Quizzo/philadelphia-neighborhoods.geojson')
     }).addTo(map);
 
     // Load quizzo_list.csv and add points to the map
-    Papa.parse('../Quizzo/quizzo_extra.csv', {
+    Papa.parse('../Quizzo/quizzo_final_list.csv', {
       download: true,
       header: true,
       complete: function (results) {
@@ -74,7 +74,7 @@ fetch('../Quizzo/philadelphia-neighborhoods.geojson')
           const neighborhood = row.NEIGHBORHOOD ? row.NEIGHBORHOOD.replace(/_/g, ' ').trim().toUpperCase() : '';
 
           if (!isNaN(lat) && !isNaN(lng)) {
-            // Check if the point is inside any polygon
+            // Check if the point is inside any polygons
             let markerColor = 'black'; // Default color
             let matchedPolygonName = null;
 

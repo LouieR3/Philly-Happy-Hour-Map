@@ -3,7 +3,7 @@ import pandas as pd
 from geopy.geocoders import Nominatim
 import folium
 from folium import IFrame
-from folium.utilities import JsCode
+# from folium.utilities import JsCode
 from folium.features import GeoJsonPopup
 from folium.plugins import TimestampedGeoJson, TimeSliderChoropleth, TagFilterButton, MarkerCluster
 from geopy.extra.rate_limiter import RateLimiter
@@ -149,7 +149,7 @@ def create_map():
     map.save('public/quizzo_map.html')
 # create_map()
 
-df = pd.read_csv('public/quizzo_list.csv')
+df = pd.read_csv('Quizzo/quizzo_list.csv')
 
 # Geopy setup
 geolocator = Nominatim(user_agent="quizzo_geocoder", timeout=10) # type: ignore
@@ -239,7 +239,7 @@ def merge_and_geocode_quizzo():
 # merge_and_geocode_quizzo()
 
 # Read the transformed quizzo_extra CSV
-quizzo_extra = pd.read_csv('Quizzo/quizzo_extra_transformed.csv')
+# quizzo_extra = pd.read_csv('Quizzo/quizzo_extra_transformed.csv')
 
 # STEP 2 - BIG CLEAN OF DATA
 def quzizo_cleaning(quizzo_extra):
@@ -304,19 +304,9 @@ def quzizo_cleaning(quizzo_extra):
 
 # quzizo_cleaning(quizzo_extra)
 
-quizzo_extra = pd.read_csv('Quizzo/quizzo_extra_cleaned.csv')
-# # Drop unnecessary columns
-# quizzo_extra.drop(columns=['Full Address_quizzo_list', 'Latitude_quizzo_list', 'Longitude_quizzo_list', 'BUSINESS_TAGS', 'OCCURRENCE_TYPES'], inplace=True)
-# # Rearrange columns to the desired order
-# column_order = [
-#     'BUSINESS', 'TIME', 'WEEKDAY', 'NEIGHBORHOOD', 'ADDRESS_STREET', 'ADDRESS_UNIT', 'ADDRESS_CITY', 'ADDRESS_STATE', 'ADDRESS_ZIP',
-#     'PRIZE_1_TYPE', 'PRIZE_1_AMOUNT', 'PRIZE_2_TYPE', 'PRIZE_2_AMOUNT', 'PRIZE_3_TYPE', 'PRIZE_3_AMOUNT',
-#     'HOST', 'EVENT_TYPE', 'Full Address', 'Latitude', 'Longitude',
-# ]
-# quizzo_extra = quizzo_extra[column_order]
-# quizzo_extra.to_csv("Quizzo/quizzo_extra_cleaned.csv", index=False)
+# quizzo_df = pd.read_csv('Quizzo/quizzo_combined_filled.csv')
 
-def quizzo_yelp_data():
+def quizzo_yelp_data(quizzo_extra):
     # Filter records where Full Address is empty
     quizzo_yelp_df = quizzo_extra[quizzo_extra['Full Address'].isna()]
     print(f"Number of records with missing Full Address: {len(quizzo_yelp_df)}")
@@ -415,20 +405,49 @@ def quizzo_yelp_data():
     # Apply the function to quizzo_yelp_df
     yelp_results = quizzo_yelp_df.apply(get_yelp_data, axis=1)
 
-    # Load existing YelpAliases.csv if it exists, otherwise create a new DataFrame
-    try:
-        yelp_aliases = pd.read_csv("YelpAliases.csv")
-    except FileNotFoundError:
-        yelp_aliases = pd.DataFrame(columns=['BUSINESS', 'Yelp Alias'])
-
-    # Append new results to the existing YelpAliases.csv
-    yelp_aliases = pd.concat([yelp_aliases, yelp_results], ignore_index=True)
+    # Slice Yelp aliases (BUSINESS renamed to Name and Yelp Alias)
+    yelp_aliases = yelp_results[['BUSINESS', 'Yelp Alias']].rename(columns={'BUSINESS': 'Name'})
     # Drop duplicates based on Yelp Alias
     yelp_aliases.drop_duplicates(subset=['Yelp Alias'], inplace=True)
 
-    # Save the updated YelpAliases.csv
+    # Save Yelp aliases to a CSV
     yelp_aliases.to_csv("YelpAliases.csv", index=False)
+    print("Yelp aliases saved to YelpAliases.csv.")
 
-    print("Updated YelpAliases.csv with new data.")
+    # Slice updated information (remove Yelp Alias)
+    updated_records = yelp_results.drop(columns=['Yelp Alias'])
 
-quizzo_yelp_data()
+    # Merge updated records back into the main DataFrame
+    fields_to_update = ['ADDRESS_STREET', 'ADDRESS_UNIT', 'ADDRESS_STATE', 'ADDRESS_ZIP', 'Full Address', 'Latitude', 'Longitude']
+    quizzo_final_list = quizzo_extra.merge(
+        updated_records[['BUSINESS'] + fields_to_update],
+        on='BUSINESS',
+        how='left',
+        suffixes=('', '_updated')
+    )
+
+    # Update missing values in quizzo_final_list with the updated columns
+    for field in fields_to_update:
+        updated_field = f"{field}_updated"
+        if updated_field in quizzo_final_list.columns:
+            quizzo_final_list[field] = quizzo_final_list[field].combine_first(quizzo_final_list[updated_field])
+            quizzo_final_list.drop(columns=[updated_field], inplace=True)
+
+    # Save the updated DataFrame to a new CSV
+    quizzo_final_list.to_csv('Quizzo/quizzo_final_list.csv', index=False)
+    print("Updated quizzo_final_list saved to Quizzo/quizzo_final_list.csv.")
+
+# quizzo_yelp_data(quizzo_df)
+
+quizzo_final_df = pd.read_csv('Quizzo/quizzo_final_list.csv')
+
+def remove_null_lat_long(quizzo_final_df):
+    # Filter out rows where Latitude or Longitude is null
+    cleaned_df = quizzo_final_df.dropna(subset=['Latitude', 'Longitude'])
+
+    # Save the cleaned DataFrame to a new CSV
+    cleaned_df.to_csv('Quizzo/quizzo_final_list.csv', index=False)
+    print(cleaned_df)
+
+# Call the function
+remove_null_lat_long(quizzo_final_df)
