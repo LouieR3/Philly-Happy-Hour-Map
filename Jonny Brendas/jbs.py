@@ -27,13 +27,6 @@ import requests
 
 # driver.quit()
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
-    client_id="b7c003cf3977459a9063e4a027b23b36",
-    client_secret="248073e7c10c421093975f33973929c5",
-    redirect_uri="https://www.philly-mappy-hour.com/",
-    scope="playlist-modify-public"
-))
-
 results = sp.search(q='TEEN MORTGAGE', type='artist', limit=1)
 print(results) # type: ignore
 print(results) # type: ignore
