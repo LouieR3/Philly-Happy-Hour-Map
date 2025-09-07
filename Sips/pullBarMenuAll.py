@@ -13,7 +13,7 @@ import re
 # ------------------------------------------------
 
 # Assuming you have the DataFrame 'df' with the 'Deals' column
-df = pd.read_csv('AllSipsLocations.csv')
+df = pd.read_csv('../Csv/AllSipsLocations.csv')
 
 menu_data = []
 keywords = ["beers", "bottles", "cans", "wines", "cocktails"]
@@ -280,8 +280,8 @@ def gather_subpages(base_url):
 def combineCSV(menu_df):
     # menu_df = pd.DataFrame(menu_data)
     print(menu_df)
-    # Read 'SipsBarItems.csv' into a DataFrame
-    sips_bar_items_df = pd.read_csv('SipsBarItems.csv')
+    # Read '../Csv/SipsBarItems.csv' into a DataFrame
+    sips_bar_items_df = pd.read_csv('../Csv/SipsBarItems.csv')
 
     # Combine menu_df and sips_bar_items_df
     combined_df = pd.concat([sips_bar_items_df, menu_df])
@@ -290,7 +290,7 @@ def combineCSV(menu_df):
     combined_df.drop_duplicates(subset=['Bar', 'Drink', 'Price'], inplace=True)
 
     # Write the combined DataFrame to a new CSV file
-    combined_df.to_csv('SipsBarItems.csv', index=False)
+    combined_df.to_csv('../Csv/SipsBarItems.csv', index=False)
 
 def calculateDeal():
     # Read the CSV file into a DataFrame

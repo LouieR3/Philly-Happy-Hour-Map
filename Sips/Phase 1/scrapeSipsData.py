@@ -92,7 +92,7 @@ new_df = pd.DataFrame(bar_info_list)
 # Print the resulting DataFrame with the new "Bar Website" column
 print(new_df)
 
-# df = pd.read_csv('AllSipsLocations.csv')
+# df = pd.read_csv('../Csv/AllSipsLocations.csv')
 merged_df = df.merge(new_df, on='Name', how='left')
 print(merged_df)
 # merged_df.to_csv("AllSipsLocations.csv", index=False)

@@ -17,11 +17,11 @@ from selenium.webdriver.common.by import By
 
 url = 'https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#cavanaugh-s-rittenhouse'
 
-df = pd.read_csv('Sips2024.csv')
+df = pd.read_csv('../Csv/Sips2024.csv')
 print(df[["Name", "SIPS_BEER", "SIPS_COCKTAILS"]].head(3))
-df = pd.read_csv('MasterTableApr.csv')
+df = pd.read_csv('../Csv/MasterTableApr.csv')
 print(df[["Name", "SIPS_BEER", "SIPS_COCKTAILS"]].head(3))
-df = pd.read_csv('MasterTable.csv')
+df = pd.read_csv('../Csv/MasterTable.csv')
 print(df[["Name", "SIPS_BEER", "SIPS_COCKTAILS"]].head(3))
 
 
@@ -65,7 +65,7 @@ for index, row in df.iterrows():
 df['Deals'] = deals_list
 
 # Save the updated DataFrame back to the CSV file with the same name
-# df.to_csv('AllSipsLocations.csv', index=False)
+# df.to_csv('../Csv/AllSipsLocations.csv', index=False)
 # df = pd.read_csv('AllSipsOriginal.csv')
 # Initialize empty lists for each deal type
 cocktails = []
@@ -134,4 +134,4 @@ df.drop(columns=['Deals'], inplace=True)
 print(df)
 
 # Write the updated DataFrame to the same CSV file
-df.to_csv('TestModal.csv', index=False)
+df.to_csv('../Csv/TestModal.csv', index=False)

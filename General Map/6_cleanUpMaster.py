@@ -14,7 +14,7 @@ import time
 start_time = time.time()
 
 # Load the MasterTable from the original CSV
-df = pd.read_csv('MasterTable.csv')
+df = pd.read_csv('../Csv/MasterTable.csv')
 print(df)
 df['Sips Participant'].fillna('N', inplace=True)
 df['Restaurant Week Participant'].fillna('N', inplace=True)

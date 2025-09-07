@@ -11,7 +11,7 @@ from folium.plugins import MarkerCluster
 # This script does = Created the folium map for the csv
 # ------------------------------------------------
 
-df = pd.read_csv('Sips2024.csv')
+df = pd.read_csv('../Csv/Sips2024.csv')
 
 map = folium.Map(location=[39.951, -75.163], zoom_start=16, tiles='CartoDB Positron')
 

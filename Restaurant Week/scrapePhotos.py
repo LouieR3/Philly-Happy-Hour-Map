@@ -49,7 +49,7 @@ df1 = pd.DataFrame(restaurant_info_list)
 
 # Read the DataFrame from the CSV file
 df2 = pd.read_csv('AllSipsLocations.csv')
-df2 = pd.read_csv('RestaurantWeek.csv')
+df2 = pd.read_csv('../Csv/RestaurantWeek.csv')
 
 # Merge the two DataFrames on 'Restaurant Name' column
 merged_df = pd.merge(df2, df1, on='Name', how='inner')

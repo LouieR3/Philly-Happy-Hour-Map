@@ -3,13 +3,13 @@ from yelpapi import YelpAPI
 import yelpapi
 from ast import literal_eval
 
-df = pd.read_csv('Test.csv')
+df = pd.read_csv('../Csv/Test.csv')
 print(df)
 
 
 
 
-# df = pd.read_csv('Test.csv', converters={'Categories': eval})
+# df = pd.read_csv('../Csv/Test.csv', converters={'Categories': eval})
 # print(df["Categories"])
 print(df)
 # print(df["Categories"][0])

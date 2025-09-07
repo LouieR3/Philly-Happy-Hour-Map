@@ -20,7 +20,7 @@ from geopy.geocoders import Nominatim
 # ------------------------------------------------
 start_time = time.time()
 
-csv_df = pd.read_csv('MasterTable.csv')
+csv_df = pd.read_csv('../Csv/MasterTable.csv')
 geolocator = Nominatim(timeout=10, user_agent="my_app") # type: ignore
 
 def clearOldSips(df):
@@ -38,7 +38,7 @@ def clearOldSips(df):
     # Change SIPS_PARTICIPANT from "Y" to "N"
     df.loc[df['SIPS_PARTICIPANT'] == 'Y', 'SIPS_PARTICIPANT'] = 'N'
     # Optionally, save the modified DataFrame back to a CSV file
-    # df.to_csv('ModifiedMasterTable.csv', index=False)
+    # df.to_csv('../Csv/ModifiedMasterTable.csv', index=False)
     # Display the modified DataFrame (for verification)
     return df
 
@@ -146,7 +146,7 @@ def scrapeSipsPage(geolocator):
     new_df = pd.DataFrame(bar_info_list)
     # Print the resulting DataFrame with the new "Website" column
     # print(new_df)
-    # df = pd.read_csv('AllSipsLocations.csv')
+    # df = pd.read_csv('../Csv/AllSipsLocations.csv')
     merged_df = df.merge(new_df, on='Name', how='left')
     print(merged_df)
     merged_df.to_csv("AllSipsLocations.csv", index=False)
@@ -214,7 +214,7 @@ def readModalForDeals(df):
     df['Deals'] = deals_list
 
     # Save the updated DataFrame back to the CSV file with the same name
-    # df.to_csv('AllSipsLocations.csv', index=False)
+    # df.to_csv('../Csv/AllSipsLocations.csv', index=False)
     # df = pd.read_csv('AllSipsOriginal.csv')
     # Initialize empty lists for each deal type
     cocktails = []
@@ -572,7 +572,7 @@ def mergeData(csv_df, modal_df):
     csv_df.to_csv("MasterTableNew.csv", index=False)
     return csv_df
 
-csv_df = pd.read_csv('MasterTable.csv')
+csv_df = pd.read_csv('../Csv/MasterTable.csv')
 csv_df = mergeData(csv_df, merged_df)
 df = csv_df.loc[csv_df['SIPS_PARTICIPANT'] == 'Y']
 print(df)
@@ -593,7 +593,7 @@ def pullBasicYelp(df, csv_df):
     yelp = yelpapi.YelpAPI(yelpapiKey)
 
     # Assuming you have the DataFrame 'df' with the 'Deals' column
-    # df = pd.read_csv('AllSipsLocations.csv')
+    # df = pd.read_csv('../Csv/AllSipsLocations.csv')
 
     # bars = yelp.search_query(location='Philadelphia', categories='bars')
     # print(bars)
@@ -824,7 +824,7 @@ def pullBasicYelp(df, csv_df):
     # yelp_df = pd.DataFrame(all_yelp_data)
     # # Display the Yelp data DataFrame
     # print(yelp_df)
-    # yelp_df.to_csv('Yelp.csv', index=False)
+    # yelp_df.to_csv('../Csv/Yelp.csv', index=False)
     yelp_df = pd.read_csv("Yelp.csv")
 
     # Merge the two DataFrames on the 'Name' column

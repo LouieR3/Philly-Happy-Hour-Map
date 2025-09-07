@@ -7,7 +7,7 @@ from selenium.webdriver.common.keys import Keys
 # Step 1: Import the necessary libraries
 
 # Step 2: Read the CSV file using Pandas
-df = pd.read_csv('MasterTable.csv')  # Replace 'your_csv_file.csv' with your actual CSV file path
+df = pd.read_csv('../Csv/MasterTable.csv')  # Replace 'your_csv_file.csv' with your actual CSV file path
 
 # Step 3: Process the 'name' column
 def process_name(name):

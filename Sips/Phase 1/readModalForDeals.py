@@ -19,7 +19,7 @@ from io import BytesIO
 
 url = 'https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view#lucys-bar'
 
-# df = pd.read_csv('AllSipsLocations.csv')
+# df = pd.read_csv('../Csv/AllSipsLocations.csv')
 
 # Open the URL with the webdriver
 driver = webdriver.Chrome()
@@ -89,7 +89,7 @@ for index, row in df.iterrows():
 df['Deals'] = deals_list
 
 # Save the updated DataFrame back to the CSV file with the same name
-# df.to_csv('AllSipsLocations.csv', index=False)
+# df.to_csv('../Csv/AllSipsLocations.csv', index=False)
 # df = pd.read_csv('AllSipsOriginal.csv')
 # Initialize empty lists for each deal type
 cocktails = []
@@ -133,4 +133,4 @@ df['Half-Priced Appetizers'] = appetizers
 df.drop(columns=['Deals'], inplace=True)
 
 # Write the updated DataFrame to the same CSV file
-df.to_csv('AllSipsLocations.csv', index=False)
+df.to_csv('../Csv/AllSipsLocations.csv', index=False)
