@@ -18,7 +18,7 @@ yelpapiKey = "XEmkEwex5TbqjOitZJ8xtLXTBMQQb7BrtQdzzw-hJVWwnIUysCwCzXT2X2xsMbSXR7
 yelp = yelpapi.YelpAPI(yelpapiKey)
 
 # Assuming you have the DataFrame 'df' with the 'Deals' column
-df = pd.read_csv('AllSipsLocations.csv')
+df = pd.read_csv('../Csv/AllSipsLocations.csv')
 
 bars = yelp.search_query(location='Philadelphia', categories='bars')
 print(bars)
@@ -89,7 +89,7 @@ data = df.apply(get_yelp_data, axis=1)
 yelp_df = pd.DataFrame(data)
 # Display the Yelp data DataFrame
 print(yelp_df)
-yelp_df.to_csv('Yelp.csv', index=False)
+yelp_df.to_csv('../Csv/Yelp.csv', index=False)
 
 # Merge the two DataFrames on the 'Bar Name' column
 combined_df = df.merge(yelp_df, on='Bar Name', how='left')
@@ -103,8 +103,8 @@ combined_df['Categories'] = combined_df['Categories_y']
 # Drop the unnecessary columns from the combined DataFrame
 combined_df = combined_df.drop(columns=['Rating_y', 'Review Count_y', 'Price_y', 'Categories_y'])
 
-# Save the combined DataFrame to a new CSV file 'Test.csv'
-combined_df.to_csv('Test.csv', index=False)
+# Save the combined DataFrame to a new CSV file '../Csv/Test.csv'
+combined_df.to_csv('../Csv/Test.csv', index=False)
 
 # Display the updated DataFrame
 print(combined_df)

@@ -20,7 +20,7 @@ import math
 # This script does = 
 # ------------------------------------------------
 
-df = pd.read_csv('SipsBarItems.csv', encoding='utf-8')
+df = pd.read_csv('../Csv/SipsBarItems.csv', encoding='utf-8')
 
 # Remove certain words from Menu Item values
 words_to_remove = [" can", " beer", " draft", " bottle"]

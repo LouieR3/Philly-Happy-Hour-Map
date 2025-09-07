@@ -17,7 +17,7 @@ from geopy.geocoders import Nominatim
 # ------------------------------------------------
 start_time = time.time()
 
-csv_df = pd.read_csv('MasterTable.csv')
+csv_df = pd.read_csv('../Csv/MasterTable.csv')
 csv_df = csv_df.loc[csv_df['SIPS_PARTICIPANT'] == 'Y']
 
 def scrapeSipsPage():

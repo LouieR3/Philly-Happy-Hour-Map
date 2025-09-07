@@ -642,7 +642,7 @@
         const markerLayerGroup = L.layerGroup().addTo(leafletmap);
 
         // Load CSV data and add markers
-        Papa.parse('quizzo_list.csv', {
+        Papa.parse('../Quizzo/quizzo_list.csv', {
             download: true,
             header: true,
             complete: function (results) {

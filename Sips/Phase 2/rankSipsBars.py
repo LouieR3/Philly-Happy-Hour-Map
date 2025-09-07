@@ -20,7 +20,7 @@ import math
 # This script does = 
 # ------------------------------------------------
 
-df = pd.read_csv('SipsBarItems.csv', encoding='utf-8')
+df = pd.read_csv('../Csv/SipsBarItems.csv', encoding='utf-8')
 
 # Remove certain words from Menu Item values
 words_to_remove = [" can", " beer", " draft", " bottle"]
@@ -146,7 +146,7 @@ bar_totals['Deal Score'] = bar_totals['Deal Score'].round(1)
 print(bar_totals.sort_values('Deal Score', ascending=False))
 
 # Get list of all bars
-all_bars = pd.read_csv('AllSipsLocations.csv')['Bar Name']
+all_bars = pd.read_csv('../Csv/AllSipsLocations.csv')['Bar Name']
 
 # Fill missing with default
 bar_totals = bar_totals.reindex(all_bars, fill_value=5)

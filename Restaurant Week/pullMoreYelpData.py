@@ -24,7 +24,7 @@ yelpapiKey = "XEmkEwex5TbqjOitZJ8xtLXTBMQQb7BrtQdzzw-hJVWwnIUysCwCzXT2X2xsMbSXR7
 yelp = yelpapi.YelpAPI(yelpapiKey)
 
 # Assuming you have the DataFrame 'df' with the 'Deals' column
-df = pd.read_csv('YelpAliases.csv')
+df = pd.read_csv('../Csv/YelpAliases.csv')
 base_url = "https://www.yelp.com/biz/"
 # Restaurants = yelp.search_query(location='Philadelphia', categories='Restaurants')
 # print(Restaurants)
@@ -141,15 +141,15 @@ yelp_df = pd.DataFrame(data_list)
 # yelp_df['Review Count'] = yelp_df['Review Count'].astype(int)
 # Display the Yelp data DataFrame
 print(yelp_df)
-yelp_df.to_csv('ExtraYelp2.csv', index=False)
+yelp_df.to_csv('../Csv/ExtraYelp2.csv', index=False)
 
 # Drop the unnecessary columns from the combined DataFrame
 # combined_df = combined_df.drop(columns=['Rating_y', 'Review Count_y', 'Price_y', 'Categories_y'])
 # combined_df['Review Count'] = combined_df['Review Count'].fillna(0)
 # combined_df['Review Count'] = combined_df['Review Count'].astype(int)
 # combined_df = combined_df.drop(columns=['Website']) 
-# # Save the combined DataFrame to a new CSV file 'Test.csv'
-# combined_df.to_csv('Test.csv', index=False)
+# # Save the combined DataFrame to a new CSV file '../Csv/Test.csv'
+# combined_df.to_csv('../Csv/Test.csv', index=False)
 
 # # Display the updated DataFrame
 # print(combined_df)

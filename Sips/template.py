@@ -19,4 +19,4 @@ from tabulate import tabulate
 # This script does = 
 # ------------------------------------------------
 
-df = pd.read_csv('SipsBarItems.csv', encoding='utf-8')
+df = pd.read_csv('../Csv/SipsBarItems.csv', encoding='utf-8')

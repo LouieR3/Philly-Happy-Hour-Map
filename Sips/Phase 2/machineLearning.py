@@ -42,7 +42,7 @@ df_train = pd.DataFrame({'Drink': train_drinks,
                          'CommonDrinkType': train_types})
 
 # Load test data
-df_test = pd.read_csv('SipsBarItems.csv', encoding='utf-8')
+df_test = pd.read_csv('../Csv/SipsBarItems.csv', encoding='utf-8')
 
 df_train['Drink'] = df_train['Drink'].str.lower()
 df_test['DrinkTest'] = df_test['Drink'].str.lower()

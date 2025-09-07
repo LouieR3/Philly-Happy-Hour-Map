@@ -11,7 +11,7 @@ import pandas as pd
 base_url = 'https://www.doubleknotphilly.com'
 base_url = 'http://www.drinkersrittenhouse.com/'
 
-df = pd.read_csv('AllSipsLocations.csv')
+df = pd.read_csv('../Csv/AllSipsLocations.csv')
 
 html = "https://centercityphila.org/explore-center-city/ccd-sips/sips-list-view"
 base_html = "https://www.yelp.com/menu/"

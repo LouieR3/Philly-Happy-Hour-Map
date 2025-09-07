@@ -14,7 +14,7 @@ import numpy as np
 # ------------------------------------------------
 start_time = time.time()
 
-df = pd.read_csv('MasterTable.csv')
+df = pd.read_csv('../Csv/MasterTable.csv')
 print(df.columns)
 
 # -------------- PARKING -----------------

@@ -59,7 +59,7 @@ def checkMasterForAlias():
     yelp_aliases_df = pd.read_csv('YelpAliases.csv')
 
     # Load the MasterTable from the original CSV
-    master_table_df = pd.read_csv('MasterTable.csv')
+    master_table_df = pd.read_csv('../Csv/MasterTable.csv')
 
     # Convert all relevant columns to lowercase to ensure consistent comparison
     yelp_aliases_df['Name'] = yelp_aliases_df['Name'].str.lower()

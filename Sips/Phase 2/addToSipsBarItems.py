@@ -19,7 +19,7 @@ from tabulate import tabulate
 # This script does = dfToAdd can be swapped out for a new method of getting a bars menu and then you can add it to SipsBarItems and then to ComparisonResults after
 # ------------------------------------------------
 
-df = pd.read_csv('SipsBarItems.csv', encoding='utf-8')
+df = pd.read_csv('../Csv/SipsBarItems.csv', encoding='utf-8')
 
 def dfToAdd(pdf_path):
     def extract_drinks_from_pdf(pdf_path):
@@ -86,8 +86,8 @@ def dfToAdd(pdf_path):
 def combineCSV(menu_df):
     # menu_df = pd.DataFrame(menu_data)
     print(menu_df)
-    # Read 'SipsBarItems.csv' into a DataFrame
-    sips_bar_items_df = pd.read_csv('SipsBarItems.csv')
+    # Read '../Csv/SipsBarItems.csv' into a DataFrame
+    sips_bar_items_df = pd.read_csv('../Csv/SipsBarItems.csv')
 
     # Combine menu_df and sips_bar_items_df
     combined_df = pd.concat([sips_bar_items_df, menu_df])
@@ -96,7 +96,7 @@ def combineCSV(menu_df):
     combined_df.drop_duplicates(subset=['Bar', 'Drink', 'Price'], inplace=True)
 
     # Write the combined DataFrame to a new CSV file
-    combined_df.to_csv('SipsBarItems.csv', index=False)
+    combined_df.to_csv('../Csv/SipsBarItems.csv', index=False)
 
 def machineLearning(menu_df):
     # Load training data from quick.txt 
