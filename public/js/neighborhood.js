@@ -14,7 +14,7 @@ const neighborhoodLabels = [];
 const neighborhoodPolygons = []; // Store polygons for point-in-polygon checks
 
 // Fetch the GeoJSON file and add it to the map
-fetch('../Quizzo/philadelphia-neighborhoods.geojson')
+fetch('assets/philadelphia-neighborhoods.geojson')
   .then(response => response.json())
   .then(geojsonData => {
     // Add a buffer of 50 feet (approximately 15.24 meters) to each polygon
@@ -63,7 +63,7 @@ fetch('../Quizzo/philadelphia-neighborhoods.geojson')
     }).addTo(map);
 
     // Load quizzo_list.csv and add points to the map
-    Papa.parse('../Quizzo/quizzo_final_list.csv', {
+    Papa.parse('assets/quizzo_final_list.csv', {
       download: true,
       header: true,
       complete: function (results) {
