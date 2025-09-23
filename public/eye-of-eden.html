@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FTTNQMESXD"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-FTTNQMESXD");
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Mappy Hour</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+    integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://use.fontawesome.com/releases/v6.7.2/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- LEAFLET -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""/>
+    <!-- Leaflet Search Plugin -->
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.css"
+    />
+
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css"/>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="css/nav-style.css" rel="stylesheet" />
+  </head>
+  <body id="page-top">
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand" href="#page-top">Mappy Hour</a>
+        <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          Menu
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#quizzo">Quizzo Map</a></li>
+            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#restaurant-week">Restaurant Week</a></li> -->
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded"href="#meet-the-team">Meet The Team</a></li>
+            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sips">Sips Deals</a></li> -->
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#deals">Happy Hour Deals</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- Masthead -->
+    <!-- <header class="masthead text-white text-center "> -->
+    <header class="masthead  text-white text-center gradient">
+      <!-- <div class="background"></div> -->
+      <div class="container d-flex align-items-center flex-column">
+        <div class="px-5 pt-5 v-middle">
+          <!-- Masthead Avatar Image-->
+          <i class="fa-solid fa-eye text-longshadow mb-4" style="font-size: 20rem;"></i>
+          <!-- Masthead Heading-->
+          <h1 class="masthead-heading text-uppercase mb-0 text-longshadow">
+            The Eye of Eden
+          </h1>
+      </div>
+    </header>
+
+    <!-- About Section-->
+    <section class="page-section bg-primary text-white mb-0" id="meet-the-team">
+      <div class="px-5">
+        <div class="cam-grid">
+                <div class="cam-item">
+                    <h3 class="cam-title">Rittenhouse Square Cam looking Northeast</h3>
+                    <iframe class="cam-iframe" 
+                            src="https://www.youtube.com/embed/fvz5EoV7rP8?autoplay=1" 
+                            title="Rittenhouse Square Cam looking Northeast"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="cam-item">
+                    <h3 class="cam-title">Rittenhouse Square Live Cam looking South</h3>
+                    <iframe class="cam-iframe" 
+                            src="https://www.youtube.com/embed/E-UqgoXjN5I?autoplay=1" 
+                            title="Rittenhouse Square Live Cam looking South"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="cam-item">
+                    <h3 class="cam-title">Rittenhouse Square Live Cam looking Northwest</h3>
+                    <iframe class="cam-iframe" 
+                            src="https://www.youtube.com/embed/Jvafy87MeXU?autoplay=1" 
+                            title="Rittenhouse Square Live Cam looking Northwest"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="cam-item">
+                    <h3 class="cam-title">Rittenhouse Square Park Fountain Cam Philadelphia, PA</h3>
+                    <iframe class="cam-iframe" 
+                            src="https://www.youtube.com/embed/xMTUPTas950?autoplay=1" 
+                            title="Rittenhouse Square Park Fountain Cam Philadelphia, PA"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="cam-item">
+                    <h3 class="cam-title">Rittenhouse Square Looking North</h3>
+                    <iframe class="cam-iframe" 
+                            src="https://www.youtube.com/embed/9VXW_b_yf7A?autoplay=1" 
+                            title="Rittenhouse Square Looking North"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+                
+                <div class="cam-item">
+                    <h3 class="cam-title">Rittenhouse Square Park Panorama Cam - Philadelphia, PA</h3>
+                    <iframe class="cam-iframe" 
+                            src="https://www.youtube.com/embed/8yboKQvIp8Y?autoplay=1" 
+                            title="Rittenhouse Square Park Panorama Cam - Philadelphia, PA"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+      </div>
+    </section>
+
+    <!-- Footer-->
+    <footer class="footer text-center">
+      <div class="container">
+        <div class="row">
+          <!-- Footer Location-->
+          <div class="col-lg-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Location</h4>
+            <p class="lead mb-0">
+              Philadelphia
+              <br />
+              PA, USA
+            </p>
+            <a style="text-decoration: underline; font-size: 12px;" class="nav-link py-2 px-0 px-lg-3 rounded" href="birthday.html"
+                >Birthday Boy</a
+              >
+            <a style="text-decoration: underline; font-size: 12px;" class="nav-link py-2 px-0 px-lg-3 rounded" href="eye-of-eden.html"
+                > The Eye of Eden</a
+              >
+          </div>
+          <!-- Footer Social Icons-->
+          <div class="col-lg-4 mb-5 mb-lg-0">
+            <h4 class="text-uppercase mb-4">Around the Web</h4>
+            <a
+              class="btn btn-outline-light btn-social mx-1"
+              href="https://youtu.be/zsX-4LThKv4"
+              target="_blank"
+              ><i class="fab fa-fw fa-youtube"></i
+            ></a>
+            <a
+              class="btn btn-outline-light btn-social mx-1"
+              href="https://www.linkedin.com/in/ava-patterson-aip5302/"
+              target="_blank"
+              ><i class="fab fa-fw fa-linkedin-in"></i
+            ></a>
+            <a
+              class="btn btn-outline-light btn-social mx-1"
+              href="https://www.linkedin.com/in/louis-rodriguez-9b6187128/"
+              target="_blank"
+              ><i class="fab fa-fw fa-linkedin-in"></i
+            ></a>
+            <a
+              class="btn btn-outline-light btn-social mx-1"
+              href="https://github.com/LouieR3/Philly-Happy-Hour-Map"
+              target="_blank"
+              ><i class="fab fa-fw fa-github"></i
+            ></a>
+          </div>
+          <!-- Footer About Text-->
+          <div class="col-lg-4">
+            <h4 class="text-uppercase mb-4">Other Sites</h4>
+            <p class="lead mb-0">
+              Visit
+              <a
+                style="color: white"
+                href="https://louie-power-index.streamlit.app/"
+                target="_blank"
+              >
+                Louie's fantasy football web app here</a
+              >, with his world renowned "Louie Power Index (LPI)"
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="js/jquery-3.0.0.min.js"></script> -->
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> 
+    <script src="js/jquery.sticky.js"></script>
+    <!-- Main JS -->
+    <script src="js/main.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js"></script>
+    <!-- MAPBOX -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.10.0/mapbox-gl.js"></script>
+    <!-- LEAFLET -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet-search@3.0.0/dist/leaflet-search.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fuse.js/1.2.2/fuse.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
+    <script src="js/neighborhood.js"></script>
+
+    <!-- Include Turf.js for buffering -->
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
+  </body>
+</html>

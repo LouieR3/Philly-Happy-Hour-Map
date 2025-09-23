@@ -11584,3 +11584,39 @@ html {
 .copyright {
   background-color: #1a252f;
 }
+
+
+.cam-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+}
+.cam-item {
+    display: flex;
+    flex-direction: column;
+}
+.cam-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+.cam-iframe {
+    width: 100%;
+    height: 45vh;
+    border: none;
+    border-radius: 2rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+@media (max-width: 768px) {
+    .cam-grid {
+        grid-template-columns: 1fr;
+    }
+    .cam-iframe {
+        height: 250px;
+    }
+    .page-section {
+        padding: 3rem 0;
+    }
+}
