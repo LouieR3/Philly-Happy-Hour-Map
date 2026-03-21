@@ -150,7 +150,81 @@ def create_map():
 # create_map()
 
 df = pd.read_csv('Quizzo/quizzo_list.csv')
+quizzo_list_to_add = pd.read_csv('Quizzo/cleaned_quizzo_list.csv')
 
+def update_quizzo_list(quizzo_list, quizzo_list_to_add):
+    # Normalize BUSINESS column for comparison
+    quizzo_list['BUSINESS_NORM'] = quizzo_list['BUSINESS'].str.upper().str.strip()
+    quizzo_list_to_add['BUSINESS_NORM'] = quizzo_list_to_add['BUSINESS'].str.upper().str.strip()
+
+    # Merge on BUSINESS to update TIME and WEEKDAY
+    merged = quizzo_list.merge(
+        quizzo_list_to_add[['BUSINESS_NORM', 'TIME', 'WEEKDAY']],
+        on='BUSINESS_NORM',
+        how='left',
+        suffixes=('', '_new')
+    )
+
+    # Update TIME and WEEKDAY where they exist in quizzo_list_to_add
+    quizzo_list['TIME'] = merged['TIME_new'].combine_first(merged['TIME'])
+    quizzo_list['WEEKDAY'] = merged['WEEKDAY_new'].combine_first(merged['WEEKDAY'])
+
+    # Find records in quizzo_list_to_add not in quizzo_list
+    print("\n" + "="*80)
+    print("RECORDS IN QUIZZO_LIST_TO_ADD NOT IN QUIZZO_LIST (will be ADDED):")
+    print("="*80)
+    unmatched_to_add = quizzo_list_to_add[~quizzo_list_to_add['BUSINESS_NORM'].isin(quizzo_list['BUSINESS_NORM'])]
+    if not unmatched_to_add.empty:
+        print(unmatched_to_add[['BUSINESS', 'NEIGHBORHOOD', 'TIME', 'WEEKDAY']].to_string())
+    else:
+        print("None found.")
+    print(len(unmatched_to_add), "records to be added.")
+
+    # Find records in quizzo_list not in quizzo_list_to_add
+    print("\n" + "="*80)
+    print("RECORDS IN QUIZZO_LIST NOT IN QUIZZO_LIST_TO_ADD (will be REMOVED):")
+    print("="*80)
+    unmatched_list = quizzo_list[~quizzo_list['BUSINESS_NORM'].isin(quizzo_list_to_add['BUSINESS_NORM'])]
+    if not unmatched_list.empty:
+        print(unmatched_list[['BUSINESS', 'NEIGHBORHOOD', 'TIME', 'WEEKDAY']].to_string())
+    else:
+        print("None found.")
+    print(len(unmatched_list), "records to be removed.")
+
+    # Remove records not found in quizzo_list_to_add
+    quizzo_list = quizzo_list[quizzo_list['BUSINESS_NORM'].isin(quizzo_list_to_add['BUSINESS_NORM'])]
+
+    # Add records from quizzo_list_to_add not already in quizzo_list
+    quizzo_list = pd.concat([quizzo_list, unmatched_to_add], ignore_index=True)
+
+    # Drop normalized columns
+    quizzo_list.drop(columns=['BUSINESS_NORM'], inplace=True)
+    quizzo_list_to_add.drop(columns=['BUSINESS_NORM'], inplace=True)
+
+    return quizzo_list
+
+# # Load the data
+# quizzo_list = pd.read_csv('public/quizzo_list.csv')
+# quizzo_list_to_add = pd.read_csv('Quizzo/cleaned_quizzo_list.csv')
+
+# # Call the function
+# updated_quizzo_list = update_quizzo_list(quizzo_list, quizzo_list_to_add)
+
+# # Save the updated quizzo_list
+# updated_quizzo_list.to_csv('public/quizzo_list_updated2.csv', index=False)
+# print("\n" + "="*80)
+# print("Updated quizzo_list saved to public/quizzo_list_updated2.csv")
+# print("="*80)
+
+
+master_table = pd.read_csv('Csv/MasterTable.csv')
+quizzo_list = pd.read_csv('public/quizzo_list.csv')
+updated_quizzo_list = pd.read_csv('public/quizzo_list_updated.csv')
+
+empty_lat_long = updated_quizzo_list[updated_quizzo_list["Latitude"].isnull()]
+print(updated_quizzo_list)
+print(updated_quizzo_list[updated_quizzo_list["Latitude"].isnull()])
+sgdf
 # Geopy setup
 geolocator = Nominatim(user_agent="quizzo_geocoder", timeout=10) # type: ignore
 
@@ -158,7 +232,8 @@ geolocator = Nominatim(user_agent="quizzo_geocoder", timeout=10) # type: ignore
 def merge_and_geocode_quizzo():
     # Load the quizzo list and quizzo extra CSVs
     quizzo_list = pd.read_csv('public/quizzo_list.csv')
-    quizzo_extra = pd.read_csv('Quizzo/quizzo_extra.csv')
+    # quizzo_extra = pd.read_csv('Quizzo/quizzo_extra.csv')
+    quizzo_extra = pd.read_csv('Quizzo/cleaned_quizzo_list.csv')
 
     # Standardize column names to match quizzo_list
     quizzo_extra.rename(columns={
@@ -237,7 +312,6 @@ def merge_and_geocode_quizzo():
     print("Transformed quizzo_extra.csv saved as quizzo_extra_transformed.csv.")
 
 # merge_and_geocode_quizzo()
-
 # Read the transformed quizzo_extra CSV
 # quizzo_extra = pd.read_csv('Quizzo/quizzo_extra_transformed.csv')
 
