@@ -63,7 +63,7 @@ fetch('assets/philadelphia-neighborhoods.geojson')
     }).addTo(map);
 
     // Load quizzo_list.csv and add points to the map
-    Papa.parse('assets/quizzo_final_list.csv', {
+    Papa.parse('assets/quizzo_list.csv', {
       download: true,
       header: true,
       complete: function (results) {
