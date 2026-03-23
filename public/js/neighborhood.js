@@ -17,11 +17,18 @@ const neighborhoodPolygons = []; // Store polygons for point-in-polygon checks
 fetch('assets/philadelphia-neighborhoods.geojson')
   .then(response => response.json())
   .then(geojsonData => {
-    // Add a buffer of 50 feet (approximately 15.24 meters) to each polygon
+    // Store buffered features keyed by neighborhood NAME for PIP lookups
+    const bufferedFeaturesByName = {};
+
+    // Add a buffer to each polygon
     const bufferedGeoJSON = {
       type: 'FeatureCollection',
       features: geojsonData.features.map(feature => {
-        const buffered = turf.buffer(feature, 18.00, { units: 'meters' }); // Buffer by 15.24 meters
+        const buffered = turf.buffer(feature, 18.00, { units: 'meters' });
+        // Preserve original properties so onEachFeature can read NAME
+        buffered.properties = feature.properties;
+        const name = feature.properties.NAME?.replace(/_/g, ' ');
+        if (name) bufferedFeaturesByName[name] = buffered;
         return buffered;
       })
     };
@@ -52,9 +59,8 @@ fetch('assets/philadelphia-neighborhoods.geojson')
             })
           });
 
-          // Store the label and polygon for later use
+          // Store the label for zoom toggling
           neighborhoodLabels.push(label);
-          neighborhoodPolygons.push({ name: neighborhoodName, layer });
 
           // Bind a popup to the polygon
           layer.bindPopup(`<strong>${neighborhoodName}</strong>`);
@@ -74,19 +80,17 @@ fetch('assets/philadelphia-neighborhoods.geojson')
           const neighborhood = row.NEIGHBORHOOD ? row.NEIGHBORHOOD.replace(/_/g, ' ').trim().toUpperCase() : '';
 
           if (!isNaN(lat) && !isNaN(lng)) {
-            // Check if the point is inside any polygons
             let markerColor = 'black'; // Default color
-            let matchedPolygonName = null;
 
-            neighborhoodPolygons.forEach(({ name, layer }) => {
-              if (layer.getBounds().contains([lat, lng])) {
-                matchedPolygonName = name; // Get the NAME of the polygon the point falls within
+            // Only do PIP check if the row has a neighborhood AND it matches a known polygon
+            if (neighborhood) {
+              const matchedFeature = bufferedFeaturesByName[neighborhood];
+              if (matchedFeature) {
+                const turfPoint = turf.point([lng, lat]); // turf uses [lng, lat]
+                if (turf.booleanPointInPolygon(turfPoint, matchedFeature)) {
+                  markerColor = 'green';
+                }
               }
-            });
-
-            // Compare the neighborhood of the point with the polygon NAME
-            if (matchedPolygonName && matchedPolygonName === neighborhood) {
-              markerColor = 'green'; // Point is inside the correct polygon
             }
 
             // Create a marker

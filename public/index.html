@@ -764,59 +764,59 @@
           // Prepend the "All" option to the dropdown
           timeOptions.prepend(allOption);
 
-          // Populate the Event Type dropdown
-          const eventTypeOptions = document.getElementById("event-type-options");
-          eventTypes.forEach(eventType => {
-            const li = document.createElement("li");
-            li.className = "event-type-option";
-            li.setAttribute("data-value", eventType);
-            li.textContent = eventType;
+          // // Populate the Event Type dropdown
+          // const eventTypeOptions = document.getElementById("event-type-options");
+          // eventTypes.forEach(eventType => {
+          //   const li = document.createElement("li");
+          //   li.className = "event-type-option";
+          //   li.setAttribute("data-value", eventType);
+          //   li.textContent = eventType;
 
-            li.addEventListener("click", event => {
-              const selectedEventType = event.target.getAttribute("data-value");
-              console.log("Selected eventType:", selectedEventType);
+          //   li.addEventListener("click", event => {
+          //     const selectedEventType = event.target.getAttribute("data-value");
+          //     console.log("Selected eventType:", selectedEventType);
 
-              markers.forEach(function (marker) {
-                if (!(marker instanceof L.Marker)) return;
+          //     markers.forEach(function (marker) {
+          //       if (!(marker instanceof L.Marker)) return;
 
-                // If "All" is selected, add all markers back to the map
-                if (selectedEventType === "All" || marker.eventType === selectedEventType) {
-                  if (!leafletmap.hasLayer(marker)) {
-                    marker.addTo(leafletmap);
-                  }
-                } else {
-                  if (leafletmap.hasLayer(marker)) {
-                    leafletmap.removeLayer(marker);
-                  }
-                }
-              });
+          //       // If "All" is selected, add all markers back to the map
+          //       if (selectedEventType === "All" || marker.eventType === selectedEventType) {
+          //         if (!leafletmap.hasLayer(marker)) {
+          //           marker.addTo(leafletmap);
+          //         }
+          //       } else {
+          //         if (leafletmap.hasLayer(marker)) {
+          //           leafletmap.removeLayer(marker);
+          //         }
+          //       }
+          //     });
 
-            });
-            eventTypeOptions.appendChild(li);
-          });
-          // Add the "All" option to the Event Type dropdown
-          const allEventTypeOption = document.createElement("li");
-          allEventTypeOption.className = "event-type-option";
-          allEventTypeOption.setAttribute("data-value", "All");
-          allEventTypeOption.textContent = "All";
-          allEventTypeOption.addEventListener("click", event => {
-            const selectedEventType = event.target.getAttribute("data-value");
-            console.log("Selected eventType:", selectedEventType);
+          //   });
+          //   eventTypeOptions.appendChild(li);
+          // });
+          // // Add the "All" option to the Event Type dropdown
+          // const allEventTypeOption = document.createElement("li");
+          // allEventTypeOption.className = "event-type-option";
+          // allEventTypeOption.setAttribute("data-value", "All");
+          // allEventTypeOption.textContent = "All";
+          // allEventTypeOption.addEventListener("click", event => {
+          //   const selectedEventType = event.target.getAttribute("data-value");
+          //   console.log("Selected eventType:", selectedEventType);
 
-            markers.forEach(function (marker) {
-              if (!(marker instanceof L.Marker)) return;
+          //   markers.forEach(function (marker) {
+          //     if (!(marker instanceof L.Marker)) return;
 
-              // Add all markers back to the map when "All" is selected
-              if (!leafletmap.hasLayer(marker)) {
-                marker.addTo(leafletmap);
-              }
-            });
+          //     // Add all markers back to the map when "All" is selected
+          //     if (!leafletmap.hasLayer(marker)) {
+          //       marker.addTo(leafletmap);
+          //     }
+          //   });
 
-            // Close the dropdown after selection
-            const eventTypeDropdown = document.getElementById("event-type-dropdown");
-            eventTypeDropdown.style.display = "none";
-          });
-          eventTypeOptions.prepend(allEventTypeOption);
+          //   // Close the dropdown after selection
+          //   const eventTypeDropdown = document.getElementById("event-type-dropdown");
+          //   eventTypeDropdown.style.display = "none";
+          // });
+          // eventTypeOptions.prepend(allEventTypeOption);
 
           // Populate the First Prize dropdown
           const firstPrizeOptions = document.getElementById("first-prize-options");
@@ -974,7 +974,7 @@
             var neighborhood = row.NEIGHBORHOOD;
             var time = row.TIME;
             var businessName = row.BUSINESS;
-            var eventType = row.EVENT_TYPE.replace(/_/g, ' ');
+            // var eventType = row.EVENT_TYPE.replace(/_/g, ' ');
             var firstPrize = row.PRIZE_1_TYPE.replace(/_/g, ' ');
             var secondPrize = row.PRIZE_2_TYPE.replace(/_/g, ' ');
             var address = row.ADDRESS_STREET+", "+row.ADDRESS_CITY+", "+row.ADDRESS_STATE+" "+row.ADDRESS_ZIP
@@ -986,7 +986,7 @@
                   <p style="text-align: center; font-size: 14px; margin: 15px 0;">${address}</p>
                   <p style="text-align: center; font-size: 14px; margin: 5px 0;">${neighborhood}</p>
                   <p style="text-align: center; font-size: 16px; margin: 15px 0;"><b>${row.WEEKDAY} - ${row.TIME}</b></p>
-                  ${row.HOST ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">Host: ${row.HOST} <br> Event Type: ${eventType}</p>` : `<p style="text-align: center; font-size: 16px;">Event Type: ${row.EVENT_TYPE}</p>`}
+                  ${row.HOST ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">Host: ${row.HOST} <br>` : ''}
                   ${row.PRIZE_1_TYPE ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">First Prize: ${firstPrize} - $${row.PRIZE_1_AMOUNT}0${secondPrize ? `<br> Second Prize: ${secondPrize} - $${row.PRIZE_2_AMOUNT}0</p>` : '</p>'}` : ''}
                 </div>
               `;
@@ -995,7 +995,7 @@
               }).bindPopup(popupContent);
               marker.weekday = weekday; // Store weekday in marker for filtering
               marker.time = time; // Store time in marker for filtering
-              marker.eventType = eventType;
+              // marker.eventType = eventType;
               marker.firstPrize = firstPrize;
               marker.businessName = businessName;
               marker.neighborhood = neighborhood;
@@ -1077,19 +1077,19 @@
         console.log("Filters and map view reset.");
       });
 
-      // Toggle Event Type dropdown visibility
-      const eventTypeButton = document.getElementById("event-type-button");
-      const eventTypeDropdown = document.getElementById("event-type-dropdown");
-      eventTypeButton.addEventListener("click", () => {
-        const isVisible = eventTypeDropdown.style.display === "block";
-        eventTypeDropdown.style.display = isVisible ? "none" : "block";
-      });
-      // Close dropdown if clicked outside
-      document.addEventListener("click", event => {
-        if (!eventTypeButton.contains(event.target) && !eventTypeDropdown.contains(event.target)) {
-          eventTypeDropdown.style.display = "none";
-        }
-      });
+      // // Toggle Event Type dropdown visibility
+      // const eventTypeButton = document.getElementById("event-type-button");
+      // const eventTypeDropdown = document.getElementById("event-type-dropdown");
+      // eventTypeButton.addEventListener("click", () => {
+      //   const isVisible = eventTypeDropdown.style.display === "block";
+      //   eventTypeDropdown.style.display = isVisible ? "none" : "block";
+      // });
+      // // Close dropdown if clicked outside
+      // document.addEventListener("click", event => {
+      //   if (!eventTypeButton.contains(event.target) && !eventTypeDropdown.contains(event.target)) {
+      //     eventTypeDropdown.style.display = "none";
+      //   }
+      // });
 
       // Toggle First Prize dropdown visibility
       const firstPrizeButton = document.getElementById("first-prize-button");
@@ -1225,19 +1225,19 @@
                 weekdayDropdown.appendChild(option);
               });
 
-              // Populate Event Type dropdown
-              const eventTypeDropdown = document.getElementById("edit-event-type");
-              eventTypeDropdown.innerHTML = ""; // Clear existing options
-              const eventTypes = [...new Set(results.data.map(row => row.EVENT_TYPE).filter(eventType => eventType))];
-              eventTypes.forEach(eventType => {
-                const option = document.createElement("option");
-                option.value = eventType;
-                option.textContent = eventType.replace(/_/g, " "); // Replace underscores with spaces
-                if (eventType === marker.eventType) {
-                  option.selected = true; // Set the selected option
-                }
-                eventTypeDropdown.appendChild(option);
-              });
+              // // Populate Event Type dropdown
+              // const eventTypeDropdown = document.getElementById("edit-event-type");
+              // eventTypeDropdown.innerHTML = ""; // Clear existing options
+              // const eventTypes = [...new Set(results.data.map(row => row.EVENT_TYPE).filter(eventType => eventType))];
+              // eventTypes.forEach(eventType => {
+              //   const option = document.createElement("option");
+              //   option.value = eventType;
+              //   option.textContent = eventType.replace(/_/g, " "); // Replace underscores with spaces
+              //   if (eventType === marker.eventType) {
+              //     option.selected = true; // Set the selected option
+              //   }
+              //   eventTypeDropdown.appendChild(option);
+              // });
 
               // Handle empty fields for Second Prize and Host
               document.getElementById("edit-first-prize").value = marker.firstPrize || "";
@@ -1263,7 +1263,7 @@
           address: document.getElementById("address").value,
           weekday: document.getElementById("weekday").value,
           time: document.getElementById("time").value,
-          eventType: document.getElementById("event-type").value,
+          // eventType: document.getElementById("event-type").value,
           firstPrize: document.getElementById("first-prize").value,
           secondPrize: document.getElementById("second-prize").value,
           host: document.getElementById("host").value,
