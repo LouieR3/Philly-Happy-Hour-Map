@@ -1,0 +1,311 @@
+/**
+ * Mappy Hour - Express Backend
+ * 
+ * Collections:
+ *   quizzo        — live data (mirrors your CSV; source of truth)
+ *   pending       — new bar submissions awaiting approval
+ *   pending_edits — edit requests for existing bars awaiting approval
+ * 
+ * Setup:
+ *   npm install express mongoose cors dotenv json2csv
+ *   Add MONGODB_URI and ADMIN_PASSWORD to .env
+ */
+
+require('dotenv').config();
+const express    = require('express');
+const mongoose   = require('mongoose');
+const cors       = require('cors');
+const { Parser } = require('json2csv');
+const path       = require('path');
+const fs         = require('fs');
+
+const app  = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+// ─── Serve static files (your existing site) ────────────────────────────────
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ─── MongoDB connection ──────────────────────────────────────────────────────
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
+
+// ─── Schemas ─────────────────────────────────────────────────────────────────
+const quizzoSchema = new mongoose.Schema({
+  BUSINESS:       String,
+  BUSINESS_TAGS:  String,
+  TIME:           String,
+  WEEKDAY:        String,
+  OCCURRENCE_TYPES: String,
+  NEIGHBORHOOD:   String,
+  ADDRESS_STREET: String,
+  ADDRESS_UNIT:   String,
+  ADDRESS_CITY:   String,
+  ADDRESS_STATE:  String,
+  ADDRESS_ZIP:    String,
+  PRIZE_1_TYPE:   String,
+  PRIZE_1_AMOUNT: Number,
+  PRIZE_2_TYPE:   String,
+  PRIZE_2_AMOUNT: Number,
+  PRIZE_3_TYPE:   String,
+  PRIZE_3_AMOUNT: Number,
+  HOST:           String,
+  EVENT_TYPE:     String,
+  Full_Address:   String,
+  Latitude:       Number,
+  Longitude:      Number,
+}, { collection: 'quizzo' });
+
+// Pending new bar submission
+const pendingSchema = new mongoose.Schema({
+  BUSINESS:       { type: String, required: true },
+  ADDRESS:        String,    // raw address from form; server parses into fields on approval
+  WEEKDAY:        String,
+  TIME:           String,
+  EVENT_TYPE:     String,
+  PRIZE_1_TYPE:   String,
+  PRIZE_1_AMOUNT: String,
+  PRIZE_2_TYPE:   String,
+  PRIZE_2_AMOUNT: String,
+  HOST:           String,
+  NOTES:          String,    // optional submitter notes
+  submittedAt:    { type: Date, default: Date.now },
+  status:         { type: String, default: 'pending' }, // pending | approved | rejected
+}, { collection: 'pending' });
+
+// Pending edit to an existing bar
+const pendingEditSchema = new mongoose.Schema({
+  originalBusiness: { type: String, required: true }, // name of bar being edited
+  originalId:       mongoose.Schema.Types.ObjectId,   // _id of the quizzo doc
+  changes: {                                          // only fields the user changed
+    BUSINESS:       String,
+    ADDRESS_STREET: String,
+    ADDRESS_UNIT:   String,
+    ADDRESS_CITY:   String,
+    ADDRESS_STATE:  String,
+    ADDRESS_ZIP:    String,
+    WEEKDAY:        String,
+    TIME:           String,
+    EVENT_TYPE:     String,
+    PRIZE_1_TYPE:   String,
+    PRIZE_1_AMOUNT: String,
+    PRIZE_2_TYPE:   String,
+    PRIZE_2_AMOUNT: String,
+    HOST:           String,
+  },
+  NOTES:        String,
+  submittedAt:  { type: Date, default: Date.now },
+  status:       { type: String, default: 'pending' },
+}, { collection: 'pending_edits' });
+
+const Quizzo      = mongoose.model('Quizzo',      quizzoSchema);
+const Pending     = mongoose.model('Pending',     pendingSchema);
+const PendingEdit = mongoose.model('PendingEdit', pendingEditSchema);
+
+// ─── Simple admin auth middleware ─────────────────────────────────────────────
+function adminAuth(req, res, next) {
+  const token = req.headers['x-admin-token'];
+  if (token && token === process.env.ADMIN_PASSWORD) return next();
+  res.status(401).json({ error: 'Unauthorized' });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// PUBLIC ROUTES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Live quizzo data (replaces CSV fetch in index.html)
+app.get('/api/quizzo', async (req, res) => {
+  try {
+    const bars = await Quizzo.find({}, { __v: 0 }).lean();
+    res.json(bars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Submit a new bar
+app.post('/submit-bar', async (req, res) => {
+  try {
+    const { businessName, address, weekday, time, eventType,
+            firstPrize, firstPrizeAmount, secondPrize, secondPrizeAmount,
+            host, notes } = req.body;
+
+    if (!businessName) return res.status(400).json({ error: 'Business name is required' });
+
+    const submission = new Pending({
+      BUSINESS:       businessName.trim().toUpperCase(),
+      ADDRESS:        address,
+      WEEKDAY:        weekday?.toUpperCase(),
+      TIME:           time,
+      EVENT_TYPE:     eventType?.toUpperCase() || 'QUIZZO',
+      PRIZE_1_TYPE:   firstPrize,
+      PRIZE_1_AMOUNT: firstPrizeAmount,
+      PRIZE_2_TYPE:   secondPrize,
+      PRIZE_2_AMOUNT: secondPrizeAmount,
+      HOST:           host?.toUpperCase(),
+      NOTES:          notes,
+    });
+
+    await submission.save();
+    res.json({ success: true, message: 'Submission received — thanks!' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Submit an edit to an existing bar
+app.post('/submit-edit', async (req, res) => {
+  try {
+    const { originalBusiness, originalId, changes, notes } = req.body;
+    if (!originalBusiness) return res.status(400).json({ error: 'originalBusiness is required' });
+
+    const edit = new PendingEdit({ originalBusiness, originalId, changes, notes });
+    await edit.save();
+    res.json({ success: true, message: 'Edit submitted for review — thanks!' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ADMIN ROUTES  (all require x-admin-token header)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Get all pending submissions
+app.get('/admin/pending', adminAuth, async (req, res) => {
+  try {
+    const [submissions, edits] = await Promise.all([
+      Pending.find({ status: 'pending' }).lean(),
+      PendingEdit.find({ status: 'pending' }).lean(),
+    ]);
+    res.json({ submissions, edits });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Approve a new bar submission
+app.post('/admin/approve/:id', adminAuth, async (req, res) => {
+  try {
+    const submission = await Pending.findById(req.params.id);
+    if (!submission) return res.status(404).json({ error: 'Submission not found' });
+
+    // Optionally merge in any admin overrides from request body
+    const overrides = req.body || {};
+
+    const newBar = new Quizzo({
+      BUSINESS:       overrides.BUSINESS       || submission.BUSINESS,
+      TIME:           overrides.TIME           || submission.TIME,
+      WEEKDAY:        overrides.WEEKDAY        || submission.WEEKDAY,
+      EVENT_TYPE:     overrides.EVENT_TYPE     || submission.EVENT_TYPE,
+      ADDRESS_STREET: overrides.ADDRESS_STREET || '',
+      ADDRESS_CITY:   overrides.ADDRESS_CITY   || '',
+      ADDRESS_STATE:  overrides.ADDRESS_STATE  || '',
+      ADDRESS_ZIP:    overrides.ADDRESS_ZIP    || '',
+      PRIZE_1_TYPE:   overrides.PRIZE_1_TYPE   || submission.PRIZE_1_TYPE,
+      PRIZE_1_AMOUNT: overrides.PRIZE_1_AMOUNT || submission.PRIZE_1_AMOUNT,
+      PRIZE_2_TYPE:   overrides.PRIZE_2_TYPE   || submission.PRIZE_2_TYPE,
+      PRIZE_2_AMOUNT: overrides.PRIZE_2_AMOUNT || submission.PRIZE_2_AMOUNT,
+      HOST:           overrides.HOST           || submission.HOST,
+      Full_Address:   submission.ADDRESS,
+      // Latitude/Longitude left blank — run geocode_addresses() after export
+    });
+
+    await newBar.save();
+    submission.status = 'approved';
+    await submission.save();
+
+    await exportCsv(); // regenerate CSV so the map stays in sync
+    res.json({ success: true, insertedId: newBar._id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Reject a new bar submission
+app.post('/admin/reject/:id', adminAuth, async (req, res) => {
+  try {
+    const submission = await Pending.findByIdAndUpdate(
+      req.params.id,
+      { status: 'rejected' },
+      { new: true }
+    );
+    if (!submission) return res.status(404).json({ error: 'Not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Approve an edit
+app.post('/admin/approve-edit/:id', adminAuth, async (req, res) => {
+  try {
+    const edit = await PendingEdit.findById(req.params.id);
+    if (!edit) return res.status(404).json({ error: 'Edit not found' });
+
+    // Find the bar by _id if we have it, otherwise by name
+    const filter = edit.originalId
+      ? { _id: edit.originalId }
+      : { BUSINESS: edit.originalBusiness };
+
+    const updated = await Quizzo.findOneAndUpdate(
+      filter,
+      { $set: edit.changes },
+      { new: true }
+    );
+    if (!updated) return res.status(404).json({ error: 'Original bar not found in quizzo collection' });
+
+    edit.status = 'approved';
+    await edit.save();
+
+    await exportCsv();
+    res.json({ success: true, updated });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Reject an edit
+app.post('/admin/reject-edit/:id', adminAuth, async (req, res) => {
+  try {
+    const edit = await PendingEdit.findByIdAndUpdate(
+      req.params.id,
+      { status: 'rejected' },
+      { new: true }
+    );
+    if (!edit) return res.status(404).json({ error: 'Not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Manually trigger CSV export
+app.post('/admin/export-csv', adminAuth, async (req, res) => {
+  try {
+    await exportCsv();
+    res.json({ success: true, message: 'CSV exported to public/assets/quizzo_list.csv' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── CSV export helper ────────────────────────────────────────────────────────
+async function exportCsv() {
+  const bars = await Quizzo.find({}, { __v: 0, _id: 0 }).lean();
+  const fields = [
+    'BUSINESS','BUSINESS_TAGS','TIME','WEEKDAY','OCCURRENCE_TYPES','NEIGHBORHOOD',
+    'ADDRESS_STREET','ADDRESS_UNIT','ADDRESS_CITY','ADDRESS_STATE','ADDRESS_ZIP',
+    'PRIZE_1_TYPE','PRIZE_1_AMOUNT','PRIZE_2_TYPE','PRIZE_2_AMOUNT',
+    'PRIZE_3_TYPE','PRIZE_3_AMOUNT','HOST','EVENT_TYPE','Full_Address',
+    'Latitude','Longitude',
+  ];
+  const parser = new Parser({ fields });
+  const csv    = parser.parse(bars);
+  fs.writeFileSync(path.join(__dirname, 'public/assets/quizzo_list.csv'), csv);
+}
+
+app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));

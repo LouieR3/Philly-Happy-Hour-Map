@@ -1,64 +1,884 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mappy Hour · Admin</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+
+  <style>
+    /* ── Variables ── */
+    :root {
+      --primary:   #1a6b4a;
+      --accent:    #f4a623;
+      --danger:    #d9534f;
+      --bg:        #f5f6f8;
+      --surface:   #ffffff;
+      --border:    #e2e6ea;
+      --text:      #1c2b2b;
+      --muted:     #7a8a8a;
+      --pill-new:  #e8f5ee;
+      --pill-edit: #fff8e1;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Login Screen ── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f3d28 0%, #1a6b4a 60%, #256b4a 100%);
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 360px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+
+    .login-card h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .login-card p {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+    }
+
+    .login-card input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 1rem;
+      margin-bottom: 14px;
+      transition: border-color 0.2s;
+    }
+
+    .login-card input:focus { outline: none; border-color: var(--primary); }
+
+    .btn-login {
+      width: 100%;
+      padding: 13px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: background 0.2s;
+    }
+
+    .btn-login:hover { background: #145238; }
+    #login-error { color: var(--danger); font-size: 0.85rem; margin-top: 10px; display: none; }
+
+    /* ── App Shell ── */
+    #app { display: none; }
+
+    header {
+      background: linear-gradient(90deg, #0f3d28, #1a6b4a);
+      color: white;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      letter-spacing: 0.04em;
+    }
+
+    header h1 span { color: var(--accent); }
+
+    .header-right { display: flex; align-items: center; gap: 16px; }
+
+    .badge-count {
+      background: var(--accent);
+      color: #1c2b2b;
+      border-radius: 20px;
+      padding: 3px 12px;
+      font-weight: 700;
+      font-size: 0.85rem;
+    }
+
+    .btn-logout {
+      background: transparent;
+      border: 1.5px solid rgba(255,255,255,0.4);
+      color: white;
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+
+    .btn-logout:hover { background: rgba(255,255,255,0.1); }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 0;
+      padding: 24px 32px 0;
+      border-bottom: 2px solid var(--border);
+      background: var(--surface);
+    }
+
+    .tab {
+      padding: 12px 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      color: var(--muted);
+      transition: color 0.2s, border-color 0.2s;
+      letter-spacing: 0.03em;
+    }
+
+    .tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+    .tab:hover:not(.active) { color: var(--text); }
+
+    .tab-badge {
+      background: var(--danger);
+      color: white;
+      border-radius: 10px;
+      padding: 1px 8px;
+      font-size: 0.75rem;
+      margin-left: 8px;
+    }
+
+    /* ── Content ── */
+    main { padding: 32px; max-width: 1100px; margin: 0 auto; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .section-header h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .btn-export {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+
+    .btn-export:hover { background: #145238; }
+
+    /* ── Cards ── */
+    .card-list { display: flex; flex-direction: column; gap: 16px; }
+
+    .card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      transition: box-shadow 0.2s;
+    }
+
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.09); }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .card-meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    .pill-new  { background: var(--pill-new);  color: var(--primary); }
+    .pill-edit { background: var(--pill-edit); color: #b45309; }
+
+    .card-fields {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px 20px;
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .field span {
+      font-size: 0.92rem;
+      color: var(--text);
+    }
+
+    .field span.changed {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .notes-box {
+      background: #f8f9fb;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    /* ── Editable fields inside card (for admin to tweak before approving) ── */
+    .edit-section {
+      border-top: 1px dashed var(--border);
+      padding-top: 14px;
+      margin-top: 4px;
+    }
+
+    .edit-section summary {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .edit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .edit-grid input, .edit-grid select {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-family: 'Lato', sans-serif;
+    }
+
+    .edit-grid input:focus, .edit-grid select:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .edit-grid .field-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 3px;
+    }
+
+    /* ── Action buttons ── */
+    .card-actions { display: flex; gap: 10px; justify-content: flex-end; }
+
+    .btn-approve, .btn-reject {
+      padding: 9px 20px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-approve:active, .btn-reject:active { transform: scale(0.97); }
+    .btn-approve { background: var(--primary); color: white; }
+    .btn-approve:hover { opacity: 0.88; }
+    .btn-reject  { background: #fdecea; color: var(--danger); }
+    .btn-reject:hover  { background: #fad4d0; }
+
+    /* ── Empty state ── */
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty i { font-size: 2.5rem; margin-bottom: 14px; display: block; opacity: 0.3; }
+    .empty p { font-size: 0.95rem; }
+
+    /* ── Live data table ── */
+    .table-wrap { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    thead th {
+      background: #f0f3f0;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 10px 12px;
+      text-align: left;
+      color: var(--muted);
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+
+    tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+    tbody tr:hover { background: #f0f7f3; }
+    tbody td { padding: 10px 12px; vertical-align: middle; }
+
+    .search-wrap { margin-bottom: 16px; position: relative; }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 10px 16px 10px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .search-wrap i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+
+    /* ── Toast ── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: #1c2b2b;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.success { border-left: 4px solid #2ecc71; }
+    #toast.error   { border-left: 4px solid var(--danger); }
+  </style>
 </head>
 <body>
-    <section id="admin-page" style="margin-top: 50px;">
-        <div class="container">
-          <h3 class="text-center">Admin Panel</h3>
-          <div id="submissions-container"></div>
+
+<!-- ── Login ── -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>🍸 Mappy Hour</h1>
+    <p>Admin Dashboard — enter your password to continue</p>
+    <input type="password" id="admin-password" placeholder="Admin password" />
+    <button class="btn-login" onclick="login()">Sign In</button>
+    <div id="login-error">Incorrect password. Try again.</div>
+  </div>
+</div>
+
+<!-- ── App ── -->
+<div id="app">
+  <header>
+    <h1>Mappy Hour <span>Admin</span></h1>
+    <div class="header-right">
+      <span class="badge-count" id="header-count">0 pending</span>
+      <button class="btn-logout" onclick="logout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </header>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="submissions">
+      New Bars <span class="tab-badge" id="badge-submissions">0</span>
+    </div>
+    <div class="tab" data-tab="edits">
+      Edits <span class="tab-badge" id="badge-edits">0</span>
+    </div>
+    <div class="tab" data-tab="live">
+      Live Data
+    </div>
+  </div>
+
+  <main>
+    <!-- New Submissions Panel -->
+    <div class="panel active" id="panel-submissions">
+      <div class="section-header">
+        <h2>Pending New Bar Submissions</h2>
+        <button class="btn-export" onclick="exportCsv()">
+          <i class="fa fa-download"></i> Export CSV
+        </button>
+      </div>
+      <div class="card-list" id="submissions-list"></div>
+    </div>
+
+    <!-- Pending Edits Panel -->
+    <div class="panel" id="panel-edits">
+      <div class="section-header">
+        <h2>Pending Edits to Existing Bars</h2>
+      </div>
+      <div class="card-list" id="edits-list"></div>
+    </div>
+
+    <!-- Live Data Panel -->
+    <div class="panel" id="panel-live">
+      <div class="section-header">
+        <h2>Live Quizzo Data</h2>
+        <button class="btn-export" onclick="exportCsv()">
+          <i class="fa fa-download"></i> Export CSV
+        </button>
+      </div>
+      <div class="search-wrap">
+        <i class="fa fa-search"></i>
+        <input type="text" id="live-search" placeholder="Search by bar name, neighborhood, day…" oninput="filterLive(this.value)" />
+      </div>
+      <div class="table-wrap">
+        <table id="live-table">
+          <thead>
+            <tr>
+              <th>Business</th>
+              <th>Neighborhood</th>
+              <th>Address</th>
+              <th>Day</th>
+              <th>Time</th>
+              <th>Host</th>
+              <th>Prize 1</th>
+            </tr>
+          </thead>
+          <tbody id="live-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+  // ── State ──────────────────────────────────────────────────────────────────
+  let adminToken = '';
+  let liveData   = [];
+
+  const WEEKDAYS = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
+
+  // ── Auth ───────────────────────────────────────────────────────────────────
+  function login() {
+    const pw = document.getElementById('admin-password').value.trim();
+    if (!pw) return;
+    adminToken = pw;
+    // Test the token immediately
+    fetch('/admin/pending', { headers: { 'x-admin-token': adminToken } })
+      .then(r => {
+        if (r.status === 401) throw new Error('bad');
+        return r.json();
+      })
+      .then(data => {
+        document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        renderPending(data);
+        loadLiveData();
+      })
+      .catch(() => {
+        document.getElementById('login-error').style.display = 'block';
+        adminToken = '';
+      });
+  }
+
+  document.getElementById('admin-password').addEventListener('keydown', e => {
+    if (e.key === 'Enter') login();
+  });
+
+  function logout() {
+    adminToken = '';
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('admin-password').value = '';
+  }
+
+  // ── Tabs ───────────────────────────────────────────────────────────────────
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ── Render Pending ─────────────────────────────────────────────────────────
+  function renderPending({ submissions, edits }) {
+    // Update badges
+    document.getElementById('badge-submissions').textContent = submissions.length;
+    document.getElementById('badge-edits').textContent       = edits.length;
+    document.getElementById('header-count').textContent =
+      `${submissions.length + edits.length} pending`;
+
+    // New submissions
+    const subList = document.getElementById('submissions-list');
+    subList.innerHTML = '';
+    if (submissions.length === 0) {
+      subList.innerHTML = emptyState('check-circle', 'No pending submissions — all clear!');
+    } else {
+      submissions.forEach(s => subList.appendChild(buildSubmissionCard(s)));
+    }
+
+    // Edits
+    const editList = document.getElementById('edits-list');
+    editList.innerHTML = '';
+    if (edits.length === 0) {
+      editList.innerHTML = emptyState('check-circle', 'No pending edits — all clear!');
+    } else {
+      edits.forEach(e => editList.appendChild(buildEditCard(e)));
+    }
+  }
+
+  function emptyState(icon, msg) {
+    return `<div class="empty"><i class="fa fa-${icon}"></i><p>${msg}</p></div>`;
+  }
+
+  // ── Submission Card ────────────────────────────────────────────────────────
+  function buildSubmissionCard(s) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'card-' + s._id;
+
+    const submitted = new Date(s.submittedAt).toLocaleString();
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div>
+          <div class="card-title">${s.BUSINESS}</div>
+          <div class="card-meta">Submitted ${submitted}</div>
         </div>
-    </section>
-    <script>
-        // Fetch pending submissions
-        fetch("/get-submissions")
-          .then((response) => response.json())
-          .then((submissions) => {
-            const container = document.getElementById("submissions-container");
-            submissions.forEach((submission, index) => {
-              const submissionDiv = document.createElement("div");
-              submissionDiv.innerHTML = `
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <h5 class="card-title">${submission.businessName}</h5>
-                    <p class="card-text">Address: ${submission.address}</p>
-                    <p class="card-text">Weekday: ${submission.weekday}</p>
-                    <p class="card-text">Time: ${submission.time}</p>
-                    <p class="card-text">Event Type: ${submission.eventType}</p>
-                    <p class="card-text">First Prize: ${submission.firstPrize}</p>
-                    <p class="card-text">Second Prize: ${submission.secondPrize}</p>
-                    <p class="card-text">Host: ${submission.host}</p>
-                    <button class="btn btn-success" onclick="approveSubmission(${index})">Approve</button>
-                    <button class="btn btn-danger" onclick="denySubmission(${index})">Deny</button>
-                  </div>
-                </div>
-              `;
-              container.appendChild(submissionDiv);
-            });
-          });
-      
-        // Approve submission
-        function approveSubmission(index) {
-          fetch(`/approve-submission/${index}`, { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => {
-              alert(data.message);
-              location.reload();
-            });
-        }
-      
-        // Deny submission
-        function denySubmission(index) {
-          fetch(`/deny-submission/${index}`, { method: "POST" })
-            .then((response) => response.json())
-            .then((data) => {
-              alert(data.message);
-              location.reload();
-            });
-        }
-      </script>
+        <span class="pill pill-new">NEW BAR</span>
+      </div>
+
+      <div class="card-fields">
+        ${field('Address', s.ADDRESS || '—')}
+        ${field('Day', s.WEEKDAY || '—')}
+        ${field('Time', s.TIME || '—')}
+        ${field('Event Type', s.EVENT_TYPE || '—')}
+        ${field('Host', s.HOST || '—')}
+        ${field('Prize 1', s.PRIZE_1_TYPE ? `${s.PRIZE_1_TYPE} — ${s.PRIZE_1_AMOUNT || '?'}` : '—')}
+        ${field('Prize 2', s.PRIZE_2_TYPE ? `${s.PRIZE_2_TYPE} — ${s.PRIZE_2_AMOUNT || '?'}` : '—')}
+      </div>
+
+      ${s.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${s.NOTES}</div>` : ''}
+
+      <!-- Admin can tweak fields before approving -->
+      <details class="edit-section">
+        <summary>Override fields before approving</summary>
+        <div class="edit-grid">
+          ${editInput('BUSINESS',       'Business Name',  s.BUSINESS,   s._id)}
+          ${editInput('ADDRESS_STREET', 'Street',         '',           s._id)}
+          ${editInput('ADDRESS_UNIT',   'Unit',           '',           s._id)}
+          ${editInput('ADDRESS_CITY',   'City',           'PHILADELPHIA', s._id)}
+          ${editInput('ADDRESS_STATE',  'State',          'PA',         s._id)}
+          ${editInput('ADDRESS_ZIP',    'ZIP',            '',           s._id)}
+          ${editSelect('WEEKDAY',       'Day', WEEKDAYS,   s.WEEKDAY,   s._id)}
+          ${editInput('TIME',           'Time',           s.TIME,       s._id)}
+          ${editInput('NEIGHBORHOOD',   'Neighborhood',   '',           s._id)}
+          ${editInput('HOST',           'Host',           s.HOST,       s._id)}
+          ${editInput('PRIZE_1_TYPE',   'Prize 1 Type',  s.PRIZE_1_TYPE, s._id)}
+          ${editInput('PRIZE_1_AMOUNT', 'Prize 1 Amount',s.PRIZE_1_AMOUNT, s._id)}
+        </div>
+      </details>
+
+      <div class="card-actions" style="margin-top:16px;">
+        <button class="btn-reject"  onclick="reject('${s._id}')">
+          <i class="fa fa-times"></i> Reject
+        </button>
+        <button class="btn-approve" onclick="approve('${s._id}')">
+          <i class="fa fa-check"></i> Approve & Add
+        </button>
+      </div>
+    `;
+    return card;
+  }
+
+  // ── Edit Card ──────────────────────────────────────────────────────────────
+  function buildEditCard(e) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'card-edit-' + e._id;
+
+    const submitted = new Date(e.submittedAt).toLocaleString();
+    const changes   = e.changes || {};
+
+    card.innerHTML = `
+      <div class="card-header">
+        <div>
+          <div class="card-title">${e.originalBusiness}</div>
+          <div class="card-meta">Edit submitted ${submitted}</div>
+        </div>
+        <span class="pill pill-edit">EDIT</span>
+      </div>
+
+      <div class="card-fields">
+        ${Object.entries(changes).map(([k, v]) =>
+          `<div class="field"><label>${k}</label><span class="changed">${v}</span></div>`
+        ).join('')}
+      </div>
+
+      ${e.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${e.NOTES}</div>` : ''}
+
+      <div class="card-actions">
+        <button class="btn-reject"  onclick="rejectEdit('${e._id}')">
+          <i class="fa fa-times"></i> Reject
+        </button>
+        <button class="btn-approve" onclick="approveEdit('${e._id}')">
+          <i class="fa fa-check"></i> Apply Edit
+        </button>
+      </div>
+    `;
+    return card;
+  }
+
+  // ── Field helpers ──────────────────────────────────────────────────────────
+  function field(label, value) {
+    return `<div class="field"><label>${label}</label><span>${value}</span></div>`;
+  }
+
+  function editInput(name, label, value, id) {
+    return `
+      <div>
+        <div class="field-label">${label}</div>
+        <input type="text" id="override-${id}-${name}" value="${value || ''}" placeholder="${label}" />
+      </div>`;
+  }
+
+  function editSelect(name, label, options, selected, id) {
+    const opts = options.map(o =>
+      `<option value="${o}" ${o === selected ? 'selected' : ''}>${o}</option>`
+    ).join('');
+    return `
+      <div>
+        <div class="field-label">${label}</div>
+        <select id="override-${id}-${name}">${opts}</select>
+      </div>`;
+  }
+
+  // ── Collect override values from editable fields ───────────────────────────
+  function collectOverrides(id) {
+    const overrideFields = [
+      'BUSINESS','ADDRESS_STREET','ADDRESS_UNIT','ADDRESS_CITY',
+      'ADDRESS_STATE','ADDRESS_ZIP','WEEKDAY','TIME','NEIGHBORHOOD',
+      'HOST','PRIZE_1_TYPE','PRIZE_1_AMOUNT'
+    ];
+    const overrides = {};
+    overrideFields.forEach(f => {
+      const el = document.getElementById(`override-${id}-${f}`);
+      if (el && el.value.trim()) overrides[f] = el.value.trim();
+    });
+    return overrides;
+  }
+
+  // ── API calls ──────────────────────────────────────────────────────────────
+  async function approve(id) {
+    const overrides = collectOverrides(id);
+    try {
+      const res  = await adminFetch(`/admin/approve/${id}`, 'POST', overrides);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      removeCard('card-' + id);
+      toast('Bar approved and added to live data ✓', 'success');
+      refreshBadge();
+      loadLiveData();
+    } catch (err) { toast(err.message, 'error'); }
+  }
+
+  async function reject(id) {
+    if (!confirm('Reject this submission?')) return;
+    try {
+      const res = await adminFetch(`/admin/reject/${id}`, 'POST');
+      if (!res.ok) throw new Error((await res.json()).error);
+      removeCard('card-' + id);
+      toast('Submission rejected.', 'success');
+      refreshBadge();
+    } catch (err) { toast(err.message, 'error'); }
+  }
+
+  async function approveEdit(id) {
+    try {
+      const res  = await adminFetch(`/admin/approve-edit/${id}`, 'POST');
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      removeCard('card-edit-' + id);
+      toast('Edit applied ✓', 'success');
+      refreshBadge();
+      loadLiveData();
+    } catch (err) { toast(err.message, 'error'); }
+  }
+
+  async function rejectEdit(id) {
+    if (!confirm('Reject this edit?')) return;
+    try {
+      const res = await adminFetch(`/admin/reject-edit/${id}`, 'POST');
+      if (!res.ok) throw new Error((await res.json()).error);
+      removeCard('card-edit-' + id);
+      toast('Edit rejected.', 'success');
+      refreshBadge();
+    } catch (err) { toast(err.message, 'error'); }
+  }
+
+  async function exportCsv() {
+    try {
+      const res = await adminFetch('/admin/export-csv', 'POST');
+      if (!res.ok) throw new Error((await res.json()).error);
+      toast('CSV exported successfully ✓', 'success');
+    } catch (err) { toast(err.message, 'error'); }
+  }
+
+  function adminFetch(url, method = 'GET', body = null) {
+    const opts = {
+      method,
+      headers: { 'x-admin-token': adminToken, 'Content-Type': 'application/json' },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch(url, opts);
+  }
+
+  function refreshBadge() {
+    adminFetch('/admin/pending')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('badge-submissions').textContent = data.submissions.length;
+        document.getElementById('badge-edits').textContent       = data.edits.length;
+        document.getElementById('header-count').textContent =
+          `${data.submissions.length + data.edits.length} pending`;
+      });
+  }
+
+  // ── Live Data Table ────────────────────────────────────────────────────────
+  function loadLiveData() {
+    fetch('/api/quizzo')
+      .then(r => r.json())
+      .then(data => {
+        liveData = data;
+        renderLiveTable(data);
+      });
+  }
+
+  function renderLiveTable(data) {
+    const tbody = document.getElementById('live-tbody');
+    tbody.innerHTML = '';
+    data.forEach(bar => {
+      const tr = document.createElement('tr');
+      const addr = [bar.ADDRESS_STREET, bar.ADDRESS_CITY, bar.ADDRESS_STATE]
+        .filter(Boolean).join(', ');
+      tr.innerHTML = `
+        <td><strong>${bar.BUSINESS}</strong></td>
+        <td>${bar.NEIGHBORHOOD || '—'}</td>
+        <td>${addr || '—'}</td>
+        <td>${bar.WEEKDAY || '—'}</td>
+        <td>${bar.TIME || '—'}</td>
+        <td>${bar.HOST || '—'}</td>
+        <td>${bar.PRIZE_1_TYPE || '—'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function filterLive(q) {
+    const filtered = liveData.filter(bar =>
+      JSON.stringify(bar).toLowerCase().includes(q.toLowerCase())
+    );
+    renderLiveTable(filtered);
+  }
+
+  // ── Helpers ────────────────────────────────────────────────────────────────
+  function removeCard(id) {
+    const el = document.getElementById(id);
+    if (el) { el.style.opacity = '0'; el.style.transform = 'scale(0.97)';
+      setTimeout(() => el.remove(), 250); }
+  }
+
+  let toastTimer;
+  function toast(msg, type = 'success') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className   = `show ${type}`;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { el.className = ''; }, 3500);
+  }
+</script>
 </body>
 </html>
