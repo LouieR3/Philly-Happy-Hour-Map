@@ -3,5 +3,11 @@
   "[python]": {
     "editor.defaultFormatter": "ms-python.python"
   },
-  "python.formatting.provider": "none"
+  "python.formatting.provider": "none",
+  "mdb.presetConnections": [
+    {
+      "name": "Preset Connection",
+      "connectionString": "mongodb://localhost:27017"
+    }
+  ]
 }

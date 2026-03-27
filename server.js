@@ -57,7 +57,7 @@ const quizzoSchema = new mongoose.Schema({
   Full_Address:   String,
   Latitude:       Number,
   Longitude:      Number,
-}, { collection: 'quizzo' });
+}, { collection: 'Quizzo Bars' });
 
 // Pending new bar submission
 const pendingSchema = new mongoose.Schema({

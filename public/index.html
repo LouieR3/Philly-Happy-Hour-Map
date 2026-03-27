@@ -17,6 +17,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Mappy Hour</title>
+    <!-- FAVICON -->
     <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
 
     <!-- Font Awesome icons (free version)-->
@@ -565,8 +566,8 @@
             <a style="text-decoration: underline; font-size: 12px;" class="nav-link py-2 px-0 px-lg-3 rounded" href="birthday.html"
                 >Birthday Boy</a
               >
-            <a style="text-decoration: underline; font-size: 12px;" class="nav-link py-2 px-0 px-lg-3 rounded" href="eye-of-eden.html"
-                > The Eye of Eden</a
+            <a style="text-decoration: underline; font-size: 12px;" class="nav-link py-2 px-0 px-lg-3 rounded" href="admin.html"
+                > Admin</a
               >
           </div>
           <!-- Footer Social Icons-->
@@ -1338,13 +1339,14 @@
       });
 
       // Populate the table after parsing the CSV
-      Papa.parse("quizzo_list.csv", {
-        download: true,
-        header: true,
-        complete: function (results) {
-          populateTable(results.data);
-        },
-      });
+      fetch('/api/quizzo')
+        .then(response => response.json())
+        .then(function(data) {
+          populateTable(data);
+        })
+        .catch(function(err) {
+          console.error('Failed to load quizzo data for table:', err);
+        });
     </script>
     <!-- <script>
       $(document).ready(function () {
