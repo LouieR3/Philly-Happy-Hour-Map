@@ -11,7 +11,9 @@
  *   Add MONGODB_URI and ADMIN_PASSWORD to .env
  */
 
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 const express    = require('express');
 const mongoose   = require('mongoose');
 const cors       = require('cors');
