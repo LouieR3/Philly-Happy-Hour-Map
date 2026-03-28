@@ -541,13 +541,24 @@
 
   const WEEKDAYS = ['MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY','SUNDAY'];
 
+  const API_BASE = 'https://your-railway-url.up.railway.app';
+
+  function adminFetch(url, method = 'GET', body = null) {
+    const opts = {
+      method,
+      headers: { 'x-admin-token': adminToken, 'Content-Type': 'application/json' },
+    };
+    if (body) opts.body = JSON.stringify(body);
+    return fetch(API_BASE + url, opts);
+  }
+
   // ── Auth ───────────────────────────────────────────────────────────────────
   function login() {
     const pw = document.getElementById('admin-password').value.trim();
     if (!pw) return;
     adminToken = pw;
     // Test the token immediately
-    fetch('/admin/pending', { headers: { 'x-admin-token': adminToken } })
+    fetch(`${API_BASE}/admin/pending`, { headers: { 'x-admin-token': adminToken } })
       .then(r => {
         if (r.status === 401) throw new Error('bad');
         return r.json();
