@@ -369,7 +369,7 @@ fetch(`${API_BASE}/api/quizzo`)
             <p style="text-align: center; font-size: 14px; margin: 5px 0;">${neighborhood}</p>
             <p style="text-align: center; font-size: 16px; margin: 15px 0;"><b>${row.WEEKDAY} - ${row.TIME}</b></p>
             ${row.HOST ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">Host: ${row.HOST} <br>` : ""}
-            ${row.PRIZE_1_TYPE ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">First Prize: ${firstPrize} - $${row.PRIZE_1_AMOUNT}0${secondPrize ? `<br> Second Prize: ${secondPrize} - $${row.PRIZE_2_AMOUNT}0</p>` : "</p>"}` : ""}
+            ${row.PRIZE_1_TYPE ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">First Prize: ${firstPrize} - $${row.PRIZE_1_AMOUNT}${secondPrize ? `<br> Second Prize: ${secondPrize} - $${row.PRIZE_2_AMOUNT}0</p>` : "</p>"}` : ""}
         </div>
         `;
         var marker = L.marker([lat, lng], {
@@ -568,22 +568,25 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// Toggle Add New Bar Form
+// Open Add New Bar modal
 const addBarButton = document.getElementById("add-bar-button");
-const addBarContainer = document.getElementById("add-bar-container");
 addBarButton.addEventListener("click", () => {
-  addBarContainer.style.display =
-    addBarContainer.style.display === "none" ? "block" : "none";
-  editBarContainer.style.display = "none"; // Hide the edit form if visible
+  new bootstrap.Modal(document.getElementById("addBarModal")).show();
 });
 
-// Toggle Edit Bar Info Form
+// Open Edit Bar modal
 const editBarButton = document.getElementById("edit-bar-button");
-const editBarContainer = document.getElementById("edit-bar-container");
 editBarButton.addEventListener("click", () => {
-  editBarContainer.style.display =
-    editBarContainer.style.display === "none" ? "block" : "none";
-  addBarContainer.style.display = "none"; // Hide the add form if visible
+  new bootstrap.Modal(document.getElementById("editBarModal")).show();
+});
+
+// Philly Yes/No toggle in Add Bar modal
+document.querySelectorAll('input[name="isPhiladelphia"]').forEach((radio) => {
+  radio.addEventListener("change", () => {
+    const isPhilly = document.getElementById("is-philly-yes").checked;
+    document.getElementById("neighborhood-field").style.display = isPhilly ? "block" : "none";
+    document.getElementById("city-state-zip-fields").style.display = isPhilly ? "none" : "block";
+  });
 });
 
 // Handle Search for Editing
@@ -665,33 +668,55 @@ searchBar.addEventListener("input", () => {
 
 document
   .getElementById("bar-submission-form")
-  .addEventListener("submit", function (event) {
+  .addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    // Collect form data
+    const businessName = document.getElementById("business-name").value;
+    const streetAddress = document.getElementById("street-address").value;
+    const isPhilly = document.getElementById("is-philly-yes").checked;
+    const neighborhood = isPhilly ? document.getElementById("neighborhood").value : "";
+    const city = isPhilly ? "Philadelphia" : document.getElementById("address-city").value;
+    const state = isPhilly ? "PA" : document.getElementById("address-state").value;
+    const zip = isPhilly ? "" : document.getElementById("address-zip").value;
+    const weekday = document.getElementById("weekday").value;
+    const time = document.getElementById("time").value;
+    const firstPrize = document.getElementById("first-prize").value;
+    const firstPrizeAmount = document.getElementById("first-prize-amount").value;
+    const secondPrize = document.getElementById("second-prize").value;
+    const secondPrizeAmount = document.getElementById("second-prize-amount").value;
+    const host = document.getElementById("host").value;
+    const notes = document.getElementById("notes").value;
+
+    const fullAddress = `${streetAddress}, ${city}, ${state}${zip ? " " + zip : ""}`;
+
+    // Geocode the address
+    let lat = null, lng = null;
+    try {
+      const geoRes = await fetch(`${API_BASE}/api/geocode?address=${encodeURIComponent(fullAddress)}`);
+      const geoData = await geoRes.json();
+      lat = geoData.lat;
+      lng = geoData.lng;
+    } catch (e) {
+      console.warn("Geocode failed:", e);
+    }
+
     const submission = {
-      businessName: document.getElementById("business-name").value,
-      address: document.getElementById("address").value,
-      weekday: document.getElementById("weekday").value,
-      time: document.getElementById("time").value,
-      // eventType: document.getElementById("event-type").value,
-      firstPrize: document.getElementById("first-prize").value,
-      secondPrize: document.getElementById("second-prize").value,
-      host: document.getElementById("host").value,
+      businessName, streetAddress, city, state, zip, neighborhood,
+      fullAddress, lat, lng, weekday, time,
+      firstPrize, firstPrizeAmount, secondPrize, secondPrizeAmount,
+      host, notes,
     };
 
-    // Send the data to the server
     fetch(`${API_BASE}/submit-bar`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(submission),
     })
       .then((response) => response.json())
-      .then((data) => {
+      .then(() => {
         alert("Your submission has been sent for review!");
         document.getElementById("bar-submission-form").reset();
+        bootstrap.Modal.getInstance(document.getElementById("addBarModal")).hide();
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -720,7 +745,7 @@ function populateTable(data) {
 
     tr.innerHTML = `
     <td>${row.BUSINESS}</td>
-    <td>${row.ADDRESS_STREET}, ${row.ADDRESS_CITY}, ${row.ADDRESS_STATE} ${row.ADDRESS_ZIP}</td>
+    <td class="d-lg-none">${row.ADDRESS_STREET}, ${row.ADDRESS_CITY}, ${row.ADDRESS_STATE} ${row.ADDRESS_ZIP}</td>
     <td>${row.NEIGHBORHOOD}</td>
     <td>${row.WEEKDAY}</td>
     <td>${row.TIME}</td>

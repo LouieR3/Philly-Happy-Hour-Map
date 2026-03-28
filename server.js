@@ -79,10 +79,16 @@ const quizzoSchema = new mongoose.Schema({
 // Pending new bar submission
 const pendingSchema = new mongoose.Schema({
   BUSINESS:       { type: String, required: true },
-  ADDRESS:        String,    // raw address from form; server parses into fields on approval
+  ADDRESS:        String,
+  ADDRESS_STREET: String,
+  ADDRESS_CITY:   String,
+  ADDRESS_STATE:  String,
+  ADDRESS_ZIP:    String,
+  NEIGHBORHOOD:   String,
+  Latitude:       Number,
+  Longitude:      Number,
   WEEKDAY:        String,
   TIME:           String,
-  EVENT_TYPE:     String,
   PRIZE_1_TYPE:   String,
   PRIZE_1_AMOUNT: String,
   PRIZE_2_TYPE:   String,
@@ -143,10 +149,26 @@ app.get('/api/quizzo', async (req, res) => {
   }
 });
 
+// Geocode an address via Nominatim
+app.get('/api/geocode', async (req, res) => {
+  const { address } = req.query;
+  if (!address) return res.status(400).json({ error: 'address is required' });
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`;
+    const response = await fetch(url, { headers: { 'User-Agent': 'MappyHour/1.0' } });
+    const data = await response.json();
+    if (!data.length) return res.json({ lat: null, lng: null });
+    res.json({ lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Submit a new bar
 app.post('/submit-bar', async (req, res) => {
   try {
-    const { businessName, address, weekday, time, eventType,
+    const { businessName, streetAddress, city, state, zip, neighborhood,
+            fullAddress, lat, lng, weekday, time,
             firstPrize, firstPrizeAmount, secondPrize, secondPrizeAmount,
             host, notes } = req.body;
 
@@ -154,10 +176,16 @@ app.post('/submit-bar', async (req, res) => {
 
     const submission = new Pending({
       BUSINESS:       businessName.trim().toUpperCase(),
-      ADDRESS:        address,
+      ADDRESS:        fullAddress || streetAddress,
+      ADDRESS_STREET: streetAddress,
+      ADDRESS_CITY:   city || 'Philadelphia',
+      ADDRESS_STATE:  state || 'PA',
+      ADDRESS_ZIP:    zip || '',
+      NEIGHBORHOOD:   neighborhood?.toUpperCase(),
+      Latitude:       lat,
+      Longitude:      lng,
       WEEKDAY:        weekday?.toUpperCase(),
       TIME:           time,
-      EVENT_TYPE:     eventType?.toUpperCase() || 'QUIZZO',
       PRIZE_1_TYPE:   firstPrize,
       PRIZE_1_AMOUNT: firstPrizeAmount,
       PRIZE_2_TYPE:   secondPrize,
