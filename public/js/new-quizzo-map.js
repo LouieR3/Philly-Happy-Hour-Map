@@ -1,3 +1,7 @@
+const API_BASE = window.location.hostname === 'localhost' 
+  ? 'http://localhost:3000'
+  : 'https://philly-happy-hour-map-production.up.railway.app';
+
 var leafletmap = L.map("leaflet-map").setView([39.951, -75.163], 12);
 
 leafletmap.zoomControl.setPosition("bottomright");
@@ -32,7 +36,7 @@ function createMartiniIcon(color = "green") {
 // 2. Load CSV and add markers
 var markers = [];
 
-fetch("/api/quizzo")
+fetch(`${API_BASE}/api/quizzo`)
   .then((response) => response.json())
   .then(function (data) {
     const times = [
@@ -677,7 +681,7 @@ document
     };
 
     // Send the data to the server
-    fetch("/submit-bar", {
+    fetch(`${API_BASE}/submit-bar`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -750,7 +754,7 @@ document.getElementById("bar-search").addEventListener("input", (event) => {
 });
 
 // Populate the table after parsing the CSV
-fetch("/api/quizzo")
+fetch(`${API_BASE}/api/quizzo`)
   .then((response) => response.json())
   .then(function (data) {
     populateTable(data);

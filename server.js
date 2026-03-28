@@ -22,7 +22,14 @@ const fs         = require('fs');
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://127.0.0.1:5500',
+    'https://www.philly-mappy-hour.com',
+    'https://philly-mappy-hour.com',
+  ]
+}));
 app.use(express.json());
 
 // ─── Serve static files (your existing site) ────────────────────────────────
