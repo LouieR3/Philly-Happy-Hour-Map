@@ -396,6 +396,130 @@ def step2_fetch_bar_details(aliases_df, yelp):
     return master_df
 
 
+def step2b_refresh_missing_attributes(master_df):
+    """Re-scrape Yelp page for rows that have a Yelp Alias but no Sunday hours,
+    meaning the page scrape previously failed or was never run."""
+    print("\n=== STEP 2b: Re-fetching attributes for bars missing scraped data ===")
+
+    # Use Sunday as the proxy for "scrape never worked" — hours are only
+    # populated from the page scrape, not the API call.
+    sunday_col = "Sunday"
+    alias_col = "Yelp Alias"
+
+    if sunday_col not in master_df.columns:
+        master_df[sunday_col] = None
+
+    needs_refresh = (
+        master_df[alias_col].notna() &
+        (master_df[sunday_col].isna() | (master_df[sunday_col] == ""))
+    )
+    targets = master_df[needs_refresh]
+    print(f"  {len(targets)} bars need attribute refresh")
+
+    for idx, row in targets.iterrows():
+        yelp_alias = row[alias_col]
+        name = row["Name"]
+
+        # Only re-scrape the Yelp page — skip the API call to save quota
+        global _YELP_SESSION
+        if _YELP_SESSION is None:
+            _YELP_SESSION = _make_yelp_session()
+
+        url = YELP_BASE_URL + yelp_alias
+        time.sleep(random.uniform(1.5, 3.0))
+        try:
+            resp = _YELP_SESSION.get(url, timeout=15)
+            soup = BeautifulSoup(resp.text, "html.parser")
+            script_tag = soup.find("script", {"data-apollo-state": True})
+        except Exception as e:
+            print(f"    Scrape error for {name}: {e}")
+            continue
+
+        if script_tag is None:
+            print(f"    Still no Apollo state for {name} ({yelp_alias}, status {resp.status_code})")
+            continue
+
+        json_str = re.sub(r"&quot;", '"', script_tag.text[4:-3])
+        try:
+            json_object = json.loads(json_str)
+        except json.JSONDecodeError:
+            continue
+
+        day_map = {
+            "Mon": "Monday", "Tue": "Tuesday", "Wed": "Wednesday",
+            "Thu": "Thursday", "Fri": "Friday", "Sat": "Saturday", "Sun": "Sunday",
+        }
+        business_properties = {}
+        neighborhoods_json = []
+        hours_properties = {}
+
+        for value in json_object.values():
+            if not isinstance(value, dict):
+                continue
+            if "displayText" in value:
+                display_text = value["displayText"]
+                is_active = value["isActive"]
+                replacements = [
+                    ("&amp;", "and"), ("Not Good", "Good"),
+                    ("Not Wheelchair Accessible", "Wheelchair Accessible"),
+                    ("Dogs Not Allowed", "Dogs Allowed"), ("Very Loud", "Loud"),
+                    ("Free Wi-fi", "Wi-fi"), ("Smoking Allowed", "Smoking"),
+                    ("Happy Hour Specials", "Happy Hour"),
+                    ("Many Vegetarian Options", "Vegetarian Options"),
+                    ("Casual Dress", "Casual"),
+                ]
+                for old, new in replacements:
+                    if old in display_text:
+                        if old.startswith("Not ") or old == "Dogs Not Allowed":
+                            is_active = not is_active
+                        display_text = display_text.replace(old, new)
+                if "Takes Reservations" in display_text:
+                    display_text = display_text.replace("Takes ", "")
+                if "No " in display_text:
+                    display_text = display_text.replace("No ", "")
+                    is_active = not is_active
+                if "Paid Wi-Fi" in display_text:
+                    continue
+                if "Best nights on" in display_text:
+                    for part in display_text.split("Best nights on ")[1].split(","):
+                        business_properties[f"Best nights on {part.strip()}"] = is_active
+                else:
+                    for text in [t.strip() for t in display_text.split(",")]:
+                        business_properties[text] = is_active
+            if "neighborhoods" in value:
+                nbhd = value["neighborhoods"]
+                if isinstance(nbhd, dict):
+                    neighborhoods_json = nbhd.get("json", neighborhoods_json)
+                elif isinstance(nbhd, list):
+                    neighborhoods_json = nbhd
+            if "regularHours" in value and "dayOfWeekShort" in value:
+                short_day = value["dayOfWeekShort"]
+                full_day = day_map.get(short_day, short_day)
+                hours_list = value["regularHours"].get("json", [])
+                if hours_list:
+                    hours_properties[full_day] = hours_list[0]
+
+        raw_website = _find_business_website(json_object)
+        website = raw_website.replace("&#x2F;", "/") if raw_website else None
+        rating = _find_first_rating(json_object)
+
+        # Write scraped values back into master_df for this row
+        for col, val in {**business_properties, **hours_properties}.items():
+            master_df.at[idx, col] = val
+        if neighborhoods_json:
+            master_df.at[idx, "Neighborhoods"] = neighborhoods_json
+        if website and pd.isna(master_df.at[idx, "Website"]):
+            master_df.at[idx, "Website"] = website
+        if rating and pd.isna(master_df.at[idx, "Yelp_Rating"] if "Yelp_Rating" in master_df.columns else master_df.at[idx, "Yelp Rating"] if "Yelp Rating" in master_df.columns else None):
+            col = "Yelp_Rating" if "Yelp_Rating" in master_df.columns else "Yelp Rating"
+            master_df.at[idx, col] = rating
+        print(f"    Refreshed: {name}")
+
+    master_df.to_csv(MASTER_CSV, index=False)
+    print(f"  Saved refreshed MasterTable")
+    return master_df
+
+
 def _calculate_scores(df):
     """Compute Popularity Score and Restaurant Week Score."""
     if "Review Count" not in df.columns or "Yelp Rating" not in df.columns:
@@ -434,14 +558,27 @@ def _calculate_scores(df):
 # STEP 3 — Consolidate multi-column attribute fields
 # ═══════════════════════════════════════════════════════════════════════
 def _combine_columns(df, cols, new_col, strip_prefix=""):
-    """Fill NaN, combine boolean columns into a comma-separated string column."""
+    """Combine boolean columns into a comma-separated string column.
+
+    For rows that have raw boolean data (new bars), compute from raw cols.
+    For rows that already have a consolidated value (old bars), keep it.
+    """
     present = [c for c in cols if c in df.columns]
     if not present:
         return df
+
+    has_raw = df[present].notna().any(axis=1)  # True for rows with raw data
     df[present] = df[present].fillna(False)
-    df[new_col] = df[present].apply(
+    combined = df[present].apply(
         lambda x: ", ".join(x.index[x]).replace(strip_prefix, ""), axis=1
     )
+
+    if new_col in df.columns:
+        existing_good = df[new_col].notna() & (df[new_col] != "") & ~has_raw
+        df[new_col] = df[new_col].where(existing_good, combined)
+    else:
+        df[new_col] = combined
+
     df.drop(columns=present, inplace=True)
     return df
 
@@ -599,6 +736,25 @@ def step3_consolidate_columns(df):
     if "Restaurant Week Participant" in df.columns:
         df["Restaurant Week Participant"] = df["Restaurant Week Participant"].fillna("N")
 
+    # Neighborhoods: [] or [''] → blank
+    if "Neighborhoods" in df.columns:
+        def _clean_neighborhoods(val):
+            if isinstance(val, list):
+                filtered = [v for v in val if v]
+                return ", ".join(filtered) if filtered else None
+            if isinstance(val, str):
+                stripped = val.strip()
+                if stripped in ("[]", "", "['']", '[""]'):
+                    return None
+            return val if val else None
+        df["Neighborhoods"] = df["Neighborhoods"].apply(_clean_neighborhoods)
+
+    # Drop duplicate .1 columns created by earlier bad merges
+    dup_cols = [c for c in df.columns if c.endswith(".1")]
+    if dup_cols:
+        df.drop(columns=dup_cols, inplace=True)
+        print(f"  Dropped duplicate columns: {dup_cols}")
+
     print(f"  Columns after consolidation: {len(df.columns)}")
     return df
 
@@ -721,6 +877,7 @@ def main():
     # aliases_df = step1_find_new_bars(yelp)
     aliases_df = pd.read_csv(ALIASES_CSV)
     master_df = step2_fetch_bar_details(aliases_df, yelp)
+    master_df = step2b_refresh_missing_attributes(master_df)
     master_df = step3_consolidate_columns(master_df)
     master_df = step4_find_reservation_links(master_df)
     master_df = step5_rename_and_export(master_df)
