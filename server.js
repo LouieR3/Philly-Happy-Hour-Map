@@ -29,7 +29,15 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ─── MongoDB connection ──────────────────────────────────────────────────────
-mongoose.connect(process.env.MONGODB_URI)
+// mongoose.connect(process.env.MONGODB_URI)
+//   .then(() => console.log('MongoDB connected'))
+//   .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
+
+mongoose.connect(process.env.MONGODB_URI, {
+  tls: true,
+  tlsAllowInvalidCertificates: true,  // temporary to test
+  serverSelectionTimeoutMS: 15000,
+})
   .then(() => console.log('MongoDB connected'))
   .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
 
