@@ -98,6 +98,7 @@
 #time-filter,
 #weekday-filter,
 #neighborhood-filter,
+#prize-amount-filter,
 #reset-filter {
   position: relative; 
   display: inline-block; 
@@ -110,6 +111,7 @@
 #time-button,
 #event-type-button,
 #first-prize-button,
+#prize-amount-button,
 #neighborhood-button,
 #reset-filters-button {
   display: flex; 
@@ -123,30 +125,43 @@
 #event-type-dropdown,
 #weekday-dropdown,
 #first-prize-dropdown,
+#prize-amount-dropdown,
+#prize-amount-dropdown,
 #neighborhood-dropdown {
-  display: none; 
-  position: absolute; 
-  top: 100%; 
-  /* left: 5%;  */
-  background: white; 
-  border: 1px solid #ccc; 
-  border-radius: 8px; 
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
-  z-index: 1000; 
-  width: 100%;
+  display: none;
+  position: absolute;
+  top: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  /* width: 100%; */
+}
+
+.filter-active {
+  background-color: #1a5f2a !important;
+  border-color: #1a5f2a !important;
+}
+
+.filter-option-selected {
+  background-color: #d3f0db !important;
+  font-weight: 600;
 }
 .weekday-option,
 .time-option,
 .event-type-option,
 .first-prize-option,
+.prize-amount-option,
 .neighborhood-option {
-  padding: 5px 10px; 
+  padding: 5px 10px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
 .event-type-option:hover,
-.first-prize-option:hover {
+.first-prize-option:hover,
+.prize-amount-option:hover {
   background-color: #f0f0f0;
 }
 .weekday-option:hover {

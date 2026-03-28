@@ -126,7 +126,7 @@
           <div id="weekday-filter">
             <button id="weekday-button" class="btn btn-primary rounded-pill">
               <i class="fa-solid fa-calendar-week" style="margin-right: 8px;"></i>
-              Weekday
+              <span class="filter-label">Weekday</span>
               <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
             </button>
             <div id="weekday-dropdown">
@@ -147,7 +147,7 @@
           <div id="time-filter">
             <button id="time-button" class="btn btn-primary rounded-pill">
               <i class="fa-solid fa-clock" style="margin-right: 8px;"></i>
-              Start Time
+              <span class="filter-label">Start Time</span>
               <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
             </button>
             <div id="time-dropdown">
@@ -159,11 +159,23 @@
           <div id="first-prize-filter">
             <button id="first-prize-button" class="btn btn-primary rounded-pill">
               <i class="fa-solid fa-trophy" style="margin-right: 8px;"></i>
-              First Prize
+              <span class="filter-label">First Prize</span>
               <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
             </button>
             <div id="first-prize-dropdown">
               <ul style="list-style: none; margin: 0; padding: 10px;" id="first-prize-options"></ul>
+            </div>
+          </div>
+
+          <!-- Prize Amount Filter -->
+          <div id="prize-amount-filter">
+            <button id="prize-amount-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-dollar-sign" style="margin-right: 8px;"></i>
+              <span class="filter-label">Prize Amount</span>
+              <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
+            </button>
+            <div id="prize-amount-dropdown">
+              <ul style="list-style: none; margin: 0; padding: 10px;" id="prize-amount-options"></ul>
             </div>
           </div>
 
@@ -182,10 +194,10 @@
           <div id="neighborhood-filter">
             <button id="neighborhood-button" class="btn btn-primary rounded-pill">
               <i class="fa-solid fa-map-marker-alt" style="margin-right: 8px;"></i>
-              Neighborhood
+              <span class="filter-label">Neighborhood</span>
               <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
             </button>
-            <div id="neighborhood-dropdown" style="display: none; position: absolute; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000; width: 200px;">
+            <div id="neighborhood-dropdown">
               <input
                 type="text"
                 id="neighborhood-search"

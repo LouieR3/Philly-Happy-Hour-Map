@@ -33,8 +33,42 @@ function createMartiniIcon(color = "green") {
   });
 }
 
-// 2. Load CSV and add markers
+// ─── Active filter state ────────────────────────────────────────────────────
 var markers = [];
+const activeFilters = {
+  weekday: null,
+  time: null,
+  firstPrize: null,
+  prizeAmount: null,
+  neighborhoods: new Set(),
+};
+
+function applyFilters() {
+  markers.forEach((marker) => {
+    if (!(marker instanceof L.Marker)) return;
+    const passes =
+      (!activeFilters.weekday || marker.weekday === activeFilters.weekday) &&
+      (!activeFilters.time || marker.time === activeFilters.time) &&
+      (!activeFilters.firstPrize || marker.firstPrize === activeFilters.firstPrize) &&
+      (!activeFilters.prizeAmount || marker.prizeAmount === activeFilters.prizeAmount) &&
+      (activeFilters.neighborhoods.size === 0 || activeFilters.neighborhoods.has(marker.neighborhood));
+    if (passes) {
+      if (!leafletmap.hasLayer(marker)) marker.addTo(leafletmap);
+    } else {
+      if (leafletmap.hasLayer(marker)) leafletmap.removeLayer(marker);
+    }
+  });
+}
+
+function setFilterLabel(buttonId, text) {
+  document.querySelector(`#${buttonId} .filter-label`).textContent = text;
+}
+
+function setFilterActive(buttonId, isActive) {
+  document.getElementById(buttonId).classList.toggle("filter-active", isActive);
+}
+
+// 2. Load CSV and add markers
 
 fetch(`${API_BASE}/api/quizzo`)
   .then((response) => response.json())
@@ -76,54 +110,27 @@ fetch(`${API_BASE}/api/quizzo`)
       li.className = "time-option";
       li.setAttribute("data-value", time);
       li.textContent = time;
-
-      li.addEventListener("click", (event) => {
-        const selectedTime = event.target.getAttribute("data-value");
-        console.log("Selected time:", selectedTime);
-
-        markers.forEach(function (marker) {
-          if (!(marker instanceof L.Marker)) return;
-
-          // If "All" is selected, add all markers back to the map
-          if (selectedTime === "All" || marker.time === selectedTime) {
-            if (!leafletmap.hasLayer(marker)) {
-              marker.addTo(leafletmap);
-            }
-          } else {
-            if (leafletmap.hasLayer(marker)) {
-              leafletmap.removeLayer(marker);
-            }
-          }
-        });
+      li.addEventListener("click", () => {
+        activeFilters.time = time;
+        setFilterLabel("time-button", time);
+        setFilterActive("time-button", true);
+        document.getElementById("time-dropdown").style.display = "none";
+        applyFilters();
       });
-
       timeOptions.appendChild(li);
     });
-
-    // Add the "All" option at the top of the dropdown
-    const allOption = document.createElement("li");
-    allOption.className = "time-option";
-    allOption.setAttribute("data-value", "All");
-    allOption.textContent = "All";
-    allOption.addEventListener("click", (event) => {
-      const selectedTime = event.target.getAttribute("data-value");
-      console.log("Selected time:", selectedTime);
-
-      markers.forEach(function (marker) {
-        if (!(marker instanceof L.Marker)) return;
-
-        // Add all markers back to the map when "All" is selected
-        if (!leafletmap.hasLayer(marker)) {
-          marker.addTo(leafletmap);
-        }
-      });
-
-      // Close the dropdown after selection
-      const timeDropdown = document.getElementById("time-dropdown");
-      timeDropdown.style.display = "none";
+    const allTimeOption = document.createElement("li");
+    allTimeOption.className = "time-option";
+    allTimeOption.setAttribute("data-value", "All");
+    allTimeOption.textContent = "All";
+    allTimeOption.addEventListener("click", () => {
+      activeFilters.time = null;
+      setFilterLabel("time-button", "Start Time");
+      setFilterActive("time-button", false);
+      document.getElementById("time-dropdown").style.display = "none";
+      applyFilters();
     });
-    // Prepend the "All" option to the dropdown
-    timeOptions.prepend(allOption);
+    timeOptions.prepend(allTimeOption);
 
     // // Populate the Event Type dropdown
     // const eventTypeOptions = document.getElementById("event-type-options");
@@ -186,61 +193,82 @@ fetch(`${API_BASE}/api/quizzo`)
       li.className = "first-prize-option";
       li.setAttribute("data-value", firstPrize);
       li.textContent = firstPrize;
-
-      li.addEventListener("click", (event) => {
-        const selectedFirstPrize = event.target.getAttribute("data-value");
-        console.log("Selected firstPrize:", selectedFirstPrize);
-
-        markers.forEach(function (marker) {
-          if (!(marker instanceof L.Marker)) return;
-
-          // If "All" is selected, add all markers back to the map
-          if (
-            selectedFirstPrize === "All" ||
-            marker.firstPrize === selectedFirstPrize
-          ) {
-            if (!leafletmap.hasLayer(marker)) {
-              marker.addTo(leafletmap);
-            }
-          } else {
-            if (leafletmap.hasLayer(marker)) {
-              leafletmap.removeLayer(marker);
-            }
-          }
-        });
+      li.addEventListener("click", () => {
+        activeFilters.firstPrize = firstPrize;
+        setFilterLabel("first-prize-button", firstPrize);
+        setFilterActive("first-prize-button", true);
+        document.getElementById("first-prize-dropdown").style.display = "none";
+        applyFilters();
       });
-
       firstPrizeOptions.appendChild(li);
     });
-    // Add the "All" option to the First Prize dropdown
     const allFirstPrizeOption = document.createElement("li");
     allFirstPrizeOption.className = "first-prize-option";
     allFirstPrizeOption.setAttribute("data-value", "All");
     allFirstPrizeOption.textContent = "All";
-    allFirstPrizeOption.addEventListener("click", (event) => {
-      const selectedFirstPrize = event.target.getAttribute("data-value");
-      console.log("Selected firstPrize:", selectedFirstPrize);
-
-      markers.forEach(function (marker) {
-        if (!(marker instanceof L.Marker)) return;
-
-        // Add all markers back to the map when "All" is selected
-        if (!leafletmap.hasLayer(marker)) {
-          marker.addTo(leafletmap);
-        }
-      });
-
-      // Close the dropdown after selection
-      const firstPrizeDropdown = document.getElementById(
-        "first-prize-dropdown",
-      );
-      firstPrizeDropdown.style.display = "none";
+    allFirstPrizeOption.addEventListener("click", () => {
+      activeFilters.firstPrize = null;
+      setFilterLabel("first-prize-button", "First Prize");
+      setFilterActive("first-prize-button", false);
+      document.getElementById("first-prize-dropdown").style.display = "none";
+      applyFilters();
     });
     firstPrizeOptions.prepend(allFirstPrizeOption);
 
-    // Populate the Neighborhood dropdown
+    // Populate the Prize Amount dropdown
+    const prizeAmounts = [
+      ...new Set(
+        data
+          .flatMap((row) => [row.PRIZE_1_AMOUNT, row.PRIZE_2_AMOUNT, row.PRIZE_3_AMOUNT])
+          .filter((a) => a != null && a !== "" && !isNaN(a))
+          .map((a) => Number(a))
+      ),
+    ].sort((a, b) => a - b);
+
+    const prizeAmountOptions = document.getElementById("prize-amount-options");
+    prizeAmounts.forEach((amount) => {
+      const li = document.createElement("li");
+      li.className = "prize-amount-option";
+      li.setAttribute("data-value", amount);
+      li.textContent = `$${amount}`;
+      li.addEventListener("click", () => {
+        activeFilters.prizeAmount = amount;
+        setFilterLabel("prize-amount-button", `$${amount}`);
+        setFilterActive("prize-amount-button", true);
+        document.getElementById("prize-amount-dropdown").style.display = "none";
+        applyFilters();
+      });
+      prizeAmountOptions.appendChild(li);
+    });
+    const allPrizeAmountOption = document.createElement("li");
+    allPrizeAmountOption.className = "prize-amount-option";
+    allPrizeAmountOption.setAttribute("data-value", "All");
+    allPrizeAmountOption.textContent = "All";
+    allPrizeAmountOption.addEventListener("click", () => {
+      activeFilters.prizeAmount = null;
+      setFilterLabel("prize-amount-button", "Prize Amount");
+      setFilterActive("prize-amount-button", false);
+      document.getElementById("prize-amount-dropdown").style.display = "none";
+      applyFilters();
+    });
+    prizeAmountOptions.prepend(allPrizeAmountOption);
+
+    // Populate the Neighborhood dropdown (multi-select)
     const neighborhoodOptions = document.getElementById("neighborhood-options");
-    const selectedNeighborhoods = new Set(); // Store selected neighborhoods
+
+    function updateNeighborhoodLabel() {
+      const count = activeFilters.neighborhoods.size;
+      if (count === 0) {
+        setFilterLabel("neighborhood-button", "Neighborhood");
+        setFilterActive("neighborhood-button", false);
+      } else if (count === 1) {
+        setFilterLabel("neighborhood-button", [...activeFilters.neighborhoods][0]);
+        setFilterActive("neighborhood-button", true);
+      } else {
+        setFilterLabel("neighborhood-button", `${count} Neighborhoods`);
+        setFilterActive("neighborhood-button", true);
+      }
+    }
 
     neighborhoods.forEach((neighborhood) => {
       const li = document.createElement("li");
@@ -249,47 +277,20 @@ fetch(`${API_BASE}/api/quizzo`)
       li.textContent = neighborhood;
       li.style.cursor = "pointer";
       li.style.padding = "5px";
-
-      // Handle selection toggle
-      li.addEventListener("click", (event) => {
-        const selectedNeighborhood = event.target.getAttribute("data-value");
-
-        if (selectedNeighborhoods.has(selectedNeighborhood)) {
-          selectedNeighborhoods.delete(selectedNeighborhood);
-          li.style.backgroundColor = ""; // Deselect
+      li.addEventListener("click", () => {
+        if (activeFilters.neighborhoods.has(neighborhood)) {
+          activeFilters.neighborhoods.delete(neighborhood);
+          li.classList.remove("filter-option-selected");
         } else {
-          selectedNeighborhoods.add(selectedNeighborhood);
-          li.style.backgroundColor = "#d3d3d3"; // Highlight selected
+          activeFilters.neighborhoods.add(neighborhood);
+          li.classList.add("filter-option-selected");
         }
-
-        console.log(
-          "Selected neighborhoods:",
-          Array.from(selectedNeighborhoods),
-        );
-
-        // Filter markers based on selected neighborhoods
-        markers.forEach((marker) => {
-          if (!(marker instanceof L.Marker)) return;
-
-          if (
-            selectedNeighborhoods.size === 0 || // Show all markers if none selected
-            selectedNeighborhoods.has(marker.neighborhood)
-          ) {
-            if (!leafletmap.hasLayer(marker)) {
-              marker.addTo(leafletmap);
-            }
-          } else {
-            if (leafletmap.hasLayer(marker)) {
-              leafletmap.removeLayer(marker);
-            }
-          }
-        });
+        updateNeighborhoodLabel();
+        applyFilters();
       });
-
       neighborhoodOptions.appendChild(li);
     });
 
-    // Add the "All" option to reset selections
     const allNeighborhoodOption = document.createElement("li");
     allNeighborhoodOption.className = "neighborhood-option";
     allNeighborhoodOption.setAttribute("data-value", "All");
@@ -297,25 +298,12 @@ fetch(`${API_BASE}/api/quizzo`)
     allNeighborhoodOption.style.cursor = "pointer";
     allNeighborhoodOption.style.padding = "5px";
     allNeighborhoodOption.style.fontWeight = "bold";
-
     allNeighborhoodOption.addEventListener("click", () => {
-      selectedNeighborhoods.clear(); // Clear all selections
-      document.querySelectorAll(".neighborhood-option").forEach((option) => {
-        option.style.backgroundColor = ""; // Reset background color
-      });
-
-      console.log("All neighborhoods selected");
-
-      // Show all markers
-      markers.forEach((marker) => {
-        if (!(marker instanceof L.Marker)) return;
-
-        if (!leafletmap.hasLayer(marker)) {
-          marker.addTo(leafletmap);
-        }
-      });
+      activeFilters.neighborhoods.clear();
+      document.querySelectorAll(".neighborhood-option").forEach((opt) => opt.classList.remove("filter-option-selected"));
+      updateNeighborhoodLabel();
+      applyFilters();
     });
-
     neighborhoodOptions.prepend(allNeighborhoodOption);
 
     // Add search functionality
@@ -375,10 +363,10 @@ fetch(`${API_BASE}/api/quizzo`)
         var marker = L.marker([lat, lng], {
           icon: createMartiniIcon("darkgreen"),
         }).bindPopup(popupContent);
-        marker.weekday = weekday; // Store weekday in marker for filtering
-        marker.time = time; // Store time in marker for filtering
-        // marker.eventType = eventType;
+        marker.weekday = weekday;
+        marker.time = time;
         marker.firstPrize = firstPrize;
+        marker.prizeAmount = row.PRIZE_1_AMOUNT != null ? Number(row.PRIZE_1_AMOUNT) : null;
         marker.businessName = businessName;
         marker.neighborhood = neighborhood;
         marker.address = address;
@@ -437,30 +425,36 @@ const defaultZoom = 12;
 document
   .getElementById("reset-filters-button")
   .addEventListener("click", () => {
-    // Reset all dropdown selections
-    document.querySelectorAll(".filter-box ul li").forEach((li) => {
-      li.style.backgroundColor = ""; // Reset background color
-    });
+    // Clear all active filters
+    activeFilters.weekday = null;
+    activeFilters.time = null;
+    activeFilters.firstPrize = null;
+    activeFilters.prizeAmount = null;
+    activeFilters.neighborhoods.clear();
 
-    // Clear selected neighborhoods
-    // selectedNeighborhoods.clear();
+    // Reset button labels and active state
+    setFilterLabel("weekday-button", "Weekday");
+    setFilterActive("weekday-button", false);
+    setFilterLabel("time-button", "Start Time");
+    setFilterActive("time-button", false);
+    setFilterLabel("first-prize-button", "First Prize");
+    setFilterActive("first-prize-button", false);
+    setFilterLabel("prize-amount-button", "Prize Amount");
+    setFilterActive("prize-amount-button", false);
+    setFilterLabel("neighborhood-button", "Neighborhood");
+    setFilterActive("neighborhood-button", false);
 
-    // Show all markers on the map
-    markers.forEach((marker) => {
-      if (!(marker instanceof L.Marker)) return;
-      if (!leafletmap.hasLayer(marker)) {
-        marker.addTo(leafletmap);
-      }
-    });
+    // Clear neighborhood selection highlights
+    document.querySelectorAll(".filter-option-selected").forEach((el) => el.classList.remove("filter-option-selected"));
 
-    // Reset the map view to the default center and zoom
+    // Show all markers and reset map view
+    applyFilters();
     leafletmap.setView(defaultCenter, defaultZoom);
 
     // Reset search inputs
     document.getElementById("neighborhood-search").value = "";
     document.getElementById("bar-search").value = "";
-
-    console.log("Filters and map view reset.");
+    filterTable("");
   });
 
 // // Toggle Event Type dropdown visibility
@@ -477,95 +471,47 @@ document
 //   }
 // });
 
-// Toggle First Prize dropdown visibility
-const firstPrizeButton = document.getElementById("first-prize-button");
-const firstPrizeDropdown = document.getElementById("first-prize-dropdown");
-firstPrizeButton.addEventListener("click", () => {
-  const isVisible = firstPrizeDropdown.style.display === "block";
-  firstPrizeDropdown.style.display = isVisible ? "none" : "block";
-});
-// Close dropdown if clicked outside
-document.addEventListener("click", (event) => {
-  if (
-    !firstPrizeButton.contains(event.target) &&
-    !firstPrizeDropdown.contains(event.target)
-  ) {
-    firstPrizeDropdown.style.display = "none";
-  }
-});
+// ─── Dropdown toggles ────────────────────────────────────────────────────────
+function setupDropdownToggle(buttonId, dropdownId) {
+  const btn = document.getElementById(buttonId);
+  const dd = document.getElementById(dropdownId);
+  btn.addEventListener("click", () => {
+    const isVisible = dd.style.display === "block";
+    // Close all other dropdowns first
+    document.querySelectorAll(".filter-dropdown-panel").forEach((el) => (el.style.display = "none"));
+    dd.style.display = isVisible ? "none" : "block";
+  });
+  document.addEventListener("click", (event) => {
+    if (!btn.contains(event.target) && !dd.contains(event.target)) {
+      dd.style.display = "none";
+    }
+  });
+}
 
-// Toggle Start Time dropdown visibility
-const timeButton = document.getElementById("time-button");
-const timeDropdown = document.getElementById("time-dropdown");
-timeButton.addEventListener("click", () => {
-  const isVisible = timeDropdown.style.display === "block";
-  timeDropdown.style.display = isVisible ? "none" : "block";
-});
-// Close dropdown if clicked outside
-document.addEventListener("click", (event) => {
-  if (
-    !timeButton.contains(event.target) &&
-    !timeDropdown.contains(event.target)
-  ) {
-    timeDropdown.style.display = "none";
-  }
-});
-// Toggle Neighborhood dropdown visibility
-const neighborhoodButton = document.getElementById("neighborhood-button");
-const neighborhoodDropdown = document.getElementById("neighborhood-dropdown");
-neighborhoodButton.addEventListener("click", () => {
-  const isVisible = neighborhoodDropdown.style.display === "block";
-  neighborhoodDropdown.style.display = isVisible ? "none" : "block";
-});
-// Close dropdown if clicked outside
-document.addEventListener("click", (event) => {
-  if (
-    !neighborhoodButton.contains(event.target) &&
-    !neighborhoodDropdown.contains(event.target)
-  ) {
-    neighborhoodDropdown.style.display = "none";
-  }
-});
-const weekdayButton = document.getElementById("weekday-button");
-const weekdayDropdown = document.getElementById("weekday-dropdown");
-// Toggle dropdown visibility
-weekdayButton.addEventListener("click", () => {
-  const isVisible = weekdayDropdown.style.display === "block";
-  weekdayDropdown.style.display = isVisible ? "none" : "block";
-});
+setupDropdownToggle("weekday-button", "weekday-dropdown");
+setupDropdownToggle("time-button", "time-dropdown");
+setupDropdownToggle("first-prize-button", "first-prize-dropdown");
+setupDropdownToggle("prize-amount-button", "prize-amount-dropdown");
+setupDropdownToggle("neighborhood-button", "neighborhood-dropdown");
+
 // Handle weekday selection
 document.querySelectorAll(".weekday-option").forEach((option) => {
   option.addEventListener("click", (event) => {
     const selectedWeekday = event.target.getAttribute("data-value");
-    console.log("Selected weekday:", selectedWeekday);
-    markers.forEach(function (marker) {
-      // Ensure marker is valid before acting on it
-      if (!(marker instanceof L.Marker)) return;
-
-      if (selectedWeekday === "All" || marker.weekday === selectedWeekday) {
-        if (!leafletmap.hasLayer(marker)) {
-          marker.addTo(leafletmap);
-        }
-      } else {
-        if (leafletmap.hasLayer(marker)) {
-          leafletmap.removeLayer(marker);
-        }
-      }
-    });
-
-    // Close the dropdown after selection
-    // weekdayDropdown.style.display = "none";
+    if (selectedWeekday === "All") {
+      activeFilters.weekday = null;
+      setFilterLabel("weekday-button", "Weekday");
+      setFilterActive("weekday-button", false);
+    } else {
+      activeFilters.weekday = selectedWeekday;
+      // Title-case the day for the label
+      const label = selectedWeekday.charAt(0) + selectedWeekday.slice(1).toLowerCase();
+      setFilterLabel("weekday-button", label);
+      setFilterActive("weekday-button", true);
+    }
+    document.getElementById("weekday-dropdown").style.display = "none";
+    applyFilters();
   });
-});
-
-// Close dropdown if clicked outside
-document.addEventListener("click", (event) => {
-  if (
-    !weekdayButton.contains(event.target) &&
-    !weekdayDropdown.contains(event.target)
-  ) {
-    weekdayDropdown.style.display = "none";
-  }
 });
 
 // Open Add New Bar modal
