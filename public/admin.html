@@ -826,7 +826,7 @@
       headers: { 'x-admin-token': adminToken, 'Content-Type': 'application/json' },
     };
     if (body) opts.body = JSON.stringify(body);
-    return fetch(url, opts);
+    return fetch(API_BASE + url, opts);
   }
 
   function refreshBadge() {
@@ -842,7 +842,7 @@
 
   // ── Live Data Table ────────────────────────────────────────────────────────
   function loadLiveData() {
-    fetch('/api/quizzo')
+    fetch(`${API_BASE}/api/quizzo`)
       .then(r => r.json())
       .then(data => {
         liveData = data;
