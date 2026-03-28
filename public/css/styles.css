@@ -1049,6 +1049,15 @@ progress {
   font-size: 0.875em;
   color: #6c757d;
 }
+.container-xxxl {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-right: auto;
+  margin-left: auto;
+}
 
 .container,
 .container-fluid,
