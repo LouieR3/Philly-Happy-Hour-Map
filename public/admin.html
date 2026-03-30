@@ -152,11 +152,31 @@
       <div class="modal-body">
         <input type="hidden" id="modal-pool-id" />
 
+        <div class="modal-section-label">Search Existing Bar</div>
+        <div class="modal-grid">
+          <div class="modal-field modal-field-wide">
+            <label>Search by name (to prepopulate fields)</label>
+            <input type="text" id="pool-search-input" placeholder="Search bars in database..." />
+            <div id="pool-search-results" style="margin-top:8px;border:1px solid var(--border);border-radius:4px;max-height:200px;overflow-y:auto;display:none;">
+              <ul id="pool-search-results-list" style="margin:0;padding:8px;list-style:none;"></ul>
+            </div>
+          </div>
+        </div>
+
         <div class="modal-section-label">Identity</div>
         <div class="modal-grid">
           <div class="modal-field"><label>Name *</label><input type="text" id="pool-Name" placeholder="Bar name" /></div>
           <div class="modal-field"><label>Yelp Alias</label><input type="text" id="pool-Yelp Alias" placeholder="yelp-alias-here" /></div>
-          <div class="modal-field modal-field-wide"><label>Address</label><input type="text" id="pool-Address" placeholder="123 Main St, Philadelphia, PA" /></div>
+          <div class="modal-field modal-field-wide"><label>Address</label><input type="text" id="pool-Address" placeholder="123 Main St, Philadelphia, PA" /></div><div class="modal-grid">
+          <div class="modal-field">
+              <label>Latitude</label>
+              <input type="number" step="any" id="pool-Latitude" placeholder="e.g. 39.95" />
+            </div>
+            <div class="modal-field">
+              <label>Longitude</label>
+              <input type="number" step="any" id="pool-Longitude" placeholder="e.g. -75.16" />
+            </div>
+          </div>
           <div class="modal-field"><label>Phone</label><input type="text" id="pool-Phone" placeholder="+1 215 555 0100" /></div>
           <div class="modal-field"><label>Website</label><input type="text" id="pool-Website" placeholder="https://..." /></div>
           <div class="modal-field"><label>Yelp Rating</label><input type="number" id="pool-Yelp Rating" min="1" max="5" step="0.5" placeholder="4.5" /></div>
@@ -250,11 +270,11 @@
         </div>
 
         <div class="modal-section-label">Amenities</div>
-        <div class="modal-grid modal-grid-checks">
+        <!-- <div class="modal-grid modal-grid-checks">
           ${['Has_Bar','Has_Food','Has_Happy_Hour','Has_TV','Outdoor_Seating','Has_League','Hosts_Tournaments'].map(f =>
             `<div class="modal-check"><input type="checkbox" id="pool-${f}" /><label for="pool-${f}">${f.replace(/_/g,' ')}</label></div>`
           ).join('')}
-        </div>
+        </div> -->
         <div class="modal-grid" style="margin-top:10px;">
           <div class="modal-field modal-field-wide"><label>Happy Hour Details</label><input type="text" id="pool-Happy_Hour_Details" placeholder="Mon–Fri 5–7pm, $1 off drinks" /></div>
           <div class="modal-field modal-field-wide"><label>Other Games</label><input type="text" id="pool-Has_Other_Games" placeholder="e.g. darts, shuffleboard, ping pong" /></div>

@@ -111,6 +111,10 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
       const lat = parseFloat(row.Latitude);
       const lng = parseFloat(row.Longitude);
       if (isNaN(lat) || isNaN(lng)) return;
+      const pay_model = !row.Payment_Model ? 'Unknown' : 
+        row.Payment_Model.toLowerCase() === 'per_game' ? 'Per Game' :
+        row.Payment_Model.toLowerCase() === 'per_hour' ? 'Per Hour' :
+        row.Payment_Model;
 
       const costLine = row.Payment_Model === 'Hourly'
         ? (row.Cost_Per_Hour ? `$${row.Cost_Per_Hour}/hr` : 'Hourly')
@@ -125,7 +129,7 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
           </div>
           <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;background:#1a2332;color:#e2e8f0;">
             ${row.Number_of_Tables ? `<div style="font-size:13px;">🎱 <b>${row.Number_of_Tables}</b> table${row.Number_of_Tables !== 1 ? 's' : ''}</div>` : ''}
-            ${row.Payment_Model ? `<div style="font-size:13px;">💳 <b>${row.Payment_Model}</b>${costLine ? ' · ' + costLine : ''}</div>` : ''}
+            ${pay_model ? `<div style="font-size:13px;">💳 <b>${pay_model}</b>${costLine ? ' · ' + costLine : ''}</div>` : ''}
             ${row.Vibe ? `<div style="font-size:12px;color:#94a3b8;">${row.Vibe}</div>` : ''}
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
               ${row.Has_Happy_Hour ? `<span style="background:rgba(52,211,153,0.12);color:#34d399;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;">Happy Hour</span>` : ''}
@@ -162,10 +166,15 @@ function populatePoolTable(data) {
       ? (row.Cost_Per_Hour  ? `$${row.Cost_Per_Hour}/hr`  : '—')
       : (row.Cost_Per_Game  ? `$${row.Cost_Per_Game}`     : '—');
     const tr = document.createElement('tr');
+    
+    const pay_model = !row.Payment_Model ? '—' : 
+      row.Payment_Model.toLowerCase() === 'per_game' ? 'Per Game' :
+      row.Payment_Model.toLowerCase() === 'per_hour' ? 'Per Hour' :
+      row.Payment_Model;
     tr.innerHTML = `
       <td>${row.Name}</td>
       <td>${row.Number_of_Tables ?? '?'}</td>
-      <td>${row.Payment_Model || '—'}</td>
+      <td>${pay_model}</td>
       <td>${cost}</td>`;
     tr.addEventListener('click', () => {
       const marker = poolMarkers.find((m) => m.rowIndex === i);
@@ -174,6 +183,59 @@ function populatePoolTable(data) {
     tbody.appendChild(tr);
   });
 }
+// ── Pool bar search (prepopulate from bars collection) ────────────────────
+const poolSearchInput = document.getElementById('pool-search-input');
+const poolSearchResultsList = document.getElementById('pool-search-results-list');
+
+poolSearchInput.addEventListener('input', async (e) => {
+    const q = e.target.value.trim();
+    if (q.length < 2) {
+        poolSearchResultsList.innerHTML = '';
+        return;
+    }
+
+    try {
+        const res = await fetch(`${POOL_API_BASE}/api/search-bars?q=${encodeURIComponent(q)}`);
+        const bars = await res.json();
+
+        poolSearchResultsList.innerHTML = '';
+        bars.forEach(bar => {
+            const li = document.createElement('li');
+            li.style.padding = '10px';
+            li.style.cursor = 'pointer';
+            li.style.borderBottom = '1px solid #334155';
+            li.innerHTML = `<strong>${bar.Name}</strong><br><small style="color:#94a3b8">${bar.Address || ''}</small>`;
+            
+            li.onclick = () => {
+                // Populate the specific IDs from your HTML
+                document.getElementById('pool-business-name').value = bar.Name || '';
+                document.getElementById('pool-street-address').value = bar.Address || '';
+                document.getElementById('pool-neighborhood-input').value = bar.Neighborhood || '';
+                
+                // Save hidden coordinates
+                document.getElementById('pool-lat').value = bar.Latitude || '';
+                document.getElementById('pool-lng').value = bar.Longitude || '';
+                // Save hidden coordinates
+                document.getElementById('pool-lat').value = bar.Latitude || '';
+                document.getElementById('pool-lng').value = bar.Longitude || '';
+                document.getElementById('pool-neighborhood-input').value = bar.Neighborhoods || '';
+                
+                // UI Cleanup
+                poolSearchInput.value = bar.Name;
+                poolSearchResultsList.innerHTML = '';
+            };
+            poolSearchResultsList.appendChild(li);
+        });
+    } catch (err) {
+        console.error('Search error:', err);
+    }
+  // Close search results when clicking elsewhere
+  document.addEventListener("click", (e) => {
+    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+      searchResults.style.display = "none";
+    }
+  });
+});
 
 // ─── Table search ─────────────────────────────────────────────────────────────
 document.getElementById('pool-bar-search').addEventListener('input', (e) => {

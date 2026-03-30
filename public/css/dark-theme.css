@@ -46,9 +46,9 @@ body {
   background-color: rgba(52, 211, 153, 0.08) !important;
 }
 #mainNav .navbar-toggler {
-  background-color: var(--mh-dark-2) !important;
-  border-color: var(--mh-border) !important;
-  color: var(--mh-text) !important;
+  background-color: rgba(11, 15, 24, 0.96) !important;
+  /* border-color: var(--mh-border) !important;
+  color: var(--mh-text) !important; */
 }
 
 /* ── Sections ─────────────────────────────────────────────── */
@@ -133,6 +133,7 @@ h1, h2, h3, h4, h5, h6 {
 .prize-amount-option, .neighborhood-option,
 .pool-payment-option, .pool-tables-option {
   color: var(--mh-text) !important;
+  text-align: center;
 }
 .weekday-option:hover, .time-option:hover, .first-prize-option:hover,
 .prize-amount-option:hover, .neighborhood-option:hover,

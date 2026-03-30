@@ -15,7 +15,7 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Red Hat Text', sans-serif;
     background: var(--bg);
     color: var(--text);
     min-height: 100vh;
@@ -430,6 +430,34 @@ tbody td { padding: 10px 12px; vertical-align: middle; }
 #toast.show { opacity: 1; transform: translateY(0); }
 #toast.success { border-left: 4px solid #2ecc71; }
 #toast.error   { border-left: 4px solid var(--danger); }
+
+
+/* Quizzo cards — green left border */
+.card.card-quizzo {
+  border-left: 4px solid #1a6b4a;
+}
+ 
+/* Pool cards — blue left border */
+.card.card-pool {
+  border-left: 4px solid #2563eb;
+  background: #f8faff;
+}
+ 
+/* Edit cards get a slightly muted version */
+.card.card-edit-type.card-quizzo {
+  border-left: 4px solid #6ba888;
+}
+ 
+.card.card-edit-type.card-pool {
+  border-left: 4px solid #93b4f5;
+  background: #f8faff;
+}
+ 
+/* ── Pill variants ── */
+.pill-new       { background: #e8f5ee; color: #1a6b4a; }   /* quizzo new */
+.pill-pool      { background: #dbeafe; color: #1d4ed8; }   /* pool new */
+.pill-edit      { background: #fff8e1; color: #b45309; }   /* quizzo edit */
+.pill-pool-edit { background: #ede9fe; color: #6d28d9; }   /* pool edit */
 /* ── Pool Bars Tab badge ── */
 .tab-badge-pool { background: #1a6b4a; }
 

@@ -55,7 +55,6 @@
       <div class="container">
         <a class="navbar-brand" href="#page-top">Mappy Hour</a>
         <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-          Menu
           <i class="fas fa-bars"></i>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
@@ -263,10 +262,9 @@
                 <thead>
                   <tr>
                     <th>Business</th>
-                    <th class="d-lg-none">Address</th>
                     <th>Neighborhood</th>
-                    <th>Day</th>
-                    <th>Time</th>
+                    <th>Day - Time</th>
+                    <!-- <th>Time</th> -->
                   </tr>
                 </thead>
                 <tbody></tbody>
@@ -559,6 +557,7 @@
               </div>
               <div class="modal-body">
                 <form id="edit-bar-form">
+                  <input type="hidden" id="edit-original-id" />
                   <div class="mb-3">
                     <label for="search-bar" class="form-label">Search Bar</label>
                     <input type="text" class="form-control" id="search-bar" placeholder="Search for a bar by name" />
@@ -710,6 +709,16 @@
               </div>
               <div class="modal-body">
                 <form id="pool-bar-submission-form">
+                  <div class="modal-section-label">Search Existing Bar</div>
+                  <div class="form-group" style="position: relative; margin-bottom: 20px;">
+                    <label style="color: #10b981; font-weight: bold;"><i class="fa fa-search"></i> Search for a Bar first (Optional)</label>
+                    <input type="text" id="pool-search-input" placeholder="Start typing bar name..." autocomplete="off" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #334155; background: #1e293b; color: white;">
+                    <div id="pool-search-results" style="position: absolute; width: 100%; z-index: 100; background: #1e293b; border: 1px solid #334155; border-top: none; max-height: 200px; overflow-y: auto; border-radius: 0 0 4px 4px;">
+                      <ul id="pool-search-results-list" style="margin:0;padding:8px;list-style:none;"></ul>
+                    </div>
+                  </div>
+
+                  <hr style="border-color: #334155; margin: 20px 0;">
                   <div class="mb-3">
                     <label for="pool-business-name" class="form-label">Bar Name</label>
                     <input type="text" class="form-control" id="pool-business-name" placeholder="Enter bar name" required />
@@ -717,6 +726,8 @@
                   <div class="mb-3">
                     <label for="pool-street-address" class="form-label">Street Address</label>
                     <input type="text" class="form-control" id="pool-street-address" placeholder="e.g. 123 Main St" required />
+                    <input type="hidden" id="pool-lat" name="Latitude">
+                    <input type="hidden" id="pool-lng" name="Longitude">
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Is this bar in Philadelphia?</label>

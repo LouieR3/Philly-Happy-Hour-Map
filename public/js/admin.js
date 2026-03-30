@@ -33,17 +33,18 @@ function login() {
   if (!pw) return;
   adminToken = pw;
   // Test the token immediately
-  fetch(`${API_BASE}/admin/pending`, {
-    headers: { "x-admin-token": adminToken },
-  })
-    .then((r) => {
-      if (r.status === 401) throw new Error("bad");
-      return r.json();
+  Promise.all([
+    fetch(`${API_BASE}/admin/pending`, { headers: { "x-admin-token": adminToken } }),
+    fetch(`${API_BASE}/admin/pending-pool-bars`, { headers: { "x-admin-token": adminToken } }),
+  ])
+    .then(([r1, r2]) => {
+      if (r1.status === 401) throw new Error("bad");
+      return Promise.all([r1.json(), r2.json()]);
     })
-    .then((data) => {
+    .then(([quizzoData, poolData]) => {
       document.getElementById("login-screen").style.display = "none";
       document.getElementById("app").style.display = "block";
-      renderPending(data);
+      renderPending(quizzoData, poolData);
       loadLiveData();
     })
     .catch(() => {
@@ -78,35 +79,33 @@ document.querySelectorAll(".tab").forEach((tab) => {
 });
 
 // ── Render Pending ─────────────────────────────────────────────────────────
-function renderPending({ submissions, edits }) {
-  // Update badges
-  document.getElementById("badge-submissions").textContent = submissions.length;
-  document.getElementById("badge-edits").textContent = edits.length;
-  document.getElementById("header-count").textContent =
-    `${submissions.length + edits.length} pending`;
+function renderPending({ submissions, edits }, poolPending = { submissions: [], edits: [] }) {
+  const allSubs  = submissions.length + poolPending.submissions.length;
+  const allEdits = edits.length + poolPending.edits.length;
 
-  // New submissions
+  document.getElementById("badge-submissions").textContent = allSubs;
+  document.getElementById("badge-edits").textContent = allEdits;
+  document.getElementById("header-count").textContent =
+    `${allSubs + allEdits} pending`;
+
+  // New submissions — quizzo first, then pool
   const subList = document.getElementById("submissions-list");
   subList.innerHTML = "";
-  if (submissions.length === 0) {
-    subList.innerHTML = emptyState(
-      "check-circle",
-      "No pending submissions — all clear!",
-    );
+  if (allSubs === 0) {
+    subList.innerHTML = emptyState("check-circle", "No pending submissions — all clear!");
   } else {
-    submissions.forEach((s) => subList.appendChild(buildSubmissionCard(s)));
+    submissions.forEach((s) => subList.appendChild(buildSubmissionCard(s, "quizzo")));
+    poolPending.submissions.forEach((s) => subList.appendChild(buildSubmissionCard(s, "pool")));
   }
 
-  // Edits
+  // Edits — quizzo first, then pool
   const editList = document.getElementById("edits-list");
   editList.innerHTML = "";
-  if (edits.length === 0) {
-    editList.innerHTML = emptyState(
-      "check-circle",
-      "No pending edits — all clear!",
-    );
+  if (allEdits === 0) {
+    editList.innerHTML = emptyState("check-circle", "No pending edits — all clear!");
   } else {
-    edits.forEach((e) => editList.appendChild(buildEditCard(e)));
+    edits.forEach((e) => editList.appendChild(buildEditCard(e, "quizzo")));
+    poolPending.edits.forEach((e) => editList.appendChild(buildEditCard(e, "pool")));
   }
 }
 
@@ -115,59 +114,90 @@ function emptyState(icon, msg) {
 }
 
 // ── Submission Card ────────────────────────────────────────────────────────
-function buildSubmissionCard(s) {
+function buildSubmissionCard(s, type = "quizzo") {
+  const isPool = type === "pool";
   const card = document.createElement("div");
-  card.className = "card";
+  card.className = `card card-${type}`;
   card.id = "card-" + s._id;
 
   const submitted = new Date(s.submittedAt).toLocaleString();
+  const pillClass = isPool ? "pill-pool" : "pill-new";
+  const pillLabel = isPool ? "NEW POOL BAR" : "NEW QUIZZO BAR";
+  const name      = isPool ? (s.name || s.BUSINESS || "—") : (s.BUSINESS || "—");
+
+  const overrideFields = isPool ? `
+        ${editInput("name",          "Name",          s.name,         s._id)}
+        ${editInput("streetAddress", "Street",        s.streetAddress,s._id)}
+        ${editInput("city",          "City",          s.city,         s._id)}
+        ${editInput("state",         "State",         s.state,        s._id)}
+        ${editInput("neighborhood",  "Neighborhood",  s.neighborhood, s._id)}
+        ${editInput("numTables",     "# Tables",      s.numTables,    s._id)}
+        ${editInput("paymentModel",  "Payment Model", s.paymentModel, s._id)}
+        ${editInput("costPerGame",   "Cost/Game ($)", s.costPerGame,  s._id)}
+        ${editInput("costPerHour",   "Cost/Hour ($)", s.costPerHour,  s._id)}
+  ` : `
+        ${editInput("BUSINESS",      "Business Name", s.BUSINESS,     s._id)}
+        ${editInput("ADDRESS_STREET","Street",        "",             s._id)}
+        ${editInput("ADDRESS_UNIT",  "Unit",          "",             s._id)}
+        ${editInput("ADDRESS_CITY",  "City",          "PHILADELPHIA", s._id)}
+        ${editInput("ADDRESS_STATE", "State",         "PA",           s._id)}
+        ${editInput("ADDRESS_ZIP",   "ZIP",           "",             s._id)}
+        ${editSelect("WEEKDAY",      "Day", WEEKDAYS,  s.WEEKDAY,     s._id)}
+        ${editInput("TIME",          "Time",          s.TIME,         s._id)}
+        ${editInput("NEIGHBORHOOD",  "Neighborhood",  "",             s._id)}
+        ${editInput("HOST",          "Host",          s.HOST,         s._id)}
+        ${editInput("PRIZE_1_TYPE",  "Prize 1 Type",  s.PRIZE_1_TYPE, s._id)}
+        ${editInput("PRIZE_1_AMOUNT","Prize 1 Amount",s.PRIZE_1_AMOUNT,s._id)}
+  `;
+
+  const infoFields = isPool ? `
+        ${field("Address",       (s.streetAddress ? s.streetAddress + ", " : "") + (s.city || "") + (s.state ? ", " + s.state : ""))}
+        ${field("Neighborhood",  s.neighborhood || "—")}
+        ${field("# Tables",      s.numTables    || "—")}
+        ${field("Payment Model", s.paymentModel || "—")}
+        ${field("Cost/Game",     s.costPerGame  ? "$" + s.costPerGame  : "—")}
+        ${field("Cost/Hour",     s.costPerHour  ? "$" + s.costPerHour  : "—")}
+  ` : `
+        ${field("Address",   s.ADDRESS     || "—")}
+        ${field("Day",       s.WEEKDAY     || "—")}
+        ${field("Time",      s.TIME        || "—")}
+        ${field("Event Type",s.EVENT_TYPE  || "—")}
+        ${field("Host",      s.HOST        || "—")}
+        ${field("Prize 1",   s.PRIZE_1_TYPE ? `${s.PRIZE_1_TYPE} — ${s.PRIZE_1_AMOUNT || "?"}` : "—")}
+        ${field("Prize 2",   s.PRIZE_2_TYPE ? `${s.PRIZE_2_TYPE} — ${s.PRIZE_2_AMOUNT || "?"}` : "—")}
+  `;
+
+  const approveHandler = isPool
+    ? `approvePoolSubmission('${s._id}')`
+    : `approve('${s._id}')`;
+  const rejectHandler = isPool
+    ? `rejectPoolSubmission('${s._id}')`
+    : `reject('${s._id}')`;
 
   card.innerHTML = `
     <div class="card-header">
         <div>
-        <div class="card-title">${s.BUSINESS}</div>
+        <div class="card-title">${name}</div>
         <div class="card-meta">Submitted ${submitted}</div>
         </div>
-        <span class="pill pill-new">NEW BAR</span>
+        <span class="pill ${pillClass}">${pillLabel}</span>
     </div>
 
-    <div class="card-fields">
-        ${field("Address", s.ADDRESS || "—")}
-        ${field("Day", s.WEEKDAY || "—")}
-        ${field("Time", s.TIME || "—")}
-        ${field("Event Type", s.EVENT_TYPE || "—")}
-        ${field("Host", s.HOST || "—")}
-        ${field("Prize 1", s.PRIZE_1_TYPE ? `${s.PRIZE_1_TYPE} — ${s.PRIZE_1_AMOUNT || "?"}` : "—")}
-        ${field("Prize 2", s.PRIZE_2_TYPE ? `${s.PRIZE_2_TYPE} — ${s.PRIZE_2_AMOUNT || "?"}` : "—")}
-    </div>
+    <div class="card-fields">${infoFields}</div>
 
-    ${s.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${s.NOTES}</div>` : ""}
+    ${s.notes || s.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${s.notes || s.NOTES}</div>` : ""}
 
-    <!-- Admin can tweak fields before approving -->
     <details class="edit-section">
         <summary>Override fields before approving</summary>
-        <div class="edit-grid">
-        ${editInput("BUSINESS", "Business Name", s.BUSINESS, s._id)}
-        ${editInput("ADDRESS_STREET", "Street", "", s._id)}
-        ${editInput("ADDRESS_UNIT", "Unit", "", s._id)}
-        ${editInput("ADDRESS_CITY", "City", "PHILADELPHIA", s._id)}
-        ${editInput("ADDRESS_STATE", "State", "PA", s._id)}
-        ${editInput("ADDRESS_ZIP", "ZIP", "", s._id)}
-        ${editSelect("WEEKDAY", "Day", WEEKDAYS, s.WEEKDAY, s._id)}
-        ${editInput("TIME", "Time", s.TIME, s._id)}
-        ${editInput("NEIGHBORHOOD", "Neighborhood", "", s._id)}
-        ${editInput("HOST", "Host", s.HOST, s._id)}
-        ${editInput("PRIZE_1_TYPE", "Prize 1 Type", s.PRIZE_1_TYPE, s._id)}
-        ${editInput("PRIZE_1_AMOUNT", "Prize 1 Amount", s.PRIZE_1_AMOUNT, s._id)}
-        </div>
+        <div class="edit-grid">${overrideFields}</div>
     </details>
 
     <div class="card-actions" style="margin-top:16px;">
-        <button class="btn-reject"  onclick="reject('${s._id}')">
-        <i class="fa fa-times"></i> Reject
+        <button class="btn-reject" onclick="${rejectHandler}">
+          <i class="fa fa-times"></i> Reject
         </button>
-        <button class="btn-approve" onclick="approve('${s._id}')">
-        <i class="fa fa-check"></i> Approve & Add
+        <button class="btn-approve" onclick="${approveHandler}">
+          <i class="fa fa-check"></i> Approve & Add
         </button>
     </div>
     `;
@@ -175,40 +205,43 @@ function buildSubmissionCard(s) {
 }
 
 // ── Edit Card ──────────────────────────────────────────────────────────────
-function buildEditCard(e) {
+function buildEditCard(e, type = "quizzo") {
+  const isPool = type === "pool";
   const card = document.createElement("div");
-  card.className = "card";
+  card.className = `card card-${type} card-edit-type`;
   card.id = "card-edit-" + e._id;
 
   const submitted = new Date(e.submittedAt).toLocaleString();
-  const changes = e.changes || {};
+  const changes   = e.changes || {};
+  const pillLabel = isPool ? "POOL EDIT" : "QUIZZO EDIT";
+  const pillClass = isPool ? "pill-pool-edit" : "pill-edit";
+
+  const approveHandler = isPool ? `approvePoolEdit('${e._id}')` : `approveEdit('${e._id}')`;
+  const rejectHandler  = isPool ? `rejectPoolEdit('${e._id}')`  : `rejectEdit('${e._id}')`;
 
   card.innerHTML = `
     <div class="card-header">
         <div>
-        <div class="card-title">${e.originalBusiness}</div>
+        <div class="card-title">${e.originalBusiness || e.originalName || "—"}</div>
         <div class="card-meta">Edit submitted ${submitted}</div>
         </div>
-        <span class="pill pill-edit">EDIT</span>
+        <span class="pill ${pillClass}">${pillLabel}</span>
     </div>
 
     <div class="card-fields">
         ${Object.entries(changes)
-          .map(
-            ([k, v]) =>
-              `<div class="field"><label>${k}</label><span class="changed">${v}</span></div>`,
-          )
+          .map(([k, v]) => `<div class="field"><label>${k}</label><span class="changed">${v}</span></div>`)
           .join("")}
     </div>
 
-    ${e.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${e.NOTES}</div>` : ""}
+    ${e.notes || e.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${e.notes || e.NOTES}</div>` : ""}
 
     <div class="card-actions">
-        <button class="btn-reject"  onclick="rejectEdit('${e._id}')">
-        <i class="fa fa-times"></i> Reject
+        <button class="btn-reject"  onclick="${rejectHandler}">
+          <i class="fa fa-times"></i> Reject
         </button>
-        <button class="btn-approve" onclick="approveEdit('${e._id}')">
-        <i class="fa fa-check"></i> Apply Edit
+        <button class="btn-approve" onclick="${approveHandler}">
+          <i class="fa fa-check"></i> Apply Edit
         </button>
     </div>
     `;
@@ -345,15 +378,16 @@ function adminFetch(url, method = "GET", body = null) {
 }
 
 function refreshBadge() {
-  adminFetch("/admin/pending")
-    .then((r) => r.json())
-    .then((data) => {
-      document.getElementById("badge-submissions").textContent =
-        data.submissions.length;
-      document.getElementById("badge-edits").textContent = data.edits.length;
-      document.getElementById("header-count").textContent =
-        `${data.submissions.length + data.edits.length} pending`;
-    });
+  Promise.all([
+    adminFetch("/admin/pending").then(r => r.json()),
+    adminFetch("/admin/pending-pool-bars").then(r => r.json()),
+  ]).then(([quizzo, poolPending]) => {
+    const allSubs  = quizzo.submissions.length + poolPending.submissions.length;
+    const allEdits = quizzo.edits.length + poolPending.edits.length;
+    document.getElementById("badge-submissions").textContent = allSubs;
+    document.getElementById("badge-edits").textContent = allEdits;
+    document.getElementById("header-count").textContent = `${allSubs + allEdits} pending`;
+  });
 }
 
 // ── Live Data Table ────────────────────────────────────────────────────────
@@ -414,6 +448,63 @@ function toast(msg, type = "success") {
     el.className = "";
   }, 3500);
 }
+
+// ── Pool submission approval/rejection ────────────────────────────────────
+async function approvePoolSubmission(id) {
+  const card = document.getElementById("card-" + id);
+  // Collect overrides from the edit grid
+  const overrideFields = ["name","streetAddress","city","state","neighborhood",
+    "numTables","paymentModel","costPerGame","costPerHour"];
+  const overrides = {};
+  overrideFields.forEach(f => {
+    const el = document.getElementById(`override-${id}-${f}`);
+    if (el && el.value.trim()) overrides[f] = el.value.trim();
+  });
+  try {
+    const res  = await adminFetch(`/admin/approve-pool-submission/${id}`, "POST", overrides);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    removeCard("card-" + id);
+    toast("Pool bar approved and added ✓", "success");
+    refreshBadge();
+    loadPoolBars();
+  } catch (err) { toast(err.message, "error"); }
+}
+
+async function rejectPoolSubmission(id) {
+  if (!confirm("Reject this pool bar submission?")) return;
+  try {
+    const res = await adminFetch(`/admin/reject-pool-submission/${id}`, "POST");
+    if (!res.ok) throw new Error((await res.json()).error);
+    removeCard("card-" + id);
+    toast("Pool submission rejected.", "success");
+    refreshBadge();
+  } catch (err) { toast(err.message, "error"); }
+}
+
+async function approvePoolEdit(id) {
+  try {
+    const res  = await adminFetch(`/admin/approve-pool-edit/${id}`, "POST");
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    removeCard("card-edit-" + id);
+    toast("Pool bar edit applied ✓", "success");
+    refreshBadge();
+    loadPoolBars();
+  } catch (err) { toast(err.message, "error"); }
+}
+
+async function rejectPoolEdit(id) {
+  if (!confirm("Reject this pool bar edit?")) return;
+  try {
+    const res = await adminFetch(`/admin/reject-pool-edit/${id}`, "POST");
+    if (!res.ok) throw new Error((await res.json()).error);
+    removeCard("card-edit-" + id);
+    toast("Pool edit rejected.", "success");
+    refreshBadge();
+  } catch (err) { toast(err.message, "error"); }
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 // POOL BARS
 // ═══════════════════════════════════════════════════════════════════════════
@@ -587,15 +678,91 @@ function closePoolModal(e) {
   document.getElementById("pool-modal-overlay").classList.remove("open");
 }
 
+// ── Pool bar search (prepopulate from bars collection) ────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("pool-search-input");
+  const searchResults = document.getElementById("pool-search-results");
+  const searchResultsList = document.getElementById("pool-search-results-list");
+
+  if (!searchInput) return; // Only setup if element exists
+
+  searchInput.addEventListener("input", async (e) => {
+    const q = e.target.value.trim();
+    if (!q || q.length < 2) {
+      searchResults.style.display = "none";
+      return;
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/api/search-bars?q=${encodeURIComponent(q)}`);
+      const bars = await res.json();
+
+      searchResultsList.innerHTML = "";
+      if (!bars.length) {
+        const li = document.createElement("li");
+        li.textContent = "No bars found";
+        li.style.color = "var(--muted)";
+        li.style.padding = "8px";
+        searchResultsList.appendChild(li);
+      } else {
+        bars.forEach((bar) => {
+          console.log("Search result:", bar);
+          console.log("bar:", bar.Latitude, bar.Longitude);
+          const li = document.createElement("li");
+          li.style.padding = "8px";
+          li.style.cursor = "pointer";
+          li.style.borderRadius = "4px";
+          li.style.marginBottom = "4px";
+          li.style.background = "var(--hover)";
+          li.textContent = bar.Name + (bar["Yelp Alias"] ? ` (${bar["Yelp Alias"]})` : "");
+          li.addEventListener("mouseover", () => (li.style.opacity = "0.7"));
+          li.addEventListener("mouseout", () => (li.style.opacity = "1"));
+          li.addEventListener("click", () => {
+            // Populate fields from selected bar
+            document.getElementById("pool-Name").value = bar.Name || "";
+            document.getElementById("pool-Yelp Alias").value = bar["Yelp Alias"] || "";
+            document.getElementById("pool-Address").value = bar.Address || "";
+            // Auto-fill coordinates from the search result
+            document.getElementById('pool-Latitude').value = bar.Latitude || '';
+            document.getElementById('pool-Longitude').value = bar.Longitude || '';
+            document.getElementById("pool-Website").value = bar.Website || "";
+            if (bar["Yelp Rating"]) document.getElementById("pool-Yelp Rating").value = bar["Yelp Rating"];
+
+            // Hide search results
+            searchResults.style.display = "none";
+            searchInput.value = "";
+          });
+          searchResultsList.appendChild(li);
+        });
+      }
+      searchResults.style.display = "block";
+    } catch (err) {
+      console.error("Search failed:", err);
+      searchResults.style.display = "none";
+    }
+  });
+
+  // Close search results when clicking elsewhere
+  document.addEventListener("click", (e) => {
+    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+      searchResults.style.display = "none";
+    }
+  });
+});
+
 // ── Save (create or update) ───────────────────────────────────────────────
 async function savePoolBar() {
-  const id = document.getElementById("modal-pool-id").value;
+  // Use the ID retrieval method from your current script
+  const id = document.getElementById("modal-pool-id").value; 
 
   const doc = {};
+
+  // 1. Process Text and Numeric Fields
+  // Note: Ensure 'Latitude' and 'Longitude' are added to your POOL_TEXT_FIELDS array!
   POOL_TEXT_FIELDS.forEach((f) => {
     const el = document.getElementById("pool-" + f);
     if (el && el.value.trim() !== "") {
-      // Coerce numeric fields
+      // Coerce numeric fields (including the new coordinates)
       if (
         [
           "Yelp Rating",
@@ -603,6 +770,8 @@ async function savePoolBar() {
           "Cost_Per_Game",
           "Cost_Per_Hour",
           "Min_Spend",
+          "Latitude", // Add these to the coercion list
+          "Longitude"
         ].includes(f)
       ) {
         doc[f] = parseFloat(el.value) || null;
@@ -611,16 +780,42 @@ async function savePoolBar() {
       }
     }
   });
+
+  // 2. Geocoding Fallback Logic
+  // If Latitude or Longitude are missing after the loop, try to fetch them
+  if (!doc.Latitude || !doc.Longitude) {
+    if (doc.Address) {
+      try {
+        console.log("Coordinates missing. Attempting to geocode address...");
+        const geoRes = await fetch(`${API_BASE}/api/geocode?address=${encodeURIComponent(doc.Address)}`);
+        const geoData = await geoRes.json();
+        
+        if (geoData.lat && geoData.lng) {
+          doc.Latitude = geoData.lat;
+          doc.Longitude = geoData.lng;
+          // Update the UI fields too so the user sees it happened
+          if(document.getElementById("pool-Latitude")) document.getElementById("pool-Latitude").value = geoData.lat;
+          if(document.getElementById("pool-Longitude")) document.getElementById("pool-Longitude").value = geoData.lng;
+        }
+      } catch (err) {
+        console.error("Geocoding failed:", err);
+      }
+    }
+  }
+
+  // 3. Process Boolean Fields
   POOL_BOOL_FIELDS.forEach((f) => {
     const el = document.getElementById("pool-" + f);
     if (el) doc[f] = el.checked;
   });
 
+  // 4. Validation
   if (!doc["Name"]) {
     toast("Name is required", "error");
     return;
   }
 
+  // 5. Save to Server
   try {
     const url = id ? `/admin/pool-bars/${id}` : "/admin/pool-bars";
     const method = id ? "PUT" : "POST";

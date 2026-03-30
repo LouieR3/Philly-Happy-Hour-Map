@@ -560,6 +560,84 @@ app.get('/admin/pending-pool-bars', adminAuth, async (req, res) => {
   }
 });
 
+
+// ─── Pool submission approve/reject ────────────────────────────────────────
+app.post('/admin/approve-pool-submission/:id', adminAuth, async (req, res) => {
+  try {
+    const sub = await PendingPoolBar.findById(req.params.id);
+    if (!sub) return res.status(404).json({ error: 'Submission not found' });
+
+    const overrides = req.body || {};
+    const bar = new PoolBar({
+      Name:            overrides.name          || sub.name,
+      Address:         [overrides.streetAddress || sub.streetAddress,
+                        overrides.city          || sub.city,
+                        overrides.state         || sub.state].filter(Boolean).join(', '),
+      Latitude:        sub.Latitude,
+      Longitude:       sub.Longitude,
+      Neighborhoods:   overrides.neighborhood  || sub.neighborhood,
+      Number_of_Tables: overrides.numTables    || sub.numTables || null,
+      Payment_Model:   overrides.paymentModel  || sub.paymentModel,
+      Cost_Per_Game:   overrides.costPerGame   || sub.costPerGame || null,
+      Cost_Per_Hour:   overrides.costPerHour   || sub.costPerHour || null,
+      Notes:           sub.notes,
+      Verified:        false,
+    });
+    await bar.save();
+    sub.status = 'approved';
+    await sub.save();
+    res.json({ success: true, insertedId: bar._id });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/admin/reject-pool-submission/:id', adminAuth, async (req, res) => {
+  try {
+    const sub = await PendingPoolBar.findByIdAndUpdate(
+      req.params.id, { status: 'rejected' }, { new: true }
+    );
+    if (!sub) return res.status(404).json({ error: 'Not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/admin/approve-pool-edit/:id', adminAuth, async (req, res) => {
+  try {
+    const edit = await PendingPoolBarEdit.findById(req.params.id);
+    if (!edit) return res.status(404).json({ error: 'Edit not found' });
+
+    const filter = edit.originalId
+      ? { _id: edit.originalId }
+      : { Name: edit.originalName };
+
+    const updated = await PoolBar.findOneAndUpdate(
+      filter, { $set: edit.changes }, { new: true }
+    );
+    if (!updated) return res.status(404).json({ error: 'Pool bar not found' });
+
+    edit.status = 'approved';
+    await edit.save();
+    res.json({ success: true, updated });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/admin/reject-pool-edit/:id', adminAuth, async (req, res) => {
+  try {
+    const edit = await PendingPoolBarEdit.findByIdAndUpdate(
+      req.params.id, { status: 'rejected' }, { new: true }
+    );
+    if (!edit) return res.status(404).json({ error: 'Not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─── Philly Bar Map — public bars route ────────────────────────────────────────────
 const barSchema = new mongoose.Schema({
   Name:          String,

@@ -394,6 +394,9 @@ fetch(`${API_BASE}/api/quizzo`)
         marker.businessName = businessName;
         marker.neighborhood = neighborhood;
         marker.address = address;
+        marker.mongoId = row._id || null;
+        marker.secondPrize = row.PRIZE_2_TYPE ? row.PRIZE_2_TYPE.replace(/_/g, ' ') : '';
+        marker.host = row.HOST || '';
         markers.push(marker);
         marker.addTo(leafletmap);
         markerLayerGroup.addLayer(marker); // Add marker to the layer group
@@ -578,10 +581,9 @@ searchBar.addEventListener("input", () => {
       li.textContent = marker.businessName;
       li.style.cursor = "pointer";
       li.addEventListener("click", () => {
-        // Populate the edit fields with the selected bar's data
-        document.getElementById("edit-business-name").value =
-          marker.businessName;
+        document.getElementById("edit-business-name").value = marker.businessName;
         document.getElementById("edit-address").value = marker.address;
+        document.getElementById("edit-original-id").value = marker.mongoId || '';
 
         // Populate Weekday dropdown
         const weekdayDropdown = document.getElementById("edit-weekday");
@@ -702,7 +704,6 @@ function populateTable(data) {
     // Skip rows with undefined or missing required fields
     if (
       !row.BUSINESS ||
-      !row.ADDRESS_STREET ||
       !row.NEIGHBORHOOD ||
       !row.WEEKDAY ||
       !row.TIME
@@ -715,11 +716,15 @@ function populateTable(data) {
 
     tr.innerHTML = `
     <td>${row.BUSINESS}</td>
-    <td class="d-lg-none">${row.ADDRESS_STREET}, ${row.ADDRESS_CITY}, ${row.ADDRESS_STATE} ${row.ADDRESS_ZIP}</td>
     <td>${row.NEIGHBORHOOD}</td>
-    <td>${row.WEEKDAY}</td>
-    <td>${row.TIME}</td>
+    <td>${row.WEEKDAY}<br>${row.TIME}</td>
     `;
+    // tr.innerHTML = `
+    // <td>${row.BUSINESS}</td>
+    // <td>${row.NEIGHBORHOOD}</td>
+    // <td>${row.WEEKDAY}<br>${row.TIME}</td>
+    // <td>${row.TIME}</td>
+    // `;
 
     // Add click event to zoom to marker and open popup
     tr.addEventListener("click", () => {
@@ -756,4 +761,49 @@ fetch(`${API_BASE}/api/quizzo`)
   })
   .catch(function (err) {
     console.error("Failed to load quizzo data for table:", err);
+  });
+
+// ── Quizzo edit form submission ────────────────────────────────────────────
+document
+  .getElementById("edit-bar-form")
+  .addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    const originalId   = document.getElementById("edit-original-id").value;
+    const originalName = document.getElementById("edit-business-name").value;
+
+    const changes = {};
+    const newName    = document.getElementById("edit-business-name").value.trim();
+    const newAddress = document.getElementById("edit-address").value.trim();
+    const newWeekday = document.getElementById("edit-weekday").value;
+    const newTime    = document.getElementById("edit-time").value;
+    const newPrize1  = document.getElementById("edit-first-prize").value.trim();
+    const newPrize2  = document.getElementById("edit-second-prize").value.trim();
+    const newHost    = document.getElementById("edit-host").value.trim();
+    const notes      = document.getElementById("edit-notes") ? document.getElementById("edit-notes").value.trim() : "";
+
+    if (newName)    changes.BUSINESS        = newName.toUpperCase();
+    if (newAddress) changes.Full_Address    = newAddress;
+    if (newWeekday) changes.WEEKDAY         = newWeekday;
+    if (newTime)    changes.TIME            = newTime;
+    if (newPrize1)  changes.PRIZE_1_TYPE    = newPrize1.toUpperCase().replace(/ /g, '_');
+    if (newPrize2)  changes.PRIZE_2_TYPE    = newPrize2.toUpperCase().replace(/ /g, '_');
+    if (newHost)    changes.HOST            = newHost.toUpperCase();
+
+    fetch(`${API_BASE}/submit-edit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ originalBusiness: originalName, originalId, changes, notes }),
+    })
+      .then((r) => r.json())
+      .then(() => {
+        alert("Your edit has been submitted for review — thanks!");
+        document.getElementById("edit-bar-form").reset();
+        document.getElementById("edit-fields").style.display = "none";
+        bootstrap.Modal.getInstance(document.getElementById("editBarModal")).hide();
+      })
+      .catch((err) => {
+        console.error("Edit submission error:", err);
+        alert("There was an error submitting your edit. Please try again.");
+      });
   });
