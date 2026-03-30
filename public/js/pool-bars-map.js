@@ -116,9 +116,12 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
         row.Payment_Model.toLowerCase() === 'per_hour' ? 'Per Hour' :
         row.Payment_Model;
 
-      const costLine = row.Payment_Model === 'Hourly'
-        ? (row.Cost_Per_Hour ? `$${row.Cost_Per_Hour}/hr` : 'Hourly')
-        : (row.Cost_Per_Game ? `$${row.Cost_Per_Game}/game` : (row.Payment_Model || ''));
+      const pmLower = (row.Payment_Model || '').toLowerCase();
+      const costLine = pmLower === 'per_hour' || pmLower === 'hourly'
+        ? (row.Cost_Per_Hour ? `$${row.Cost_Per_Hour}/hr` : '')
+        : pmLower === 'per_game'
+          ? (row.Cost_Per_Game ? `$${row.Cost_Per_Game}/game` : '')
+          : '';
 
       const color = paymentColor(row.Payment_Model);
       const popupContent = `
@@ -209,7 +212,7 @@ poolSearchInput.addEventListener('input', async (e) => {
             li.onclick = () => {
                 document.getElementById('pool-business-name').value = bar.Name || '';
                 document.getElementById('pool-street-address').value = bar.Address || '';
-                document.getElementById('pool-neighborhood-input').value = bar.Neighborhood || '';
+                document.getElementById('pool-neighborhood-input').value = bar.Neighborhood || bar.Neighborhoods || '';
                 document.getElementById('pool-lat').value = bar.Latitude || '';
                 document.getElementById('pool-lng').value = bar.Longitude || '';
                 poolSearchInput.value = bar.Name;

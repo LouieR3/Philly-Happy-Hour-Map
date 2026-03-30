@@ -674,7 +674,7 @@ app.get('/api/search-bars', async (req, res) => {
     if (q.length < 2) return res.json([]);
     const bars = await Bar.find(
       { Name: { $regex: q, $options: 'i' } },
-      { Name: 1, Address: 1, Latitude: 1, Longitude: 1, Neighborhood: 1 }
+      { Name: 1, Address: 1, Latitude: 1, Longitude: 1, Neighborhood: 1, Neighborhoods: 1 }
     ).limit(12).lean();
     res.json(bars);
   } catch (err) {
