@@ -350,15 +350,39 @@ fetch(`${API_BASE}/api/quizzo`)
         row.ADDRESS_ZIP;
 
       if (!isNaN(lat) && !isNaN(lng)) {
+        
+        var address = [row.ADDRESS_STREET, row.ADDRESS_CITY, row.ADDRESS_STATE]
+          .filter(Boolean).join(', ');
+        var locationLine = row.ADDRESS_STREET 
+          ? address 
+          : `${row.NEIGHBORHOOD ? row.NEIGHBORHOOD + ' · ' : ''}${row.ADDRESS_CITY || 'Philadelphia'}, PA`;
+
         var popupContent = `
-        <div style="font-family: Lato;">
-            <p style="text-align: center; font-size: 18px; font-weight: bold; margin: 15px 0;"><u>${row.BUSINESS}</u></p>
-            <p style="text-align: center; font-size: 14px; margin: 15px 0;">${address}</p>
-            <p style="text-align: center; font-size: 14px; margin: 5px 0;">${neighborhood}</p>
-            <p style="text-align: center; font-size: 16px; margin: 15px 0;"><b>${row.WEEKDAY} - ${row.TIME}</b></p>
-            ${row.HOST ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">Host: ${row.HOST} <br>` : ""}
-            ${row.PRIZE_1_TYPE ? `<p style="text-align: center; font-size: 16px; margin: 15px 0;">First Prize: ${firstPrize} - $${row.PRIZE_1_AMOUNT}${secondPrize ? `<br> Second Prize: ${secondPrize} - $${row.PRIZE_2_AMOUNT}0</p>` : "</p>"}` : ""}
-        </div>
+          <div style="font-family: 'Red Hat Text', sans-serif; width: 240px; overflow: hidden; border-radius: 8px;">
+            <div style="background: #1a6b4a; padding: 14px 16px 12px;">
+              <p style="margin: 0; font-size: 15px; font-weight: 600; color: #fff;">${row.BUSINESS}</p>
+              <p style="margin: 4px 0 0; font-size: 12px; color: rgba(255,255,255,0.75);">${locationLine}</p>
+            </div>
+            <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; background: #fff;">
+              <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #555;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span style="color: #111; font-weight: 600;">${row.WEEKDAY}</span>
+                <span style="color: #ccc;">·</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:4px"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span style="color: #111; font-weight: 600;">${row.TIME}</span>
+              </div>
+              ${row.HOST ? `
+              <div style="font-size: 12px; color: #555;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                Host: <span style="color: #111; font-weight: 600;">${row.HOST}</span>
+              </div>` : ''}
+              ${firstPrize || secondPrize ? `
+              <div style="border-top: 1px solid #eee; padding-top: 10px; display: flex; gap: 6px; flex-wrap: wrap;">
+                ${firstPrize ? `<span style="background: #e8f5ee; color: #0f6e56; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px;">🥇 ${firstPrize}${row.PRIZE_1_AMOUNT ? ' · $' + row.PRIZE_1_AMOUNT : ''}</span>` : ''}
+                ${secondPrize ? `<span style="background: #f1f5e8; color: #3b6d11; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px;">🥈 ${secondPrize}${row.PRIZE_2_AMOUNT ? ' · $' + row.PRIZE_2_AMOUNT : ''}</span>` : ''}
+              </div>` : ''}
+            </div>
+          </div>
         `;
         var marker = L.marker([lat, lng], {
           icon: createMartiniIcon("darkgreen"),

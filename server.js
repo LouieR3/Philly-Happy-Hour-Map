@@ -42,13 +42,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 //   .then(() => console.log('MongoDB connected'))
 //   .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
 
-mongoose.connect(process.env.MONGODB_URI, {
+// mongoose.connect(process.env.MONGODB_URI, {
+//   tls: true,
+//   tlsAllowInvalidCertificates: true,  // temporary to test
+//   serverSelectionTimeoutMS: 15000,
+// })
+//   .then(() => console.log('MongoDB connected'))
+//   .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
+
+// ─── MongoDB Connections ──────────────────────────────────────────────────────
+const connectionOptions = {
   tls: true,
-  tlsAllowInvalidCertificates: true,  // temporary to test
+  tlsAllowInvalidCertificates: true,
   serverSelectionTimeoutMS: 15000,
-})
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
+};
+
+// Connection 1: Quizzo Bars
+const quizzoDb = mongoose.createConnection(process.env.MONGODB_URI, connectionOptions);
+quizzoDb.on('connected', () => console.log('Connected to Quizzo Bars DB'));
+quizzoDb.on('error', (err) => console.error('Quizzo Bars connection error:', err));
+
+// Connection 2: Mappy Hour
+const mappyHourDb = mongoose.createConnection(process.env.MAPPY_HOUR_URI, connectionOptions);
+mappyHourDb.on('connected', () => console.log('Connected to Mappy Hour DB'));
+mappyHourDb.on('error', (err) => console.error('Mappy Hour connection error:', err));
 
 // ─── Schemas ─────────────────────────────────────────────────────────────────
 const quizzoSchema = new mongoose.Schema({
@@ -124,9 +141,9 @@ const pendingEditSchema = new mongoose.Schema({
   status:       { type: String, default: 'pending' },
 }, { collection: 'pending_edits' });
 
-const Quizzo      = mongoose.model('Quizzo',      quizzoSchema);
-const Pending     = mongoose.model('Pending',     pendingSchema);
-const PendingEdit = mongoose.model('PendingEdit', pendingEditSchema);
+const Quizzo      = quizzoDb.model('Quizzo',      quizzoSchema);
+const Pending     = quizzoDb.model('Pending',     pendingSchema);
+const PendingEdit = quizzoDb.model('PendingEdit', pendingEditSchema);
 
 // ─── Simple admin auth middleware ─────────────────────────────────────────────
 function adminAuth(req, res, next) {
@@ -353,4 +370,107 @@ async function exportCsv() {
   fs.writeFileSync(path.join(__dirname, 'public/assets/quizzo_list.csv'), csv);
 }
 
+ 
+// ═══════════════════════════════════════════════════════════════════════════════
+// POOL BAR ROUTES  (all require x-admin-token header)
+// ═══════════════════════════════════════════════════════════════════════════════
+ 
+const poolBarSchema = new mongoose.Schema({
+  Name:             String,
+  'Yelp Alias':     String,
+  Address:          String,
+  Latitude:         Number,
+  Longitude:        Number,
+  Phone:            String,
+  Website:          String,
+  'Yelp Rating':    Number,
+  'Review Count':   Number,
+  Price:            String,
+  Categories:       [String],
+  Monday:           String,
+  Tuesday:          String,
+  Wednesday:        String,
+  Thursday:         String,
+  Friday:           String,
+  Saturday:         String,
+  Sunday:           String,
+  Number_of_Tables:   Number,
+  Table_Brand:        String,
+  Table_Size:         String,
+  Table_Type:         String,
+  Cost_Per_Game:      Number,
+  Cost_Per_Hour:      Number,
+  Payment_Model:      String,
+  Min_Spend:          Number,
+  Reservations:       String,
+  Reservation_Link:   String,
+  Vibe:               String,
+  Noise_Level:        String,
+  Crowd_Type:         String,
+  Best_Nights:        String,
+  Has_Bar:            Boolean,
+  Has_Food:           Boolean,
+  Has_Happy_Hour:     Boolean,
+  Happy_Hour_Details: String,
+  Has_TV:             Boolean,
+  Has_Other_Games:    String,
+  Outdoor_Seating:    Boolean,
+  Parking:            String,
+  Has_League:         Boolean,
+  League_Details:     String,
+  Hosts_Tournaments:  Boolean,
+  Verified:           { type: Boolean, default: false },
+  Last_Verified:      String,
+  Notes:              String,
+}, { collection: 'pool_bars' });
+ 
+const PoolBar = mappyHourDb.model('PoolBar', poolBarSchema);
+ 
+// Get all pool bars
+app.get('/admin/pool-bars', adminAuth, async (req, res) => {
+  try {
+    const bars = await PoolBar.find({}, { __v: 0 }).lean();
+    res.json(bars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+ 
+// Create a pool bar
+app.post('/admin/pool-bars', adminAuth, async (req, res) => {
+  try {
+    const bar = new PoolBar(req.body);
+    await bar.save();
+    res.json({ success: true, bar });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+ 
+// Update a pool bar
+app.put('/admin/pool-bars/:id', adminAuth, async (req, res) => {
+  try {
+    const bar = await PoolBar.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    if (!bar) return res.status(404).json({ error: 'Not found' });
+    res.json({ success: true, bar });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+ 
+// Delete a pool bar
+app.delete('/admin/pool-bars/:id', adminAuth, async (req, res) => {
+  try {
+    const bar = await PoolBar.findByIdAndDelete(req.params.id);
+    if (!bar) return res.status(404).json({ error: 'Not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+ 
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));

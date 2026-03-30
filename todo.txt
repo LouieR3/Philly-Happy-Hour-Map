@@ -42,3 +42,23 @@ Restaurant Week Map -
 * Resy link for restaurant
 * Popularity score for reviews x price x rating
 * Get reviews and look for keywords or word map
+
+website
+- modernize look and dark theme
+
+Quizzo Map:
+- clean up popup and no undefined
+- only show neighborhoods in list that have a bar
+- clicking neighborhood zooms you there
+- general area zoom from filter
+
+Pool bar:
+- start from Master Table
+- create mongodb
+- creation and edits by users
+
+Sports bars:
+- similar to Quizzo
+- filter by sports or colleges
+- create mongodb
+- creation and edits by users

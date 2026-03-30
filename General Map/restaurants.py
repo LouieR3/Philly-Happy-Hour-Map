@@ -228,139 +228,34 @@ def _fetch_bar_details(row, yelp):
     address = ", ".join(response["location"]["display_address"])
 
     # --- scrape Yelp page for extra attributes ---
-    global _YELP_SESSION
-    if _YELP_SESSION is None:
-        _YELP_SESSION = _make_yelp_session()
-
-    url = YELP_BASE_URL + yelp_alias
-    time.sleep(random.uniform(1.5, 3.0))  # randomised delay to avoid bot detection
-    try:
-        yelp_response = _YELP_SESSION.get(url, timeout=15)
-        soup = BeautifulSoup(yelp_response.text, "html.parser")
-        script_tag = soup.find("script", {"data-apollo-state": True})
-    except Exception as e:
-        print(f"    Scrape error for {yelp_alias}: {e}")
-        return None
-
-    if script_tag is None:
-        print(f"    No Apollo state tag for {yelp_alias} (status {yelp_response.status_code})")
-        # Still return what we got from the API — just without the scraped attributes
-        return {
-            "Name": restaurant_name,
-            "Yelp Alias": yelp_alias,
-            "Address": address,
-            "Latitude": response["coordinates"]["latitude"],
-            "Longitude": response["coordinates"]["longitude"],
-            "Website": None,
-            "Review Count": response.get("review_count"),
-            "Price": response.get("price"),
-            "Categories": categories,
-            "Neighborhoods": [],
-            "Yelp Rating": response.get("rating"),
-            "Open Table Link": None,
-            "Sips Participant": "N",
-            "Restaurant Week Participant": "N",
-        }
-
-    json_str = script_tag.text
-    cleaned = json_str[4:-3]
-    json_str = re.sub(r"&quot;", '"', cleaned)
-    try:
-        json_object = json.loads(json_str)
-    except json.JSONDecodeError as e:
-        print(f"    JSON parse error for {yelp_alias}: {e}")
-        return None
-
-    business_properties = {}
-    neighborhoods_json = []
-    hours_properties = {}
-    website = None
-
-    day_map = {
-        "Mon": "Monday", "Tue": "Tuesday", "Wed": "Wednesday",
-        "Thu": "Thursday", "Fri": "Friday", "Sat": "Saturday", "Sun": "Sunday",
-    }
-
-    for value in json_object.values():
-        if not isinstance(value, dict):
-            continue
-
-        # Business attributes (happy hour, outdoor seating, etc.)
-        if "displayText" in value:
-            display_text = value["displayText"]
-            is_active = value["isActive"]
-
-            replacements = [
-                ("&amp;", "and"),
-                ("Not Good", "Good"),
-                ("Not Wheelchair Accessible", "Wheelchair Accessible"),
-                ("Dogs Not Allowed", "Dogs Allowed"),
-                ("Very Loud", "Loud"),
-                ("Free Wi-fi", "Wi-fi"),
-                ("Smoking Allowed", "Smoking"),
-                ("Happy Hour Specials", "Happy Hour"),
-                ("Many Vegetarian Options", "Vegetarian Options"),
-                ("Casual Dress", "Casual"),
-            ]
-            for old, new in replacements:
-                if old in display_text:
-                    if old.startswith("Not ") or old in ("Dogs Not Allowed",):
-                        is_active = not is_active
-                    display_text = display_text.replace(old, new)
-
-            if "Takes Reservations" in display_text:
-                display_text = display_text.replace("Takes ", "")
-            if "No " in display_text:
-                display_text = display_text.replace("No ", "")
-                is_active = not is_active
-            if "Paid Wi-Fi" in display_text:
-                continue
-
-            if "Best nights on" in display_text:
-                for part in display_text.split("Best nights on ")[1].split(","):
-                    business_properties[f"Best nights on {part.strip()}"] = is_active
-            else:
-                for text in [t.strip() for t in display_text.split(",")]:
-                    business_properties[text] = is_active
-
-        # Neighborhoods
-        if "neighborhoods" in value:
-            nbhd = value["neighborhoods"]
-            if isinstance(nbhd, dict):
-                neighborhoods_json = nbhd.get("json", neighborhoods_json)
-            elif isinstance(nbhd, list):
-                neighborhoods_json = nbhd
-
-        # Hours
-        if "regularHours" in value and "dayOfWeekShort" in value:
-            short_day = value["dayOfWeekShort"]
-            full_day = day_map.get(short_day, short_day)
-            hours_list = value["regularHours"].get("json", [])
-            if hours_list:
-                hours_properties[full_day] = hours_list[0]
-
-    # Website
-    raw_website = _find_business_website(json_object)
-    if raw_website:
-        website = raw_website.replace("&#x2F;", "/")
-
-    rating = _find_first_rating(json_object)
-
-    return {
+    api_only_result = {
         "Name": restaurant_name,
         "Yelp Alias": yelp_alias,
         "Address": address,
         "Latitude": response["coordinates"]["latitude"],
         "Longitude": response["coordinates"]["longitude"],
-        "Website": website,
+        "Website": None,
         "Review Count": response.get("review_count"),
         "Price": response.get("price"),
         "Categories": categories,
-        "Neighborhoods": neighborhoods_json,
-        "Yelp Rating": rating,
+        "Neighborhoods": [],
+        "Yelp Rating": response.get("rating"),
         "Open Table Link": None,
         "Sips Participant": "N",
         "Restaurant Week Participant": "N",
+    }
+
+    scrape_result = _scrape_yelp_page(yelp_alias, restaurant_name)
+    if scrape_result is None:
+        return api_only_result
+
+    business_properties, hours_properties, neighborhoods_json, website, rating = scrape_result
+
+    return {
+        **api_only_result,
+        "Website": website,
+        "Neighborhoods": neighborhoods_json,
+        "Yelp Rating": rating or response.get("rating"),
         **business_properties,
         **hours_properties,
     }
@@ -396,15 +291,223 @@ def step2_fetch_bar_details(aliases_df, yelp):
     return master_df
 
 
+def _scrape_yelp_page(yelp_alias, name):
+    """Scrape a single Yelp page and return (business_properties, hours_properties,
+    neighborhoods_json, website, rating) or None on failure.
+
+    Handles 403 / Cloudflare blocks explicitly so callers can decide whether
+    to retry or skip.
+    """
+    global _YELP_SESSION
+    if _YELP_SESSION is None:
+        _YELP_SESSION = _make_yelp_session()
+
+    url = YELP_BASE_URL + yelp_alias
+    time.sleep(random.uniform(2.0, 4.5))  # slightly longer delay to reduce blocks
+
+    try:
+        resp = _YELP_SESSION.get(url, timeout=15)
+    except Exception as e:
+        print(f"    Request error for {name}: {e}")
+        return None
+
+    if resp.status_code == 403:
+        print(f"    403 Cloudflare block for {name} — resetting session and retrying once")
+        _YELP_SESSION = _make_yelp_session()  # fresh cookies
+        time.sleep(random.uniform(5.0, 9.0))
+        try:
+            resp = _YELP_SESSION.get(url, timeout=15)
+        except Exception as e:
+            print(f"    Retry failed for {name}: {e}")
+            return None
+        if resp.status_code == 403:
+            print(f"    Still blocked after retry — skipping {name}")
+            return None
+
+    if resp.status_code != 200:
+        print(f"    HTTP {resp.status_code} for {name} — skipping")
+        return None
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+
+    # Detect Cloudflare JS challenge page (returns 200 but no real content)
+    if "enable JS and disable any ad blocker" in resp.text or "captcha-delivery.com" in resp.text:
+        print(f"    Cloudflare JS challenge for {name} — skipping")
+        return None
+
+    script_tag = soup.find("script", {"data-apollo-state": True})
+    if script_tag is None:
+        print(f"    No Apollo state tag for {name} (status {resp.status_code})")
+        return None
+
+    json_str = re.sub(r"&quot;", '"', script_tag.text[4:-3])
+    try:
+        json_object = json.loads(json_str)
+    except json.JSONDecodeError as e:
+        print(f"    JSON parse error for {name}: {e}")
+        return None
+
+    day_map = {
+        "Mon": "Monday", "Tue": "Tuesday", "Wed": "Wednesday",
+        "Thu": "Thursday", "Fri": "Friday", "Sat": "Saturday", "Sun": "Sunday",
+    }
+    business_properties = {}
+    neighborhoods_json = []
+    hours_properties = {}
+
+    for value in json_object.values():
+        if not isinstance(value, dict):
+            continue
+
+        if "displayText" in value:
+            display_text = value["displayText"]
+            is_active = value["isActive"]
+            replacements = [
+                ("&amp;", "and"), ("Not Good", "Good"),
+                ("Not Wheelchair Accessible", "Wheelchair Accessible"),
+                ("Dogs Not Allowed", "Dogs Allowed"), ("Very Loud", "Loud"),
+                ("Free Wi-fi", "Wi-fi"), ("Smoking Allowed", "Smoking"),
+                ("Happy Hour Specials", "Happy Hour"),
+                ("Many Vegetarian Options", "Vegetarian Options"),
+                ("Casual Dress", "Casual"),
+            ]
+            for old, new in replacements:
+                if old in display_text:
+                    if old.startswith("Not ") or old == "Dogs Not Allowed":
+                        is_active = not is_active
+                    display_text = display_text.replace(old, new)
+            if "Takes Reservations" in display_text:
+                display_text = display_text.replace("Takes ", "")
+            if "No " in display_text:
+                display_text = display_text.replace("No ", "")
+                is_active = not is_active
+            if "Paid Wi-Fi" in display_text:
+                continue
+            if "Best nights on" in display_text:
+                for part in display_text.split("Best nights on ")[1].split(","):
+                    business_properties[f"Best nights on {part.strip()}"] = is_active
+            else:
+                for text in [t.strip() for t in display_text.split(",")]:
+                    business_properties[text] = is_active
+
+        if "neighborhoods" in value:
+            nbhd = value["neighborhoods"]
+            if isinstance(nbhd, dict):
+                neighborhoods_json = nbhd.get("json", neighborhoods_json)
+            elif isinstance(nbhd, list):
+                neighborhoods_json = nbhd
+
+        if "regularHours" in value and "dayOfWeekShort" in value:
+            short_day = value["dayOfWeekShort"]
+            full_day = day_map.get(short_day, short_day)
+            hours_list = value["regularHours"].get("json", [])
+            if hours_list:
+                hours_properties[full_day] = hours_list[0]
+
+    raw_website = _find_business_website(json_object)
+    website = raw_website.replace("&#x2F;", "/") if raw_website else None
+    rating = _find_first_rating(json_object)
+
+    return business_properties, hours_properties, neighborhoods_json, website, rating
+
+
+# --- Column mapping: raw scraped property → target consolidated column --------
+# Used in step2b to write scraped values directly into the right final columns
+# instead of dumping everything as raw boolean columns.
+_PROP_TO_COLUMN = {
+    # Parking
+    "Street Parking": "Parking", "Bike Parking": "Parking",
+    "Valet Parking": "Parking", "Validated Parking": "Parking",
+    "Garage Parking": "Parking", "Private Lot Parking": "Parking",
+    # Best nights
+    "Best nights on Monday": "Best_Nights", "Best nights on Tuesday": "Best_Nights",
+    "Best nights on Wednesday": "Best_Nights", "Best nights on Thursday": "Best_Nights",
+    "Best nights on Friday": "Best_Nights", "Best nights on Saturday": "Best_Nights",
+    "Best nights on Sunday": "Best_Nights",
+    # Payment
+    "Accepts Credit Cards": "Payment", "Accepts Android Pay": "Payment",
+    "Accepts Apple Pay": "Payment", "Accepts Cryptocurrency": "Payment",
+    # Offers
+    "Offers Delivery": "Offers", "Offers Takeout": "Offers",
+    "Offers Catering": "Offers", "Offers Military Discount": "Offers",
+    "Online ordering-only": "Offers", "Delivery": "Offers", "Takeout": "Offers",
+    # Options (dietary)
+    "Vegan Options": "Options", "Vegetarian Options": "Options",
+    "Limited Vegetarian Options": "Options", "Pescatarian Options": "Options",
+    "Keto Options": "Options", "Soy-Free Options": "Options",
+    "Dairy-Free Options": "Options", "Gluten-Free Options": "Options",
+    # Vibes
+    "Trendy": "Vibes", "Classy": "Vibes", "Intimate": "Vibes",
+    "Romantic": "Vibes", "Upscale": "Vibes", "Dressy": "Vibes",
+    "Hipster": "Vibes", "Touristy": "Vibes", "Divey": "Vibes",
+    "Casual": "Vibes", "Quiet": "Vibes", "Loud": "Vibes", "Moderate Noise": "Vibes",
+    # Accessibility
+    "Open to All": "Accessibility", "Wheelchair Accessible": "Accessibility",
+    "Gender-neutral restrooms": "Accessibility",
+    # Dogs
+    "Dogs Allowed": "Dogs_Allowed",
+    # Smoking
+    "Smoking": "Smoking",
+    # Reservation type
+    "By Appointment Only": "Reservation_Type", "Walk-ins Welcome": "Reservation_Type",
+    "Reservations": "Reservation_Type", "Takes Reservations": "Reservation_Type",
+    # Seating
+    "Outdoor Seating": "Seating", "Heated Outdoor Seating": "Seating",
+    "Covered Outdoor Seating": "Seating", "Private Dining": "Seating",
+    "Drive-Thru": "Seating",
+    # Meal types
+    "Lunch": "Meal_Types", "Dessert": "Meal_Types",
+    "Brunch": "Meal_Types", "Dinner": "Meal_Types",
+    # Music
+    "Live Music": "Music", "DJ": "Music", "Background Music": "Music",
+    "Juke Box": "Music", "Karaoke": "Music",
+    # Alcohol
+    "Alcohol": "Alcohol_Options", "Happy Hour": "Alcohol_Options",
+    "Beer and Wine Only": "Alcohol_Options", "Full Bar": "Alcohol_Options",
+    # Amenities
+    "TV": "Amenities", "Pool Table": "Amenities",
+    "Wi-Fi": "Amenities", "EV charging station available": "Amenities",
+}
+
+# Strip these prefixes when building the consolidated value string
+_COL_STRIP_PREFIX = {
+    "Best_Nights": "Best nights on ",
+    "Payment": "Accepts ",
+}
+
+
+def _append_to_col(current_val, new_item, strip_prefix=""):
+    """Append new_item to a comma-separated column value, avoiding duplicates."""
+    item = new_item.replace(strip_prefix, "").strip()
+    if not item:
+        return current_val
+    if pd.isna(current_val) or current_val == "":
+        return item
+    existing = [v.strip() for v in str(current_val).split(",")]
+    if item not in existing:
+        return current_val + ", " + item
+    return current_val
+
+
 def step2b_refresh_missing_attributes(master_df):
-    """Re-scrape Yelp page for rows that have a Yelp Alias but no Sunday hours,
-    meaning the page scrape previously failed or was never run."""
+    """Re-scrape Yelp pages for rows missing Sunday hours (proxy for a failed
+    scrape), and write results directly into the target consolidated columns."""
     print("\n=== STEP 2b: Re-fetching attributes for bars missing scraped data ===")
 
-    # Use Sunday as the proxy for "scrape never worked" — hours are only
-    # populated from the page scrape, not the API call.
-    sunday_col = "Sunday"
     alias_col = "Yelp Alias"
+    sunday_col = "Sunday"
+    target_cols = [
+        "Neighborhoods", "Monday", "Tuesday", "Wednesday", "Thursday",
+        "Friday", "Saturday", "Sunday", "Smoking", "Parking", "Best_Nights",
+        "Payment", "Minority_Owned", "Good_For", "Offers", "Options", "Vibes",
+        "Accessibility", "Dogs_Allowed", "Packaging", "Reservation_Type",
+        "Seating", "Meal_Types", "Music", "Alcohol_Options", "Amenities",
+    ]
+
+    # Ensure all target columns exist
+    for col in target_cols:
+        if col not in master_df.columns:
+            master_df[col] = None
 
     if sunday_col not in master_df.columns:
         master_df[sunday_col] = None
@@ -416,104 +519,65 @@ def step2b_refresh_missing_attributes(master_df):
     targets = master_df[needs_refresh]
     print(f"  {len(targets)} bars need attribute refresh")
 
+    blocked_count = 0
+
     for idx, row in targets.iterrows():
         yelp_alias = row[alias_col]
         name = row["Name"]
 
-        # Only re-scrape the Yelp page — skip the API call to save quota
-        global _YELP_SESSION
-        if _YELP_SESSION is None:
-            _YELP_SESSION = _make_yelp_session()
-
-        url = YELP_BASE_URL + yelp_alias
-        time.sleep(random.uniform(1.5, 3.0))
-        try:
-            resp = _YELP_SESSION.get(url, timeout=15)
-            soup = BeautifulSoup(resp.text, "html.parser")
-            script_tag = soup.find("script", {"data-apollo-state": True})
-        except Exception as e:
-            print(f"    Scrape error for {name}: {e}")
+        result = _scrape_yelp_page(yelp_alias, name)
+        if result is None:
+            blocked_count += 1
+            # After 3 consecutive blocks, reset session and pause longer
+            if blocked_count >= 3:
+                print(f"  3 blocks in a row — resetting session and pausing 30s")
+                _YELP_SESSION = None
+                time.sleep(30)
+                blocked_count = 0
             continue
 
-        if script_tag is None:
-            print(f"    Still no Apollo state for {name} ({yelp_alias}, status {resp.status_code})")
-            continue
+        blocked_count = 0  # reset on success
+        business_properties, hours_properties, neighborhoods_json, website, rating = result
 
-        json_str = re.sub(r"&quot;", '"', script_tag.text[4:-3])
-        try:
-            json_object = json.loads(json_str)
-        except json.JSONDecodeError:
-            continue
+        # --- Write hours directly into day columns ---
+        for day, hours_val in hours_properties.items():
+            if day in master_df.columns:
+                master_df.at[idx, day] = hours_val
 
-        day_map = {
-            "Mon": "Monday", "Tue": "Tuesday", "Wed": "Wednesday",
-            "Thu": "Thursday", "Fri": "Friday", "Sat": "Saturday", "Sun": "Sunday",
-        }
-        business_properties = {}
-        neighborhoods_json = []
-        hours_properties = {}
-
-        for value in json_object.values():
-            if not isinstance(value, dict):
-                continue
-            if "displayText" in value:
-                display_text = value["displayText"]
-                is_active = value["isActive"]
-                replacements = [
-                    ("&amp;", "and"), ("Not Good", "Good"),
-                    ("Not Wheelchair Accessible", "Wheelchair Accessible"),
-                    ("Dogs Not Allowed", "Dogs Allowed"), ("Very Loud", "Loud"),
-                    ("Free Wi-fi", "Wi-fi"), ("Smoking Allowed", "Smoking"),
-                    ("Happy Hour Specials", "Happy Hour"),
-                    ("Many Vegetarian Options", "Vegetarian Options"),
-                    ("Casual Dress", "Casual"),
-                ]
-                for old, new in replacements:
-                    if old in display_text:
-                        if old.startswith("Not ") or old == "Dogs Not Allowed":
-                            is_active = not is_active
-                        display_text = display_text.replace(old, new)
-                if "Takes Reservations" in display_text:
-                    display_text = display_text.replace("Takes ", "")
-                if "No " in display_text:
-                    display_text = display_text.replace("No ", "")
-                    is_active = not is_active
-                if "Paid Wi-Fi" in display_text:
-                    continue
-                if "Best nights on" in display_text:
-                    for part in display_text.split("Best nights on ")[1].split(","):
-                        business_properties[f"Best nights on {part.strip()}"] = is_active
-                else:
-                    for text in [t.strip() for t in display_text.split(",")]:
-                        business_properties[text] = is_active
-            if "neighborhoods" in value:
-                nbhd = value["neighborhoods"]
-                if isinstance(nbhd, dict):
-                    neighborhoods_json = nbhd.get("json", neighborhoods_json)
-                elif isinstance(nbhd, list):
-                    neighborhoods_json = nbhd
-            if "regularHours" in value and "dayOfWeekShort" in value:
-                short_day = value["dayOfWeekShort"]
-                full_day = day_map.get(short_day, short_day)
-                hours_list = value["regularHours"].get("json", [])
-                if hours_list:
-                    hours_properties[full_day] = hours_list[0]
-
-        raw_website = _find_business_website(json_object)
-        website = raw_website.replace("&#x2F;", "/") if raw_website else None
-        rating = _find_first_rating(json_object)
-
-        # Write scraped values back into master_df for this row
-        for col, val in {**business_properties, **hours_properties}.items():
-            master_df.at[idx, col] = val
+        # --- Write neighborhoods ---
         if neighborhoods_json:
-            master_df.at[idx, "Neighborhoods"] = neighborhoods_json
-        if website and pd.isna(master_df.at[idx, "Website"]):
-            master_df.at[idx, "Website"] = website
-        if rating and pd.isna(master_df.at[idx, "Yelp_Rating"] if "Yelp_Rating" in master_df.columns else master_df.at[idx, "Yelp Rating"] if "Yelp Rating" in master_df.columns else None):
-            col = "Yelp_Rating" if "Yelp_Rating" in master_df.columns else "Yelp Rating"
-            master_df.at[idx, col] = rating
+            cleaned = ", ".join([v for v in neighborhoods_json if v]) if isinstance(neighborhoods_json, list) else neighborhoods_json
+            master_df.at[idx, "Neighborhoods"] = cleaned or None
+
+        # --- Map each business property to its target consolidated column ---
+        for prop, is_active in business_properties.items():
+            if not is_active:
+                continue
+            target_col = _PROP_TO_COLUMN.get(prop)
+            if target_col is None:
+                continue  # unknown property — skip rather than creating a new raw column
+            strip = _COL_STRIP_PREFIX.get(target_col, "")
+            master_df.at[idx, target_col] = _append_to_col(
+                master_df.at[idx, target_col], prop, strip_prefix=strip
+            )
+
+        # --- Website and rating (only fill if currently missing) ---
+        if website:
+            ws_col = "Website"
+            if ws_col in master_df.columns and (pd.isna(master_df.at[idx, ws_col]) or master_df.at[idx, ws_col] == ""):
+                master_df.at[idx, ws_col] = website
+
+        if rating is not None:
+            rating_col = "Yelp_Rating" if "Yelp_Rating" in master_df.columns else "Yelp Rating" if "Yelp Rating" in master_df.columns else None
+            if rating_col and (pd.isna(master_df.at[idx, rating_col])):
+                master_df.at[idx, rating_col] = rating
+
         print(f"    Refreshed: {name}")
+
+        # Checkpoint save every 25 rows so progress isn't lost on a crash
+        if (list(targets.index).index(idx) + 1) % 25 == 0:
+            master_df.to_csv(MASTER_CSV, index=False)
+            print(f"  Checkpoint saved ({list(targets.index).index(idx) + 1}/{len(targets)})")
 
     master_df.to_csv(MASTER_CSV, index=False)
     print(f"  Saved refreshed MasterTable")
@@ -886,4 +950,21 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    _YELP_SESSION = None  # lazily initialised on first scrape
+    # global _YELP_SESSION
+    if _YELP_SESSION is None:
+        _YELP_SESSION = _make_yelp_session()
+    url = YELP_BASE_URL + "balcony-bar-the-kimmel-center-philadelphia"
+    time.sleep(random.uniform(1.5, 3.0))  # randomised delay to avoid bot detection
+    print(url)
+    try:
+        yelp_response = _YELP_SESSION.get(url, timeout=15)
+        print(f"Status code: {yelp_response.status_code}")
+        soup = BeautifulSoup(yelp_response.text, "html.parser")
+        print(soup.prettify()[:1000])  # print the first 1000 chars of the page for debugging
+        script_tag = soup.find("script", {"data-apollo-state": True})
+        print(script_tag)  # print the first 1000 chars of the page for debugging
+    except Exception as e:
+        print(f"    Scrape error for balcony-bar-the-kimmel-center-philadelphia: {e}")
+    
+    # main()
