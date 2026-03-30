@@ -62,11 +62,11 @@ const quizzoDb = mongoose.createConnection(process.env.MONGODB_URI, connectionOp
 quizzoDb.on('connected', () => console.log('Connected to Quizzo Bars DB'));
 quizzoDb.on('error', (err) => console.error('Quizzo Bars connection error:', err));
 
+console.log("Mappy Hour URI:", process.env.MONGODB_URI.replace('quizzo_bars', 'mappy_hour'));
 // Connection 2: Mappy Hour
-const mappyHourDb = mongoose.createConnection(process.env.MAPPY_HOUR_URI, connectionOptions);
+const mappyHourDb = mongoose.createConnection(process.env.MONGODB_URI.replace('quizzo_bars', 'mappy_hour'), connectionOptions);
 mappyHourDb.on('connected', () => console.log('Connected to Mappy Hour DB'));
 mappyHourDb.on('error', (err) => console.error('Mappy Hour connection error:', err));
-
 // ─── Schemas ─────────────────────────────────────────────────────────────────
 const quizzoSchema = new mongoose.Schema({
   BUSINESS:       String,
@@ -426,6 +426,16 @@ const poolBarSchema = new mongoose.Schema({
  
 const PoolBar = mappyHourDb.model('PoolBar', poolBarSchema);
  
+app.get('/admin/pool-bars', adminAuth, async (req, res) => {
+  try {
+    const bars = await PoolBar.find({}, { __v: 0 }).lean();
+    res.json(bars);
+  } catch (err) {
+    console.error("Pool Bar Fetch Error:", err); // ADD THIS LINE
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Get all pool bars
 app.get('/admin/pool-bars', adminAuth, async (req, res) => {
   try {
