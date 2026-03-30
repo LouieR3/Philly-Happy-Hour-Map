@@ -280,6 +280,7 @@
   #event-type-filter,
   #first-prize-filter,
   #time-filter,
+  #prize-amount-filter,
   #weekday-filter,
   #neighborhood-filter,
   #reset-filter {
@@ -288,6 +289,7 @@
   }
   .weekday-option,
   .time-option,
+  .prize-amount-option,
   .event-type-option,
   .first-prize-option,
   .neighborhood-option {
@@ -296,6 +298,7 @@
 
   #weekday-button,
   #time-button,
+  #prize-amount-button,
   #event-type-button,
   #first-prize-button,
   #neighborhood-button,
@@ -2259,13 +2262,13 @@ progress {
   }
 }
 .table {
-  --bs-table-color: var(--bs-body-color);
+  --bs-table-color: white;
   --bs-table-bg: transparent;
   --bs-table-border-color: var(--bs-border-color);
   --bs-table-accent-bg: transparent;
-  --bs-table-striped-color: var(--bs-body-color);
+  --bs-table-striped-color: white;
   --bs-table-striped-bg: rgba(0, 0, 0, 0.05);
-  --bs-table-active-color: var(--bs-body-color);
+  --bs-table-active-color: white;
   --bs-table-active-bg: rgba(0, 0, 0, 0.1);
   --bs-table-hover-color: var(--bs-body-color);
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);

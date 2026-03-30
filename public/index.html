@@ -47,6 +47,7 @@
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/nav-style.css" rel="stylesheet" />
+    <link href="css/dark-theme.css" rel="stylesheet" />
   </head>
   <body id="page-top">
     <!-- Navigation-->
@@ -59,11 +60,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#quizzo">Quizzo Map</a></li>
-            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#restaurant-week">Restaurant Week</a></li> -->
-            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded"href="#meet-the-team">Meet The Team</a></li>
-            <!-- <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sips">Sips Deals</a></li> -->
-            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#deals">Happy Hour Deals</a></li>
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#quizzo">Quizzo</a></li>
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#pool-bars">Pool Bars</a></li>
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sports-bars">Sports Bars</a></li>
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#meet-the-team">About</a></li>
+            <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#bar-map">Bar Map</a></li>
           </ul>
         </div>
       </div>
@@ -100,14 +101,13 @@
       </div>
     </header>
 
-    <!-- Bar Trivia Section-->
+    <!-- Quizzo Map Section-->
     <section class="page-section portfolio" id="quizzo">
       <div class="container-xxxl">
-        <!-- Portfolio Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
+        <span class="section-eyebrow">Niche Maps</span>
+        <h2 class="page-section-heading text-center text-uppercase mb-0">
           Philly Quizzo Map
         </h2>
-        <!-- Icon Divider-->
         <div class="divider-custom">
           <div class="divider-custom-line"></div>
           <div class="divider-custom-icon">
@@ -615,6 +615,257 @@
       </div>
     </section>
 
+    <!-- Pool Bars Map Section -->
+    <section class="page-section section-alt" id="pool-bars">
+      <div class="container-xxxl">
+        <span class="section-eyebrow">Niche Maps</span>
+        <h2 class="page-section-heading text-center text-uppercase mb-0">Philly Pool Bar Map</h2>
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon"><i class="fa-solid fa-earth-americas"></i></div>
+          <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- Pool Filters -->
+        <div id="pool-filters" class="filter-box mb-3">
+          <div id="pool-payment-filter" style="position:relative;">
+            <button id="pool-payment-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-coins" style="margin-right:8px;"></i>
+              <span class="filter-label">Payment</span>
+              <i class="fa-solid fa-caret-down" style="margin-left:8px;"></i>
+            </button>
+            <div id="pool-payment-dropdown" style="display:none;position:absolute;top:100%;background:#1a2332;border:1px solid #2d3a4f;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:1000;min-width:160px;">
+              <ul style="list-style:none;margin:0;padding:8px 0;" id="pool-payment-options"></ul>
+            </div>
+          </div>
+
+          <div id="pool-tables-filter" style="position:relative;">
+            <button id="pool-tables-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-table-list" style="margin-right:8px;"></i>
+              <span class="filter-label">Tables</span>
+              <i class="fa-solid fa-caret-down" style="margin-left:8px;"></i>
+            </button>
+            <div id="pool-tables-dropdown" style="display:none;position:absolute;top:100%;background:#1a2332;border:1px solid #2d3a4f;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:1000;min-width:140px;">
+              <ul style="list-style:none;margin:0;padding:8px 0;">
+                <li class="pool-tables-option" data-value="All">All</li>
+                <li class="pool-tables-option" data-value="1">1+ Tables</li>
+                <li class="pool-tables-option" data-value="2">2+ Tables</li>
+                <li class="pool-tables-option" data-value="4">4+ Tables</li>
+              </ul>
+            </div>
+          </div>
+
+          <button id="pool-hh-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-clock" style="margin-right:8px;"></i>Happy Hour
+          </button>
+
+          <button id="pool-league-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-users" style="margin-right:8px;"></i>Has League
+          </button>
+
+          <button id="pool-reset-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-rotate-left" style="margin-right:8px;"></i>Reset
+          </button>
+        </div>
+
+        <!-- Map + Sidebar -->
+        <div class="row mt-3 align-items-start">
+          <div class="col-lg-8" id="pool-map-column">
+            <div id="pool-leaflet-map"></div>
+          </div>
+          <div class="col-lg-4 mt-4 mt-lg-0" id="pool-table-column">
+            <div id="pool-bar-table-container">
+              <h3 class="text-center">Pool Bars</h3>
+              <input type="text" id="pool-bar-search" class="form-control mb-3" placeholder="Search pool bars..." />
+              <table id="pool-bar-table" class="table table-striped table-sm">
+                <thead>
+                  <tr>
+                    <th>Bar</th>
+                    <th>Tables</th>
+                    <th>Payment</th>
+                    <th>Cost</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+            <div class="d-flex gap-2 justify-content-center mt-3">
+              <button id="add-pool-bar-button" class="btn btn-primary rounded-pill btn-sm">
+                <i class="fa-solid fa-plus" style="margin-right:6px;"></i>Add Pool Bar
+              </button>
+              <button id="edit-pool-bar-button" class="btn btn-primary rounded-pill btn-sm">
+                <i class="fa-solid fa-edit" style="margin-right:6px;"></i>Edit Bar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Pool Bar Modal -->
+        <div class="modal fade" id="addPoolBarModal" tabindex="-1" aria-labelledby="addPoolBarModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addPoolBarModalLabel">Submit a Pool Bar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="pool-bar-submission-form">
+                  <div class="mb-3">
+                    <label for="pool-business-name" class="form-label">Bar Name</label>
+                    <input type="text" class="form-control" id="pool-business-name" placeholder="Enter bar name" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="pool-street-address" class="form-label">Street Address</label>
+                    <input type="text" class="form-control" id="pool-street-address" placeholder="e.g. 123 Main St" required />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Is this bar in Philadelphia?</label>
+                    <div class="d-flex gap-3">
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="poolIsPhiladelphia" id="pool-philly-yes" value="yes" checked />
+                        <label class="form-check-label" for="pool-philly-yes">Yes</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="poolIsPhiladelphia" id="pool-philly-no" value="no" />
+                        <label class="form-check-label" for="pool-philly-no">No</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mb-3" id="pool-neighborhood-field">
+                    <label for="pool-neighborhood-input" class="form-label">Neighborhood</label>
+                    <input type="text" class="form-control" id="pool-neighborhood-input" placeholder="e.g. Fishtown, Center City" />
+                  </div>
+                  <div id="pool-city-state-zip-fields" style="display:none;">
+                    <div class="row mb-3">
+                      <div class="col-6">
+                        <label for="pool-address-city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="pool-address-city" placeholder="City" />
+                      </div>
+                      <div class="col-3">
+                        <label for="pool-address-state" class="form-label">State</label>
+                        <input type="text" class="form-control" id="pool-address-state" placeholder="PA" maxlength="2" />
+                      </div>
+                      <div class="col-3">
+                        <label for="pool-address-zip" class="form-label">ZIP</label>
+                        <input type="text" class="form-control" id="pool-address-zip" placeholder="19103" maxlength="5" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <div class="col-6">
+                      <label for="pool-num-tables" class="form-label">Number of Tables</label>
+                      <input type="number" class="form-control" id="pool-num-tables" min="1" placeholder="e.g. 3" />
+                    </div>
+                    <div class="col-6">
+                      <label for="pool-payment-model-select" class="form-label">Payment Model</label>
+                      <select class="form-control" id="pool-payment-model-select">
+                        <option value="">-- Select --</option>
+                        <option value="Coin-op">Coin-op</option>
+                        <option value="Hourly">Hourly</option>
+                        <option value="Per Game">Per Game</option>
+                        <option value="Free">Free</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-3" id="pool-cost-game-field" style="display:none;">
+                    <label for="pool-cost-per-game" class="form-label">Cost Per Game ($)</label>
+                    <input type="number" class="form-control" id="pool-cost-per-game" min="0" step="0.25" placeholder="e.g. 1.00" />
+                  </div>
+                  <div class="mb-3" id="pool-cost-hour-field" style="display:none;">
+                    <label for="pool-cost-per-hour" class="form-label">Cost Per Hour ($)</label>
+                    <input type="number" class="form-control" id="pool-cost-per-hour" min="0" placeholder="e.g. 15" />
+                  </div>
+                  <div class="mb-3">
+                    <label for="pool-sub-notes" class="form-label">Notes</label>
+                    <textarea class="form-control" id="pool-sub-notes" rows="2" placeholder="Anything else worth knowing (optional)"></textarea>
+                  </div>
+                  <div class="modal-footer px-0 pb-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Pool Bar Modal -->
+        <div class="modal fade" id="editPoolBarModal" tabindex="-1" aria-labelledby="editPoolBarModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editPoolBarModalLabel">Suggest an Edit — Pool Bar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="pool-edit-form">
+                  <div class="mb-3">
+                    <label for="pool-search-bar" class="form-label">Search for a Bar</label>
+                    <input type="text" class="form-control" id="pool-search-bar" placeholder="Start typing a bar name..." />
+                    <ul id="pool-search-results" style="list-style:none;padding:0;margin-top:8px;"></ul>
+                  </div>
+                  <div id="pool-edit-fields" style="display:none;">
+                    <input type="hidden" id="pool-edit-original-id" />
+                    <div class="mb-3">
+                      <label for="pool-edit-name" class="form-label">Bar Name</label>
+                      <input type="text" class="form-control" id="pool-edit-name" required />
+                    </div>
+                    <div class="mb-3">
+                      <label for="pool-edit-address" class="form-label">Address</label>
+                      <input type="text" class="form-control" id="pool-edit-address" />
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-6">
+                        <label for="pool-edit-num-tables" class="form-label">Number of Tables</label>
+                        <input type="number" class="form-control" id="pool-edit-num-tables" min="1" />
+                      </div>
+                      <div class="col-6">
+                        <label for="pool-edit-payment-model" class="form-label">Payment Model</label>
+                        <select class="form-control" id="pool-edit-payment-model">
+                          <option value="">-- Select --</option>
+                          <option value="Coin-op">Coin-op</option>
+                          <option value="Hourly">Hourly</option>
+                          <option value="Per Game">Per Game</option>
+                          <option value="Free">Free</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="pool-edit-notes" class="form-label">Notes for Admin</label>
+                      <textarea class="form-control" id="pool-edit-notes" rows="2" placeholder="Describe what changed (optional)"></textarea>
+                    </div>
+                    <div class="modal-footer px-0 pb-0">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-primary">Submit Changes</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Sports Bars Section (Coming Soon) -->
+    <section class="page-section portfolio" id="sports-bars">
+      <div class="container-xxxl">
+        <span class="section-eyebrow">Niche Maps</span>
+        <h2 class="page-section-heading text-center text-uppercase mb-0">Philly Sports Bar Map</h2>
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon"><i class="fa-solid fa-earth-americas"></i></div>
+          <div class="divider-custom-line"></div>
+        </div>
+        <div class="coming-soon-section">
+          <div class="coming-soon-icon"><i class="fa-solid fa-tv"></i></div>
+          <h3>Coming Soon</h3>
+          <p class="lead">We're mapping Philly's best sports bars — TV counts, NFL packages, game-day specials, and more. Check back soon.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- About Section-->
     <section class="page-section bg-primary text-white mb-0" id="meet-the-team">
       <div class="container">
@@ -685,90 +936,20 @@
       </div>
     </section>
 
-    <!-- Sips Section-->
-    <section class="page-section portfolio" id="sips">
-      <div class="container">
-        <!-- Portfolio Section Heading-->
-        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
-          Center City Sips 2025 (6/4 - 8/27)
-        </h2>
-        <!-- Icon Divider-->
+    <!-- Philly Bar Map Section -->
+    <section class="page-section section-alt" id="bar-map">
+      <div class="container-xxxl">
+        <span class="section-eyebrow">Explore Philly's Bars</span>
+        <h2 class="page-section-heading text-center text-uppercase mb-0">Philly Bar Map</h2>
         <div class="divider-custom">
           <div class="divider-custom-line"></div>
-          <div class="divider-custom-icon">
-            <i class="fa-solid fa-earth-americas"></i>
-          </div>
+          <div class="divider-custom-icon"><i class="fa-solid fa-earth-americas"></i></div>
           <div class="divider-custom-line"></div>
         </div>
-        
-        <!-- Map Column -->
-        <div id="map-column">
-          <div id="neighborhood-map"></div>
-        </div>
-
-        <!-- <div class="row">
-          <div id="map"></div>
-        </div> -->
-        <!-- iFrame-->
-        <!-- <div class="iframe-container">
-          <iframe
-            src="https://experience.arcgis.com/experience/39acd9a477574c2081015cf3bd9edbe4"
-            width="100%"
-            height="800px"
-          ></iframe>
-        </div> -->
-        <h3 style="text-align: center; margin-top: 2rem">
-          All listed bars host Sips deals from 5-7 pm. See the full list of bars
-          and deals
-          <a href="https://centercityphila.org/explore-center-city/ccd-sips" target="_blank" class="link">here</a>
-        </h3>
-      </div>
-    </section>
-
-    <!-- Happy Hour Map -->
-    <section class="page-section bg-primary text-white" id="deals">
-      <div class="container">
-        <h2
-          class="page-section-heading text-center text-uppercase text-secondary mb-0 text-white"
-        >
-          Happy Hour Deals (UNDER CONSTRUCTION)
-        </h2>
-        <h3
-          class="text-center text-uppercase text-secondary mt-5 mb-0 text-white"
-        >
-          Exciting things are coming!
-        </h3>
-
-        <div class="row mt-4">
-          <div class="col-1"></div>
-          <div class="col-lg-10 ms-auto">
-            <p class="lead">
-              We are currently developing an exciting feature to our website - a
-              web map encompassing all Philly happy hour options.
-            </p>
-            <p class="lead">
-              Soon, you'll have the ability to explore a comprehensive list of
-              Philadelphia bars, complete with a range of filters such as
-              pricing, bar reviews, categorization, contact details including
-              the bar's website and phone number, operational hours, and
-              searchable menu keywords.
-            </p>
-            <p class="lead">
-              We are also excited to introduce a feature that will enable users
-              to explore these bars' happy hour specials. This will allow you to
-              see the value of these deals by comparing the prices of the drinks
-              to the average prices of similar drinks in the area.
-            </p>
-          </div>
-          <div class="col-1"></div>
-        </div>
-        <div class="divider-custom divider-light">
-          <div class="divider-custom-line"></div>
-          <div class="divider-custom-icon">
-            <i class="fa-solid fa-earth-americas"></i>
-          </div>
-          <div class="divider-custom-line"></div>
-        </div>
+        <div id="philly-bar-map"></div>
+        <p class="text-center mt-3" style="color:var(--mh-text-muted);font-size:0.9rem;">
+          Full filtering and search coming soon. Data sourced from Yelp via our Mappy Hour pipeline.
+        </p>
       </div>
     </section>
 
@@ -864,6 +1045,42 @@
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <!-- QUIZZO MAP -->
     <script src="js/new-quizzo-map.js"></script>
+    <!-- POOL BARS MAP -->
+    <script src="js/pool-bars-map.js"></script>
+    <!-- PHILLY BAR MAP (basic init) -->
+    <script>
+      (function () {
+        const BAR_API = window.location.hostname === 'localhost'
+          ? 'http://localhost:3000'
+          : 'https://philly-happy-hour-map-production.up.railway.app';
+        const barMap = L.map('philly-bar-map').setView([39.951, -75.163], 12);
+        barMap.zoomControl.setPosition('bottomright');
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+          attribution: '&copy; OpenStreetMap & CartoDB', subdomains: 'abcd',
+        }).addTo(barMap);
+        fetch(BAR_API + '/api/bars')
+          .then(r => r.json())
+          .then(data => {
+            data.forEach(bar => {
+              const lat = parseFloat(bar.Latitude), lng = parseFloat(bar.Longitude);
+              if (isNaN(lat) || isNaN(lng)) return;
+              const rating = bar['Yelp Rating'] ? `⭐ ${bar['Yelp Rating']}` : '';
+              const price  = bar.Price ? ` · ${bar.Price}` : '';
+              L.circleMarker([lat, lng], {
+                radius: 6, fillColor: '#10b981', color: '#065a20',
+                weight: 1, opacity: 1, fillOpacity: 0.85,
+              }).bindPopup(`
+                <div style="font-family:'Red Hat Text',sans-serif;min-width:180px;">
+                  <b style="font-size:14px;">${bar.Name || '—'}</b>
+                  <div style="font-size:12px;color:#94a3b8;margin-top:4px;">${bar.Address || ''}</div>
+                  <div style="font-size:12px;margin-top:6px;">${rating}${price}</div>
+                  ${bar.Website ? `<a href="${bar.Website}" target="_blank" style="font-size:12px;color:#34d399;">Website →</a>` : ''}
+                </div>`).addTo(barMap);
+            });
+          })
+          .catch(err => console.error('Bar map load error:', err));
+      })();
+    </script>
 
     <!-- <script>
       $(document).ready(function () {

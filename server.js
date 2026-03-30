@@ -372,9 +372,9 @@ async function exportCsv() {
 
  
 // ═══════════════════════════════════════════════════════════════════════════════
-// POOL BAR ROUTES  (all require x-admin-token header)
+// POOL BAR ROUTES
 // ═══════════════════════════════════════════════════════════════════════════════
- 
+
 const poolBarSchema = new mongoose.Schema({
   Name:             String,
   'Yelp Alias':     String,
@@ -483,4 +483,111 @@ app.delete('/admin/pool-bars/:id', adminAuth, async (req, res) => {
   }
 });
  
+// ─── Public Pool Bars route ────────────────────────────────────────────
+app.get('/api/pool-bars', async (req, res) => {
+  try {
+    const bars = await PoolBar.find({}, { __v: 0 }).lean();
+    res.json(bars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── Pending Pool Bar schemas ─────────────────────────────────────────────────
+const pendingPoolBarSchema = new mongoose.Schema({
+  name:          { type: String, required: true },
+  streetAddress: String,
+  city:          String,
+  state:         String,
+  zip:           String,
+  neighborhood:  String,
+  Latitude:      Number,
+  Longitude:     Number,
+  numTables:     Number,
+  paymentModel:  String,
+  costPerGame:   Number,
+  costPerHour:   Number,
+  notes:         String,
+  submittedAt:   { type: Date, default: Date.now },
+  status:        { type: String, default: 'pending' },
+}, { collection: 'pending_pool_bars' });
+
+const pendingPoolBarEditSchema = new mongoose.Schema({
+  originalId:   mongoose.Schema.Types.ObjectId,
+  originalName: { type: String, required: true },
+  changes:      mongoose.Schema.Types.Mixed,
+  notes:        String,
+  submittedAt:  { type: Date, default: Date.now },
+  status:       { type: String, default: 'pending' },
+}, { collection: 'pending_pool_bar_edits' });
+
+const PendingPoolBar     = mappyHourDb.model('PendingPoolBar',     pendingPoolBarSchema);
+const PendingPoolBarEdit = mappyHourDb.model('PendingPoolBarEdit', pendingPoolBarEditSchema);
+
+app.post('/submit-pool-bar', async (req, res) => {
+  try {
+    const { name } = req.body;
+    if (!name) return res.status(400).json({ error: 'Bar name is required' });
+    const sub = new PendingPoolBar({ ...req.body, name: name.trim() });
+    await sub.save();
+    res.json({ success: true, message: 'Pool bar submission received — thanks!' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/submit-pool-bar-edit', async (req, res) => {
+  try {
+    const { originalId, originalName, changes, notes } = req.body;
+    if (!originalName) return res.status(400).json({ error: 'originalName is required' });
+    const edit = new PendingPoolBarEdit({ originalId, originalName, changes, notes });
+    await edit.save();
+    res.json({ success: true, message: 'Pool bar edit submitted for review — thanks!' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/admin/pending-pool-bars', adminAuth, async (req, res) => {
+  try {
+    const [submissions, edits] = await Promise.all([
+      PendingPoolBar.find({ status: 'pending' }).lean(),
+      PendingPoolBarEdit.find({ status: 'pending' }).lean(),
+    ]);
+    res.json({ submissions, edits });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── Philly Bar Map — public bars route ────────────────────────────────────────────
+const barSchema = new mongoose.Schema({
+  Name:          String,
+  Address:       String,
+  Latitude:      Number,
+  Longitude:     Number,
+  Phone:         String,
+  Website:       String,
+  'Yelp Rating': Number,
+  Price:         String,
+  Categories:    mongoose.Schema.Types.Mixed,
+  Neighborhood:  String,
+  Monday: String, Tuesday: String, Wednesday: String,
+  Thursday: String, Friday: String, Saturday: String, Sunday: String,
+}, { collection: 'bars', strict: false });
+
+const Bar = mappyHourDb.model('Bar', barSchema);
+
+app.get('/api/bars', async (req, res) => {
+  try {
+    const bars = await Bar.find(
+      { Latitude: { $exists: true, $ne: null }, Longitude: { $exists: true, $ne: null } },
+      { __v: 0 }
+    ).lean();
+    res.json(bars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));

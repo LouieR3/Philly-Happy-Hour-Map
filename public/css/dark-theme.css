@@ -1,0 +1,376 @@
+/* ============================================================
+   MAPPY HOUR — DARK THEME
+   Overrides Bootstrap + styles.css for dark aesthetic.
+   Linked AFTER styles.css so it wins specificity battles.
+   ============================================================ */
+
+:root {
+  --mh-dark-0:     #0b0f18;   /* deepest page bg */
+  --mh-dark-1:     #111827;   /* alternate section bg */
+  --mh-dark-2:     #1a2332;   /* cards, containers */
+  --mh-dark-3:     #253045;   /* inputs, inner surfaces */
+  --mh-border:     #2d3a4f;   /* borders */
+  --mh-green:      #10b981;   /* main accent */
+  --mh-green-br:   #34d399;   /* bright accent / highlights */
+  --mh-green-dk:   #065a20;   /* deep green (hero) */
+  --mh-text:       #e2e8f0;   /* primary text */
+  --mh-text-muted: #94a3b8;   /* secondary / muted text */
+  --mh-blue:       #60a5fa;   /* info accent */
+  --mh-purple:     #c084fc;   /* secondary accent */
+}
+
+/* ── Body ─────────────────────────────────────────────────── */
+body {
+  background-color: var(--mh-dark-0) !important;
+  color: var(--mh-text) !important;
+}
+
+/* ── Navigation ───────────────────────────────────────────── */
+#mainNav {
+  background-color: rgba(11, 15, 24, 0.96) !important;
+  border-bottom: 1px solid var(--mh-border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+#mainNav .navbar-brand {
+  color: var(--mh-green-br) !important;
+  letter-spacing: 0.05em;
+}
+#mainNav .nav-link {
+  color: var(--mh-text) !important;
+  transition: color 0.2s, background-color 0.2s;
+}
+#mainNav .nav-link:hover,
+#mainNav .nav-link:focus {
+  color: var(--mh-green-br) !important;
+  background-color: rgba(52, 211, 153, 0.08) !important;
+}
+#mainNav .navbar-toggler {
+  background-color: var(--mh-dark-2) !important;
+  border-color: var(--mh-border) !important;
+  color: var(--mh-text) !important;
+}
+
+/* ── Sections ─────────────────────────────────────────────── */
+.page-section {
+  background-color: var(--mh-dark-0) !important;
+  color: var(--mh-text) !important;
+}
+.page-section.portfolio {
+  background-color: var(--mh-dark-0) !important;
+}
+.page-section.section-alt,
+.page-section.bg-primary:not(.masthead) {
+  background-color: var(--mh-dark-1) !important;
+}
+
+/* ── Section headings ─────────────────────────────────────── */
+.page-section-heading {
+  color: var(--mh-text) !important;
+}
+.text-secondary {
+  color: var(--mh-green-br) !important;
+}
+.section-eyebrow {
+  display: block;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--mh-green-br);
+  margin-bottom: 0.4rem;
+}
+
+/* ── Dividers ─────────────────────────────────────────────── */
+.divider-custom-line {
+  background-color: var(--mh-border) !important;
+}
+.divider-custom-icon {
+  color: var(--mh-green-br) !important;
+}
+.divider-custom.divider-light .divider-custom-line {
+  background-color: rgba(52, 211, 153, 0.3) !important;
+}
+.divider-custom.divider-light .divider-custom-icon {
+  color: var(--mh-green-br) !important;
+}
+
+/* ── Lead / body text ─────────────────────────────────────── */
+.lead {
+  color: var(--mh-text-muted) !important;
+}
+h1, h2, h3, h4, h5, h6 {
+  color: var(--mh-text) !important;
+}
+
+/* ── Filter bar containers ────────────────────────────────── */
+.filter-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* ── Filter dropdown panels ───────────────────────────────── */
+#time-dropdown,
+#weekday-dropdown,
+#first-prize-dropdown,
+#prize-amount-dropdown,
+#neighborhood-dropdown,
+#pool-payment-dropdown,
+#pool-tables-dropdown {
+  background-color: var(--mh-dark-2) !important;
+  border-color: var(--mh-border) !important;
+  color: var(--mh-text) !important;
+}
+#neighborhood-search {
+  background-color: var(--mh-dark-3) !important;
+  color: var(--mh-text) !important;
+  border-bottom-color: var(--mh-border) !important;
+}
+#neighborhood-search::placeholder { color: var(--mh-text-muted) !important; }
+.weekday-option, .time-option, .first-prize-option,
+.prize-amount-option, .neighborhood-option,
+.pool-payment-option, .pool-tables-option {
+  color: var(--mh-text) !important;
+}
+.weekday-option:hover, .time-option:hover, .first-prize-option:hover,
+.prize-amount-option:hover, .neighborhood-option:hover,
+.pool-payment-option:hover, .pool-tables-option:hover {
+  background-color: var(--mh-dark-3) !important;
+}
+.filter-option-selected {
+  background-color: rgba(52, 211, 153, 0.12) !important;
+  color: var(--mh-green-br) !important;
+}
+
+/* ── Table containers ─────────────────────────────────────── */
+#bar-table-container,
+#pool-bar-table-container {
+  background-color: var(--mh-dark-2) !important;
+  border-color: var(--mh-border) !important;
+}
+.table {
+  color: var(--mh-text) !important;
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.03);
+  --bs-table-hover-bg:   rgba(52, 211, 153, 0.05);
+  --bs-table-border-color: var(--mh-border);
+}
+.table thead th {
+  color: var(--mh-text-muted) !important;
+  border-color: var(--mh-border) !important;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.table tbody tr {
+  border-color: var(--mh-border) !important;
+  cursor: pointer;
+}
+.table tbody tr:hover {
+  background-color: rgba(52, 211, 153, 0.05) !important;
+}
+
+/* ── Form controls ────────────────────────────────────────── */
+.form-control,
+.form-select {
+  background-color: var(--mh-dark-3) !important;
+  border-color: var(--mh-border) !important;
+  color: var(--mh-text) !important;
+}
+.form-control::placeholder { color: var(--mh-text-muted) !important; }
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--mh-dark-3) !important;
+  border-color: var(--mh-green) !important;
+  color: var(--mh-text) !important;
+  box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.2) !important;
+}
+.form-check-input {
+  background-color: var(--mh-dark-3);
+  border-color: var(--mh-border);
+}
+.form-check-input:checked {
+  background-color: var(--mh-green);
+  border-color: var(--mh-green);
+}
+.form-label { color: var(--mh-text-muted) !important; font-size: 0.85rem; }
+
+/* ── Modals ───────────────────────────────────────────────── */
+.modal-content {
+  background-color: var(--mh-dark-2) !important;
+  border: 1px solid var(--mh-border) !important;
+  color: var(--mh-text) !important;
+}
+.modal-header {
+  border-bottom: 1px solid var(--mh-border) !important;
+}
+.modal-footer {
+  border-top: 1px solid var(--mh-border) !important;
+}
+.modal-title { color: var(--mh-text) !important; }
+.btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* ── Buttons override ─────────────────────────────────────── */
+.btn-primary {
+  background-color: var(--mh-green-dk) !important;
+  border-color: var(--mh-green-dk) !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  background-color: var(--mh-green) !important;
+  border-color: var(--mh-green) !important;
+}
+.btn-secondary {
+  background-color: var(--mh-dark-3) !important;
+  border-color: var(--mh-border) !important;
+  color: var(--mh-text) !important;
+}
+.filter-active {
+  background-color: var(--mh-green) !important;
+  border-color: var(--mh-green) !important;
+  color: #000 !important;
+}
+
+/* ── Leaflet popups ───────────────────────────────────────── */
+.leaflet-popup-content-wrapper {
+  background: var(--mh-dark-2) !important;
+  border: 1px solid var(--mh-border) !important;
+  color: var(--mh-text) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+.leaflet-popup-tip {
+  background: var(--mh-dark-2) !important;
+}
+.leaflet-popup-content { margin: 0 !important; }
+
+/* ── Search result dropdown ───────────────────────────────── */
+#search-results li,
+#pool-search-results li {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--mh-border);
+  color: var(--mh-text);
+}
+#search-results li:hover,
+#pool-search-results li:hover {
+  background-color: var(--mh-dark-3);
+  color: var(--mh-green-br);
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+.footer {
+  background-color: var(--mh-dark-1) !important;
+  border-top: 1px solid var(--mh-border);
+  color: var(--mh-text-muted) !important;
+}
+.footer h4 { color: var(--mh-text) !important; }
+.footer .lead { color: var(--mh-text-muted) !important; }
+
+/* ── About section ────────────────────────────────────────── */
+#meet-the-team {
+  background-color: var(--mh-dark-1) !important;
+}
+
+/* ── Coming Soon (Sports) ─────────────────────────────────── */
+.coming-soon-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  color: var(--mh-text-muted);
+}
+.coming-soon-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: var(--mh-border);
+}
+.coming-soon-section h3 {
+  color: var(--mh-text-muted) !important;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.coming-soon-section p {
+  max-width: 480px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+/* ── Pool-specific badges in popup ───────────────────────── */
+.pool-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.pool-badge.coinop   { background: rgba(96,165,250,0.12); color: var(--mh-blue); }
+.pool-badge.hourly   { background: rgba(52,211,153,0.12); color: var(--mh-green-br); }
+.pool-badge.free     { background: rgba(192,132,252,0.12); color: var(--mh-purple); }
+.pool-badge.per-game { background: rgba(251,191,36,0.12);  color: #fbbf24; }
+
+/* ── Pool bar table container ─────────────────────────────── */
+#pool-bar-table-container {
+  max-height: 70vh;
+  overflow-y: auto;
+  border: 1px solid var(--mh-border);
+  border-radius: 1.5rem;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+  padding: 0.5rem;
+}
+
+/* ── Pool map ─────────────────────────────────────────────── */
+#pool-leaflet-map {
+  width: 100%;
+  height: 70vh;
+  border-radius: 1.5rem;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+}
+
+/* ── Philly Bar Map placeholder ───────────────────────────── */
+#philly-bar-map {
+  width: 100%;
+  height: 70vh;
+  border-radius: 1.5rem;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.4);
+}
+
+/* ── Mobile responsiveness ────────────────────────────────── */
+@media (max-width: 991.98px) {
+  #leaflet-map,
+  #pool-leaflet-map,
+  #philly-bar-map {
+    height: 55vw !important;
+    min-height: 280px;
+    max-height: 60vh;
+  }
+  #bar-table-container,
+  #pool-bar-table-container {
+    max-height: 45vh;
+    border-radius: 1rem;
+  }
+  .filter-box {
+    gap: 0.4rem !important;
+  }
+  .filter-box .btn {
+    font-size: 0.75rem;
+    padding: 0.3rem 0.65rem;
+  }
+  .filter-box .btn .fa-caret-down {
+    display: none;
+  }
+  #pool-leaflet-map { border-radius: 1rem; }
+}
+
+/* ── Scrollbar styling (Webkit) ───────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--mh-dark-1); }
+::-webkit-scrollbar-thumb { background: var(--mh-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--mh-green-dk); }
