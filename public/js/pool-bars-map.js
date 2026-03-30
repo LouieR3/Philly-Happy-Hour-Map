@@ -207,20 +207,11 @@ poolSearchInput.addEventListener('input', async (e) => {
             li.innerHTML = `<strong>${bar.Name}</strong><br><small style="color:#94a3b8">${bar.Address || ''}</small>`;
             
             li.onclick = () => {
-                // Populate the specific IDs from your HTML
                 document.getElementById('pool-business-name').value = bar.Name || '';
                 document.getElementById('pool-street-address').value = bar.Address || '';
                 document.getElementById('pool-neighborhood-input').value = bar.Neighborhood || '';
-                
-                // Save hidden coordinates
                 document.getElementById('pool-lat').value = bar.Latitude || '';
                 document.getElementById('pool-lng').value = bar.Longitude || '';
-                // Save hidden coordinates
-                document.getElementById('pool-lat').value = bar.Latitude || '';
-                document.getElementById('pool-lng').value = bar.Longitude || '';
-                document.getElementById('pool-neighborhood-input').value = bar.Neighborhoods || '';
-                
-                // UI Cleanup
                 poolSearchInput.value = bar.Name;
                 poolSearchResultsList.innerHTML = '';
             };
@@ -229,12 +220,14 @@ poolSearchInput.addEventListener('input', async (e) => {
     } catch (err) {
         console.error('Search error:', err);
     }
-  // Close search results when clicking elsewhere
-  document.addEventListener("click", (e) => {
-    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-      searchResults.style.display = "none";
-    }
-  });
+});
+
+document.addEventListener('click', (e) => {
+  const poolSearchResults = document.getElementById('pool-search-results');
+  if (poolSearchInput && poolSearchResults &&
+      !poolSearchInput.contains(e.target) && !poolSearchResults.contains(e.target)) {
+    poolSearchResultsList.innerHTML = '';
+  }
 });
 
 // ─── Table search ─────────────────────────────────────────────────────────────
