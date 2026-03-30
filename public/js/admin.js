@@ -11,9 +11,10 @@ const WEEKDAYS = [
   "SATURDAY",
   "SUNDAY",
 ];
-
-const API_BASE = window.location.origin;
-
+const API_BASE = "https://philly-happy-hour-map-production.up.railway.app";
+// const API_BASE = "http://localhost:3000";
+// const API_BASE = window.location.origin;
+console.log(window.location.origin);
 function adminFetch(url, method = "GET", body = null) {
   const opts = {
     method,
