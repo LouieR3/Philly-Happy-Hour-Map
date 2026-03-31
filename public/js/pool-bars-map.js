@@ -111,15 +111,12 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
       const lat = parseFloat(row.Latitude);
       const lng = parseFloat(row.Longitude);
       if (isNaN(lat) || isNaN(lng)) return;
-      const pay_model = !row.Payment_Model ? 'Unknown' : 
-        row.Payment_Model.toLowerCase() === 'per_game' ? 'Per Game' :
-        row.Payment_Model.toLowerCase() === 'per_hour' ? 'Per Hour' :
-        row.Payment_Model;
+      const pay_model = row.Payment_Model;
 
       const pmLower = (row.Payment_Model || '').toLowerCase();
-      const costLine = pmLower === 'per_hour' || pmLower === 'hourly'
+      const costLine = pmLower === 'per hour' || pmLower === 'hourly'
         ? (row.Cost_Per_Hour ? `$${row.Cost_Per_Hour}/hr` : '')
-        : pmLower === 'per_game'
+        : pmLower === 'per game'
           ? (row.Cost_Per_Game ? `$${row.Cost_Per_Game}/game` : '')
           : '';
 
@@ -165,19 +162,16 @@ function populatePoolTable(data) {
   tbody.innerHTML = '';
   data.forEach((row, i) => {
     if (!row.Name) return;
-    const cost = row.Payment_Model === 'Hourly'
+    const cost = row.Payment_Model === 'Per Hour'
       ? (row.Cost_Per_Hour  ? `$${row.Cost_Per_Hour}/hr`  : '—')
       : (row.Cost_Per_Game  ? `$${row.Cost_Per_Game}`     : '—');
     const tr = document.createElement('tr');
     
-    const pay_model = !row.Payment_Model ? '—' : 
-      row.Payment_Model.toLowerCase() === 'per_game' ? 'Per Game' :
-      row.Payment_Model.toLowerCase() === 'per_hour' ? 'Per Hour' :
-      row.Payment_Model;
+    const pay_model = row.Payment_Model;
     tr.innerHTML = `
       <td>${row.Name}</td>
       <td>${row.Number_of_Tables ?? '?'}</td>
-      <td>${pay_model}</td>
+      <td>${row.Payment_Model ?? '—'}</td>
       <td>${cost}</td>`;
     tr.addEventListener('click', () => {
       const marker = poolMarkers.find((m) => m.rowIndex === i);
@@ -190,58 +184,70 @@ function populatePoolTable(data) {
 const poolSearchInput = document.getElementById('pool-search-input');
 const poolSearchResultsList = document.getElementById('pool-search-results-list');
 
-poolSearchInput.addEventListener('input', async (e) => {
-    const q = e.target.value.trim();
-    if (q.length < 2) {
-        poolSearchResultsList.innerHTML = '';
-        return;
+// Only set up search if elements exist (for admin panel)
+if (poolSearchInput && poolSearchResultsList) {
+  poolSearchInput.addEventListener('input', async (e) => {
+      const q = e.target.value.trim();
+      if (q.length < 2) {
+          poolSearchResultsList.innerHTML = '';
+          return;
+      }
+
+      try {
+          const res = await fetch(`${POOL_API_BASE}/api/search-bars?q=${encodeURIComponent(q)}`);
+          const bars = await res.json();
+
+          poolSearchResultsList.innerHTML = '';
+          bars.forEach(bar => {
+              const li = document.createElement('li');
+              li.style.padding = '10px';
+              li.style.cursor = 'pointer';
+              li.style.borderBottom = '1px solid #334155';
+              li.innerHTML = `<strong>${bar.Name}</strong><br><small style="color:#94a3b8">${bar.Address || ''}</small>`;
+              
+              li.onclick = () => {
+                  document.getElementById('pool-business-name').value = bar.Name || '';
+                  document.getElementById('pool-street-address').value = bar.Address || '';
+                  // Populate neighborhood — always make the field visible regardless of radio state
+                  const neighborhood = bar.Neighborhood || '';
+                  const neighborhoodInput = document.getElementById('pool-neighborhood-input');
+                  if (neighborhoodInput) {
+                    neighborhoodInput.value = neighborhood;
+                    // Ensure the neighborhood field is visible
+                    const neighborhoodField = document.getElementById('pool-neighborhood-field');
+                    if (neighborhoodField) neighborhoodField.style.display = 'block';
+                  }
+                  document.getElementById('pool-lat').value = bar.Latitude || '';
+                  document.getElementById('pool-lng').value = bar.Longitude || '';
+                  document.getElementById("pool-yelp-alias").value = bar["Yelp Alias"] || "";
+                  console.log('Selected bar:', bar);
+                  if (bar["Yelp Rating"]) document.getElementById("pool-yelp-rating").value = bar["Yelp Rating"];
+
+                  if (bar["Sunday"]) document.getElementById("pool-Sunday").value = bar.Sunday;
+                  if (bar["Monday"]) document.getElementById("pool-Monday").value = bar.Monday;
+                  if (bar["Tuesday"]) document.getElementById("pool-Tuesday").value = bar.Tuesday;
+                  if (bar["Wednesday"]) document.getElementById("pool-Wednesday").value = bar.Wednesday;
+                  if (bar["Thursday"]) document.getElementById("pool-Thursday").value = bar.Thursday;
+                  if (bar["Friday"]) document.getElementById("pool-Friday").value = bar.Friday;
+                  if (bar["Saturday"]) document.getElementById("pool-Saturday").value = bar.Saturday;
+                  poolSearchInput.value = bar.Name;
+                  poolSearchResultsList.innerHTML = '';
+              };
+              poolSearchResultsList.appendChild(li);
+          });
+      } catch (err) {
+          console.error('Search error:', err);
+      }
+  });
+
+  document.addEventListener('click', (e) => {
+    const poolSearchResults = document.getElementById('pool-search-results');
+    if (poolSearchResults &&
+        !poolSearchInput.contains(e.target) && !poolSearchResults.contains(e.target)) {
+      poolSearchResultsList.innerHTML = '';
     }
-
-    try {
-        const res = await fetch(`${POOL_API_BASE}/api/search-bars?q=${encodeURIComponent(q)}`);
-        const bars = await res.json();
-
-        poolSearchResultsList.innerHTML = '';
-        bars.forEach(bar => {
-            const li = document.createElement('li');
-            li.style.padding = '10px';
-            li.style.cursor = 'pointer';
-            li.style.borderBottom = '1px solid #334155';
-            li.innerHTML = `<strong>${bar.Name}</strong><br><small style="color:#94a3b8">${bar.Address || ''}</small>`;
-            
-            li.onclick = () => {
-                document.getElementById('pool-business-name').value = bar.Name || '';
-                document.getElementById('pool-street-address').value = bar.Address || '';
-                document.getElementById('pool-neighborhood-input').value = bar.Neighborhood || bar.Neighborhoods || '';
-                document.getElementById('pool-lat').value = bar.Latitude || '';
-                document.getElementById('pool-lng').value = bar.Longitude || '';
-                document.getElementById("pool-Yelp Alias").value = bar["Yelp Alias"] || "";
-                if (bar["Yelp Rating"]) document.getElementById("pool-Yelp Rating").value = bar["Yelp Rating"];
-
-                if (bar["Sunday"]) document.getElementById("pool-Sunday").value = bar.Sunday;
-                if (bar["Monday"]) document.getElementById("pool-Monday").value = bar.Monday;
-                if (bar["Tuesday"]) document.getElementById("pool-Tuesday").value = bar.Tuesday;
-                if (bar["Wednesday"]) document.getElementById("pool-Wednesday").value = bar.Wednesday;
-                if (bar["Thursday"]) document.getElementById("pool-Thursday").value = bar.Thursday;
-                if (bar["Friday"]) document.getElementById("pool-Friday").value = bar.Friday;
-                if (bar["Saturday"]) document.getElementById("pool-Saturday").value = bar.Saturday;
-                poolSearchInput.value = bar.Name;
-                poolSearchResultsList.innerHTML = '';
-            };
-            poolSearchResultsList.appendChild(li);
-        });
-    } catch (err) {
-        console.error('Search error:', err);
-    }
-});
-
-document.addEventListener('click', (e) => {
-  const poolSearchResults = document.getElementById('pool-search-results');
-  if (poolSearchInput && poolSearchResults &&
-      !poolSearchInput.contains(e.target) && !poolSearchResults.contains(e.target)) {
-    poolSearchResultsList.innerHTML = '';
-  }
-});
+  });
+}
 
 // ─── Table search ─────────────────────────────────────────────────────────────
 document.getElementById('pool-bar-search').addEventListener('input', (e) => {
@@ -386,20 +392,37 @@ document.getElementById('pool-bar-submission-form').addEventListener('submit', a
 });
 
 // Edit pool bar — search
-const poolSearchBar     = document.getElementById('pool-search-bar');
-const poolSearchResults = document.getElementById('pool-search-results');
-const poolEditFields    = document.getElementById('pool-edit-fields');
-
-poolSearchBar.addEventListener('input', () => {
-  const q = poolSearchBar.value.toLowerCase();
-  poolSearchResults.innerHTML = '';
-  if (q.length < 1) return;
-  poolAllData
-    .filter((d) => d.Name && d.Name.toLowerCase().includes(q))
-    .forEach((bar) => {
+// Note: uses 'pool-edit-search-results' to avoid ID collision with add modal
+const poolSearchBar      = document.getElementById('pool-search-bar');
+const poolEditResultsEl  = document.getElementById('pool-edit-search-results');
+const poolEditFields     = document.getElementById('pool-edit-fields');
+ 
+if (poolSearchBar) {
+  poolSearchBar.addEventListener('input', async () => {
+    const q = poolSearchBar.value.trim().toLowerCase();
+    poolEditResultsEl.innerHTML = '';
+    if (q.length < 2) return;
+ 
+    // First try poolAllData (already loaded from /api/pool-bars)
+    let matches = poolAllData.filter((d) => d.Name && d.Name.toLowerCase().includes(q));
+ 
+    // If poolAllData is empty (not yet loaded), fetch from API
+    if (poolAllData.length === 0) {
+      try {
+        const res  = await fetch(`${POOL_API_BASE}/api/pool-bars`);
+        const data = await res.json();
+        poolAllData = data;
+        matches = data.filter((d) => d.Name && d.Name.toLowerCase().includes(q));
+      } catch (err) {
+        console.error('Pool bar fetch error:', err);
+      }
+    }
+ 
+    matches.forEach((bar) => {
       const li = document.createElement('li');
-      li.textContent  = bar.Name;
-      li.style.cursor = 'pointer';
+      li.className = 'search-option';
+      li.style.cssText = 'cursor:pointer;padding:8px 4px;border-bottom:1px solid #dee2e6;';
+      li.innerHTML = `<strong>${bar.Name}</strong><br><small style="color:#6c757d;">${bar.Address || ''}</small>`;
       li.addEventListener('click', () => {
         document.getElementById('pool-edit-name').value          = bar.Name;
         document.getElementById('pool-edit-address').value       = bar.Address || '';
@@ -407,11 +430,13 @@ poolSearchBar.addEventListener('input', () => {
         document.getElementById('pool-edit-payment-model').value = bar.Payment_Model || '';
         document.getElementById('pool-edit-original-id').value   = bar._id || '';
         poolEditFields.style.display = 'block';
-        poolSearchResults.innerHTML  = '';
+        poolEditResultsEl.innerHTML  = '';
+        poolSearchBar.value = bar.Name;
       });
-      poolSearchResults.appendChild(li);
+      poolEditResultsEl.appendChild(li);
     });
-});
+  });
+}
 
 // Submit pool bar edit
 document.getElementById('pool-edit-form').addEventListener('submit', async function (e) {
@@ -425,7 +450,7 @@ document.getElementById('pool-edit-form').addEventListener('submit', async funct
     Payment_Model:   document.getElementById('pool-edit-payment-model').value || undefined,
   };
   const notes = document.getElementById('pool-edit-notes').value;
-
+ 
   fetch(`${POOL_API_BASE}/submit-pool-bar-edit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

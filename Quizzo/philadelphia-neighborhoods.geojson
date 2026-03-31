@@ -12941,7 +12941,7 @@
         "MAPNAME": "Rittenhouse",
         "Shape_Leng": 16365.2709581,
         "Shape_Area": 14620958.306099998,
-        "GENERAL_AREA": ""
+        "GENERAL_AREA": "Center City"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -13010,7 +13010,7 @@
         "MAPNAME": "Fitler Square",
         "Shape_Leng": 6822.59824096,
         "Shape_Area": 2838658.61025,
-        "GENERAL_AREA": ""
+        "GENERAL_AREA": "Center City"
       },
       "geometry": {
         "type": "MultiPolygon",

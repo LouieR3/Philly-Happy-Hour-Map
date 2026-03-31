@@ -730,7 +730,7 @@ document.addEventListener("DOMContentLoaded", () => {
           li.addEventListener("click", () => {
             // Populate fields from selected bar
             document.getElementById("pool-Name").value = bar.Name || "";
-            document.getElementById("pool-Yelp Alias").value = bar["Yelp Alias"] || "";
+            document.getElementById("pool-yelp-alias").value = bar["Yelp Alias"] || "";
             document.getElementById("pool-Address").value = bar.Address || "";
             // Auto-fill coordinates from the search result
             document.getElementById('pool-Latitude').value = bar.Latitude || '';
@@ -745,7 +745,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (bar["Friday"]) document.getElementById("pool-Friday").value = bar.Friday;
             if (bar["Saturday"]) document.getElementById("pool-Saturday").value = bar.Saturday;
 
-            if (bar["Yelp Rating"]) document.getElementById("pool-Yelp Rating").value = bar["Yelp Rating"];
+            if (bar["Yelp Rating"]) document.getElementById("pool-yelp-rating").value = bar["Yelp Rating"];
 
             // Hide search results
             searchResults.style.display = "none";

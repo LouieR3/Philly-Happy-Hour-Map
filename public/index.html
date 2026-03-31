@@ -713,7 +713,7 @@
                     <label style="color: #10b981; font-weight: bold;"><i class="fa fa-search"></i> Search for a Bar first (Optional)</label>
                     <input type="text" id="pool-search-input" placeholder="Start typing bar name..." autocomplete="off" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #334155; background: #1e293b; color: white;">
                     <div id="pool-search-results" style="position: absolute; width: 100%; z-index: 100; background: #1e293b; border: 1px solid #334155; border-top: none; max-height: 200px; overflow-y: auto; border-radius: 0 0 4px 4px;">
-                      <!-- <ul id="pool-search-results-list" style="margin:0;padding:8px;list-style:none;"></ul> -->
+                      <ul id="pool-search-results-list" style="margin:0;padding:0;list-style:none;"></ul>
                     </div>
                   </div>
 
@@ -727,14 +727,19 @@
                     <input type="text" class="form-control" id="pool-street-address" placeholder="e.g. 123 Main St" required />
                     <input type="hidden" id="pool-lat" name="Latitude">
                     <input type="hidden" id="pool-lng" name="Longitude">
-                    <input type="hidden" id="pool-Yelp Alias" name="Yelp Alias">
-                    <input type="hidden" id="pool-Sunday" name="Sunday">
-                    <input type="hidden" id="pool-Monday" name="Monday">
-                    <input type="hidden" id="pool-Tuesday" name="Tuesday">
-                    <input type="hidden" id="pool-Wednesday" name="Wednesday">
-                    <input type="hidden" id="pool-Thursday" name="Thursday">
-                    <input type="hidden" id="pool-Friday" name="Friday">
-                    <input type="hidden" id="pool-Saturday" name="Saturday">
+                    <input type="hidden" id="pool-yelp-alias" name="Yelp Alias">
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Hours <span class="text-muted" style="font-size:0.8rem;">(auto-filled from search — edit if needed)</span></label>
+                    <div class="row g-2">
+                      <div class="col-6 col-md-3"><label class="form-label" style="font-size:0.75rem;color:#6c757d;">Monday</label><input type="text" class="form-control form-control-sm" id="pool-Monday" placeholder="e.g. 4:00 PM - 2:00 AM" /></div>
+                      <div class="col-6 col-md-3"><label class="form-label" style="font-size:0.75rem;color:#6c757d;">Tuesday</label><input type="text" class="form-control form-control-sm" id="pool-Tuesday" placeholder="e.g. 4:00 PM - 2:00 AM" /></div>
+                      <div class="col-6 col-md-3"><label class="form-label" style="font-size:0.75rem;color:#6c757d;">Wednesday</label><input type="text" class="form-control form-control-sm" id="pool-Wednesday" placeholder="e.g. 4:00 PM - 2:00 AM" /></div>
+                      <div class="col-6 col-md-3"><label class="form-label" style="font-size:0.75rem;color:#6c757d;">Thursday</label><input type="text" class="form-control form-control-sm" id="pool-Thursday" placeholder="e.g. 4:00 PM - 2:00 AM" /></div>
+                      <div class="col-6 col-md-3"><label class="form-label" style="font-size:0.75rem;color:#6c757d;">Friday</label><input type="text" class="form-control form-control-sm" id="pool-Friday" placeholder="e.g. 4:00 PM - 2:00 AM" /></div>
+                      <div class="col-6 col-md-3"><label class="form-label" style="font-size:0.75rem;color:#6c757d;">Saturday</label><input type="text" class="form-control form-control-sm" id="pool-Saturday" placeholder="e.g. 4:00 PM - 2:00 AM" /></div>
+                      <div class="col-6 col-md-3"><label class="form-label" style="font-size:0.75rem;color:#6c757d;">Sunday</label><input type="text" class="form-control form-control-sm" id="pool-Sunday" placeholder="e.g. 12:00 PM - 12:00 AM" /></div>
+                    </div>
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Is this bar in Philadelphia?</label>
@@ -820,7 +825,7 @@
                   <div class="mb-3">
                     <label for="pool-search-bar" class="form-label">Search for a Bar</label>
                     <input type="text" class="form-control" id="pool-search-bar" placeholder="Start typing a bar name..." />
-                    <ul id="pool-search-results" style="list-style:none;padding:0;margin-top:8px;"></ul>
+                    <ul id="pool-edit-search-results" style="list-style:none;padding:0;margin-top:8px;"></ul>
                   </div>
                   <div id="pool-edit-fields" style="display:none;">
                     <input type="hidden" id="pool-edit-original-id" />
