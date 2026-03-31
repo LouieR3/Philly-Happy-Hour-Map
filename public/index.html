@@ -709,12 +709,11 @@
               </div>
               <div class="modal-body">
                 <form id="pool-bar-submission-form">
-                  <div class="modal-section-label">Search Existing Bar</div>
                   <div class="form-group" style="position: relative; margin-bottom: 20px;">
                     <label style="color: #10b981; font-weight: bold;"><i class="fa fa-search"></i> Search for a Bar first (Optional)</label>
                     <input type="text" id="pool-search-input" placeholder="Start typing bar name..." autocomplete="off" style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid #334155; background: #1e293b; color: white;">
                     <div id="pool-search-results" style="position: absolute; width: 100%; z-index: 100; background: #1e293b; border: 1px solid #334155; border-top: none; max-height: 200px; overflow-y: auto; border-radius: 0 0 4px 4px;">
-                      <ul id="pool-search-results-list" style="margin:0;padding:8px;list-style:none;"></ul>
+                      <!-- <ul id="pool-search-results-list" style="margin:0;padding:8px;list-style:none;"></ul> -->
                     </div>
                   </div>
 
@@ -728,6 +727,14 @@
                     <input type="text" class="form-control" id="pool-street-address" placeholder="e.g. 123 Main St" required />
                     <input type="hidden" id="pool-lat" name="Latitude">
                     <input type="hidden" id="pool-lng" name="Longitude">
+                    <input type="hidden" id="pool-Yelp Alias" name="Yelp Alias">
+                    <input type="hidden" id="pool-Sunday" name="Sunday">
+                    <input type="hidden" id="pool-Monday" name="Monday">
+                    <input type="hidden" id="pool-Tuesday" name="Tuesday">
+                    <input type="hidden" id="pool-Wednesday" name="Wednesday">
+                    <input type="hidden" id="pool-Thursday" name="Thursday">
+                    <input type="hidden" id="pool-Friday" name="Friday">
+                    <input type="hidden" id="pool-Saturday" name="Saturday">
                   </div>
                   <div class="mb-3">
                     <label class="form-label">Is this bar in Philadelphia?</label>
@@ -771,7 +778,7 @@
                       <label for="pool-payment-model-select" class="form-label">Payment Model</label>
                       <select class="form-control" id="pool-payment-model-select">
                         <option value="">-- Select --</option>
-                        <option value="Coin-op">Coin-op</option>
+                        <!-- <option value="Coin-op">Coin-op</option> -->
                         <option value="Hourly">Hourly</option>
                         <option value="Per Game">Per Game</option>
                         <option value="Free">Free</option>

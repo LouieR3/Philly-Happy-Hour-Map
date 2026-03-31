@@ -1,7 +1,7 @@
 const POOL_API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:3000'
   : 'https://philly-happy-hour-map-production.up.railway.app';
-
+console.log(POOL_API_BASE);
 // ─── Map init ─────────────────────────────────────────────────────────────────
 var poolMap = L.map('pool-leaflet-map').setView([39.951, -75.163], 12);
 poolMap.zoomControl.setPosition('bottomright');
@@ -215,6 +215,16 @@ poolSearchInput.addEventListener('input', async (e) => {
                 document.getElementById('pool-neighborhood-input').value = bar.Neighborhood || bar.Neighborhoods || '';
                 document.getElementById('pool-lat').value = bar.Latitude || '';
                 document.getElementById('pool-lng').value = bar.Longitude || '';
+                document.getElementById("pool-Yelp Alias").value = bar["Yelp Alias"] || "";
+                if (bar["Yelp Rating"]) document.getElementById("pool-Yelp Rating").value = bar["Yelp Rating"];
+
+                if (bar["Sunday"]) document.getElementById("pool-Sunday").value = bar.Sunday;
+                if (bar["Monday"]) document.getElementById("pool-Monday").value = bar.Monday;
+                if (bar["Tuesday"]) document.getElementById("pool-Tuesday").value = bar.Tuesday;
+                if (bar["Wednesday"]) document.getElementById("pool-Wednesday").value = bar.Wednesday;
+                if (bar["Thursday"]) document.getElementById("pool-Thursday").value = bar.Thursday;
+                if (bar["Friday"]) document.getElementById("pool-Friday").value = bar.Friday;
+                if (bar["Saturday"]) document.getElementById("pool-Saturday").value = bar.Saturday;
                 poolSearchInput.value = bar.Name;
                 poolSearchResultsList.innerHTML = '';
             };

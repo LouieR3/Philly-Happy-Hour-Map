@@ -11,9 +11,12 @@ const WEEKDAYS = [
   "SATURDAY",
   "SUNDAY",
 ];
-const API_BASE = "https://philly-happy-hour-map-production.up.railway.app";
+// const API_BASE = "https://philly-happy-hour-map-production.up.railway.app";
 // const API_BASE = "http://localhost:3000";
 // const API_BASE = window.location.origin;
+const API_BASE = window.location.hostname === 'localhost'
+  ? 'http://localhost:3000'
+  : 'https://philly-happy-hour-map-production.up.railway.app';
 console.log(window.location.origin);
 function adminFetch(url, method = "GET", body = null) {
   const opts = {
@@ -551,6 +554,13 @@ const POOL_TEXT_FIELDS = [
   "League_Details",
   "Last_Verified",
   "Notes",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
 ];
 
 // ── Load pool bars from API ────────────────────────────────────────────────
@@ -707,7 +717,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         bars.forEach((bar) => {
           console.log("Search result:", bar);
-          console.log("bar:", bar.Latitude, bar.Longitude);
+          console.log("bar:", bar["Yelp Rating"]);
           const li = document.createElement("li");
           li.style.padding = "8px";
           li.style.cursor = "pointer";
@@ -726,6 +736,15 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('pool-Latitude').value = bar.Latitude || '';
             document.getElementById('pool-Longitude').value = bar.Longitude || '';
             document.getElementById("pool-Website").value = bar.Website || "";
+
+            if (bar["Sunday"]) document.getElementById("pool-Sunday").value = bar.Sunday;
+            if (bar["Monday"]) document.getElementById("pool-Monday").value = bar.Monday;
+            if (bar["Tuesday"]) document.getElementById("pool-Tuesday").value = bar.Tuesday;
+            if (bar["Wednesday"]) document.getElementById("pool-Wednesday").value = bar.Wednesday;
+            if (bar["Thursday"]) document.getElementById("pool-Thursday").value = bar.Thursday;
+            if (bar["Friday"]) document.getElementById("pool-Friday").value = bar.Friday;
+            if (bar["Saturday"]) document.getElementById("pool-Saturday").value = bar.Saturday;
+
             if (bar["Yelp Rating"]) document.getElementById("pool-Yelp Rating").value = bar["Yelp Rating"];
 
             // Hide search results
