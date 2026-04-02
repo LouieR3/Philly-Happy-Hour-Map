@@ -44,8 +44,8 @@ const poolActiveFilters = {
   minTables:    null,
   hasHappyHour: false,
   hasLeague:    false,
-  neighborhoods: new Set(),
-  priceRange:   null,
+  neighborhood: null,
+  region:       null,
 };
 
 function applyPoolFilters() {
@@ -56,8 +56,7 @@ function applyPoolFilters() {
       (poolActiveFilters.minTables === null || marker.tableCount >= poolActiveFilters.minTables) &&
       (!poolActiveFilters.hasHappyHour || marker.hasHappyHour) &&
       (!poolActiveFilters.hasLeague    || marker.hasLeague) &&
-      (!poolActiveFilters.priceRange || marker.costFormatted === poolActiveFilters.priceRange) &&
-      (poolActiveFilters.neighborhoods.size === 0 || poolActiveFilters.neighborhoods.has(marker.neighborhood));
+      (!poolActiveFilters.neighborhood || marker.neighborhood === poolActiveFilters.neighborhood);
     if (passes) {
       if (!poolMap.hasLayer(marker)) marker.addTo(poolMap);
     } else {
@@ -149,23 +148,10 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
       marker.tableCount   = row.Number_of_Tables ? Number(row.Number_of_Tables) : 0;
       marker.hasHappyHour = !!row.Has_Happy_Hour;
       marker.hasLeague    = !!row.Has_League;
-      marker.neighborhood = row.Neighborhood || '';
       marker.name         = row.Name;
       marker.rowIndex     = i;
-      // Store cost information
-      if (row.Payment_Model === 'Per Hour' || row.Payment_Model === 'Hourly') {
-        marker.costFormatted = row.Cost_Per_Hour ? `$${row.Cost_Per_Hour}/hr` : null;
-        marker.costPerHour = row.Cost_Per_Hour || null;
-        marker.costPerGame = null;
-      } else if (row.Payment_Model === 'Per Game') {
-        marker.costFormatted = row.Cost_Per_Game ? `$${row.Cost_Per_Game}/game` : null;
-        marker.costPerHour = null;
-        marker.costPerGame = row.Cost_Per_Game || null;
-      } else {
-        marker.costFormatted = null;
-        marker.costPerHour = null;
-        marker.costPerGame = null;
-      }
+      marker.neighborhood = row.Neighborhood || null;
+      marker.region       = row.Philly_Region || null;
       poolMarkers.push(marker);
       marker.addTo(poolMap);
       markerGroup.addLayer(marker);
@@ -173,31 +159,121 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
 
     populatePoolTable(data);
 
-    // Populate mobile filter options for pool bars
-    const neighborhoods = [...new Set(data.map((d) => d.Neighborhood).filter(Boolean))].sort();
-    
-    // Generate cost ranges from data
-    const costRanges = [];
-    const costs = data
-      .map(d => {
-        if (d.Payment_Model === 'Per Hour' || d.Payment_Model === 'Hourly') {
-          return d.Cost_Per_Hour ? `$${d.Cost_Per_Hour}/hr` : null;
-        } else if (d.Payment_Model === 'Per Game') {
-          return d.Cost_Per_Game ? `$${d.Cost_Per_Game}/game` : null;
+    // ── GeoJSON-based Region + Neighborhood filters for pool bars ─────────
+    fetch('assets/philadelphia-neighborhoods.geojson')
+      .then(r => r.json())
+      .then(function(geoJson) {
+        const nhHasMarker     = {};  // LISTNAME → feature
+        const regionHasMarker = {};  // GENERAL_AREA → [features]
+
+        poolMarkers.forEach(function(marker) {
+          const pt = turf.point([marker.getLatLng().lng, marker.getLatLng().lat]);
+          geoJson.features.forEach(function(feature) {
+            try {
+              if (turf.booleanPointInPolygon(pt, feature)) {
+                const name   = feature.properties.LISTNAME;
+                const region = (feature.properties.GENERAL_AREA || '').trim();
+                if (!nhHasMarker[name]) nhHasMarker[name] = feature;
+                if (region) {
+                  if (!regionHasMarker[region]) regionHasMarker[region] = [];
+                  regionHasMarker[region].push(feature);
+                }
+              }
+            } catch(e) {}
+          });
+        });
+
+        function zoomPoolToFeatures(features) {
+          const bbox = turf.bbox(turf.featureCollection(features));
+          poolMap.fitBounds([[bbox[1], bbox[0]], [bbox[3], bbox[2]]], { padding: [30, 30] });
         }
-        return null;
-      })
-      .filter(Boolean);
-    
-    const uniqueCosts = [...new Set(costs)].sort();
-    
-    if (window.populatePoolMobileFilterOptions) {
-      window.populatePoolMobileFilterOptions({
-        paymentModels: paymentModels,
-        costRanges: uniqueCosts,
-        neighborhoods: neighborhoods
+
+        const POOL_DD_STYLE = 'padding:7px 12px;cursor:pointer;color:#e2e8f0;';
+        const POOL_DD_HOVER_IN  = function() { this.style.background = 'rgba(255,255,255,0.08)'; };
+        const POOL_DD_HOVER_OUT = function() { this.style.background = ''; };
+
+        function makeLi(text, onClick) {
+          const li = document.createElement('li');
+          li.style.cssText = POOL_DD_STYLE;
+          li.textContent   = text;
+          li.addEventListener('mouseover', POOL_DD_HOVER_IN);
+          li.addEventListener('mouseout',  POOL_DD_HOVER_OUT);
+          li.addEventListener('click', onClick);
+          return li;
+        }
+
+        // ── Region dropdown ───────────────────────────────────────────────
+        const regionOpts    = document.getElementById('pool-region-options');
+        const sortedRegions = Object.keys(regionHasMarker).sort();
+
+        regionOpts.appendChild(makeLi('All', () => {
+          poolActiveFilters.region      = null;
+          poolActiveFilters.neighborhood = null;
+          setPoolFilterLabel('pool-region-button', 'Region');
+          setPoolFilterActive('pool-region-button', false);
+          document.getElementById('pool-region-dropdown').style.display = 'none';
+          buildPoolNeighborhoodList(nhHasMarker, null);
+          applyPoolFilters();
+          poolMap.setView([39.951, -75.163], 12);
+        }));
+
+        sortedRegions.forEach(region => {
+          regionOpts.appendChild(makeLi(region, () => {
+            poolActiveFilters.region      = region;
+            poolActiveFilters.neighborhood = null;
+            setPoolFilterLabel('pool-region-button', region);
+            setPoolFilterActive('pool-region-button', true);
+            document.getElementById('pool-region-dropdown').style.display = 'none';
+            buildPoolNeighborhoodList(nhHasMarker, region);
+            applyPoolFilters();
+            zoomPoolToFeatures(regionHasMarker[region]);
+          }));
+        });
+
+        setupPoolDropdown('pool-region-button', 'pool-region-dropdown');
+
+        // ── Neighborhood dropdown ─────────────────────────────────────────
+        function buildPoolNeighborhoodList(nhMap, filterRegion) {
+          const opts  = document.getElementById('pool-neighborhood-options');
+          opts.innerHTML = '';
+
+          opts.appendChild(makeLi('All', () => {
+            poolActiveFilters.neighborhood = null;
+            setPoolFilterLabel('pool-neighborhood-button', 'Neighborhood');
+            setPoolFilterActive('pool-neighborhood-button', false);
+            document.getElementById('pool-neighborhood-dropdown').style.display = 'none';
+            applyPoolFilters();
+          }));
+
+          let names = Object.keys(nhMap).sort();
+          if (filterRegion) {
+            names = names.filter(n => (nhMap[n].properties.GENERAL_AREA || '').trim() === filterRegion);
+          }
+
+          names.forEach(name => {
+            const feature = nhMap[name];
+            opts.appendChild(makeLi(name, () => {
+              poolActiveFilters.neighborhood = name;
+              setPoolFilterLabel('pool-neighborhood-button', name);
+              setPoolFilterActive('pool-neighborhood-button', true);
+              document.getElementById('pool-neighborhood-dropdown').style.display = 'none';
+              applyPoolFilters();
+              zoomPoolToFeatures([feature]);
+            }));
+          });
+        }
+
+        buildPoolNeighborhoodList(nhHasMarker, null);
+        setupPoolDropdown('pool-neighborhood-button', 'pool-neighborhood-dropdown');
+
+        // Mobile filter options
+        if (typeof populatePoolMobileFilterOptions === 'function') {
+          populatePoolMobileFilterOptions({
+            neighborhoods: Object.keys(nhHasMarker).sort(),
+            regions:       sortedRegions,
+          });
+        }
       });
-    }
   })
   .catch((err) => console.error('Failed to load pool bars:', err));
 
@@ -254,7 +330,7 @@ if (poolSearchInput && poolSearchResultsList) {
                   document.getElementById('pool-business-name').value = bar.Name || '';
                   document.getElementById('pool-street-address').value = bar.Address || '';
                   // Populate neighborhood — always make the field visible regardless of radio state
-                  const neighborhood = bar.Neighborhood || '';
+                  const neighborhood = bar.Neighborhoods || bar.Neighborhood || '';
                   const neighborhoodInput = document.getElementById('pool-neighborhood-input');
                   if (neighborhoodInput) {
                     neighborhoodInput.value = neighborhood;
@@ -266,7 +342,8 @@ if (poolSearchInput && poolSearchResultsList) {
                   document.getElementById('pool-lng').value = bar.Longitude || '';
                   document.getElementById("pool-yelp-alias").value = bar["Yelp Alias"] || "";
                   console.log('Selected bar:', bar);
-                  if (bar["Yelp Rating"]) document.getElementById("pool-yelp-rating").value = bar["Yelp Rating"];
+                  console.log(bar["Yelp Alias"]);
+                  if (bar["Yelp Rating"]) document.getElementById("pool-Yelp Rating").value = bar["Yelp Rating"];
 
                   if (bar["Sunday"]) document.getElementById("pool-Sunday").value = bar.Sunday;
                   if (bar["Monday"]) document.getElementById("pool-Monday").value = bar.Monday;
@@ -353,16 +430,22 @@ document.getElementById('pool-league-button').addEventListener('click', () => {
 
 // Reset
 document.getElementById('pool-reset-button').addEventListener('click', () => {
-  poolActiveFilters.paymentModel = null;
-  poolActiveFilters.minTables    = null;
-  poolActiveFilters.hasHappyHour = false;
-  poolActiveFilters.hasLeague    = false;
-  setPoolFilterLabel('pool-payment-button', 'Payment');
-  setPoolFilterActive('pool-payment-button', false);
-  setPoolFilterLabel('pool-tables-button', 'Tables');
-  setPoolFilterActive('pool-tables-button', false);
-  setPoolFilterActive('pool-hh-button', false);
-  setPoolFilterActive('pool-league-button', false);
+  poolActiveFilters.paymentModel  = null;
+  poolActiveFilters.minTables     = null;
+  poolActiveFilters.hasHappyHour  = false;
+  poolActiveFilters.hasLeague     = false;
+  poolActiveFilters.neighborhood  = null;
+  poolActiveFilters.region        = null;
+  setPoolFilterLabel('pool-payment-button',      'Payment');
+  setPoolFilterActive('pool-payment-button',     false);
+  setPoolFilterLabel('pool-tables-button',       'Tables');
+  setPoolFilterActive('pool-tables-button',      false);
+  setPoolFilterLabel('pool-region-button',       'Region');
+  setPoolFilterActive('pool-region-button',      false);
+  setPoolFilterLabel('pool-neighborhood-button', 'Neighborhood');
+  setPoolFilterActive('pool-neighborhood-button',false);
+  setPoolFilterActive('pool-hh-button',          false);
+  setPoolFilterActive('pool-league-button',      false);
   poolMap.setView([39.951, -75.163], 12);
   applyPoolFilters();
 });

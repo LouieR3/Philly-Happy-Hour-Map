@@ -117,6 +117,7 @@ h1, h2, h3, h4, h5, h6 {
 #first-prize-dropdown,
 #prize-amount-dropdown,
 #neighborhood-dropdown,
+#region-dropdown,
 #pool-payment-dropdown,
 #pool-tables-dropdown {
   background-color: var(--mh-dark-2) !important;
@@ -129,14 +130,14 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom-color: var(--mh-border) !important;
 }
 #neighborhood-search::placeholder { color: var(--mh-text-muted) !important; }
-.weekday-option, .time-option, .first-prize-option,
+.weekday-option, .time-option, .first-prize-option,.region-option,
 .prize-amount-option, .neighborhood-option,
 .pool-payment-option, .pool-tables-option {
   color: var(--mh-text) !important;
   text-align: center;
 }
 .weekday-option:hover, .time-option:hover, .first-prize-option:hover,
-.prize-amount-option:hover, .neighborhood-option:hover,
+.prize-amount-option:hover, .neighborhood-option:hover, .region-option:hover,
 .pool-payment-option:hover, .pool-tables-option:hover {
   background-color: var(--mh-dark-3) !important;
 }
@@ -390,7 +391,7 @@ h1, h2, h3, h4, h5, h6 {
   height: 40px;
   padding: 0;
   border-radius: 8px;
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   font-size: 18px;

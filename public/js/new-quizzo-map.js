@@ -253,75 +253,125 @@ fetch(`${API_BASE}/api/quizzo`)
     });
     prizeAmountOptions.prepend(allPrizeAmountOption);
 
-    // Populate the Neighborhood dropdown (multi-select)
-    const neighborhoodOptions = document.getElementById("neighborhood-options");
+    // ── GeoJSON-based Region + Neighborhood filters ──────────────────────
+    fetch('assets/philadelphia-neighborhoods.geojson')
+      .then(r => r.json())
+      .then(function(geoJson) {
+        const nhHasMarker     = {};  // LISTNAME → feature
+        const regionHasMarker = {};  // GENERAL_AREA → [features]
 
-    function updateNeighborhoodLabel() {
-      const count = activeFilters.neighborhoods.size;
-      if (count === 0) {
-        setFilterLabel("neighborhood-button", "Neighborhood");
-        setFilterActive("neighborhood-button", false);
-      } else if (count === 1) {
-        setFilterLabel("neighborhood-button", [...activeFilters.neighborhoods][0]);
-        setFilterActive("neighborhood-button", true);
-      } else {
-        setFilterLabel("neighborhood-button", `${count} Neighborhoods`);
-        setFilterActive("neighborhood-button", true);
-      }
-    }
+        markers.forEach(function(marker) {
+          const pt = turf.point([marker.getLatLng().lng, marker.getLatLng().lat]);
+          geoJson.features.forEach(function(feature) {
+            try {
+              if (turf.booleanPointInPolygon(pt, feature)) {
+                const name   = feature.properties.LISTNAME;
+                const region = (feature.properties.GENERAL_AREA || '').trim();
+                if (!nhHasMarker[name]) nhHasMarker[name] = feature;
+                if (region) {
+                  if (!regionHasMarker[region]) regionHasMarker[region] = [];
+                  regionHasMarker[region].push(feature);
+                }
+              }
+            } catch(e) {}
+          });
+        });
 
-    neighborhoods.forEach((neighborhood) => {
-      const li = document.createElement("li");
-      li.className = "neighborhood-option";
-      li.setAttribute("data-value", neighborhood);
-      li.textContent = neighborhood;
-      li.style.cursor = "pointer";
-      li.style.padding = "5px";
-      li.addEventListener("click", () => {
-        if (activeFilters.neighborhoods.has(neighborhood)) {
-          activeFilters.neighborhoods.delete(neighborhood);
-          li.classList.remove("filter-option-selected");
-        } else {
-          activeFilters.neighborhoods.add(neighborhood);
-          li.classList.add("filter-option-selected");
+        function zoomToFeatures(features) {
+          const bbox = turf.bbox(turf.featureCollection(features));
+          leafletmap.fitBounds([[bbox[1], bbox[0]], [bbox[3], bbox[2]]], { padding: [30, 30] });
         }
-        updateNeighborhoodLabel();
-        applyFilters();
-      });
-      neighborhoodOptions.appendChild(li);
-    });
 
-    const allNeighborhoodOption = document.createElement("li");
-    allNeighborhoodOption.className = "neighborhood-option";
-    allNeighborhoodOption.setAttribute("data-value", "All");
-    allNeighborhoodOption.textContent = "All";
-    allNeighborhoodOption.style.cursor = "pointer";
-    allNeighborhoodOption.style.padding = "5px";
-    allNeighborhoodOption.style.fontWeight = "bold";
-    allNeighborhoodOption.addEventListener("click", () => {
-      activeFilters.neighborhoods.clear();
-      document.querySelectorAll(".neighborhood-option").forEach((opt) => opt.classList.remove("filter-option-selected"));
-      updateNeighborhoodLabel();
-      applyFilters();
-    });
-    neighborhoodOptions.prepend(allNeighborhoodOption);
+        const DD_STYLE = 'padding:7px 12px;cursor:pointer;color:#e2e8f0;';
+        const DD_HOVER_IN  = function() { this.style.background = 'rgba(255,255,255,0.08)'; };
+        const DD_HOVER_OUT = function() { this.style.background = ''; };
 
-    // Add search functionality
-    const neighborhoodSearch = document.getElementById("neighborhood-search");
-    neighborhoodSearch.addEventListener("input", () => {
-      const query = neighborhoodSearch.value.toLowerCase();
-      document.querySelectorAll(".neighborhood-option").forEach((option) => {
-        const neighborhood = option.getAttribute("data-value").toLowerCase();
-        if (
-          neighborhood.includes(query) ||
-          option.getAttribute("data-value") === "All"
-        ) {
-          option.style.display = "block";
-        } else {
-          option.style.display = "none";
+        function makeLi(text, onClick) {
+          const li = document.createElement('li');
+          li.style.cssText = DD_STYLE;
+          li.textContent   = text;
+          li.addEventListener('mouseover', DD_HOVER_IN);
+          li.addEventListener('mouseout',  DD_HOVER_OUT);
+          li.addEventListener('click', onClick);
+          return li;
+        }
+
+        // ── Region dropdown ───────────────────────────────────────────────
+        const regionOpts    = document.getElementById('region-options');
+        const sortedRegions = Object.keys(regionHasMarker).sort();
+
+        regionOpts.appendChild(makeLi('All', () => {
+          activeFilters.region      = null;
+          activeFilters.neighborhoods.clear();
+          setFilterLabel('region-button', 'Region');
+          setFilterActive('region-button', false);
+          document.getElementById('region-dropdown').style.display = 'none';
+          buildQuizzoNeighborhoodList(nhHasMarker, null);
+          applyFilters();
+          leafletmap.setView([39.951, -75.163], 12);
+        }));
+
+        sortedRegions.forEach(region => {
+          regionOpts.appendChild(makeLi(region, () => {
+            activeFilters.region      = region;
+            activeFilters.neighborhoods.clear();
+            setFilterLabel('region-button', region);
+            setFilterActive('region-button', true);
+            document.getElementById('region-dropdown').style.display = 'none';
+            buildQuizzoNeighborhoodList(nhHasMarker, region);
+            applyFilters();
+            zoomToFeatures(regionHasMarker[region]);
+          }));
+        });
+
+        setupDropdownToggle('region-button', 'region-dropdown');
+
+        // ── Neighborhood dropdown ─────────────────────────────────────────
+        function buildQuizzoNeighborhoodList(nhMap, filterRegion) {
+          const opts  = document.getElementById('neighborhood-options');
+          opts.innerHTML = '';
+
+          opts.appendChild(makeLi('All', () => {
+            activeFilters.neighborhoods.clear();
+            setFilterLabel('neighborhood-button', 'Neighborhood');
+            setFilterActive('neighborhood-button', false);
+            document.getElementById('neighborhood-dropdown').style.display = 'none';
+            applyFilters();
+          }));
+
+          let names = Object.keys(nhMap).sort();
+          if (filterRegion) {
+            names = names.filter(n => (nhMap[n].properties.GENERAL_AREA || '').trim() === filterRegion);
+          }
+
+          names.forEach(name => {
+            const feature = nhMap[name];
+            opts.appendChild(makeLi(name, () => {
+              activeFilters.neighborhoods.clear();
+              activeFilters.neighborhoods.add(name);
+              setFilterLabel('neighborhood-button', name);
+              setFilterActive('neighborhood-button', true);
+              document.getElementById('neighborhood-dropdown').style.display = 'none';
+              applyFilters();
+              zoomToFeatures([feature]);
+            }));
+          });
+        }
+
+        buildQuizzoNeighborhoodList(nhHasMarker, null);
+        setupDropdownToggle('neighborhood-button', 'neighborhood-dropdown');
+
+        // Mobile filter options
+        if (typeof populateQuizzoMobileFilterOptions === 'function') {
+          populateQuizzoMobileFilterOptions({
+            times: times,
+            firstPrizes: firstPrizes,
+            prizeAmounts: prizeAmounts,
+            neighborhoods: Object.keys(nhHasMarker).sort()
+          });
         }
       });
-    });
+
 
     // Create a layer group for markers
     const markerLayerGroup = L.layerGroup().addTo(leafletmap);
@@ -362,6 +412,7 @@ fetch(`${API_BASE}/api/quizzo`)
             <div style="background: #1a6b4a; padding: 14px 16px 12px;">
               <p style="margin: 0; font-size: 15px; font-weight: 600; color: #fff;">${row.BUSINESS}</p>
               <p style="margin: 4px 0 0; font-size: 12px; color: rgba(255,255,255,0.75);">${locationLine}</p>
+              <p style="margin: 4px 0 0; font-size: 12px; color: rgba(255, 255, 255);">${row.NEIGHBORHOOD}</p>
             </div>
             <div style="padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; background: #fff;">
               <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #555;">
@@ -532,7 +583,7 @@ setupDropdownToggle("weekday-button", "weekday-dropdown");
 setupDropdownToggle("time-button", "time-dropdown");
 setupDropdownToggle("first-prize-button", "first-prize-dropdown");
 setupDropdownToggle("prize-amount-button", "prize-amount-dropdown");
-setupDropdownToggle("neighborhood-button", "neighborhood-dropdown");
+// setupDropdownToggle for region and neighborhood are now initialized inside the GeoJSON fetch
 
 // Handle weekday selection
 document.querySelectorAll(".weekday-option").forEach((option) => {

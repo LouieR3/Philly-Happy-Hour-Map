@@ -62,3 +62,8 @@ Sports bars:
 - filter by sports or colleges
 - create mongodb
 - creation and edits by users
+
+NEIGHBORHOODS ZOOM FROM CLAUDE TURF
+SEARCH WORKING IN MAP
+BETTER POOL FILTERS
+PREPOPULATE RFOM LIST  NEEDS TO GRAB NEIGHBORHOODS FROM bars

@@ -181,6 +181,17 @@
             </div>
           </div>
 
+          <div id="region-filter" style="position:relative;">
+            <button id="region-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-map" style="margin-right: 8px;"></i>
+              <span class="filter-label">Region</span>
+              <i class="fa-solid fa-caret-down" style="margin-left: 8px;"></i>
+            </button>
+            <div id="region-dropdown" style="display:none;position:absolute;top:100%;left:0;background:white;border:1px solid #ccc;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:1000;min-width:180px;">
+              <ul id="region-options" style="list-style:none;margin:0;padding:8px 0;max-height:220px;overflow-y:auto;"></ul>
+            </div>
+          </div>
+
           <!-- Neighborhood Filter -->
           <!-- <div id="neighborhood-filter">
             <button id="neighborhood-button" class="btn btn-primary rounded-pill">
@@ -715,6 +726,28 @@
             </div>
           </div>
 
+          <div id="pool-region-filter" style="position:relative;">
+            <button id="pool-region-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-map" style="margin-right:8px;"></i>
+              <span class="filter-label">Region</span>
+              <i class="fa-solid fa-caret-down" style="margin-left:8px;"></i>
+            </button>
+            <div id="pool-region-dropdown" style="display:none;position:absolute;top:100%;left:0;background:#1a2332;border:1px solid #2d3a4f;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:1000;min-width:180px;">
+              <ul id="pool-region-options" style="list-style:none;margin:0;padding:8px 0;max-height:220px;overflow-y:auto;"></ul>
+            </div>
+          </div>
+
+          
+          <div id="pool-neighborhood-filter" style="position:relative;">
+            <button id="pool-neighborhood-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-map-marker-alt" style="margin-right:8px;"></i>
+              <span class="filter-label">Neighborhood</span>
+              <i class="fa-solid fa-caret-down" style="margin-left:8px;"></i>
+            </button>
+            <div id="pool-neighborhood-dropdown" style="display:none;position:absolute;top:100%;left:0;background:#1a2332;border:1px solid #2d3a4f;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:1000;min-width:200px;">
+              <ul id="pool-neighborhood-options" style="list-style:none;margin:0;padding:8px 0;max-height:220px;overflow-y:auto;"></ul>
+            </div>
+          </div>
           <button id="pool-hh-button" class="btn btn-primary rounded-pill">
             <i class="fa-solid fa-clock" style="margin-right:8px;"></i>Happy Hour
           </button>
@@ -1180,6 +1213,8 @@
     <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
     <!-- <script type="text/javascript" src="/path/to/pointinpoly/pointinpoly.js"></script> -->
 
+    <!-- Include Turf.js for buffering -->
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6.5.0/turf.min.js"></script>
     <!-- Papa Parse -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <!-- Mobile Filters -->
