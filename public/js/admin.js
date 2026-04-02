@@ -531,7 +531,8 @@ function loadPoolBars() {
     .then((data) => {
       poolData = data;
       poolFiltered = data;
-      document.getElementById("badge-pool").textContent = data.length;
+      const badge = document.getElementById("badge-pool");
+      if (badge) badge.textContent = data.length;
       renderPoolTable(data);
     })
     .catch((err) => toast("Failed to load pool bars: " + err.message, "error"));
@@ -833,6 +834,9 @@ document.querySelectorAll(".tab").forEach((tab) => {
     if (tab.dataset.tab === "quizzo" && quizzoData.length === 0) {
       loadQuizzoBars();
     }
+    if (tab.dataset.tab === "allbars" && allBarsData.length === 0) {
+      loadAllBars();
+    }
   });
 });
 
@@ -1029,4 +1033,61 @@ async function deleteQuizzoBar(id, name) {
   } catch (err) {
     toast(err.message, "error");
   }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// ALL BARS (mappy_hour bars collection — read-only view)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let allBarsData = [];
+let allBarsFiltered = [];
+
+function loadAllBars() {
+  adminFetch("/admin/all-bars")
+    .then((r) => r.json())
+    .then((data) => {
+      allBarsData = data;
+      allBarsFiltered = data;
+      const countEl = document.getElementById("allbars-count");
+      if (countEl) countEl.textContent = `(${data.length.toLocaleString()} records)`;
+      renderAllBarsTable(data);
+    })
+    .catch((err) => toast("Failed to load bars: " + err.message, "error"));
+}
+
+function renderAllBarsTable(data) {
+  const tbody = document.getElementById("allbars-tbody");
+  tbody.innerHTML = "";
+  if (!Array.isArray(data)) {
+    tbody.innerHTML = "<tr><td colspan='7'>Error loading data</td></tr>";
+    return;
+  }
+  if (data.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='7' style='text-align:center;padding:20px;'>No bars found</td></tr>";
+    return;
+  }
+  data.forEach((bar) => {
+    const tr = document.createElement("tr");
+    const website = bar.Website
+      ? `<a href="${bar.Website}" target="_blank" style="color:var(--green);">Link</a>`
+      : "—";
+    tr.innerHTML = `
+      <td><strong>${bar.Name || "—"}</strong></td>
+      <td style="font-size:0.82rem;color:var(--muted);">${bar.Address || "—"}</td>
+      <td>${bar.Neighborhood || bar.Neighborhoods || "—"}</td>
+      <td>${bar.Phone || "—"}</td>
+      <td>${bar["Yelp Rating"] ?? "—"}</td>
+      <td>${bar.Price || "—"}</td>
+      <td>${website}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function filterAllBars(q) {
+  const lower = q.toLowerCase();
+  allBarsFiltered = q.trim()
+    ? allBarsData.filter((b) => JSON.stringify(b).toLowerCase().includes(lower))
+    : allBarsData;
+  renderAllBarsTable(allBarsFiltered);
 }

@@ -35,6 +35,18 @@ function createMartiniIcon(color = "green") {
 
 // ─── Active filter state ────────────────────────────────────────────────────
 var markers = [];
+var quizzoGeoJson = null;
+
+function getQuizzoNhFromLatLng(lat, lng) {
+  if (!quizzoGeoJson || !window.turf) return null;
+  const pt = turf.point([lng, lat]);
+  for (const feature of quizzoGeoJson.features) {
+    try {
+      if (turf.booleanPointInPolygon(pt, feature)) return feature.properties.LISTNAME || null;
+    } catch(e) {}
+  }
+  return null;
+}
 const activeFilters = {
   weekday: null,
   time: null,
@@ -257,6 +269,7 @@ fetch(`${API_BASE}/api/quizzo`)
     fetch('assets/philadelphia-neighborhoods.geojson')
       .then(r => r.json())
       .then(function(geoJson) {
+        quizzoGeoJson = geoJson;
         const nhHasMarker     = {};  // LISTNAME → feature
         const regionHasMarker = {};  // GENERAL_AREA → [features]
 
@@ -454,41 +467,46 @@ fetch(`${API_BASE}/api/quizzo`)
       }
     });
 
-    // Initialize Fuse.js for fuzzy search
-    const fuse = new Fuse(data, {
-      keys: ["BUSINESS", "ADDRESS_STREET", "ADDRESS_CITY", "ADDRESS_STATE"],
+    // ── Custom map search overlay ─────────────────────────────────────────
+    const QuizzoSearchControl = L.Control.extend({
+      options: { position: 'topleft' },
+      onAdd: function() {
+        const c = L.DomUtil.create('div', 'map-search-control');
+        c.innerHTML = '<input type="text" id="map-search-field" placeholder="Search bars\u2026" autocomplete="off" /><ul id="map-search-list"></ul>';
+        L.DomEvent.disableClickPropagation(c);
+        L.DomEvent.disableScrollPropagation(c);
+        return c;
+      }
     });
+    leafletmap.addControl(new QuizzoSearchControl());
 
-    // Add Leaflet Search control
-    const searchControl = new L.Control.Search({
-      layer: markerLayerGroup,
-      propertyName: "businessName", // Search by business name
-      filterData: function (text, records) {
-        const jsons = fuse.search(text);
-        const ret = {};
-        jsons.forEach((result) => {
-          const key = result.item.BUSINESS;
-          ret[key] = records[key];
+    document.getElementById('map-search-field').addEventListener('input', function() {
+      const q = this.value.trim().toLowerCase();
+      const list = document.getElementById('map-search-list');
+      list.innerHTML = '';
+      if (q.length < 2) return;
+      markers
+        .filter(m => m.businessName && m.businessName.toLowerCase().includes(q))
+        .slice(0, 8)
+        .forEach(m => {
+          const li = document.createElement('li');
+          li.textContent = m.businessName;
+          li.addEventListener('click', () => {
+            leafletmap.setView(m.getLatLng(), 16);
+            m.openPopup();
+            document.getElementById('map-search-field').value = m.businessName;
+            list.innerHTML = '';
+          });
+          list.appendChild(li);
         });
-        return ret;
-      },
-      marker: false, // Disable default marker behavior
-      moveToLocation: function (latlng, title, map) {
-        // Zoom to the marker and open its popup
-        map.setView(latlng, 16); // Adjust zoom level as needed
-        const marker = markers.find((m) => m.getLatLng().equals(latlng));
-        if (marker) {
-          marker.openPopup();
-        }
-      },
     });
 
-    // Add the search control to the map
-    leafletmap.addControl(searchControl);
-
-    // Handle search location found
-    searchControl.on("search:locationfound", function (e) {
-      e.layer.openPopup();
+    document.addEventListener('click', function(e) {
+      const field = document.getElementById('map-search-field');
+      const list  = document.getElementById('map-search-list');
+      if (field && list && !field.contains(e.target) && !list.contains(e.target)) {
+        list.innerHTML = '';
+      }
     });
 
     // Populate the table here — markers are fully built so the name lookup works
@@ -617,11 +635,49 @@ editBarButton.addEventListener("click", () => {
   new bootstrap.Modal(document.getElementById("editBarModal")).show();
 });
 
+// ── Search-from-bars for Add Bar modal ────────────────────────────────────────
+const quizzoSearchInput       = document.getElementById('quizzo-search-input');
+const quizzoSearchResultsList = document.getElementById('quizzo-search-results-list');
+
+if (quizzoSearchInput && quizzoSearchResultsList) {
+  quizzoSearchInput.addEventListener('input', async (e) => {
+    const q = e.target.value.trim();
+    if (q.length < 2) { quizzoSearchResultsList.innerHTML = ''; return; }
+    try {
+      const res  = await fetch(`${API_BASE}/api/search-bars?q=${encodeURIComponent(q)}`);
+      const bars = await res.json();
+      quizzoSearchResultsList.innerHTML = '';
+      bars.forEach(bar => {
+        const li = document.createElement('li');
+        li.style.cssText = 'padding:10px;cursor:pointer;border-bottom:1px solid #334155;';
+        li.innerHTML = `<strong>${bar.Name}</strong><br><small style="color:#94a3b8">${bar.Address || ''}</small>`;
+        li.onclick = () => {
+          document.getElementById('business-name').value  = bar.Name    || '';
+          document.getElementById('street-address').value = bar.Address || '';
+          document.getElementById('quizzo-lat').value     = bar.Latitude  || '';
+          document.getElementById('quizzo-lng').value     = bar.Longitude || '';
+          const nh = getQuizzoNhFromLatLng(bar.Latitude, bar.Longitude);
+          document.getElementById('neighborhood').value = nh || '';
+          quizzoSearchInput.value = bar.Name;
+          quizzoSearchResultsList.innerHTML = '';
+        };
+        quizzoSearchResultsList.appendChild(li);
+      });
+    } catch(err) { console.error('Quizzo search error:', err); }
+  });
+
+  document.addEventListener('click', (e) => {
+    const container = document.getElementById('quizzo-search-results');
+    if (container && !quizzoSearchInput.contains(e.target) && !container.contains(e.target)) {
+      quizzoSearchResultsList.innerHTML = '';
+    }
+  });
+}
+
 // Philly Yes/No toggle in Add Bar modal
 document.querySelectorAll('input[name="isPhiladelphia"]').forEach((radio) => {
   radio.addEventListener("change", () => {
     const isPhilly = document.getElementById("is-philly-yes").checked;
-    document.getElementById("neighborhood-field").style.display = isPhilly ? "block" : "none";
     document.getElementById("city-state-zip-fields").style.display = isPhilly ? "none" : "block";
   });
 });
@@ -710,7 +766,6 @@ document
     const businessName = document.getElementById("business-name").value;
     const streetAddress = document.getElementById("street-address").value;
     const isPhilly = document.getElementById("is-philly-yes").checked;
-    const neighborhood = isPhilly ? document.getElementById("neighborhood").value : "";
     const city = isPhilly ? "Philadelphia" : document.getElementById("address-city").value;
     const state = isPhilly ? "PA" : document.getElementById("address-state").value;
     const zip = isPhilly ? "" : document.getElementById("address-zip").value;
@@ -725,16 +780,21 @@ document
 
     const fullAddress = `${streetAddress}, ${city}, ${state}${zip ? " " + zip : ""}`;
 
-    // Geocode the address
-    let lat = null, lng = null;
-    try {
-      const geoRes = await fetch(`${API_BASE}/api/geocode?address=${encodeURIComponent(fullAddress)}`);
-      const geoData = await geoRes.json();
-      lat = geoData.lat;
-      lng = geoData.lng;
-    } catch (e) {
-      console.warn("Geocode failed:", e);
+    // Use pre-filled lat/lng from bar search, or geocode the address
+    let lat = parseFloat(document.getElementById("quizzo-lat").value) || null;
+    let lng = parseFloat(document.getElementById("quizzo-lng").value) || null;
+    if (!lat || !lng) {
+      try {
+        const geoRes  = await fetch(`${API_BASE}/api/geocode?address=${encodeURIComponent(fullAddress)}`);
+        const geoData = await geoRes.json();
+        lat = geoData.lat;
+        lng = geoData.lng;
+      } catch (e) {
+        console.warn("Geocode failed:", e);
+      }
     }
+
+    const neighborhood = (isPhilly && lat && lng) ? (getQuizzoNhFromLatLng(lat, lng) || "") : "";
 
     const submission = {
       businessName, streetAddress, city, state, zip, neighborhood,

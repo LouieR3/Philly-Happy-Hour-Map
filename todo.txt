@@ -53,9 +53,7 @@ Quizzo Map:
 - general area zoom from filter
 
 Pool bar:
-- start from Master Table
-- create mongodb
-- creation and edits by users
+- Need better idea of how to filter
 
 Sports bars:
 - similar to Quizzo

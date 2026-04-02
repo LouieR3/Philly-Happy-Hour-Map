@@ -603,6 +603,54 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--mh-green);
 }
 
+/* ── Map search overlay control ────────────────────────── */
+.map-search-control {
+  position: relative;
+  background: var(--mh-dark-2);
+  border: 1px solid #2d3f55;
+  border-radius: 8px;
+  overflow: visible;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.map-search-control input {
+  display: block;
+  width: 220px;
+  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+}
+.map-search-control input::placeholder { color: #64748b; }
+.map-search-control ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--mh-dark-2);
+  border: 1px solid #2d3f55;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+.map-search-control ul:empty { display: none; }
+.map-search-control ul li {
+  padding: 8px 12px;
+  color: #e2e8f0;
+  font-size: 13px;
+  cursor: pointer;
+  border-bottom: 1px solid #1e2d40;
+}
+.map-search-control ul li:last-child { border-bottom: none; }
+.map-search-control ul li:hover { background: rgba(255,255,255,0.07); }
+
 /* ── Mobile Display ────────────────────────────────────── */
 @media (max-width: 991.98px) {
   .mobile-filter-btn {
@@ -611,6 +659,11 @@ h1, h2, h3, h4, h5, h6 {
   /* Hide desktop filters on mobile */
   #filters,
   #pool-filters {
+    display: none !important;
+  }
+  /* Hide sidebar tables on mobile — keep Add/Edit buttons */
+  #bar-table-container,
+  #pool-bar-table-container {
     display: none !important;
   }
 }

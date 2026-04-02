@@ -437,15 +437,6 @@ app.get('/admin/pool-bars', adminAuth, async (req, res) => {
   }
 });
 
-// Get all pool bars
-app.get('/admin/pool-bars', adminAuth, async (req, res) => {
-  try {
-    const bars = await PoolBar.find({}, { __v: 0 }).lean();
-    res.json(bars);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
  
 // Create a pool bar
 app.post('/admin/pool-bars', adminAuth, async (req, res) => {
@@ -693,6 +684,16 @@ app.get('/api/search-bars', async (req, res) => {
         Sunday: 1
       }
     ).limit(12).lean();
+    res.json(bars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Admin — all bars from mappy_hour bars collection (read-only)
+app.get('/admin/all-bars', adminAuth, async (req, res) => {
+  try {
+    const bars = await Bar.find({}, { __v: 0 }).lean();
     res.json(bars);
   } catch (err) {
     res.status(500).json({ error: err.message });

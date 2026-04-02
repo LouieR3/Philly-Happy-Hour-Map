@@ -46,7 +46,10 @@
         Quizzo Bars
       </div>
       <div class="tab" data-tab="pool">
-        Pool Bars
+        Pool Bars <span class="tab-badge" id="badge-pool">0</span>
+      </div>
+      <div class="tab" data-tab="allbars">
+        All Bars
       </div>
     </div>
 
@@ -142,6 +145,36 @@
               </tr>
             </thead>
             <tbody id="pool-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- All Bars Panel -->
+      <div class="panel" id="panel-allbars">
+        <div class="section-header">
+          <h2>All Bars <span id="allbars-count" style="font-size:0.85rem;font-weight:400;color:var(--muted);"></span></h2>
+        </div>
+
+        <div class="pool-filters">
+          <div class="search-wrap" style="flex:1; margin-bottom:0;">
+            <i class="fa fa-search"></i>
+            <input type="text" id="allbars-search" placeholder="Search by name, neighborhood, address…" oninput="filterAllBars(this.value)" />
+          </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:16px;">
+          <table id="allbars-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Neighborhood</th>
+                <th>Phone</th>
+                <th>Rating</th>
+                <th>Price</th>
+                <th>Website</th>
+              </tr>
+            </thead>
+            <tbody id="allbars-tbody"></tbody>
           </table>
         </div>
       </div>

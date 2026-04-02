@@ -39,6 +39,18 @@ function paymentColor(model) {
 // ─── Filter state ─────────────────────────────────────────────────────────────
 var poolMarkers = [];
 var poolAllData = [];
+var poolGeoJson = null;
+
+function getNhFromLatLng(lat, lng, geoJson) {
+  if (!geoJson || !window.turf) return null;
+  const pt = turf.point([lng, lat]);
+  for (const feature of geoJson.features) {
+    try {
+      if (turf.booleanPointInPolygon(pt, feature)) return feature.properties.LISTNAME || null;
+    } catch(e) {}
+  }
+  return null;
+}
 const poolActiveFilters = {
   paymentModel: null,
   minTables:    null,
@@ -159,10 +171,53 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
 
     populatePoolTable(data);
 
+    // ── Custom map search overlay ──────────────────────────────────────────
+    const PoolSearchControl = L.Control.extend({
+      options: { position: 'topleft' },
+      onAdd: function() {
+        const c = L.DomUtil.create('div', 'map-search-control');
+        c.innerHTML = '<input type="text" id="pool-map-search-field" placeholder="Search bars\u2026" autocomplete="off" /><ul id="pool-map-search-list"></ul>';
+        L.DomEvent.disableClickPropagation(c);
+        L.DomEvent.disableScrollPropagation(c);
+        return c;
+      }
+    });
+    poolMap.addControl(new PoolSearchControl());
+
+    document.getElementById('pool-map-search-field').addEventListener('input', function() {
+      const q = this.value.trim().toLowerCase();
+      const list = document.getElementById('pool-map-search-list');
+      list.innerHTML = '';
+      if (q.length < 2) return;
+      poolMarkers
+        .filter(m => m.name && m.name.toLowerCase().includes(q))
+        .slice(0, 8)
+        .forEach(m => {
+          const li = document.createElement('li');
+          li.textContent = m.name;
+          li.addEventListener('click', () => {
+            poolMap.setView(m.getLatLng(), 16);
+            m.openPopup();
+            document.getElementById('pool-map-search-field').value = m.name;
+            list.innerHTML = '';
+          });
+          list.appendChild(li);
+        });
+    });
+
+    document.addEventListener('click', function(e) {
+      const field = document.getElementById('pool-map-search-field');
+      const list  = document.getElementById('pool-map-search-list');
+      if (field && list && !field.contains(e.target) && !list.contains(e.target)) {
+        list.innerHTML = '';
+      }
+    });
+
     // ── GeoJSON-based Region + Neighborhood filters for pool bars ─────────
     fetch('assets/philadelphia-neighborhoods.geojson')
       .then(r => r.json())
       .then(function(geoJson) {
+        poolGeoJson = geoJson;
         const nhHasMarker     = {};  // LISTNAME → feature
         const regionHasMarker = {};  // GENERAL_AREA → [features]
 
@@ -329,17 +384,10 @@ if (poolSearchInput && poolSearchResultsList) {
               li.onclick = () => {
                   document.getElementById('pool-business-name').value = bar.Name || '';
                   document.getElementById('pool-street-address').value = bar.Address || '';
-                  // Populate neighborhood — always make the field visible regardless of radio state
-                  const neighborhood = bar.Neighborhoods || bar.Neighborhood || '';
-                  const neighborhoodInput = document.getElementById('pool-neighborhood-input');
-                  if (neighborhoodInput) {
-                    neighborhoodInput.value = neighborhood;
-                    // Ensure the neighborhood field is visible
-                    const neighborhoodField = document.getElementById('pool-neighborhood-field');
-                    if (neighborhoodField) neighborhoodField.style.display = 'block';
-                  }
                   document.getElementById('pool-lat').value = bar.Latitude || '';
                   document.getElementById('pool-lng').value = bar.Longitude || '';
+                  const nh = getNhFromLatLng(bar.Latitude, bar.Longitude, poolGeoJson);
+                  document.getElementById('pool-neighborhood-input').value = nh || '';
                   document.getElementById("pool-yelp-alias").value = bar["Yelp Alias"] || "";
                   console.log('Selected bar:', bar);
                   console.log(bar["Yelp Alias"]);
@@ -462,7 +510,6 @@ document.getElementById('edit-pool-bar-button').addEventListener('click', () => 
 document.querySelectorAll('input[name="poolIsPhiladelphia"]').forEach((radio) => {
   radio.addEventListener('change', () => {
     const isPhilly = document.getElementById('pool-philly-yes').checked;
-    document.getElementById('pool-neighborhood-field').style.display   = isPhilly ? 'block' : 'none';
     document.getElementById('pool-city-state-zip-fields').style.display = isPhilly ? 'none' : 'block';
   });
 });
@@ -484,18 +531,23 @@ document.getElementById('pool-bar-submission-form').addEventListener('submit', a
   const zip           = isPhilly ? '' : document.getElementById('pool-address-zip').value;
   const fullAddress   = `${streetAddress}, ${city}, ${state}${zip ? ' ' + zip : ''}`;
 
-  let lat = null, lng = null;
-  try {
-    const geo = await fetch(`${POOL_API_BASE}/api/geocode?address=${encodeURIComponent(fullAddress)}`);
-    const gd  = await geo.json();
-    lat = gd.lat; lng = gd.lng;
-  } catch (_) {}
+  let lat = parseFloat(document.getElementById('pool-lat').value) || null;
+  let lng = parseFloat(document.getElementById('pool-lng').value) || null;
+  if (!lat || !lng) {
+    try {
+      const geo = await fetch(`${POOL_API_BASE}/api/geocode?address=${encodeURIComponent(fullAddress)}`);
+      const gd  = await geo.json();
+      lat = gd.lat; lng = gd.lng;
+    } catch (_) {}
+  }
+
+  const neighborhood = (isPhilly && lat && lng) ? (getNhFromLatLng(lat, lng, poolGeoJson) || '') : '';
 
   const payModel = document.getElementById('pool-payment-model-select').value;
   const submission = {
     name:          document.getElementById('pool-business-name').value,
     streetAddress, city, state, zip, Latitude: lat, Longitude: lng,
-    neighborhood:  isPhilly ? document.getElementById('pool-neighborhood-input').value : '',
+    neighborhood,
     numTables:     document.getElementById('pool-num-tables').value || null,
     paymentModel:  payModel,
     costPerGame:   document.getElementById('pool-cost-per-game').value || null,
