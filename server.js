@@ -742,6 +742,13 @@ const https = require('https');
 
 function yelpGet(path) {
   const keys = (() => {
+    // 1) Comma-separated env var (Railway / production)
+    if (process.env.YELP_API_KEYS) {
+      return process.env.YELP_API_KEYS.split(',').map(k => k.trim()).filter(Boolean);
+    }
+    // 2) Single-key env var
+    if (process.env.YELP_API_KEY) return [process.env.YELP_API_KEY];
+    // 3) Local .env file with Python list format
     try {
       const raw = require('fs').readFileSync(require('path').join(__dirname, '.env'), 'utf8');
       const m = raw.match(/yelp_api_keys\s*=\s*\[([\s\S]*?)\]/);
@@ -749,7 +756,7 @@ function yelpGet(path) {
       return [...m[1].matchAll(/"([^"]+)"/g)].map(r => r[1]);
     } catch { return []; }
   })();
-  const key = process.env.YELP_API_KEY || keys[0] || '';
+  const key = keys[0] || '';
   return new Promise((resolve, reject) => {
     const req = https.get(
       { hostname: 'api.yelp.com', path, headers: { Authorization: `Bearer ${key}` } },
