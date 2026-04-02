@@ -51,6 +51,9 @@
       <div class="tab" data-tab="allbars">
         All Bars
       </div>
+      <div class="tab" data-tab="yelp">
+        Yelp Import
+      </div>
     </div>
 
     <main>
@@ -148,6 +151,47 @@
           </table>
         </div>
       </div>
+      <!-- Yelp Import Panel -->
+      <div class="panel" id="panel-yelp">
+        <div class="section-header">
+          <h2>Yelp Import</h2>
+        </div>
+
+        <div class="pool-filters" style="gap:8px;flex-wrap:wrap;">
+          <div class="search-wrap" style="flex:2;min-width:200px;margin-bottom:0;">
+            <i class="fa fa-search"></i>
+            <input type="text" id="yelp-search-input" placeholder="Search bar name…" />
+          </div>
+          <div class="search-wrap" style="flex:1;min-width:160px;margin-bottom:0;">
+            <i class="fa fa-map-marker"></i>
+            <input type="text" id="yelp-location-input" placeholder="Location (default: Philadelphia, PA)" />
+          </div>
+          <button class="btn-export" id="yelp-search-btn" onclick="yelpSearch()">
+            <i class="fa fa-search"></i> Search Yelp
+          </button>
+        </div>
+
+        <div id="yelp-results" style="margin-top:16px;"></div>
+
+        <!-- Yelp detail / import card -->
+        <div id="yelp-detail-card" style="display:none;margin-top:24px;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:24px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+            <div>
+              <h3 id="yelp-detail-name" style="margin:0 0 4px;"></h3>
+              <div id="yelp-detail-meta" style="color:var(--muted);font-size:0.85rem;"></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn-approve" id="yelp-import-btn" onclick="yelpImport()">
+                <i class="fa fa-plus"></i> Add to Bars Collection
+              </button>
+            </div>
+          </div>
+          <div id="yelp-detail-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:16px;"></div>
+          <div id="yelp-hours-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:16px;font-size:0.8rem;"></div>
+          <div id="yelp-import-status" style="margin-top:12px;"></div>
+        </div>
+      </div>
+
       <!-- All Bars Panel -->
       <div class="panel" id="panel-allbars">
         <div class="section-header">

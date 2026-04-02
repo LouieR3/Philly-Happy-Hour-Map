@@ -603,6 +603,36 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--mh-green);
 }
 
+/* ── Site-wide toast ───────────────────────────────────── */
+#site-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--mh-dark-2);
+  color: #e2e8f0;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  border-left: 4px solid var(--mh-green);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 9999;
+  max-width: 90vw;
+  text-align: center;
+}
+#site-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+#site-toast.error {
+  border-left-color: #f87171;
+  color: #fca5a5;
+}
+
 /* ── Map search overlay control ────────────────────────── */
 .map-search-control {
   position: relative;

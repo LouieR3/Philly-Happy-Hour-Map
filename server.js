@@ -690,6 +690,68 @@ app.get('/api/search-bars', async (req, res) => {
   }
 });
 
+// ─── Yelp Fusion helpers ────────────────────────────────────────────────────
+const https = require('https');
+
+function yelpGet(path) {
+  const keys = (() => {
+    try {
+      const raw = require('fs').readFileSync(require('path').join(__dirname, '.env'), 'utf8');
+      const m = raw.match(/yelp_api_keys\s*=\s*\[([\s\S]*?)\]/);
+      if (!m) return [];
+      return [...m[1].matchAll(/"([^"]+)"/g)].map(r => r[1]);
+    } catch { return []; }
+  })();
+  const key = process.env.YELP_API_KEY || keys[0] || '';
+  return new Promise((resolve, reject) => {
+    const req = https.get(
+      { hostname: 'api.yelp.com', path, headers: { Authorization: `Bearer ${key}` } },
+      (res) => {
+        let data = '';
+        res.on('data', c => data += c);
+        res.on('end', () => {
+          try { resolve(JSON.parse(data)); }
+          catch (e) { reject(e); }
+        });
+      }
+    );
+    req.on('error', reject);
+  });
+}
+
+// Yelp search — returns up to 10 matches
+app.get('/admin/yelp-search', adminAuth, async (req, res) => {
+  try {
+    const term     = encodeURIComponent((req.query.q || '').trim());
+    const location = encodeURIComponent((req.query.location || 'Philadelphia, PA').trim());
+    if (!term) return res.json({ businesses: [] });
+    const data = await yelpGet(`/v3/businesses/search?term=${term}&location=${location}&categories=bars,restaurants&limit=10`);
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Yelp details by alias
+app.get('/admin/yelp-details', adminAuth, async (req, res) => {
+  try {
+    const alias = (req.query.alias || '').trim();
+    if (!alias) return res.status(400).json({ error: 'alias required' });
+    const data = await yelpGet(`/v3/businesses/${encodeURIComponent(alias)}`);
+    res.json(data);
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Import Yelp bar into bars collection
+app.post('/admin/yelp-import', adminAuth, async (req, res) => {
+  try {
+    const d = req.body;
+    const existing = await Bar.findOne({ 'Yelp Alias': d['Yelp Alias'] });
+    if (existing) return res.status(409).json({ error: 'Bar with this Yelp alias already exists', id: existing._id });
+    const bar = new Bar(d);
+    await bar.save();
+    res.json({ success: true, id: bar._id });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
 // Admin — all bars from mappy_hour bars collection (read-only)
 app.get('/admin/all-bars', adminAuth, async (req, res) => {
   try {

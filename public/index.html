@@ -832,12 +832,19 @@
                         <label for="pool-edit-payment-model" class="form-label">Payment Model</label>
                         <select class="form-control" id="pool-edit-payment-model">
                           <option value="">-- Select --</option>
-                          <option value="Coin-op">Coin-op</option>
                           <option value="Hourly">Hourly</option>
                           <option value="Per Game">Per Game</option>
                           <option value="Free">Free</option>
                         </select>
                       </div>
+                    </div>
+                    <div class="mb-3" id="pool-edit-cost-game-field" style="display:none;">
+                      <label for="pool-edit-cost-per-game" class="form-label">Cost Per Game ($)</label>
+                      <input type="number" class="form-control" id="pool-edit-cost-per-game" min="0" step="0.25" placeholder="e.g. 1.00" />
+                    </div>
+                    <div class="mb-3" id="pool-edit-cost-hour-field" style="display:none;">
+                      <label for="pool-edit-cost-per-hour" class="form-label">Cost Per Hour ($)</label>
+                      <input type="number" class="form-control" id="pool-edit-cost-per-hour" min="0" placeholder="e.g. 15" />
                     </div>
                     <div class="mb-3">
                       <label for="pool-edit-notes" class="form-label">Notes for Admin</label>
@@ -1049,6 +1056,17 @@
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
     <!-- Mobile Filters -->
     <script src="js/mobile-filters.js"></script>
+    <!-- Site-wide toast helper -->
+    <div id="site-toast" aria-live="polite"></div>
+    <script>
+      function siteToast(msg, type) {
+        const el = document.getElementById('site-toast');
+        el.textContent = msg;
+        el.className = 'show ' + (type || 'success');
+        clearTimeout(el._t);
+        el._t = setTimeout(() => { el.className = ''; }, 4000);
+      }
+    </script>
     <!-- QUIZZO MAP -->
     <script src="js/new-quizzo-map.js"></script>
     <!-- POOL BARS MAP -->

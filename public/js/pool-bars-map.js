@@ -563,13 +563,13 @@ document.getElementById('pool-bar-submission-form').addEventListener('submit', a
   })
     .then((r) => r.json())
     .then(() => {
-      alert('Your pool bar has been submitted for review — thanks!');
+      siteToast('Your pool bar has been submitted for review — thanks!');
       document.getElementById('pool-bar-submission-form').reset();
       document.getElementById('pool-cost-game-field').style.display = 'none';
       document.getElementById('pool-cost-hour-field').style.display = 'none';
       bootstrap.Modal.getInstance(document.getElementById('addPoolBarModal')).hide();
     })
-    .catch(() => alert('Error submitting. Please try again.'));
+    .catch(() => siteToast('Error submitting. Please try again.', 'error'));
 });
 
 // Edit pool bar — search
@@ -609,7 +609,10 @@ if (poolSearchBar) {
         document.getElementById('pool-edit-address').value       = bar.Address || '';
         document.getElementById('pool-edit-num-tables').value    = bar.Number_of_Tables || '';
         document.getElementById('pool-edit-payment-model').value = bar.Payment_Model || '';
+        document.getElementById('pool-edit-cost-per-game').value = bar.Cost_Per_Game || '';
+        document.getElementById('pool-edit-cost-per-hour').value = bar.Cost_Per_Hour || '';
         document.getElementById('pool-edit-original-id').value   = bar._id || '';
+        updateEditCostFields(bar.Payment_Model || '');
         poolEditFields.style.display = 'block';
         poolEditResultsEl.innerHTML  = '';
         poolSearchBar.value = bar.Name;
@@ -619,16 +622,29 @@ if (poolSearchBar) {
   });
 }
 
+// Edit modal — cost field visibility
+function updateEditCostFields(val) {
+  const v = (val || '').toLowerCase();
+  document.getElementById('pool-edit-cost-game-field').style.display = v.includes('game') ? 'block' : 'none';
+  document.getElementById('pool-edit-cost-hour-field').style.display = v.includes('hour') ? 'block' : 'none';
+}
+
+document.getElementById('pool-edit-payment-model').addEventListener('change', function() {
+  updateEditCostFields(this.value);
+});
+
 // Submit pool bar edit
 document.getElementById('pool-edit-form').addEventListener('submit', async function (e) {
   e.preventDefault();
   const originalId   = document.getElementById('pool-edit-original-id').value;
   const originalName = document.getElementById('pool-edit-name').value;
   const changes = {
-    Name:            document.getElementById('pool-edit-name').value,
-    Address:         document.getElementById('pool-edit-address').value,
-    Number_of_Tables: document.getElementById('pool-edit-num-tables').value || undefined,
-    Payment_Model:   document.getElementById('pool-edit-payment-model').value || undefined,
+    Name:             document.getElementById('pool-edit-name').value,
+    Address:          document.getElementById('pool-edit-address').value,
+    Number_of_Tables: document.getElementById('pool-edit-num-tables').value    || undefined,
+    Payment_Model:    document.getElementById('pool-edit-payment-model').value  || undefined,
+    Cost_Per_Game:    document.getElementById('pool-edit-cost-per-game').value  || undefined,
+    Cost_Per_Hour:    document.getElementById('pool-edit-cost-per-hour').value  || undefined,
   };
   const notes = document.getElementById('pool-edit-notes').value;
  
@@ -639,10 +655,10 @@ document.getElementById('pool-edit-form').addEventListener('submit', async funct
   })
     .then((r) => r.json())
     .then(() => {
-      alert('Edit submitted for review — thanks!');
+      siteToast('Edit submitted for review — thanks!');
       document.getElementById('pool-edit-form').reset();
       poolEditFields.style.display = 'none';
       bootstrap.Modal.getInstance(document.getElementById('editPoolBarModal')).hide();
     })
-    .catch(() => alert('Error submitting edit.'));
+    .catch(() => siteToast('Error submitting edit.', 'error'));
 });

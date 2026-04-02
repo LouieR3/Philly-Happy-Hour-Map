@@ -810,13 +810,13 @@ document
     })
       .then((response) => response.json())
       .then(() => {
-        alert("Your submission has been sent for review!");
+        siteToast("Your submission has been sent for review!");
         document.getElementById("bar-submission-form").reset();
         bootstrap.Modal.getInstance(document.getElementById("addBarModal")).hide();
       })
       .catch((error) => {
         console.error("Error:", error);
-        alert("There was an error submitting your request. Please try again.");
+        siteToast("There was an error submitting your request. Please try again.", "error");
       });
   });
 // Populate the table with data from the API
@@ -907,13 +907,13 @@ document
     })
       .then((r) => r.json())
       .then(() => {
-        alert("Your edit has been submitted for review — thanks!");
+        siteToast("Your edit has been submitted for review — thanks!");
         document.getElementById("edit-bar-form").reset();
         document.getElementById("edit-fields").style.display = "none";
         bootstrap.Modal.getInstance(document.getElementById("editBarModal")).hide();
       })
       .catch((err) => {
         console.error("Edit submission error:", err);
-        alert("There was an error submitting your edit. Please try again.");
+        siteToast("There was an error submitting your edit. Please try again.", "error");
       });
   });

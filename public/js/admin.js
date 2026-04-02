@@ -840,6 +840,10 @@ document.querySelectorAll(".tab").forEach((tab) => {
   });
 });
 
+document.getElementById("yelp-search-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") yelpSearch();
+});
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // QUIZZO BARS
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -1084,10 +1088,160 @@ function renderAllBarsTable(data) {
   });
 }
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// YELP IMPORT
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let yelpCurrentBar = null; // holds the mapped doc ready to import
+
+const DAY_MAP = { Monday: 0, Tuesday: 1, Wednesday: 2, Thursday: 3, Friday: 4, Saturday: 5, Sunday: 6 };
+
+function _fmtHour(t) {
+  if (!t || t.length !== 4) return t;
+  const h = parseInt(t.slice(0, 2), 10), m = t.slice(2);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h % 12 || 12;
+  return `${h12}:${m} ${ampm}`;
+}
+
+function _buildHoursMap(open) {
+  const days = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+  const map = {};
+  (open || []).forEach(slot => {
+    const day = days[slot.day];
+    const str = `${_fmtHour(slot.start)} - ${_fmtHour(slot.end)}`;
+    map[day] = map[day] ? map[day] + ', ' + str : str;
+  });
+  return map;
+}
+
+async function yelpSearch() {
+  const q   = document.getElementById('yelp-search-input').value.trim();
+  const loc = document.getElementById('yelp-location-input').value.trim() || 'Philadelphia, PA';
+  if (!q) return;
+  const btn = document.getElementById('yelp-search-btn');
+  btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Searching…';
+  document.getElementById('yelp-results').innerHTML = '';
+  document.getElementById('yelp-detail-card').style.display = 'none';
+  try {
+    const res  = await adminFetch(`/admin/yelp-search?q=${encodeURIComponent(q)}&location=${encodeURIComponent(loc)}`);
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    renderYelpResults(data.businesses || []);
+  } catch(err) { toast('Yelp search failed: ' + err.message, 'error'); }
+  finally { btn.disabled = false; btn.innerHTML = '<i class="fa fa-search"></i> Search Yelp'; }
+}
+
+function renderYelpResults(businesses) {
+  const el = document.getElementById('yelp-results');
+  if (!businesses.length) { el.innerHTML = '<p style="color:var(--muted);">No results found.</p>'; return; }
+  el.innerHTML = '';
+  const ul = document.createElement('ul');
+  ul.style.cssText = 'list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;';
+  businesses.forEach(biz => {
+    const li = document.createElement('li');
+    li.style.cssText = 'display:flex;align-items:center;justify-content:space-between;background:var(--card-bg);border:1px solid var(--border);border-radius:6px;padding:10px 14px;gap:12px;cursor:pointer;';
+    li.innerHTML = `
+      <div>
+        <strong>${biz.name}</strong>
+        <span style="color:var(--muted);font-size:0.82rem;margin-left:8px;">${(biz.location?.display_address || []).join(', ')}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
+        <span style="color:var(--muted);font-size:0.82rem;">⭐ ${biz.rating ?? '—'}  ·  ${biz.price || '—'}  ·  ${biz.review_count ?? 0} reviews</span>
+        <button class="btn-table-action btn-edit-pool" style="white-space:nowrap;">View Details</button>
+      </div>`;
+    li.querySelector('button').addEventListener('click', () => yelpLoadDetails(biz.alias, biz.name));
+    ul.appendChild(li);
+  });
+  el.appendChild(ul);
+}
+
+async function yelpLoadDetails(alias, name) {
+  document.getElementById('yelp-detail-card').style.display = 'none';
+  document.getElementById('yelp-import-status').innerHTML = '';
+  toast(`Loading details for ${name}…`, 'success');
+  try {
+    const res  = await adminFetch(`/admin/yelp-details?alias=${encodeURIComponent(alias)}`);
+    const biz  = await res.json();
+    if (!res.ok) throw new Error(biz.error);
+
+    const addr    = (biz.location?.display_address || []).join(', ');
+    const lat     = biz.coordinates?.latitude;
+    const lng     = biz.coordinates?.longitude;
+    const cats    = (biz.categories || []).map(c => c.title).join(', ');
+    const hoursMap = _buildHoursMap(biz.hours?.[0]?.open);
+    const phone   = biz.display_phone || biz.phone || '';
+    const website = biz.url || '';
+
+    // Build the document that will be saved
+    yelpCurrentBar = {
+      Name:          biz.name,
+      'Yelp Alias':  alias,
+      Address:       addr,
+      Latitude:      lat,
+      Longitude:     lng,
+      Phone:         phone,
+      Website:       website,
+      'Yelp Rating': biz.rating,
+      Price:         biz.price || '',
+      Categories:    cats,
+      ...hoursMap,
+    };
+
+    // Render detail card
+    document.getElementById('yelp-detail-name').textContent = biz.name;
+    document.getElementById('yelp-detail-meta').textContent =
+      `${addr}  ·  ${phone}  ·  ⭐ ${biz.rating}  ·  ${biz.price || '—'}  ·  ${cats}`;
+
+    const grid = document.getElementById('yelp-detail-grid');
+    grid.innerHTML = '';
+    const fields = { 'Yelp Alias': alias, Address: addr, Latitude: lat, Longitude: lng,
+      Phone: phone, Rating: biz.rating, Price: biz.price, Categories: cats,
+      Website: website ? `<a href="${website}" target="_blank" style="color:var(--green);">Link</a>` : '—' };
+    Object.entries(fields).forEach(([k, v]) => {
+      grid.innerHTML += `<div style="font-size:0.82rem;"><span style="color:var(--muted);display:block;margin-bottom:2px;">${k}</span><strong>${v ?? '—'}</strong></div>`;
+    });
+
+    const hgrid = document.getElementById('yelp-hours-grid');
+    hgrid.innerHTML = '';
+    ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].forEach(day => {
+      hgrid.innerHTML += `<div style="background:var(--hover);border-radius:4px;padding:6px 8px;">
+        <div style="font-weight:600;margin-bottom:2px;">${day.slice(0,3)}</div>
+        <div style="color:var(--muted);">${hoursMap[day] || '—'}</div></div>`;
+    });
+
+    document.getElementById('yelp-detail-card').style.display = 'block';
+  } catch(err) { toast('Failed to load details: ' + err.message, 'error'); }
+}
+
+async function yelpImport() {
+  if (!yelpCurrentBar) return;
+  const btn = document.getElementById('yelp-import-btn');
+  btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Importing…';
+  const statusEl = document.getElementById('yelp-import-status');
+  try {
+    const res  = await adminFetch('/admin/yelp-import', 'POST', yelpCurrentBar);
+    const data = await res.json();
+    if (res.status === 409) {
+      statusEl.innerHTML = `<span style="color:#fbbf24;"><i class="fa fa-warning"></i> Already in collection (ID: ${data.id})</span>`;
+      return;
+    }
+    if (!res.ok) throw new Error(data.error);
+    statusEl.innerHTML = `<span style="color:var(--green);"><i class="fa fa-check"></i> Added successfully (ID: ${data.id})</span>`;
+    toast(`${yelpCurrentBar.Name} added to bars collection ✓`, 'success');
+    yelpCurrentBar = null;
+  } catch(err) {
+    statusEl.innerHTML = `<span style="color:#f87171;"><i class="fa fa-times"></i> ${err.message}</span>`;
+    toast('Import failed: ' + err.message, 'error');
+  } finally { btn.disabled = false; btn.innerHTML = '<i class="fa fa-plus"></i> Add to Bars Collection'; }
+}
+
 function filterAllBars(q) {
-  const lower = q.toLowerCase();
-  allBarsFiltered = q.trim()
-    ? allBarsData.filter((b) => JSON.stringify(b).toLowerCase().includes(lower))
+  const lower = q.trim().toLowerCase();
+  allBarsFiltered = lower
+    ? allBarsData.filter((b) => (b.Name || '').toLowerCase().includes(lower)
+        || (b.Address || '').toLowerCase().includes(lower)
+        || (b.Neighborhood || b.Neighborhoods || '').toLowerCase().includes(lower))
     : allBarsData;
   renderAllBarsTable(allBarsFiltered);
 }
