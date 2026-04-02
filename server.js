@@ -769,12 +769,22 @@ function yelpGet(path) {
 // Yelp search — returns up to 10 matches
 app.get('/admin/yelp-search', adminAuth, async (req, res) => {
   try {
-    const term     = encodeURIComponent((req.query.q || '').trim());
-    const location = encodeURIComponent((req.query.location || 'Philadelphia, PA').trim());
+    const term     = (req.query.q || '').trim();
+    const location = (req.query.location || 'Philadelphia, PA').trim();
     if (!term) return res.json({ businesses: [] });
-    const data = await yelpGet(`/v3/businesses/search?term=${term}&location=${location}&categories=bars,restaurants&limit=10`);
+    const path = `/v3/businesses/search?term=${encodeURIComponent(term)}&location=${encodeURIComponent(location)}&limit=10`;
+    console.log('[Yelp search]', path);
+    const data = await yelpGet(path);
+    if (data.error) {
+      console.error('[Yelp search] API error:', data.error);
+      return res.status(502).json({ error: data.error.description || JSON.stringify(data.error) });
+    }
+    console.log(`[Yelp search] ${data.total ?? '?'} total, returning ${(data.businesses || []).length}`);
     res.json(data);
-  } catch (err) { res.status(500).json({ error: err.message }); }
+  } catch (err) {
+    console.error('[Yelp search] exception:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Yelp details by alias
