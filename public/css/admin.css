@@ -646,3 +646,31 @@ tbody td { padding: 10px 12px; vertical-align: middle; }
 /* ── Add pool bar button variant ── */
 .btn-add-pool { background: #1a6b4a; }
 .btn-add-pool:hover { background: #145238; }
+
+/* ── Add quizzo bar button variant ── */
+.btn-add-quizzo { background: #1a6b4a; }
+.btn-add-quizzo:hover { background: #145238; }
+
+/* ── Icon buttons (edit/delete in tables) ── */
+.btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  color: var(--primary);
+  font-size: 0.9rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-icon:hover {
+  background: #e8f5ee;
+}
+
+.btn-icon.btn-danger {
+  color: var(--danger);
+}
+
+.btn-icon.btn-danger:hover {
+  background: #fdecea;
+}

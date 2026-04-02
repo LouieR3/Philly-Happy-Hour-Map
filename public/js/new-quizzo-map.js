@@ -439,6 +439,19 @@ fetch(`${API_BASE}/api/quizzo`)
     searchControl.on("search:locationfound", function (e) {
       e.layer.openPopup();
     });
+
+    // Populate the table here — markers are fully built so the name lookup works
+    populateTable(data);
+
+    // Populate mobile filter options
+    if (window.populateQuizzoMobileFilterOptions) {
+      window.populateQuizzoMobileFilterOptions({
+        times: times,
+        firstPrizes: firstPrizes,
+        prizeAmounts: prizeAmounts,
+        neighborhoods: neighborhoods
+      });
+    }
   })
   .catch(function (err) {
     console.error("Failed to load quizzo data:", err);
@@ -695,43 +708,37 @@ document
         alert("There was an error submitting your request. Please try again.");
       });
   });
-// Populate the table with data from the CSV
+// Populate the table with data from the API
 function populateTable(data) {
   const tableBody = document.querySelector("#bar-table tbody");
-  tableBody.innerHTML = ""; // Clear existing rows
+  tableBody.innerHTML = "";
 
-  data.forEach((row, index) => {
-    // Skip rows with undefined or missing required fields
-    if (
-      !row.BUSINESS ||
-      !row.NEIGHBORHOOD ||
-      !row.WEEKDAY ||
-      !row.TIME
-    ) {
+  // Build a lookup by business name from the already-created markers array.
+  // Cannot use forEach index because markers only contains rows that had valid
+  // coordinates — rows without lat/lng are skipped during marker creation,
+  // causing index drift between data[] and markers[].
+  const markerByName = {};
+  markers.forEach((m) => {
+    if (m.businessName) markerByName[m.businessName] = m;
+  });
+
+  data.forEach((row) => {
+    if (!row.BUSINESS || !row.NEIGHBORHOOD || !row.WEEKDAY || !row.TIME) {
       return;
     }
 
     const tr = document.createElement("tr");
-    tr.setAttribute("data-index", index); // Store the index for reference
-
     tr.innerHTML = `
     <td>${row.BUSINESS}</td>
     <td>${row.NEIGHBORHOOD}</td>
     <td>${row.WEEKDAY}<br>${row.TIME}</td>
     `;
-    // tr.innerHTML = `
-    // <td>${row.BUSINESS}</td>
-    // <td>${row.NEIGHBORHOOD}</td>
-    // <td>${row.WEEKDAY}<br>${row.TIME}</td>
-    // <td>${row.TIME}</td>
-    // `;
 
-    // Add click event to zoom to marker and open popup
     tr.addEventListener("click", () => {
-      const marker = markers[index];
+      const marker = markerByName[row.BUSINESS];
       if (marker) {
-        leafletmap.setView(marker.getLatLng(), 16); // Zoom to marker
-        marker.openPopup(); // Open popup
+        leafletmap.setView(marker.getLatLng(), 16);
+        marker.openPopup();
       }
     });
 
@@ -753,15 +760,7 @@ document.getElementById("bar-search").addEventListener("input", (event) => {
   filterTable(event.target.value);
 });
 
-// Populate the table after parsing the CSV
-fetch(`${API_BASE}/api/quizzo`)
-  .then((response) => response.json())
-  .then(function (data) {
-    populateTable(data);
-  })
-  .catch(function (err) {
-    console.error("Failed to load quizzo data for table:", err);
-  });
+// Table is populated inside the main quizzo fetch above
 
 // ── Quizzo edit form submission ────────────────────────────────────────────
 document

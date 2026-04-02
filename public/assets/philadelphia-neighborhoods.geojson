@@ -12264,7 +12264,7 @@
         "MAPNAME": "Northern Liberties",
         "Shape_Leng": 20685.0153986,
         "Shape_Area": 20313755.973,
-        "GENERAL_AREA": ""
+        "GENERAL_AREA": "Fistown"
       },
       "geometry": {
         "type": "MultiPolygon",
@@ -12476,7 +12476,7 @@
         "MAPNAME": "Old City",
         "Shape_Leng": 14323.3716974,
         "Shape_Area": 12554436.225700002,
-        "GENERAL_AREA": ""
+        "GENERAL_AREA": "Center City"
       },
       "geometry": {
         "type": "MultiPolygon",

@@ -244,7 +244,10 @@
         <!-- Map + Filter Bars Row -->
         <div class="row mt-3 align-items-start">
           <!-- Map Column -->
-          <div class="col-lg-8" id="map-column">
+          <div class="col-lg-8" id="map-column" style="position: relative;">
+            <button class="mobile-filter-btn" id="quizzo-mobile-filter-btn" title="Open Filters">
+              <i class="fa-solid fa-sliders"></i>
+            </button>
             <div id="leaflet-map"></div>
           </div>
 
@@ -278,6 +281,64 @@
                 <i class="fa-solid fa-edit" style="margin-right: 6px;"></i>Edit Bar
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- Mobile Filter Modal - Quizzo -->
+        <div class="mobile-filter-modal" id="quizzo-mobile-filter-modal">
+          <div class="mobile-filter-header">
+            <h2>Filters</h2>
+            <button class="mobile-filter-close" id="quizzo-filter-close">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          
+          <div class="mobile-filter-content">
+            <!-- Weekday Filter -->
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Weekday</label>
+              <div class="mobile-filter-buttons" id="mobile-weekday-buttons">
+                <button class="mobile-filter-btn-option" data-value="All">All</button>
+                <button class="mobile-filter-btn-option" data-value="MONDAY">Mon</button>
+                <button class="mobile-filter-btn-option" data-value="TUESDAY">Tue</button>
+                <button class="mobile-filter-btn-option" data-value="WEDNESDAY">Wed</button>
+                <button class="mobile-filter-btn-option" data-value="THURSDAY">Thu</button>
+                <button class="mobile-filter-btn-option" data-value="FRIDAY">Fri</button>
+                <button class="mobile-filter-btn-option" data-value="SATURDAY">Sat</button>
+                <button class="mobile-filter-btn-option" data-value="SUNDAY">Sun</button>
+              </div>
+            </div>
+
+            <!-- Start Time Filter -->
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Start Time</label>
+              <select class="mobile-filter-dropdown-select" id="mobile-time-select">
+                <option value="">All Times</option>
+              </select>
+            </div>
+
+            <!-- Prize Amount Filter -->
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Prize Amount</label>
+              <div class="mobile-filter-buttons" id="mobile-prize-amount-buttons">
+                <button class="mobile-filter-btn-option" data-value="All">All</button>
+              </div>
+            </div>
+
+            <!-- Neighborhood Filter -->
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Neighborhood</label>
+              <select class="mobile-filter-dropdown-select" id="mobile-neighborhood-select">
+                <option value="">All Neighborhoods</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mobile-filter-footer">
+            <button class="btn-reset" id="quizzo-mobile-filter-reset">Reset</button>
+            <button class="btn-apply" id="quizzo-mobile-filter-apply">Apply</button>
+          </div>
+        </div>
           </div>
         </div>
 
@@ -669,7 +730,10 @@
 
         <!-- Map + Sidebar -->
         <div class="row mt-3 align-items-start">
-          <div class="col-lg-8" id="pool-map-column">
+          <div class="col-lg-8" id="pool-map-column" style="position: relative;">
+            <button class="mobile-filter-btn" id="pool-mobile-filter-btn" title="Open Filters">
+              <i class="fa-solid fa-sliders"></i>
+            </button>
             <div id="pool-leaflet-map"></div>
           </div>
           <div class="col-lg-4 mt-4 mt-lg-0" id="pool-table-column">
@@ -696,6 +760,58 @@
                 <i class="fa-solid fa-edit" style="margin-right:6px;"></i>Edit Bar
               </button>
             </div>
+          </div>
+        </div>
+
+        <!-- Mobile Filter Modal - Pool Bars -->
+        <div class="mobile-filter-modal" id="pool-mobile-filter-modal">
+          <div class="mobile-filter-header">
+            <h2>Filters</h2>
+            <button class="mobile-filter-close" id="pool-filter-close">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          
+          <div class="mobile-filter-content">
+            <!-- Payment Filter -->
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Payment Type</label>
+              <div class="mobile-filter-buttons" id="mobile-pool-payment-buttons">
+                <button class="mobile-filter-btn-option" data-value="All">All</button>
+              </div>
+            </div>
+
+            <!-- Tables Filter -->
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Number of Tables</label>
+              <div class="mobile-filter-buttons">
+                <button class="mobile-filter-btn-option" data-value="All">All</button>
+                <button class="mobile-filter-btn-option" data-value="1">1+</button>
+                <button class="mobile-filter-btn-option" data-value="2">2+</button>
+                <button class="mobile-filter-btn-option" data-value="4">4+</button>
+              </div>
+            </div>
+
+            <!-- Cost/Price Filter -->
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Price Range</label>
+              <select class="mobile-filter-dropdown-select" id="mobile-pool-cost-select">
+                <option value="">All Prices</option>
+              </select>
+            </div>
+
+            <!-- Neighborhood Filter -->
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Neighborhood</label>
+              <select class="mobile-filter-dropdown-select" id="mobile-pool-neighborhood-select">
+                <option value="">All Neighborhoods</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mobile-filter-footer">
+            <button class="btn-reset" id="pool-mobile-filter-reset">Reset</button>
+            <button class="btn-apply" id="pool-mobile-filter-apply">Apply</button>
           </div>
         </div>
 
@@ -1066,6 +1182,8 @@
 
     <!-- Papa Parse -->
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <!-- Mobile Filters -->
+    <script src="js/mobile-filters.js"></script>
     <!-- QUIZZO MAP -->
     <script src="js/new-quizzo-map.js"></script>
     <!-- POOL BARS MAP -->

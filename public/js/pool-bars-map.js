@@ -44,6 +44,8 @@ const poolActiveFilters = {
   minTables:    null,
   hasHappyHour: false,
   hasLeague:    false,
+  neighborhoods: new Set(),
+  priceRange:   null,
 };
 
 function applyPoolFilters() {
@@ -53,7 +55,9 @@ function applyPoolFilters() {
       (!poolActiveFilters.paymentModel || marker.paymentModel === poolActiveFilters.paymentModel) &&
       (poolActiveFilters.minTables === null || marker.tableCount >= poolActiveFilters.minTables) &&
       (!poolActiveFilters.hasHappyHour || marker.hasHappyHour) &&
-      (!poolActiveFilters.hasLeague    || marker.hasLeague);
+      (!poolActiveFilters.hasLeague    || marker.hasLeague) &&
+      (!poolActiveFilters.priceRange || marker.costFormatted === poolActiveFilters.priceRange) &&
+      (poolActiveFilters.neighborhoods.size === 0 || poolActiveFilters.neighborhoods.has(marker.neighborhood));
     if (passes) {
       if (!poolMap.hasLayer(marker)) marker.addTo(poolMap);
     } else {
@@ -145,14 +149,55 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
       marker.tableCount   = row.Number_of_Tables ? Number(row.Number_of_Tables) : 0;
       marker.hasHappyHour = !!row.Has_Happy_Hour;
       marker.hasLeague    = !!row.Has_League;
+      marker.neighborhood = row.Neighborhood || '';
       marker.name         = row.Name;
       marker.rowIndex     = i;
+      // Store cost information
+      if (row.Payment_Model === 'Per Hour' || row.Payment_Model === 'Hourly') {
+        marker.costFormatted = row.Cost_Per_Hour ? `$${row.Cost_Per_Hour}/hr` : null;
+        marker.costPerHour = row.Cost_Per_Hour || null;
+        marker.costPerGame = null;
+      } else if (row.Payment_Model === 'Per Game') {
+        marker.costFormatted = row.Cost_Per_Game ? `$${row.Cost_Per_Game}/game` : null;
+        marker.costPerHour = null;
+        marker.costPerGame = row.Cost_Per_Game || null;
+      } else {
+        marker.costFormatted = null;
+        marker.costPerHour = null;
+        marker.costPerGame = null;
+      }
       poolMarkers.push(marker);
       marker.addTo(poolMap);
       markerGroup.addLayer(marker);
     });
 
     populatePoolTable(data);
+
+    // Populate mobile filter options for pool bars
+    const neighborhoods = [...new Set(data.map((d) => d.Neighborhood).filter(Boolean))].sort();
+    
+    // Generate cost ranges from data
+    const costRanges = [];
+    const costs = data
+      .map(d => {
+        if (d.Payment_Model === 'Per Hour' || d.Payment_Model === 'Hourly') {
+          return d.Cost_Per_Hour ? `$${d.Cost_Per_Hour}/hr` : null;
+        } else if (d.Payment_Model === 'Per Game') {
+          return d.Cost_Per_Game ? `$${d.Cost_Per_Game}/game` : null;
+        }
+        return null;
+      })
+      .filter(Boolean);
+    
+    const uniqueCosts = [...new Set(costs)].sort();
+    
+    if (window.populatePoolMobileFilterOptions) {
+      window.populatePoolMobileFilterOptions({
+        paymentModels: paymentModels,
+        costRanges: uniqueCosts,
+        neighborhoods: neighborhoods
+      });
+    }
   })
   .catch((err) => console.error('Failed to load pool bars:', err));
 

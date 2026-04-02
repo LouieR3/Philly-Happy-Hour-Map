@@ -42,11 +42,11 @@
       <div class="tab" data-tab="edits">
         Edits <span class="tab-badge" id="badge-edits">0</span>
       </div>
-      <div class="tab" data-tab="live">
-        Live Data
+      <div class="tab" data-tab="quizzo">
+        Quizzo Bars
       </div>
       <div class="tab" data-tab="pool">
-        Pool Bars <span class="tab-badge tab-badge-pool" id="badge-pool">0</span>
+        Pool Bars
       </div>
     </div>
 
@@ -70,35 +70,41 @@
         <div class="card-list" id="edits-list"></div>
       </div>
 
-      <!-- Live Data Panel -->
-      <div class="panel" id="panel-live">
+      <!-- Quizzo Bars Panel -->
+      <div class="panel" id="panel-quizzo">
         <div class="section-header">
-          <h2>Live Quizzo Data</h2>
-          <button class="btn-export" onclick="exportCsv()">
-            <i class="fa fa-download"></i> Export CSV
+          <h2>Quizzo Bars</h2>
+          <button class="btn-export btn-add-quizzo" onclick="openQuizzoModal()">
+            <i class="fa fa-plus"></i> Add Quizzo Bar
           </button>
         </div>
-        <div class="search-wrap">
-          <i class="fa fa-search"></i>
-          <input type="text" id="live-search" placeholder="Search by bar name, neighborhood, day…" oninput="filterLive(this.value)" />
+
+        <div class="pool-filters">
+          <div class="search-wrap" style="flex:1; margin-bottom:0;">
+            <i class="fa fa-search"></i>
+            <input type="text" id="quizzo-search" placeholder="Search by name, neighborhood, day…" oninput="filterQuizzo(this.value)" />
+          </div>
         </div>
-        <div class="table-wrap">
-          <table id="live-table">
+
+        <div class="table-wrap" style="margin-top:16px;">
+          <table id="quizzo-table">
             <thead>
               <tr>
                 <th>Business</th>
-                <th>Neighborhood</th>
-                <th>Address</th>
                 <th>Day</th>
                 <th>Time</th>
+                <th>Neighborhood</th>
+                <th>Address</th>
                 <th>Host</th>
                 <th>Prize 1</th>
+                <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="live-tbody"></tbody>
+            <tbody id="quizzo-tbody"></tbody>
           </table>
         </div>
       </div>
+
       <!-- Pool Bars Panel -->
       <div class="panel" id="panel-pool">
         <div class="section-header">
@@ -140,6 +146,78 @@
         </div>
       </div>
     </main>
+  </div>
+
+  <!-- ── Quizzo Bar Modal ── -->
+  <div id="quizzo-modal-overlay" class="modal-overlay" onclick="closeQuizzoModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="quizzo-modal-title">Add Quizzo Bar</h3>
+        <button class="modal-close" onclick="closeQuizzoModal()"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="modal-quizzo-id" />
+
+        <div class="modal-section-label">Identity</div>
+        <div class="modal-grid">
+          <div class="modal-field modal-field-wide"><label>Business Name *</label><input type="text" id="quizzo-BUSINESS" placeholder="Bar name" /></div>
+          <div class="modal-field"><label>Neighborhood</label><input type="text" id="quizzo-NEIGHBORHOOD" placeholder="e.g. Rittenhouse" /></div>
+        </div>
+
+        <div class="modal-section-label">Address</div>
+        <div class="modal-grid">
+          <div class="modal-field modal-field-wide"><label>Street Address</label><input type="text" id="quizzo-ADDRESS_STREET" placeholder="123 Main St" /></div>
+          <div class="modal-field"><label>Unit</label><input type="text" id="quizzo-ADDRESS_UNIT" placeholder="Suite 100" /></div>
+          <div class="modal-field"><label>City</label><input type="text" id="quizzo-ADDRESS_CITY" placeholder="Philadelphia" /></div>
+          <div class="modal-field"><label>State</label><input type="text" id="quizzo-ADDRESS_STATE" placeholder="PA" /></div>
+          <div class="modal-field"><label>ZIP</label><input type="text" id="quizzo-ADDRESS_ZIP" placeholder="19103" /></div>
+          <div class="modal-grid">
+            <div class="modal-field"><label>Latitude</label><input type="number" step="any" id="quizzo-Latitude" /></div>
+            <div class="modal-field"><label>Longitude</label><input type="number" step="any" id="quizzo-Longitude" /></div>
+          </div>
+        </div>
+
+        <div class="modal-section-label">Quizzo Details</div>
+        <div class="modal-grid">
+          <div class="modal-field"><label>Day *</label>
+            <select id="quizzo-WEEKDAY">
+              <option value="">—</option>
+              <option value="MONDAY">Monday</option>
+              <option value="TUESDAY">Tuesday</option>
+              <option value="WEDNESDAY">Wednesday</option>
+              <option value="THURSDAY">Thursday</option>
+              <option value="FRIDAY">Friday</option>
+              <option value="SATURDAY">Saturday</option>
+              <option value="SUNDAY">Sunday</option>
+            </select>
+          </div>
+          <div class="modal-field"><label>Time *</label><input type="text" id="quizzo-TIME" placeholder="e.g. 8:00 PM" /></div>
+          <div class="modal-field"><label>Host</label><input type="text" id="quizzo-HOST" placeholder="e.g. Geeks Who Drink" /></div>
+          <div class="modal-field"><label>Event Type</label><input type="text" id="quizzo-EVENT_TYPE" placeholder="Trivia, Quizzo, etc." /></div>
+        </div>
+
+        <div class="modal-section-label">Prizes</div>
+        <div class="modal-grid">
+          <div class="modal-field"><label>Prize 1 Type</label><input type="text" id="quizzo-PRIZE_1_TYPE" placeholder="e.g. Cash" /></div>
+          <div class="modal-field"><label>Prize 1 Amount</label><input type="text" id="quizzo-PRIZE_1_AMOUNT" placeholder="e.g. $50" /></div>
+          <div class="modal-field"><label>Prize 2 Type</label><input type="text" id="quizzo-PRIZE_2_TYPE" placeholder="" /></div>
+          <div class="modal-field"><label>Prize 2 Amount</label><input type="text" id="quizzo-PRIZE_2_AMOUNT" placeholder="" /></div>
+          <div class="modal-field"><label>Prize 3 Type</label><input type="text" id="quizzo-PRIZE_3_TYPE" placeholder="" /></div>
+          <div class="modal-field"><label>Prize 3 Amount</label><input type="text" id="quizzo-PRIZE_3_AMOUNT" placeholder="" /></div>
+        </div>
+
+        <div class="modal-section-label">Additional Info</div>
+        <div class="modal-grid">
+          <div class="modal-field modal-field-wide"><label>Full Address</label><input type="text" id="quizzo-Full_Address" placeholder="Full address for display" /></div>
+          <div class="modal-field modal-field-wide"><label>Business Tags</label><input type="text" id="quizzo-BUSINESS_TAGS" placeholder="Tags, comma-separated" /></div>
+          <div class="modal-field modal-field-wide"><label>Occurrence Types</label><input type="text" id="quizzo-OCCURRENCE_TYPES" placeholder="e.g. Weekly, Monthly" /></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-reject" onclick="closeQuizzoModal()">Cancel</button>
+        <button class="btn-approve" onclick="saveQuizzoBar()"><i class="fa fa-save"></i> Save</button>
+      </div>
+    </div>
   </div>
 
   <!-- ── Pool Bar Modal ── -->

@@ -699,4 +699,58 @@ app.get('/api/search-bars', async (req, res) => {
   }
 });
 
+// ═══════════════════════════════════════════════════════════════════════════════
+// QUIZZO BAR ADMIN ROUTES (CRUD)
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Get all quizzo bars (for admin management)
+app.get('/admin/quizzo', adminAuth, async (req, res) => {
+  try {
+    const bars = await Quizzo.find({}, { __v: 0 }).lean();
+    res.json(bars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Create a new quizzo bar
+app.post('/admin/quizzo', adminAuth, async (req, res) => {
+  try {
+    const bar = new Quizzo(req.body);
+    await bar.save();
+    await exportCsv();
+    res.json({ success: true, bar });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update a quizzo bar
+app.put('/admin/quizzo/:id', adminAuth, async (req, res) => {
+  try {
+    const bar = await Quizzo.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    if (!bar) return res.status(404).json({ error: 'Bar not found' });
+    await exportCsv();
+    res.json({ success: true, bar });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Delete a quizzo bar
+app.delete('/admin/quizzo/:id', adminAuth, async (req, res) => {
+  try {
+    const bar = await Quizzo.findByIdAndDelete(req.params.id);
+    if (!bar) return res.status(404).json({ error: 'Bar not found' });
+    await exportCsv();
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));

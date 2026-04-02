@@ -48,7 +48,6 @@ function login() {
       document.getElementById("login-screen").style.display = "none";
       document.getElementById("app").style.display = "block";
       renderPending(quizzoData, poolData);
-      loadLiveData();
     })
     .catch(() => {
       document.getElementById("login-error").style.display = "block";
@@ -312,7 +311,6 @@ async function approve(id) {
     removeCard("card-" + id);
     toast("Bar approved and added to live data ✓", "success");
     refreshBadge();
-    loadLiveData();
   } catch (err) {
     toast(err.message, "error");
   }
@@ -339,7 +337,6 @@ async function approveEdit(id) {
     removeCard("card-edit-" + id);
     toast("Edit applied ✓", "success");
     refreshBadge();
-    loadLiveData();
   } catch (err) {
     toast(err.message, "error");
   }
@@ -393,43 +390,7 @@ function refreshBadge() {
   });
 }
 
-// ── Live Data Table ────────────────────────────────────────────────────────
-function loadLiveData() {
-  fetch(`${API_BASE}/api/quizzo`)
-    .then((r) => r.json())
-    .then((data) => {
-      liveData = data;
-      renderLiveTable(data);
-    });
-}
 
-function renderLiveTable(data) {
-  const tbody = document.getElementById("live-tbody");
-  tbody.innerHTML = "";
-  data.forEach((bar) => {
-    const tr = document.createElement("tr");
-    const addr = [bar.ADDRESS_STREET, bar.ADDRESS_CITY, bar.ADDRESS_STATE]
-      .filter(Boolean)
-      .join(", ");
-    tr.innerHTML = `
-        <td><strong>${bar.BUSINESS}</strong></td>
-        <td>${bar.NEIGHBORHOOD || "—"}</td>
-        <td>${addr || "—"}</td>
-        <td>${bar.WEEKDAY || "—"}</td>
-        <td>${bar.TIME || "—"}</td>
-        <td>${bar.HOST || "—"}</td>
-        <td>${bar.PRIZE_1_TYPE || "—"}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-function filterLive(q) {
-  const filtered = liveData.filter((bar) =>
-    JSON.stringify(bar).toLowerCase().includes(q.toLowerCase()),
-  );
-  renderLiveTable(filtered);
-}
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 function removeCard(id) {
@@ -869,5 +830,203 @@ document.querySelectorAll(".tab").forEach((tab) => {
     if (tab.dataset.tab === "pool" && poolData.length === 0) {
       loadPoolBars();
     }
+    if (tab.dataset.tab === "quizzo" && quizzoData.length === 0) {
+      loadQuizzoBars();
+    }
   });
 });
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// QUIZZO BARS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let quizzoData = [];
+let quizzoFiltered = [];
+
+const QUIZZO_FIELDS = [
+  "BUSINESS",
+  "BUSINESS_TAGS",
+  "TIME",
+  "WEEKDAY",
+  "OCCURRENCE_TYPES",
+  "NEIGHBORHOOD",
+  "ADDRESS_STREET",
+  "ADDRESS_UNIT",
+  "ADDRESS_CITY",
+  "ADDRESS_STATE",
+  "ADDRESS_ZIP",
+  "PRIZE_1_TYPE",
+  "PRIZE_1_AMOUNT",
+  "PRIZE_2_TYPE",
+  "PRIZE_2_AMOUNT",
+  "PRIZE_3_TYPE",
+  "PRIZE_3_AMOUNT",
+  "HOST",
+  "EVENT_TYPE",
+  "Full_Address",
+  "Latitude",
+  "Longitude",
+];
+
+// ── Load quizzo bars from API ──────────────────────────────────────────────
+function loadQuizzoBars() {
+  adminFetch("/admin/quizzo")
+    .then((r) => r.json())
+    .then((data) => {
+      quizzoData = data;
+      renderQuizzoTable(data);
+    })
+    .catch((err) => toast("Failed to load quizzo bars: " + err.message, "error"));
+}
+
+// ── Render table ───────────────────────────────────────────────────────────
+function renderQuizzoTable(data) {
+  const tbody = document.getElementById("quizzo-tbody");
+  tbody.innerHTML = "";
+  if (!Array.isArray(data)) {
+    tbody.innerHTML = "<tr><td colspan='8'>Error loading data</td></tr>";
+    return;
+  }
+  if (data.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='8' style='text-align:center;padding:20px;'>No quizzo bars yet</td></tr>";
+    return;
+  }
+
+  data.forEach((bar) => {
+    const row = document.createElement("tr");
+    const prize1 = bar.PRIZE_1_TYPE ? `${bar.PRIZE_1_TYPE} — ${bar.PRIZE_1_AMOUNT || "?"}` : "—";
+    row.innerHTML = `
+      <td><strong>${bar.BUSINESS || "—"}</strong></td>
+      <td>${bar.WEEKDAY || "—"}</td>
+      <td>${bar.TIME || "—"}</td>
+      <td>${bar.NEIGHBORHOOD || "—"}</td>
+      <td>${bar.ADDRESS_STREET || "—"}</td>
+      <td>${bar.HOST || "—"}</td>
+      <td>${prize1}</td>
+      <td style="text-align:center;white-space:nowrap;">
+        <button class="btn-icon" onclick="openQuizzoModal('${bar._id}')" title="Edit">
+          <i class="fa fa-edit"></i>
+        </button>
+        <button class="btn-icon btn-danger" onclick="deleteQuizzoBar('${bar._id}', '${(bar.BUSINESS || 'Bar').replace(/'/g, "\\'")}')" title="Delete">
+          <i class="fa fa-trash"></i>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+// ── Filter ─────────────────────────────────────────────────────────────────
+function filterQuizzo(q) {
+  const filtered = quizzoData.filter((bar) =>
+    JSON.stringify(bar).toLowerCase().includes(q.toLowerCase())
+  );
+  quizzoFiltered = filtered;
+  renderQuizzoTable(filtered);
+}
+
+// ── Modal open ─────────────────────────────────────────────────────────────
+function openQuizzoModal(id = null) {
+  const modal = document.getElementById("quizzo-modal-overlay");
+  document.getElementById("quizzo-modal-title").textContent = id
+    ? "Edit Quizzo Bar"
+    : "Add Quizzo Bar";
+  document.getElementById("modal-quizzo-id").value = id || "";
+
+  // Clear all fields first
+  QUIZZO_FIELDS.forEach((f) => {
+    const el = document.getElementById(`quizzo-${f}`);
+    if (el) el.value = "";
+  });
+
+  // If editing, populate with existing data
+  if (id) {
+    const bar = quizzoData.find((b) => b._id === id);
+    if (bar) {
+      QUIZZO_FIELDS.forEach((f) => {
+        const el = document.getElementById(`quizzo-${f}`);
+        if (el && bar[f] !== undefined) {
+          el.value = bar[f] || "";
+        }
+      });
+    }
+  }
+
+  modal.classList.add("open");
+}
+
+function closeQuizzoModal(e) {
+  if (e && e.target !== document.getElementById("quizzo-modal-overlay")) return;
+  document.getElementById("quizzo-modal-overlay").classList.remove("open");
+}
+
+// ── Save (create or update) ────────────────────────────────────────────────
+async function saveQuizzoBar() {
+  const id = document.getElementById("modal-quizzo-id").value;
+
+  const doc = {};
+
+  QUIZZO_FIELDS.forEach((f) => {
+    const el = document.getElementById(`quizzo-${f}`);
+    if (el) {
+      const val = el.value.trim();
+      if (val) {
+        // Try to parse as number if it looks numeric
+        doc[f] = isNaN(val) ? val : parseFloat(val);
+      }
+    }
+  });
+
+  // Validation
+  if (!doc["BUSINESS"]) {
+    toast("Business name is required", "error");
+    return;
+  }
+  if (!doc["WEEKDAY"]) {
+    toast("Day is required", "error");
+    return;
+  }
+  if (!doc["TIME"]) {
+    toast("Time is required", "error");
+    return;
+  }
+
+  // Save to Server
+  try {
+    const method = id ? "PUT" : "POST";
+    const url = id ? `/admin/quizzo/${id}` : "/admin/quizzo";
+
+    const res = await adminFetch(url, method, doc);
+    const data = await res.json();
+
+    if (!res.ok) {
+      toast(data.error || "Error saving bar", "error");
+      return;
+    }
+
+    toast(id ? "Bar updated ✓" : "Bar added ✓", "success");
+    closeQuizzoModal();
+    loadQuizzoBars();
+  } catch (err) {
+    toast(err.message, "error");
+  }
+}
+
+// ── Delete ─────────────────────────────────────────────────────────────────
+async function deleteQuizzoBar(id, name) {
+  if (!confirm(`Delete "${name}"? This cannot be undone.`)) return;
+  try {
+    const res = await adminFetch(`/admin/quizzo/${id}`, "DELETE");
+    const data = await res.json();
+
+    if (!res.ok) {
+      toast(data.error || "Error deleting bar", "error");
+      return;
+    }
+
+    toast("Bar deleted ✓", "success");
+    loadQuizzoBars();
+  } catch (err) {
+    toast(err.message, "error");
+  }
+}
