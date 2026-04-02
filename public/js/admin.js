@@ -1123,12 +1123,21 @@ async function yelpSearch() {
   btn.disabled = true; btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Searching…';
   document.getElementById('yelp-results').innerHTML = '';
   document.getElementById('yelp-detail-card').style.display = 'none';
+  console.log(`[Yelp] Searching: "${q}" in "${loc}"`);
   try {
-    const res  = await adminFetch(`/admin/yelp-search?q=${encodeURIComponent(q)}&location=${encodeURIComponent(loc)}`);
+    const url = `/admin/yelp-search?q=${encodeURIComponent(q)}&location=${encodeURIComponent(loc)}`;
+    console.log('[Yelp] Request URL:', API_BASE + url);
+    const res  = await adminFetch(url);
+    console.log('[Yelp] Response status:', res.status);
     const data = await res.json();
+    console.log('[Yelp] Response data:', data);
     if (!res.ok) throw new Error(data.error);
+    console.log(`[Yelp] Found ${(data.businesses || []).length} results`);
     renderYelpResults(data.businesses || []);
-  } catch(err) { toast('Yelp search failed: ' + err.message, 'error'); }
+  } catch(err) {
+    console.error('[Yelp] Search error:', err);
+    toast('Yelp search failed: ' + err.message, 'error');
+  }
   finally { btn.disabled = false; btn.innerHTML = '<i class="fa fa-search"></i> Search Yelp'; }
 }
 
@@ -1160,9 +1169,12 @@ async function yelpLoadDetails(alias, name) {
   document.getElementById('yelp-detail-card').style.display = 'none';
   document.getElementById('yelp-import-status').innerHTML = '';
   toast(`Loading details for ${name}…`, 'success');
+  console.log(`[Yelp] Loading details for alias: "${alias}"`);
   try {
     const res  = await adminFetch(`/admin/yelp-details?alias=${encodeURIComponent(alias)}`);
+    console.log('[Yelp] Details response status:', res.status);
     const biz  = await res.json();
+    console.log('[Yelp] Details data:', biz);
     if (!res.ok) throw new Error(biz.error);
 
     const addr    = (biz.location?.display_address || []).join(', ');

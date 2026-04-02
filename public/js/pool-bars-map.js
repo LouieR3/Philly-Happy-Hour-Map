@@ -390,9 +390,6 @@ if (poolSearchInput && poolSearchResultsList) {
                   const nh = getNhFromLatLng(bar.Latitude, bar.Longitude, poolGeoJson);
                   document.getElementById('pool-neighborhood-input').value = nh || '';
                   document.getElementById("pool-yelp-alias").value = bar["Yelp Alias"] || "";
-                  console.log('Selected bar:', bar);
-                  console.log(bar["Yelp Alias"]);
-                  if (bar["Yelp Rating"]) document.getElementById("pool-Yelp Rating").value = bar["Yelp Rating"];
 
                   if (bar["Sunday"]) document.getElementById("pool-Sunday").value = bar.Sunday;
                   if (bar["Monday"]) document.getElementById("pool-Monday").value = bar.Monday;
@@ -547,6 +544,7 @@ document.getElementById('pool-bar-submission-form').addEventListener('submit', a
   const payModel = document.getElementById('pool-payment-model-select').value;
   const submission = {
     name:          document.getElementById('pool-business-name').value,
+    yelpAlias:     document.getElementById('pool-yelp-alias').value || null,
     streetAddress, city, state, zip, Latitude: lat, Longitude: lng,
     neighborhood,
     numTables:     document.getElementById('pool-num-tables').value || null,

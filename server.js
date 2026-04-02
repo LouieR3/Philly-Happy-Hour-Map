@@ -488,6 +488,7 @@ app.get('/api/pool-bars', async (req, res) => {
 // ─── Pending Pool Bar schemas ─────────────────────────────────────────────────
 const pendingPoolBarSchema = new mongoose.Schema({
   name:          { type: String, required: true },
+  yelpAlias:     String,
   streetAddress: String,
   city:          String,
   state:         String,
@@ -500,6 +501,7 @@ const pendingPoolBarSchema = new mongoose.Schema({
   costPerGame:   Number,
   costPerHour:   Number,
   notes:         String,
+  yelpData:      mongoose.Schema.Types.Mixed,
   submittedAt:   { type: Date, default: Date.now },
   status:        { type: String, default: 'pending' },
 }, { collection: 'pending_pool_bars' });
@@ -518,9 +520,45 @@ const PendingPoolBarEdit = mappyHourDb.model('PendingPoolBarEdit', pendingPoolBa
 
 app.post('/submit-pool-bar', async (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, yelpAlias } = req.body;
     if (!name) return res.status(400).json({ error: 'Bar name is required' });
-    const sub = new PendingPoolBar({ ...req.body, name: name.trim() });
+
+    let enriched = { ...req.body, name: name.trim() };
+
+    // If no Yelp alias supplied, try to find it automatically
+    if (!yelpAlias) {
+      try {
+        const location = [req.body.city || 'Philadelphia', req.body.state || 'PA'].filter(Boolean).join(', ');
+        const searchData = await yelpGet(`/v3/businesses/search?term=${encodeURIComponent(name)}&location=${encodeURIComponent(location)}&categories=bars,restaurants&limit=3`);
+        const biz = (searchData.businesses || [])[0];
+        if (biz) {
+          enriched.yelpAlias = biz.alias;
+          // Fetch full details for hours, website, etc.
+          const details = await yelpGet(`/v3/businesses/${encodeURIComponent(biz.alias)}`);
+          const hoursOpen = details.hours?.[0]?.open || [];
+          const dayNames = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+          const hoursMap = {};
+          hoursOpen.forEach(slot => {
+            const day = dayNames[slot.day];
+            const fmt = h => { const hh = parseInt(h.slice(0,2),10); const mm = h.slice(2); return `${hh%12||12}:${mm} ${hh>=12?'PM':'AM'}`; };
+            hoursMap[day] = (hoursMap[day] ? hoursMap[day] + ', ' : '') + `${fmt(slot.start)} - ${fmt(slot.end)}`;
+          });
+          enriched.yelpData = {
+            'Yelp Alias':  biz.alias,
+            'Yelp Rating': details.rating || biz.rating,
+            Phone:         details.display_phone || details.phone || '',
+            Website:       details.url || '',
+            Price:         details.price || '',
+            Categories:    (details.categories || []).map(c => c.title).join(', '),
+            ...hoursMap,
+          };
+        }
+      } catch (yelpErr) {
+        console.warn('Yelp auto-lookup failed for submission:', yelpErr.message);
+      }
+    }
+
+    const sub = new PendingPoolBar(enriched);
     await sub.save();
     res.json({ success: true, message: 'Pool bar submission received — thanks!' });
   } catch (err) {
@@ -560,20 +598,29 @@ app.post('/admin/approve-pool-submission/:id', adminAuth, async (req, res) => {
     if (!sub) return res.status(404).json({ error: 'Submission not found' });
 
     const overrides = req.body || {};
+    const yd = sub.yelpData || {};
     const bar = new PoolBar({
-      Name:            overrides.name          || sub.name,
-      Address:         [overrides.streetAddress || sub.streetAddress,
-                        overrides.city          || sub.city,
-                        overrides.state         || sub.state].filter(Boolean).join(', '),
-      Latitude:        sub.Latitude,
-      Longitude:       sub.Longitude,
-      Neighborhood:    overrides.neighborhood  || sub.neighborhood,
+      Name:             overrides.name          || sub.name,
+      'Yelp Alias':     sub.yelpAlias           || yd['Yelp Alias'] || null,
+      Address:          [overrides.streetAddress || sub.streetAddress,
+                         overrides.city          || sub.city,
+                         overrides.state         || sub.state].filter(Boolean).join(', '),
+      Latitude:         sub.Latitude,
+      Longitude:        sub.Longitude,
+      Neighborhood:     overrides.neighborhood  || sub.neighborhood,
+      Phone:            yd.Phone    || null,
+      Website:          yd.Website  || null,
+      'Yelp Rating':    yd['Yelp Rating'] || null,
+      Price:            yd.Price    || null,
+      Categories:       yd.Categories ? [yd.Categories] : [],
+      Monday:    yd.Monday,    Tuesday:   yd.Tuesday,   Wednesday: yd.Wednesday,
+      Thursday:  yd.Thursday,  Friday:    yd.Friday,    Saturday:  yd.Saturday,  Sunday: yd.Sunday,
       Number_of_Tables: overrides.numTables    || sub.numTables || null,
-      Payment_Model:   overrides.paymentModel  || sub.paymentModel,
-      Cost_Per_Game:   overrides.costPerGame   || sub.costPerGame || null,
-      Cost_Per_Hour:   overrides.costPerHour   || sub.costPerHour || null,
-      Notes:           sub.notes,
-      Verified:        false,
+      Payment_Model:    overrides.paymentModel  || sub.paymentModel,
+      Cost_Per_Game:    overrides.costPerGame   || sub.costPerGame || null,
+      Cost_Per_Hour:    overrides.costPerHour   || sub.costPerHour || null,
+      Notes:            sub.notes,
+      Verified:         false,
     });
     await bar.save();
     sub.status = 'approved';
