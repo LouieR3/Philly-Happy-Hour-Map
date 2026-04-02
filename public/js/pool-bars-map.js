@@ -30,10 +30,10 @@ function createPoolIcon(color = '#10b981') {
 function paymentColor(model) {
   if (!model) return '#10b981';
   const m = model.toLowerCase();
-  if (m.includes('coin'))    return '#60a5fa';
-  if (m.includes('hourly'))  return '#34d399';
-  if (m.includes('free'))    return '#c084fc';
-  return '#fbbf24';
+  if (m.includes('coin'))              return '#60a5fa';   // blue
+  if (m.includes('hour'))              return '#fbbf24';   // yellow
+  if (m.includes('free'))              return '#c084fc';   // purple
+  return '#34d399';                                        // green (per_game / default)
 }
 
 // ─── Filter state ─────────────────────────────────────────────────────────────
@@ -336,7 +336,8 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
 function populatePoolTable(data) {
   const tbody = document.querySelector('#pool-bar-table tbody');
   tbody.innerHTML = '';
-  data.forEach((row, i) => {
+  const sorted = [...data].sort((a, b) => (Number(b.Number_of_Tables) || 0) - (Number(a.Number_of_Tables) || 0));
+  sorted.forEach((row, i) => {
     if (!row.Name) return;
     const cost = row.Payment_Model === 'Per Hour'
       ? (row.Cost_Per_Hour  ? `$${row.Cost_Per_Hour}/hr`  : '—')
@@ -350,7 +351,7 @@ function populatePoolTable(data) {
       <td>${row.Payment_Model ?? '—'}</td>
       <td>${cost}</td>`;
     tr.addEventListener('click', () => {
-      const marker = poolMarkers.find((m) => m.rowIndex === i);
+      const marker = poolMarkers.find((m) => m.name === row.Name);
       if (marker) { poolMap.setView(marker.getLatLng(), 16); marker.openPopup(); }
     });
     tbody.appendChild(tr);
