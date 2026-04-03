@@ -1478,7 +1478,9 @@ function renderUnmatchedTable(data) {
       <td style="font-size:0.82rem;color:var(--muted);">${bar.ADDRESS_STREET || '—'}</td>
       <td>
         <button class="btn-table-action btn-approve"
-          onclick="addQuizzoToMasterBars('${bar._id}', ${JSON.stringify(bar.BUSINESS || '').replace(/'/g,"\\'")})"
+          data-id="${bar._id}"
+          data-name="${(bar.BUSINESS || '').replace(/"/g, '&quot;')}"
+          onclick="addQuizzoToMasterBars(this.dataset.id, this.dataset.name)"
           title="Add to bars collection">
           <i class="fa fa-plus"></i> Add to Bars
         </button>
