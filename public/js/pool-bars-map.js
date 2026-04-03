@@ -130,28 +130,29 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
 
       const pmLower = (row.Payment_Model || '').toLowerCase();
       const costLine = pmLower === 'per hour' || pmLower === 'hourly'
-        ? (row.Cost_Per_Hour ? `$${row.Cost_Per_Hour}/hr` : '')
+        ? (row.Cost_Per_Hour ? `$${row.Cost_Per_Hour} per hour` : '')
         : pmLower === 'per game'
-          ? (row.Cost_Per_Game ? `$${row.Cost_Per_Game}/game` : '')
+          ? (row.Cost_Per_Game ? `$${row.Cost_Per_Game} per game` : '')
           : '';
 
       const color = paymentColor(row.Payment_Model);
       const popupContent = `
         <div style="font-family:'Red Hat Text',sans-serif;width:240px;border-radius:8px;overflow:hidden;">
           <div style="background:#065a20;padding:14px 16px 10px;">
-            <p style="margin:0;font-size:15px;font-weight:600;color:#fff;">${row.Name || '—'}</p>
+            <p style="margin:0;font-size:15px;font-weight:600;color:#fff;">🎱 ${row.Name || '—'}</p>
             <p style="margin:4px 0 0;font-size:12px;color:rgba(255,255,255,0.7);">${row.Address || ''}</p>
+            <p style="margin:4px 0 0;font-size:14px;color:rgba(255,255,255);">${row.Neighborhood || ''}</p>
           </div>
           <div style="padding:12px 16px;display:flex;flex-direction:column;gap:8px;background:#1a2332;color:#e2e8f0;">
-            ${row.Number_of_Tables ? `<div style="font-size:13px;">🎱 <b>${row.Number_of_Tables}</b> table${row.Number_of_Tables !== 1 ? 's' : ''}</div>` : ''}
-            ${pay_model ? `<div style="font-size:13px;">💳 <b>${pay_model}</b>${costLine ? ' · ' + costLine : ''}</div>` : ''}
-            ${row.Vibe ? `<div style="font-size:12px;color:#94a3b8;">${row.Vibe}</div>` : ''}
+            ${row.Number_of_Tables ? `<div style="font-size:16px;"><b>${row.Number_of_Tables}</b> table${row.Number_of_Tables !== 1 ? 's' : ''} - ${costLine}</div>` : ''}
+            ${row.Vibe ? `<div style="font-size:14px;color:#fff;">What's the vibe? <b>${row.Vibe}</b></div>` : ''}
             <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px;">
-              ${row.Has_Happy_Hour ? `<span style="background:rgba(52,211,153,0.12);color:#34d399;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;">Happy Hour</span>` : ''}
-              ${row.Has_League    ? `<span style="background:rgba(96,165,250,0.12);color:#60a5fa;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;">Has League</span>` : ''}
-              ${row['Yelp Rating'] ? `<span style="background:rgba(251,191,36,0.12);color:#fbbf24;font-size:11px;font-weight:600;padding:2px 8px;border-radius:20px;">⭐ ${row['Yelp Rating']}</span>` : ''}
+              ${row.Has_Happy_Hour ? `<span style="background:rgba(52,211,153,0.12);color:#34d399;font-size:14px;font-weight:600;padding:2px 8px;border-radius:20px;">Happy Hour</span>` : ''}
+              ${row.Has_League    ? `<span style="background:rgba(96,165,250,0.12);color:#60a5fa;font-size:14px;font-weight:600;padding:2px 8px;border-radius:20px;">Has League</span>` : ''}
+              ${row['Yelp Rating'] ? `<span style="background:rgba(251,191,36,0.12);color:#fbbf24;font-size:14px;font-weight:600;padding:2px 8px;border-radius:20px;">⭐ ${row['Yelp Rating']}</span>` : ''}
+              ${row.Price ? `<span style="background:rgba(74, 150, 93, 0.82);color:#fff;font-size:14px;font-weight:600;padding:2px 8px;border-radius:20px;">Price: ${row.Price}</span>` : ''}
             </div>
-            ${row.Website ? `<a href="${row.Website}" target="_blank" style="font-size:12px;color:#34d399;text-decoration:none;margin-top:2px;">Visit Website →</a>` : ''}
+            ${row.Website ? `<a href="${row.Website}" target="_blank" style="font-size:14px;color:#34d399;text-decoration:none;margin-top:2px;">Visit Website →</a>` : ''}
           </div>
         </div>`;
 
@@ -522,16 +523,19 @@ document.getElementById('pool-payment-model-select').addEventListener('change', 
 // Submit new pool bar
 document.getElementById('pool-bar-submission-form').addEventListener('submit', async function (e) {
   e.preventDefault();
-  const isPhilly     = document.getElementById('pool-philly-yes').checked;
+  const isPhilly      = document.getElementById('pool-philly-yes').checked;
   const streetAddress = document.getElementById('pool-street-address').value;
-  const city          = isPhilly ? 'Philadelphia' : document.getElementById('pool-address-city').value;
-  const state         = isPhilly ? 'PA' : document.getElementById('pool-address-state').value;
-  const zip           = isPhilly ? '' : document.getElementById('pool-address-zip').value;
-  const fullAddress   = `${streetAddress}, ${city}, ${state}${zip ? ' ' + zip : ''}`;
-
+  
   let lat = parseFloat(document.getElementById('pool-lat').value) || null;
   let lng = parseFloat(document.getElementById('pool-lng').value) || null;
+  
+  let fullAddress = streetAddress;
   if (!lat || !lng) {
+    const city  = isPhilly ? 'Philadelphia' : document.getElementById('pool-address-city').value;
+    const state = isPhilly ? 'PA' : document.getElementById('pool-address-state').value;
+    const zip   = isPhilly ? '' : document.getElementById('pool-address-zip').value;
+    fullAddress = `${streetAddress}, ${city}, ${state}${zip ? ' ' + zip : ''}`;
+    
     try {
       const geo = await fetch(`${POOL_API_BASE}/api/geocode?address=${encodeURIComponent(fullAddress)}`);
       const gd  = await geo.json();

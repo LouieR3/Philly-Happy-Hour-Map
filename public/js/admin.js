@@ -495,6 +495,8 @@ const POOL_TEXT_FIELDS = [
   "Website",
   "Yelp Rating",
   "Price",
+  "Latitude",
+  "Longitude",
   "Number_of_Tables",
   "Table_Brand",
   "Table_Size",
@@ -619,7 +621,11 @@ function openPoolModal(id = null) {
 
   // Clear all fields first
   POOL_TEXT_FIELDS.forEach((f) => {
-    const el = document.getElementById("pool-" + f);
+    let formId = f;
+    // Handle special field ID mappings
+    if (f === "Yelp Alias") formId = "yelp-alias";
+    if (f === "Yelp Rating") formId = "yelp-rating";
+    const el = document.getElementById("pool-" + formId);
     if (el) el.value = "";
   });
   POOL_BOOL_FIELDS.forEach((f) => {
@@ -632,7 +638,11 @@ function openPoolModal(id = null) {
     const bar = poolData.find((b) => b._id === id);
     if (bar) {
       POOL_TEXT_FIELDS.forEach((f) => {
-        const el = document.getElementById("pool-" + f);
+        let formId = f;
+        // Handle special field ID mappings (form IDs that don't match POOL_TEXT_FIELDS names)
+        if (f === "Yelp Alias") formId = "yelp-alias";
+        if (f === "Yelp Rating") formId = "yelp-rating";
+        const el = document.getElementById("pool-" + formId);
         if (el && bar[f] != null) el.value = bar[f];
       });
       POOL_BOOL_FIELDS.forEach((f) => {
@@ -739,9 +749,12 @@ async function savePoolBar() {
   const doc = {};
 
   // 1. Process Text and Numeric Fields
-  // Note: Ensure 'Latitude' and 'Longitude' are added to your POOL_TEXT_FIELDS array!
   POOL_TEXT_FIELDS.forEach((f) => {
-    const el = document.getElementById("pool-" + f);
+    let formId = f;
+    // Handle special field ID mappings (form IDs that don't match POOL_TEXT_FIELDS names)
+    if (f === "Yelp Alias") formId = "yelp-alias";
+    if (f === "Yelp Rating") formId = "yelp-rating";
+    const el = document.getElementById("pool-" + formId);
     if (el && el.value.trim() !== "") {
       // Coerce numeric fields (including the new coordinates)
       if (
@@ -751,7 +764,7 @@ async function savePoolBar() {
           "Cost_Per_Game",
           "Cost_Per_Hour",
           "Min_Spend",
-          "Latitude", // Add these to the coercion list
+          "Latitude",
           "Longitude"
         ].includes(f)
       ) {
