@@ -9,7 +9,7 @@ import {
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
-} from 'https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js';
+} from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 // ── Replace these values with your Firebase project's web app config ──────────
 // Firebase Console → Project Settings → Your apps → Web app → Config snippet
