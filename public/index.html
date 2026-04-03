@@ -58,6 +58,17 @@
             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sports-bars">Sports Bars</a></li>
             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#meet-the-team">About</a></li>
             <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#bar-map">Bar Map</a></li>
+            <!-- Auth -->
+            <li class="nav-item mx-0 mx-lg-1 d-flex align-items-center gap-2" style="padding: 4px 0;">
+              <img id="auth-user-avatar" src="" alt="" style="display:none;width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" />
+              <span id="auth-user-name" class="nav-link py-0 px-0 px-lg-2" style="display:none;font-size:0.85rem;"></span>
+              <button id="auth-signin-btn" onclick="signInWithGoogle()" class="btn btn-sm btn-outline-light py-1 px-3" style="font-size:0.8rem;white-space:nowrap;">
+                <i class="fab fa-google me-1"></i> Sign in
+              </button>
+              <button id="auth-signout-btn" onclick="signOutUser()" class="btn btn-sm btn-outline-light py-1 px-3" style="display:none;font-size:0.8rem;">
+                Sign out
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -1067,6 +1078,8 @@
         el._t = setTimeout(() => { el.className = ''; }, 4000);
       }
     </script>
+    <!-- FIREBASE AUTH -->
+    <script type="module" src="js/auth.js"></script>
     <!-- QUIZZO MAP -->
     <script src="js/new-quizzo-map.js"></script>
     <!-- POOL BARS MAP -->

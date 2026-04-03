@@ -21,6 +21,40 @@ const { Parser } = require('json2csv');
 const path       = require('path');
 const fs         = require('fs');
 
+// ─── Firebase Admin SDK ───────────────────────────────────────────────────────
+const admin = require('firebase-admin');
+(() => {
+  try {
+    let credential;
+    if (process.env.FIREBASE_SERVICE_ACCOUNT) {
+      // Railway: set this env var to the raw JSON string of the service account key
+      const sa = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+      credential = admin.credential.cert(sa);
+    } else {
+      // Local: place serviceAccountKey.json at repo root (never commit it)
+      const keyPath = path.join(__dirname, 'serviceAccountKey.json');
+      credential = admin.credential.cert(require(keyPath));
+    }
+    admin.initializeApp({ credential });
+    console.log('[Firebase Admin] initialized');
+  } catch (e) {
+    console.warn('[Firebase Admin] not initialized — auth routes will be disabled:', e.message);
+  }
+})();
+
+// Middleware: verify Firebase ID token sent as Authorization: Bearer <token>
+async function verifyFirebaseToken(req, res, next) {
+  const header = req.headers.authorization || '';
+  const token  = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (!token) return res.status(401).json({ error: 'No token provided' });
+  try {
+    req.firebaseUser = await admin.auth().verifyIdToken(token);
+    next();
+  } catch (e) {
+    res.status(401).json({ error: 'Invalid or expired token' });
+  }
+}
+
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
@@ -878,6 +912,17 @@ app.delete('/admin/quizzo/:id', adminAuth, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// USER AUTH ROUTES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Returns the authenticated user's profile (decoded token info)
+// Front-end calls this after sign-in to confirm the token works server-side
+app.get('/api/me', verifyFirebaseToken, (req, res) => {
+  const { uid, email, name, picture } = req.firebaseUser;
+  res.json({ uid, email, name, picture });
 });
 
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));
