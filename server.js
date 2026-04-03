@@ -890,6 +890,70 @@ app.get('/admin/all-bars', adminAuth, async (req, res) => {
   }
 });
 
+// Delete photos from a bar document (removes specific URLs from Photos array)
+app.patch('/admin/bars/:id/photos', adminAuth, async (req, res) => {
+  try {
+    const { removeUrls } = req.body; // array of photo URLs to remove
+    if (!Array.isArray(removeUrls) || !removeUrls.length) {
+      return res.status(400).json({ error: 'removeUrls array required' });
+    }
+    const bar = await Bar.findByIdAndUpdate(
+      req.params.id,
+      { $pull: { Photos: { $in: removeUrls } } },
+      { new: true }
+    );
+    if (!bar) return res.status(404).json({ error: 'Bar not found' });
+    res.json({ success: true, Photos: bar.Photos });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get quizzo bars that have no fuzzy match in mappy_hour.bars
+// Uses simple server-side comparison; client can also call this
+app.get('/admin/quizzo-unmatched', adminAuth, async (req, res) => {
+  try {
+    const [quizzoBars, allBars] = await Promise.all([
+      Quizzo.find({}, { BUSINESS: 1, NEIGHBORHOOD: 1, ADDRESS_STREET: 1 }).lean(),
+      Bar.find({}, { Name: 1 }).lean(),
+    ]);
+    const barNames = allBars.map(b => (b.Name || '').toLowerCase().trim());
+    // Simple exact-or-contains match; normalise scripts do fuzzy — this is fast
+    const unmatched = quizzoBars.filter(q => {
+      const name = (q.BUSINESS || '').toLowerCase().trim();
+      if (!name) return false;
+      return !barNames.some(b => b === name || b.includes(name) || name.includes(b));
+    });
+    res.json(unmatched);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add a quizzo bar to the mappy_hour bars collection
+app.post('/admin/quizzo-to-bars/:id', adminAuth, async (req, res) => {
+  try {
+    const qBar = await Quizzo.findById(req.params.id).lean();
+    if (!qBar) return res.status(404).json({ error: 'Quizzo bar not found' });
+    const existing = await Bar.findOne({ Name: qBar.BUSINESS });
+    if (existing) return res.status(409).json({ error: `"${qBar.BUSINESS}" already exists in bars` });
+    const address = [qBar.ADDRESS_STREET, qBar.ADDRESS_CITY, qBar.ADDRESS_STATE, qBar.ADDRESS_ZIP]
+      .filter(Boolean).join(', ');
+    const doc = {
+      Name:      qBar.BUSINESS,
+      Address:   address || qBar.Full_Address || '',
+      Latitude:  qBar.Latitude,
+      Longitude: qBar.Longitude,
+      Neighborhood: qBar.NEIGHBORHOOD || '',
+    };
+    const bar = new Bar(doc);
+    await bar.save();
+    res.json({ success: true, bar });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // QUIZZO BAR ADMIN ROUTES (CRUD)
 // ═══════════════════════════════════════════════════════════════════════════════

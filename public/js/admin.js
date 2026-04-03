@@ -844,6 +844,12 @@ document.querySelectorAll(".tab").forEach((tab) => {
     if (tab.dataset.tab === "pool" && poolData.length === 0) {
       loadPoolBars();
     }
+    if (tab.dataset.tab === "photos" && photosData.length === 0) {
+      loadBarPhotos();
+    }
+    if (tab.dataset.tab === "unmatched") {
+      loadUnmatched();
+    }
     if (tab.dataset.tab === "quizzo" && quizzoData.length === 0) {
       loadQuizzoBars();
     }
@@ -1269,4 +1275,231 @@ function filterAllBars(q) {
         || (b.Neighborhood || b.Neighborhoods || '').toLowerCase().includes(lower))
     : allBarsData;
   renderAllBarsTable(allBarsFiltered);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// BAR PHOTOS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let photosData = [];          // all bars (with or without photos)
+let photosFiltered = [];      // currently visible subset
+const selectedPhotos = new Map(); // barId → Set of URLs marked for deletion
+
+async function loadBarPhotos() {
+  document.getElementById('photos-grid').innerHTML =
+    '<p style="color:var(--muted);grid-column:1/-1;">Loading…</p>';
+  try {
+    const res  = await adminFetch('/admin/all-bars');
+    const data = await res.json();
+    photosData     = data;
+    photosFiltered = data;
+    const countEl = document.getElementById('photos-count');
+    const withPhotos = data.filter(b => b.Photos?.length).length;
+    if (countEl) countEl.textContent = `(${withPhotos} with photos, ${data.length} total)`;
+    renderPhotosGrid(photosFiltered);
+  } catch (err) {
+    toast('Failed to load photos: ' + err.message, 'error');
+  }
+}
+
+function filterPhotos(q) {
+  const lower = q.trim().toLowerCase();
+  const hasPhotosOnly = document.getElementById('photos-has-photos-only').checked;
+  photosFiltered = photosData.filter(b => {
+    if (hasPhotosOnly && !b.Photos?.length) return false;
+    if (lower && !(b.Name || '').toLowerCase().includes(lower)) return false;
+    return true;
+  });
+  renderPhotosGrid(photosFiltered);
+}
+
+function renderPhotosGrid(data) {
+  const grid = document.getElementById('photos-grid');
+  grid.innerHTML = '';
+
+  if (!data.length) {
+    grid.innerHTML = '<p style="color:var(--muted);grid-column:1/-1;">No bars match.</p>';
+    return;
+  }
+
+  data.forEach(bar => {
+    const card = document.createElement('div');
+    card.style.cssText =
+      'background:var(--card-bg);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;';
+
+    const nameBar = document.createElement('div');
+    nameBar.style.cssText = 'padding:10px 12px;font-weight:600;font-size:0.88rem;border-bottom:1px solid var(--border);';
+    nameBar.textContent = bar.Name || '—';
+    card.appendChild(nameBar);
+
+    const photos = bar.Photos || [];
+    if (!photos.length) {
+      const empty = document.createElement('div');
+      empty.style.cssText = 'padding:24px;text-align:center;color:var(--muted);font-size:0.8rem;flex:1;';
+      empty.textContent = 'No photos';
+      card.appendChild(empty);
+    } else {
+      const photoWrap = document.createElement('div');
+      photoWrap.style.cssText = 'display:flex;flex-direction:column;gap:0;';
+
+      photos.forEach((url, idx) => {
+        const row = document.createElement('label');
+        row.style.cssText =
+          'display:flex;align-items:center;gap:10px;padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);transition:background 0.1s;';
+        row.addEventListener('mouseenter', () => row.style.background = 'rgba(255,255,255,0.04)');
+        row.addEventListener('mouseleave', () => row.style.background = '');
+
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.style.cssText = 'width:16px;height:16px;flex-shrink:0;accent-color:#f87171;cursor:pointer;';
+        cb.addEventListener('change', () => {
+          if (!selectedPhotos.has(bar._id)) selectedPhotos.set(bar._id, new Set());
+          const set = selectedPhotos.get(bar._id);
+          cb.checked ? set.add(url) : set.delete(url);
+          if (!set.size) selectedPhotos.delete(bar._id);
+          updateDeleteBtn();
+        });
+
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = `Photo ${idx + 1}`;
+        img.style.cssText = 'width:72px;height:52px;object-fit:cover;border-radius:4px;flex-shrink:0;';
+        img.onerror = () => { img.style.display = 'none'; };
+
+        const label = document.createElement('span');
+        label.style.cssText = 'font-size:0.72rem;color:var(--muted);word-break:break-all;line-height:1.3;';
+        label.textContent = `Photo ${idx + 1}`;
+
+        row.appendChild(cb);
+        row.appendChild(img);
+        row.appendChild(label);
+        photoWrap.appendChild(row);
+      });
+
+      card.appendChild(photoWrap);
+    }
+
+    grid.appendChild(card);
+  });
+}
+
+function updateDeleteBtn() {
+  let total = 0;
+  selectedPhotos.forEach(set => { total += set.size; });
+  const btn   = document.getElementById('photos-delete-btn');
+  const count = document.getElementById('photos-selected-count');
+  if (total > 0) {
+    btn.style.display = '';
+    count.textContent = total;
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+async function deleteSelectedPhotos() {
+  const total = [...selectedPhotos.values()].reduce((n, s) => n + s.size, 0);
+  if (!total) return;
+  if (!confirm(`Permanently delete ${total} photo URL${total !== 1 ? 's' : ''}? This cannot be undone.`)) return;
+
+  const btn = document.getElementById('photos-delete-btn');
+  btn.disabled = true;
+
+  const promises = [...selectedPhotos.entries()].map(async ([barId, urlSet]) => {
+    const res = await adminFetch(`/admin/bars/${barId}/photos`, 'PATCH', { removeUrls: [...urlSet] });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Delete failed');
+    }
+    return res.json();
+  });
+
+  try {
+    await Promise.all(promises);
+    toast(`${total} photo${total !== 1 ? 's' : ''} deleted.`, 'success');
+    selectedPhotos.clear();
+    updateDeleteBtn();
+    // Reload to reflect changes
+    photosData = [];
+    loadBarPhotos();
+  } catch (err) {
+    toast('Error: ' + err.message, 'error');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// UNMATCHED QUIZZO BARS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let unmatchedData = [];
+
+async function loadUnmatched() {
+  const tbody = document.getElementById('unmatched-tbody');
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted);">Loading…</td></tr>';
+  try {
+    const res  = await adminFetch('/admin/quizzo-unmatched');
+    const data = await res.json();
+    unmatchedData = data;
+    const badge   = document.getElementById('badge-unmatched');
+    const countEl = document.getElementById('unmatched-count');
+    if (badge)   badge.textContent   = data.length;
+    if (countEl) countEl.textContent = `(${data.length} bars)`;
+    renderUnmatchedTable(data);
+  } catch (err) {
+    toast('Failed to load unmatched bars: ' + err.message, 'error');
+  }
+}
+
+function filterUnmatched(q) {
+  const lower = q.trim().toLowerCase();
+  const filtered = lower
+    ? unmatchedData.filter(b =>
+        (b.BUSINESS || '').toLowerCase().includes(lower) ||
+        (b.NEIGHBORHOOD || '').toLowerCase().includes(lower))
+    : unmatchedData;
+  renderUnmatchedTable(filtered);
+}
+
+function renderUnmatchedTable(data) {
+  const tbody = document.getElementById('unmatched-tbody');
+  tbody.innerHTML = '';
+
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted);">All quizzo bars matched!</td></tr>';
+    return;
+  }
+
+  data.forEach(bar => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${bar.BUSINESS || '—'}</strong></td>
+      <td>${bar.NEIGHBORHOOD || '—'}</td>
+      <td style="font-size:0.82rem;color:var(--muted);">${bar.ADDRESS_STREET || '—'}</td>
+      <td>
+        <button class="btn-table-action btn-approve"
+          onclick="addQuizzoToMasterBars('${bar._id}', ${JSON.stringify(bar.BUSINESS || '').replace(/'/g,"\\'")})"
+          title="Add to bars collection">
+          <i class="fa fa-plus"></i> Add to Bars
+        </button>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+async function addQuizzoToMasterBars(id, name) {
+  if (!confirm(`Add "${name}" to the bars collection as a new entry?`)) return;
+  try {
+    const res  = await adminFetch(`/admin/quizzo-to-bars/${id}`, 'POST');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    toast(`"${name}" added to bars collection.`, 'success');
+    // Remove from local list and re-render
+    unmatchedData = unmatchedData.filter(b => b._id !== id);
+    const badge = document.getElementById('badge-unmatched');
+    if (badge) badge.textContent = unmatchedData.length;
+    renderUnmatchedTable(unmatchedData);
+  } catch (err) {
+    toast('Failed: ' + err.message, 'error');
+  }
 }

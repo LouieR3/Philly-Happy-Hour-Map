@@ -54,6 +54,12 @@
       <div class="tab" data-tab="yelp">
         Yelp Import
       </div>
+      <div class="tab" data-tab="photos">
+        Bar Photos
+      </div>
+      <div class="tab" data-tab="unmatched">
+        Unmatched <span class="tab-badge" id="badge-unmatched">0</span>
+      </div>
     </div>
 
     <main>
@@ -219,6 +225,59 @@
               </tr>
             </thead>
             <tbody id="allbars-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Bar Photos Panel -->
+      <div class="panel" id="panel-photos">
+        <div class="section-header">
+          <h2>Bar Photos <span id="photos-count" style="font-size:0.85rem;font-weight:400;color:var(--muted);"></span></h2>
+          <button class="btn-export" id="photos-delete-btn" onclick="deleteSelectedPhotos()" style="display:none;">
+            <i class="fa fa-trash"></i> Delete Selected (<span id="photos-selected-count">0</span>)
+          </button>
+        </div>
+        <div class="pool-filters" style="margin-bottom:16px;">
+          <div class="search-wrap" style="flex:1;margin-bottom:0;">
+            <i class="fa fa-search"></i>
+            <input type="text" id="photos-search" placeholder="Filter by bar name…" oninput="filterPhotos(this.value)" />
+          </div>
+          <label style="display:flex;align-items:center;gap:6px;font-size:0.85rem;color:var(--muted);cursor:pointer;white-space:nowrap;">
+            <input type="checkbox" id="photos-has-photos-only" onchange="filterPhotos(document.getElementById('photos-search').value)" />
+            Has photos only
+          </label>
+        </div>
+        <div id="photos-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;"></div>
+      </div>
+
+      <!-- Unmatched Quizzo Panel -->
+      <div class="panel" id="panel-unmatched">
+        <div class="section-header">
+          <h2>Unmatched Quizzo Bars <span id="unmatched-count" style="font-size:0.85rem;font-weight:400;color:var(--muted);"></span></h2>
+          <button class="btn-export" onclick="loadUnmatched()">
+            <i class="fa fa-refresh"></i> Refresh
+          </button>
+        </div>
+        <p style="color:var(--muted);font-size:0.85rem;margin-bottom:16px;">
+          Quizzo bars whose name doesn't match any bar in the <strong>mappy_hour.bars</strong> collection.
+          Adding one creates a minimal bars record so photos, hours, etc. can be enriched later.
+        </p>
+        <div class="pool-filters" style="margin-bottom:16px;">
+          <div class="search-wrap" style="flex:1;margin-bottom:0;">
+            <i class="fa fa-search"></i>
+            <input type="text" id="unmatched-search" placeholder="Filter by name…" oninput="filterUnmatched(this.value)" />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table id="unmatched-table">
+            <thead>
+              <tr>
+                <th>Business Name</th>
+                <th>Neighborhood</th>
+                <th>Address</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="unmatched-tbody"></tbody>
           </table>
         </div>
       </div>
