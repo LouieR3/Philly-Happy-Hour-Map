@@ -826,7 +826,8 @@ function populateTable(data) {
 
   const list = document.getElementById('bar-list');
   list.innerHTML = '';
-  const photoTargets = new Map(); // name → placeholder element
+  // name → { thumbEl, tagsEl } for post-fetch enrichment
+  const barRefs = new Map();
 
   data.forEach((row) => {
     if (!row.BUSINESS || !row.NEIGHBORHOOD || !row.WEEKDAY || !row.TIME) return;
@@ -837,28 +838,45 @@ function populateTable(data) {
     const placeholder = document.createElement('div');
     placeholder.className = 'bar-card-thumb-placeholder';
     placeholder.innerHTML = '<i class="fa-solid fa-martini-glass-citrus"></i>';
-    photoTargets.set(row.BUSINESS, placeholder);
+
+    const tagsEl = document.createElement('div');
+    tagsEl.className = 'bar-card-tags';
+    tagsEl.innerHTML = `
+      <span class="bar-card-tag">${row.WEEKDAY}</span>
+      <span class="bar-card-tag">${row.TIME}</span>`;
+
+    barRefs.set(row.BUSINESS, { thumbEl: placeholder, tagsEl });
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'bar-card-name';
+    nameEl.textContent = row.BUSINESS;
+
+    const addrEl = document.createElement('div');
+    addrEl.className = 'bar-card-address';
+    addrEl.textContent = row.NEIGHBORHOOD;
 
     const body = document.createElement('div');
     body.className = 'bar-card-body';
-    body.innerHTML = `
-      <div class="bar-card-name">${row.BUSINESS}</div>
-      <div class="bar-card-address">${row.NEIGHBORHOOD}</div>
-      <div class="bar-card-tags">
-        <span class="bar-card-tag">${row.WEEKDAY}</span>
-        <span class="bar-card-tag">${row.TIME}</span>
-      </div>`;
+    body.appendChild(nameEl);
+    body.appendChild(addrEl);
+    body.appendChild(tagsEl);
 
     card.appendChild(placeholder);
     card.appendChild(body);
     card.addEventListener('click', () => {
       const marker = markerByName[row.BUSINESS];
-      if (marker) { leafletmap.setView(marker.getLatLng(), 16); marker.openPopup(); }
+      if (marker) {
+        leafletmap.setView(marker.getLatLng(), 16);
+        marker.openPopup();
+        // Close mobile sheet after tap
+        const sheet = document.getElementById('table-column');
+        if (sheet) sheet.classList.remove('sheet-open');
+      }
     });
     list.appendChild(card);
   });
 
-  fetchAndApplyPhotos(photoTargets, API_BASE);
+  fetchAndApplyMeta(barRefs, API_BASE);
 }
 
 // Filter cards by search text
@@ -869,25 +887,39 @@ function filterTable(query) {
   });
 }
 
-// Batch-fetch photos from bars collection and swap in images
-async function fetchAndApplyPhotos(nameToEl, base) {
-  if (!nameToEl.size) return;
+// Batch-fetch photos + rating + price and inject into cards
+async function fetchAndApplyMeta(nameToRefs, base) {
+  if (!nameToRefs.size) return;
   try {
-    const names = [...nameToEl.keys()];
+    const names = [...nameToRefs.keys()];
     const res = await fetch(`${base}/api/bar-photos?names=${encodeURIComponent(names.join('|'))}`);
-    const photoMap = await res.json();
-    Object.entries(photoMap).forEach(([name, photos]) => {
-      const el = nameToEl.get(name);
-      if (!el || !photos?.length) return;
-      const img = document.createElement('img');
-      img.className = 'bar-card-thumb';
-      img.src = photos[0];
-      img.alt = name;
-      img.onerror = () => { /* keep placeholder icon on broken URL */ };
-      el.replaceWith(img);
+    const metaMap = await res.json();
+    Object.entries(metaMap).forEach(([name, meta]) => {
+      const refs = nameToRefs.get(name);
+      if (!refs) return;
+      const { thumbEl, tagsEl } = refs;
+      if (meta.photos?.length) {
+        const img = document.createElement('img');
+        img.className = 'bar-card-thumb';
+        img.src = meta.photos[0];
+        img.alt = name;
+        thumbEl.replaceWith(img);
+      }
+      if (meta.rating) {
+        const t = document.createElement('span');
+        t.className = 'bar-card-tag';
+        t.textContent = `⭐ ${meta.rating}`;
+        tagsEl.appendChild(t);
+      }
+      if (meta.price) {
+        const t = document.createElement('span');
+        t.className = 'bar-card-tag';
+        t.textContent = meta.price;
+        tagsEl.appendChild(t);
+      }
     });
   } catch (e) {
-    console.warn('[bar-photos]', e.message);
+    console.warn('[bar-meta]', e.message);
   }
 }
 

@@ -741,19 +741,26 @@ app.get('/api/bars', async (req, res) => {
   }
 });
 
-// Batch photo lookup by bar name — used by sidebar cards
+// Batch meta lookup by bar name — photos, rating, price
 // ?names=Bar+One|Bar+Two  (pipe-separated, URI-encoded)
+// Returns: { "Bar Name": { photos: [...], rating: 4.5, price: "$$" } }
 app.get('/api/bar-photos', async (req, res) => {
   try {
     const names = decodeURIComponent(req.query.names || '')
       .split('|').map(n => n.trim()).filter(Boolean);
     if (!names.length) return res.json({});
     const bars = await Bar.find(
-      { Name: { $in: names }, Photos: { $exists: true, $ne: [] } },
-      { Name: 1, Photos: 1 }
+      { Name: { $in: names } },
+      { Name: 1, Photos: 1, 'Yelp Rating': 1, Price: 1 }
     ).lean();
     const map = {};
-    bars.forEach(b => { if (b.Photos?.length) map[b.Name] = b.Photos; });
+    bars.forEach(b => {
+      map[b.Name] = {
+        photos: b.Photos || [],
+        rating: b['Yelp Rating'] ?? null,
+        price:  b.Price || null,
+      };
+    });
     res.json(map);
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -377,7 +377,12 @@ function populatePoolTable(data) {
     card.appendChild(body);
     card.addEventListener('click', () => {
       const marker = poolMarkers.find((m) => m.name === row.Name);
-      if (marker) { poolMap.setView(marker.getLatLng(), 16); marker.openPopup(); }
+      if (marker) {
+        poolMap.setView(marker.getLatLng(), 16);
+        marker.openPopup();
+        const sheet = document.getElementById('pool-table-column');
+        if (sheet) sheet.classList.remove('sheet-open');
+      }
     });
     list.appendChild(card);
   });
@@ -390,13 +395,13 @@ async function fetchPoolPhotos(nameToEl) {
   try {
     const names = [...nameToEl.keys()];
     const res = await fetch(`${POOL_API_BASE}/api/bar-photos?names=${encodeURIComponent(names.join('|'))}`);
-    const photoMap = await res.json();
-    Object.entries(photoMap).forEach(([name, photos]) => {
+    const metaMap = await res.json();
+    Object.entries(metaMap).forEach(([name, meta]) => {
       const el = nameToEl.get(name);
-      if (!el || !photos?.length) return;
+      if (!el || !meta.photos?.length) return;
       const img = document.createElement('img');
       img.className = 'bar-card-thumb';
-      img.src = photos[0];
+      img.src = meta.photos[0];
       img.alt = name;
       el.replaceWith(img);
     });
