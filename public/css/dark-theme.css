@@ -328,6 +328,92 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0.5rem;
 }
 
+/* ── Bar card sidebar ─────────────────────────────────────── */
+.bar-card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-right: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--mh-border) transparent;
+}
+.bar-card-list::-webkit-scrollbar { width: 5px; }
+.bar-card-list::-webkit-scrollbar-track { background: transparent; }
+.bar-card-list::-webkit-scrollbar-thumb { background: var(--mh-border); border-radius: 4px; }
+
+.bar-card {
+  display: flex;
+  align-items: stretch;
+  background: var(--mh-dark-3, #0f1c2e);
+  border: 1px solid var(--mh-border);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  min-height: 84px;
+}
+.bar-card:hover {
+  border-color: var(--mh-green-1, #34d399);
+  background: var(--mh-dark-2, #0a1628);
+}
+.bar-card-thumb {
+  width: 88px;
+  min-width: 88px;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+}
+.bar-card-thumb-placeholder {
+  width: 88px;
+  min-width: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.04);
+  color: #334155;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.bar-card-body {
+  padding: 9px 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  min-width: 0;
+}
+.bar-card-name {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--mh-text, #e2e8f0);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bar-card-address {
+  font-size: 0.75rem;
+  color: var(--muted, #64748b);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.bar-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 3px;
+}
+.bar-card-tag {
+  font-size: 0.7rem;
+  background: rgba(255,255,255,0.06);
+  color: #94a3b8;
+  border-radius: 4px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
 /* ── Pool map ─────────────────────────────────────────────── */
 #pool-leaflet-map {
   width: 100%;
@@ -355,8 +441,10 @@ h1, h2, h3, h4, h5, h6 {
   }
   #bar-table-container,
   #pool-bar-table-container {
-    max-height: 45vh;
     border-radius: 1rem;
+  }
+  .bar-card-list {
+    max-height: 40vh;
   }
   .filter-box {
     gap: 0.4rem !important;
@@ -691,9 +779,9 @@ h1, h2, h3, h4, h5, h6 {
   #pool-filters {
     display: none !important;
   }
-  /* Hide sidebar tables on mobile — keep Add/Edit buttons */
-  #bar-table-container,
-  #pool-bar-table-container {
+  /* Hide sidebar cards on mobile — keep Add/Edit buttons */
+  #bar-list,
+  #pool-bar-list {
     display: none !important;
   }
 }

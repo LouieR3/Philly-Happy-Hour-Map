@@ -819,51 +819,76 @@ document
         siteToast("There was an error submitting your request. Please try again.", "error");
       });
   });
-// Populate the table with data from the API
+// Build a name → placeholder-el Map and kick off photo fetch
 function populateTable(data) {
-  const tableBody = document.querySelector("#bar-table tbody");
-  tableBody.innerHTML = "";
-
-  // Build a lookup by business name from the already-created markers array.
-  // Cannot use forEach index because markers only contains rows that had valid
-  // coordinates — rows without lat/lng are skipped during marker creation,
-  // causing index drift between data[] and markers[].
   const markerByName = {};
-  markers.forEach((m) => {
-    if (m.businessName) markerByName[m.businessName] = m;
-  });
+  markers.forEach((m) => { if (m.businessName) markerByName[m.businessName] = m; });
+
+  const list = document.getElementById('bar-list');
+  list.innerHTML = '';
+  const photoTargets = new Map(); // name → placeholder element
 
   data.forEach((row) => {
-    if (!row.BUSINESS || !row.NEIGHBORHOOD || !row.WEEKDAY || !row.TIME) {
-      return;
-    }
+    if (!row.BUSINESS || !row.NEIGHBORHOOD || !row.WEEKDAY || !row.TIME) return;
 
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-    <td>${row.BUSINESS}</td>
-    <td>${row.NEIGHBORHOOD}</td>
-    <td>${row.WEEKDAY}<br>${row.TIME}</td>
-    `;
+    const card = document.createElement('div');
+    card.className = 'bar-card';
 
-    tr.addEventListener("click", () => {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'bar-card-thumb-placeholder';
+    placeholder.innerHTML = '<i class="fa-solid fa-martini-glass-citrus"></i>';
+    photoTargets.set(row.BUSINESS, placeholder);
+
+    const body = document.createElement('div');
+    body.className = 'bar-card-body';
+    body.innerHTML = `
+      <div class="bar-card-name">${row.BUSINESS}</div>
+      <div class="bar-card-address">${row.NEIGHBORHOOD}</div>
+      <div class="bar-card-tags">
+        <span class="bar-card-tag">${row.WEEKDAY}</span>
+        <span class="bar-card-tag">${row.TIME}</span>
+      </div>`;
+
+    card.appendChild(placeholder);
+    card.appendChild(body);
+    card.addEventListener('click', () => {
       const marker = markerByName[row.BUSINESS];
-      if (marker) {
-        leafletmap.setView(marker.getLatLng(), 16);
-        marker.openPopup();
-      }
+      if (marker) { leafletmap.setView(marker.getLatLng(), 16); marker.openPopup(); }
     });
+    list.appendChild(card);
+  });
 
-    tableBody.appendChild(tr);
+  fetchAndApplyPhotos(photoTargets, API_BASE);
+}
+
+// Filter cards by search text
+function filterTable(query) {
+  const lower = query.toLowerCase();
+  document.querySelectorAll('#bar-list .bar-card').forEach((card) => {
+    card.style.display = card.textContent.toLowerCase().includes(lower) ? '' : 'none';
   });
 }
 
-// Filter the table based on search input
-function filterTable(query) {
-  const rows = document.querySelectorAll("#bar-table tbody tr");
-  rows.forEach((row) => {
-    const text = row.textContent.toLowerCase();
-    row.style.display = text.includes(query.toLowerCase()) ? "" : "none";
-  });
+// Batch-fetch photos from bars collection and swap in images
+async function fetchAndApplyPhotos(nameToEl, base) {
+  if (!nameToEl.size) return;
+  try {
+    const names = [...nameToEl.keys()];
+    const res = await fetch(`${base}/api/bar-photos?names=${encodeURIComponent(names.join('|'))}`);
+    const photoMap = await res.json();
+    Object.entries(photoMap).forEach(([name, photos]) => {
+      const el = nameToEl.get(name);
+      if (!el || !photos?.length) return;
+      const img = document.createElement('img');
+      img.className = 'bar-card-thumb';
+      img.src = photos[0];
+      img.alt = name;
+      img.onerror = () => { /* keep placeholder icon on broken URL */ };
+      el.replaceWith(img);
+    });
+  } catch (e) {
+    console.warn('[bar-photos]', e.message);
+  }
 }
 
 // Add event listener for the search bar

@@ -9,5 +9,6 @@
       "name": "Preset Connection",
       "connectionString": "mongodb://localhost:27017"
     }
-  ]
+  ],
+  "liveServer.settings.port": 5501
 }

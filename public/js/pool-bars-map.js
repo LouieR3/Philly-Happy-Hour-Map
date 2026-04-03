@@ -333,30 +333,76 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
   })
   .catch((err) => console.error('Failed to load pool bars:', err));
 
-// ─── Table population ─────────────────────────────────────────────────────────
+// ─── Card sidebar population ──────────────────────────────────────────────────
 function populatePoolTable(data) {
-  const tbody = document.querySelector('#pool-bar-table tbody');
-  tbody.innerHTML = '';
+  const list = document.getElementById('pool-bar-list');
+  list.innerHTML = '';
+  const photoTargets = new Map();
+
   const sorted = [...data].sort((a, b) => (Number(b.Number_of_Tables) || 0) - (Number(a.Number_of_Tables) || 0));
-  sorted.forEach((row, i) => {
+  sorted.forEach((row) => {
     if (!row.Name) return;
-    const cost = row.Payment_Model === 'Per Hour'
-      ? (row.Cost_Per_Hour  ? `$${row.Cost_Per_Hour}/hr`  : '—')
-      : (row.Cost_Per_Game  ? `$${row.Cost_Per_Game}`     : '—');
-    const tr = document.createElement('tr');
-    
-    const pay_model = row.Payment_Model;
-    tr.innerHTML = `
-      <td>${row.Name}</td>
-      <td>${row.Number_of_Tables ?? '?'}</td>
-      <td>${row.Payment_Model ?? '—'}</td>
-      <td>${cost}</td>`;
-    tr.addEventListener('click', () => {
+
+    const pmLower = (row.Payment_Model || '').toLowerCase();
+    const cost = (pmLower === 'per_hour' || pmLower === 'hourly')
+      ? (row.Cost_Per_Hour ? `$${row.Cost_Per_Hour}/hr` : null)
+      : (row.Cost_Per_Game ? `$${row.Cost_Per_Game}` : null);
+
+    const payColor = paymentColor(row.Payment_Model);
+    const payLabel = row.Payment_Model || '';
+
+    const tags = [
+      row.Number_of_Tables ? `🎱 ${row.Number_of_Tables} table${row.Number_of_Tables !== 1 ? 's' : ''}` : null,
+      payLabel ? `<span style="color:${payColor};font-weight:600;">${payLabel}${cost ? ' · ' + cost : ''}</span>` : null,
+      row['Yelp Rating'] ? `⭐ ${row['Yelp Rating']}` : null,
+      row.Price || null,
+    ].filter(Boolean);
+
+    const card = document.createElement('div');
+    card.className = 'bar-card';
+
+    const placeholder = document.createElement('div');
+    placeholder.className = 'bar-card-thumb-placeholder';
+    placeholder.innerHTML = '<i class="fa-solid fa-circle-dot"></i>';
+    photoTargets.set(row.Name, placeholder);
+
+    const body = document.createElement('div');
+    body.className = 'bar-card-body';
+    body.innerHTML = `
+      <div class="bar-card-name">${row.Name}</div>
+      <div class="bar-card-address">${row.Address || row.Neighborhood || ''}</div>
+      <div class="bar-card-tags">${tags.map(t => `<span class="bar-card-tag">${t}</span>`).join('')}</div>`;
+
+    card.appendChild(placeholder);
+    card.appendChild(body);
+    card.addEventListener('click', () => {
       const marker = poolMarkers.find((m) => m.name === row.Name);
       if (marker) { poolMap.setView(marker.getLatLng(), 16); marker.openPopup(); }
     });
-    tbody.appendChild(tr);
+    list.appendChild(card);
   });
+
+  fetchPoolPhotos(photoTargets);
+}
+
+async function fetchPoolPhotos(nameToEl) {
+  if (!nameToEl.size) return;
+  try {
+    const names = [...nameToEl.keys()];
+    const res = await fetch(`${POOL_API_BASE}/api/bar-photos?names=${encodeURIComponent(names.join('|'))}`);
+    const photoMap = await res.json();
+    Object.entries(photoMap).forEach(([name, photos]) => {
+      const el = nameToEl.get(name);
+      if (!el || !photos?.length) return;
+      const img = document.createElement('img');
+      img.className = 'bar-card-thumb';
+      img.src = photos[0];
+      img.alt = name;
+      el.replaceWith(img);
+    });
+  } catch (e) {
+    console.warn('[bar-photos]', e.message);
+  }
 }
 // ── Pool bar search (prepopulate from bars collection) ────────────────────
 const poolSearchInput = document.getElementById('pool-search-input');
@@ -418,11 +464,11 @@ if (poolSearchInput && poolSearchResultsList) {
   });
 }
 
-// ─── Table search ─────────────────────────────────────────────────────────────
+// ─── Card search ─────────────────────────────────────────────────────────────
 document.getElementById('pool-bar-search').addEventListener('input', (e) => {
   const q = e.target.value.toLowerCase();
-  document.querySelectorAll('#pool-bar-table tbody tr').forEach((row) => {
-    row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+  document.querySelectorAll('#pool-bar-list .bar-card').forEach((card) => {
+    card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
   });
 });
 

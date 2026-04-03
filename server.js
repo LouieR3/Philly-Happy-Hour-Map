@@ -741,6 +741,25 @@ app.get('/api/bars', async (req, res) => {
   }
 });
 
+// Batch photo lookup by bar name — used by sidebar cards
+// ?names=Bar+One|Bar+Two  (pipe-separated, URI-encoded)
+app.get('/api/bar-photos', async (req, res) => {
+  try {
+    const names = decodeURIComponent(req.query.names || '')
+      .split('|').map(n => n.trim()).filter(Boolean);
+    if (!names.length) return res.json({});
+    const bars = await Bar.find(
+      { Name: { $in: names }, Photos: { $exists: true, $ne: [] } },
+      { Name: 1, Photos: 1 }
+    ).lean();
+    const map = {};
+    bars.forEach(b => { if (b.Photos?.length) map[b.Name] = b.Photos; });
+    res.json(map);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/search-bars', async (req, res) => {
   try {
     const q = (req.query.q || '').trim();
