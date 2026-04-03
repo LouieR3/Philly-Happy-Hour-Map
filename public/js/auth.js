@@ -15,7 +15,7 @@ import {
 // Firebase Console → Project Settings → Your apps → Web app → Config snippet
 const firebaseConfig = {
   apiKey:            "AIzaSyAK2bb2zN7ibRWsgc7SSU5ibUOHwpbksEI",
-  authDomain:        "mappy-hour-39fb6.firebaseapp.com",
+  authDomain:        "philly-mappy-hour.com",
   projectId:         "mappy-hour-39fb6",
   storageBucket:     "mappy-hour-39fb6.appspot.com",
   messagingSenderId: "83158396400",
