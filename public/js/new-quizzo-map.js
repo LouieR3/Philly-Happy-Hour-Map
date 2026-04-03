@@ -868,9 +868,6 @@ function populateTable(data) {
       if (marker) {
         leafletmap.setView(marker.getLatLng(), 16);
         marker.openPopup();
-        // Close mobile sheet after tap
-        const sheet = document.getElementById('table-column');
-        if (sheet) sheet.classList.remove('sheet-open');
       }
     });
     list.appendChild(card);
