@@ -791,6 +791,17 @@ function yelpGet(path) {
     } catch { return []; }
   })();
   const key = keys[0] || '';
+  
+  // Debug: log key status (without exposing the full key)
+  if (!key) {
+    console.error('[Yelp] No API key found in YELP_API_KEYS, YELP_API_KEY, or .env');
+    throw new Error('Yelp API key not configured');
+  }
+  if (key.length < 100) {
+    console.error(`[Yelp] API key appears invalid (${key.length} chars, expected ~128)`);
+    throw new Error(`Yelp API key invalid length: ${key.length} chars`);
+  }
+  
   return new Promise((resolve, reject) => {
     const req = https.get(
       { hostname: 'api.yelp.com', path, headers: { Authorization: `Bearer ${key}` } },
@@ -824,7 +835,7 @@ app.get('/admin/yelp-search', adminAuth, async (req, res) => {
     res.json(data);
   } catch (err) {
     console.error('[Yelp search] exception:', err.message);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: `Yelp search failed: ${err.message}` });
   }
 });
 
