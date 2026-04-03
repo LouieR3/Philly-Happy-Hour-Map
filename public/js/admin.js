@@ -1363,7 +1363,7 @@ function renderPhotosGrid(data) {
         const img = document.createElement('img');
         img.src = url;
         img.alt = `Photo ${idx + 1}`;
-        img.style.cssText = 'width:72px;height:52px;object-fit:cover;border-radius:4px;flex-shrink:0;';
+        img.style.cssText = 'width:20vh;height:20vh;object-fit:cover;border-radius:4px;flex-shrink:0;';
         img.onerror = () => { img.style.display = 'none'; };
 
         const label = document.createElement('span');

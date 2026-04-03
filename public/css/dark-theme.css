@@ -359,15 +359,15 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--mh-dark-2, #0a1628);
 }
 .bar-card-thumb {
-  width: 88px;
-  min-width: 88px;
+  width: 120px;
+  min-width: 120px;
   object-fit: cover;
   flex-shrink: 0;
   display: block;
 }
 .bar-card-thumb-placeholder {
-  width: 88px;
-  min-width: 88px;
+  width: 120px;
+  min-width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -775,13 +775,13 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
   }
   /* Hide desktop filters on mobile */
-  #filters,
+  /* #filters,
   #pool-filters {
     display: none !important;
-  }
+  } */
   /* Hide sidebar cards on mobile — keep Add/Edit buttons */
-  #bar-list,
+  /* #bar-list,
   #pool-bar-list {
     display: none !important;
-  }
+  } */
 }
