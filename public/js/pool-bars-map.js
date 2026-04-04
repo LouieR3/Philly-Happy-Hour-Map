@@ -380,6 +380,8 @@ function populatePoolTable(data) {
       if (marker) {
         poolMap.setView(marker.getLatLng(), 16);
         marker.openPopup();
+        const sheet = document.getElementById('pool-table-column');
+        if (sheet) sheet.classList.remove('sheet-open');
       }
     });
     list.appendChild(card);

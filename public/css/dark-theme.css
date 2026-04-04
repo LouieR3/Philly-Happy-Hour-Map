@@ -770,10 +770,55 @@ h1, h2, h3, h4, h5, h6 {
 .map-search-control ul li:last-child { border-bottom: none; }
 .map-search-control ul li:hover { background: rgba(255,255,255,0.07); }
 
-/* ── Mobile map tab switcher ───────────────────────────── */
-#mobile-map-tabs {
-  display: none; /* shown only via media query */
+/* ── Sheet handle bar (hidden on desktop) ──────────────── */
+.sheet-handle-bar {
+  display: none;
+  flex-direction: column;
+  padding: 8px 14px 6px;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--mh-border);
+  flex-shrink: 0;
 }
+.sheet-drag-pip {
+  width: 36px;
+  height: 4px;
+  background: #334155;
+  border-radius: 2px;
+  margin: 0 auto 8px;
+}
+.sheet-handle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sheet-handle-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--mh-text, #e2e8f0);
+}
+.sheet-handle-actions {
+  display: flex;
+  gap: 6px;
+}
+.sheet-action-btn {
+  font-size: 0.75rem !important;
+  padding: 3px 10px !important;
+}
+.sheet-search {
+  display: none;
+  width: 100%;
+  margin-top: 8px;
+  padding: 7px 12px;
+  background: var(--mh-dark-3, #0f1c2e);
+  border: 1px solid var(--mh-border);
+  border-radius: 8px;
+  color: var(--mh-text, #e2e8f0);
+  font-size: 0.85rem;
+  outline: none;
+}
+.sheet-search::placeholder { color: #64748b; }
 
 /* ── Mobile Display ────────────────────────────────────── */
 @media (max-width: 991.98px) {
@@ -781,59 +826,104 @@ h1, h2, h3, h4, h5, h6 {
     display: flex !important;
   }
 
-  /* Sticky tab bar at top of viewport */
-  #mobile-map-tabs {
+  #pool-filters, #filters {
+    display: none !important;
+  }
+
+  /* ── Bottom sheet transformation ── */
+  #table-column,
+  #pool-table-column {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 62px;
+    transition: height 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+  #table-column.sheet-open,
+  #pool-table-column.sheet-open {
+    height: 52vh;
+  }
+
+  /* Container fills the sheet and becomes a flex column */
+  #bar-table-container,
+  #pool-bar-table-container {
+    height: 100%;
+    display: flex !important;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 16px 16px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    max-height: none;
+  }
+
+  /* Show handle bar */
+  .sheet-handle-bar {
     display: flex;
-    position: sticky;
-    top: 56px; /* below fixed navbar */
-    z-index: 490;
-    background: var(--mh-dark-1, #060f1a);
-    border-bottom: 2px solid var(--mh-border);
-    gap: 0;
-  }
-  .mobile-map-tab {
-    flex: 1;
-    padding: 10px 0;
-    border: none;
-    background: transparent;
-    color: #64748b;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: color 0.15s, border-bottom 0.15s;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -2px;
-  }
-  .mobile-map-tab.active {
-    color: var(--mh-green-1, #34d399);
-    border-bottom-color: var(--mh-green-1, #34d399);
   }
 
-  /* Map fills screen height */
-  #leaflet-map,
-  #pool-leaflet-map {
-    height: 45vh !important;
-    min-height: 0;
+  /* Show sheet search only when open */
+  #table-column.sheet-open .sheet-search,
+  #pool-table-column.sheet-open .sheet-search {
+    display: block;
   }
 
-  /* Card list: vertical scroll below map, reasonable max height */
+  /* Hide desktop search and title — sheet has its own */
+  #bar-table-container > .form-control,
+  #pool-bar-table-container > .form-control,
+  #bar-table-container > h3,
+  #pool-bar-table-container > h3 {
+    display: none !important;
+  }
+
+  /* Card list scrolls inside the sheet */
   .bar-card-list {
-    max-height: 38vh;
+    flex: 1;
+    max-height: none;
     overflow-y: auto;
     overflow-x: hidden;
+    padding: 8px;
   }
 
-  /* Cards stay horizontal on mobile (photo left, content right) */
-  .bar-card {
-    min-height: 84px;
+  /* Cards go vertical when sheet is open: photo on top */
+  #table-column.sheet-open .bar-card,
+  #pool-table-column.sheet-open .bar-card {
+    flex-direction: column;
+    min-height: 0;
   }
-  .bar-card-name {
+  #table-column.sheet-open .bar-card-thumb,
+  #table-column.sheet-open .bar-card-thumb-placeholder,
+  #pool-table-column.sheet-open .bar-card-thumb,
+  #pool-table-column.sheet-open .bar-card-thumb-placeholder {
+    width: 100%;
+    min-width: 0;
+    height: 130px;
+  }
+  #table-column.sheet-open .bar-card-name,
+  #pool-table-column.sheet-open .bar-card-name {
     white-space: normal;
   }
 
-  /* Hide desktop h3 titles in sidebars */
-  #bar-table-container h3,
-  #pool-bar-table-container h3 {
+  /* Desktop action buttons hidden on mobile (sheet handle has its own) */
+  #action-buttons {
     display: none !important;
+  }
+
+  /* Give the map section bottom padding so the sheet handle doesn't cover the map */
+  #map-column,
+  #pool-map-column {
+    padding-bottom: 68px;
+  }
+  #leaflet-map,
+  #pool-leaflet-map {
+    min-height: 55vh;
   }
 }

@@ -270,6 +270,22 @@
           <!-- Filter Bars Column -->
           <div class="col-lg-4 mt-4 mt-lg-0" id="table-column">
             <div id="bar-table-container">
+              <!-- Mobile bottom-sheet handle (hidden on desktop) -->
+              <div class="sheet-handle-bar" id="quizzo-sheet-handle">
+                <div class="sheet-drag-pip"></div>
+                <div class="sheet-handle-row">
+                  <span class="sheet-handle-label">Quizzo Bars</span>
+                  <div class="sheet-handle-actions">
+                    <button class="btn btn-primary rounded-pill btn-sm sheet-action-btn" onclick="event.stopPropagation();document.getElementById('addBarModal').style.display='flex'">
+                      <i class="fa-solid fa-plus"></i> Add
+                    </button>
+                    <button class="btn btn-primary rounded-pill btn-sm sheet-action-btn" onclick="event.stopPropagation();document.getElementById('editBarModal').style.display='flex'">
+                      <i class="fa-solid fa-edit"></i> Edit
+                    </button>
+                  </div>
+                </div>
+                <input type="text" id="bar-search-sheet" class="sheet-search" placeholder="Search quizzo bars…" onclick="event.stopPropagation()" />
+              </div>
               <h3 class="text-center d-none d-lg-block">Filter Bars</h3>
               <input
                 type="text"
@@ -612,11 +628,27 @@
           </div>
           <div class="col-lg-4 mt-4 mt-lg-0" id="pool-table-column">
             <div id="pool-bar-table-container">
+              <!-- Mobile bottom-sheet handle (hidden on desktop) -->
+              <div class="sheet-handle-bar" id="pool-sheet-handle">
+                <div class="sheet-drag-pip"></div>
+                <div class="sheet-handle-row">
+                  <span class="sheet-handle-label">Pool Bars</span>
+                  <div class="sheet-handle-actions">
+                    <button class="btn btn-primary rounded-pill btn-sm sheet-action-btn" onclick="event.stopPropagation();document.getElementById('addPoolBarModal').style.display='flex'">
+                      <i class="fa-solid fa-plus"></i> Add
+                    </button>
+                    <button class="btn btn-primary rounded-pill btn-sm sheet-action-btn" onclick="event.stopPropagation();document.getElementById('editPoolBarModal').style.display='flex'">
+                      <i class="fa-solid fa-edit"></i> Edit
+                    </button>
+                  </div>
+                </div>
+                <input type="text" id="pool-bar-search-sheet" class="sheet-search" placeholder="Search pool bars…" onclick="event.stopPropagation()" />
+              </div>
               <h3 class="text-center d-none d-lg-block">Pool Bars</h3>
               <input type="text" id="pool-bar-search" class="form-control mb-3" placeholder="Search pool bars..." />
               <div id="pool-bar-list" class="bar-card-list"></div>
             </div>
-            <div class="d-flex gap-2 justify-content-center mt-3">
+            <div class="d-flex gap-2 justify-content-center mt-3 d-lg-flex d-none">
               <button id="add-pool-bar-button" class="btn btn-primary rounded-pill btn-sm">
                 <i class="fa-solid fa-plus" style="margin-right:6px;"></i>Add Pool Bar
               </button>
@@ -1060,47 +1092,38 @@
     <script src="js/new-quizzo-map.js"></script>
     <!-- POOL BARS MAP -->
     <script src="js/pool-bars-map.js"></script>
-    <!-- MOBILE MAP TAB SWITCHER -->
+    <!-- MOBILE BOTTOM SHEET -->
     <script>
       (function () {
-        // Only activate on mobile (<992px)
-        if (window.innerWidth >= 992) return;
+        function initSheet(colId, handleId, searchId, listId) {
+          const col    = document.getElementById(colId);
+          const handle = document.getElementById(handleId);
+          if (!col || !handle) return;
 
-        const sections = [
-          { id: 'quizzo',     label: 'Quizzo' },
-          { id: 'pool-bars',  label: 'Pool Bars' },
-        ];
-
-        // Build sticky tab bar
-        const bar = document.createElement('div');
-        bar.id = 'mobile-map-tabs';
-        bar.innerHTML = sections.map((s, i) =>
-          `<button class="mobile-map-tab${i === 0 ? ' active' : ''}" data-section="${s.id}">${s.label}</button>`
-        ).join('');
-        document.body.appendChild(bar);
-
-        function showSection(id) {
-          sections.forEach(s => {
-            const el = document.getElementById(s.id);
-            if (el) el.style.display = s.id === id ? '' : 'none';
+          // Toggle open/closed on handle tap
+          handle.addEventListener('click', () => {
+            col.classList.toggle('sheet-open');
           });
-          bar.querySelectorAll('.mobile-map-tab').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.section === id);
+
+          // Wire the sheet search to the same filter function as the desktop input
+          const sheetSearch = document.getElementById(searchId + '-sheet');
+          const mainSearch  = document.getElementById(searchId);
+          if (sheetSearch && mainSearch) {
+            sheetSearch.addEventListener('input', (e) => {
+              mainSearch.value = e.target.value;
+              mainSearch.dispatchEvent(new Event('input'));
+            });
+          }
+
+          // Close sheet when tapping a card (map click closes it — handled in map JS)
+          // Also close on Escape
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') col.classList.remove('sheet-open');
           });
-          // Invalidate Leaflet map sizes after display change
-          setTimeout(() => {
-            if (window.leafletmap)  window.leafletmap.invalidateSize();
-            if (window.poolMap)     window.poolMap.invalidateSize();
-          }, 50);
         }
 
-        bar.addEventListener('click', e => {
-          const btn = e.target.closest('.mobile-map-tab');
-          if (btn) showSection(btn.dataset.section);
-        });
-
-        // Init: hide all but first
-        showSection(sections[0].id);
+        initSheet('table-column',      'quizzo-sheet-handle', 'bar-search',      'bar-list');
+        initSheet('pool-table-column', 'pool-sheet-handle',   'pool-bar-search', 'pool-bar-list');
       })();
     </script>
     <!-- PHILLY BAR MAP (basic init) -->
