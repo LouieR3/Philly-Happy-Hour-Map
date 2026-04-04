@@ -511,6 +511,7 @@ fetch(`${API_BASE}/api/quizzo`)
 
     // Populate the table here — markers are fully built so the name lookup works
     populateTable(data);
+    if (window._quizzoDrawerSetData) window._quizzoDrawerSetData(data);
 
     // Populate mobile filter options
     if (window.populateQuizzoMobileFilterOptions) {
@@ -887,6 +888,30 @@ function filterTable(query) {
   });
 }
 
+// Batch-fetch photos + rating + price for drawer cards and inject into cards
+async function fetchAndApplyMetaForDrawer(nameToRefs, base) {
+  if (!nameToRefs.size) return;
+  try {
+    const names = [...nameToRefs.keys()];
+    const res = await fetch(`${base}/api/bar-photos?names=${encodeURIComponent(names.join('|'))}`);
+    const metaMap = await res.json();
+    Object.entries(metaMap).forEach(([name, meta]) => {
+      const refs = nameToRefs.get(name);
+      if (!refs) return;
+      const { thumbEl } = refs;
+      if (meta.photos?.length) {
+        const img = document.createElement('img');
+        img.className = 'drawer-card-thumb';
+        img.src = meta.photos[0];
+        img.alt = name;
+        thumbEl.replaceWith(img);
+      }
+    });
+  } catch (e) {
+    console.warn('[drawer-meta]', e.message);
+  }
+}
+
 // Batch-fetch photos + rating + price and inject into cards
 async function fetchAndApplyMeta(nameToRefs, base) {
   if (!nameToRefs.size) return;
@@ -974,3 +999,99 @@ document
         siteToast("There was an error submitting your edit. Please try again.", "error");
       });
   });
+// ── Quizzo mobile bottom drawer ────────────────────────────────────────────
+(function() {
+  var drawerData = [];   // all bars — set when data loads
+  var drawerOpen = false;
+
+  function openDrawer() {
+    document.getElementById('quizzo-drawer').classList.add('open');
+    document.getElementById('quizzo-drawer-backdrop').classList.add('open');
+    drawerOpen = true;
+    renderDrawerCards(drawerData);
+  }
+
+  function closeDrawer() {
+    document.getElementById('quizzo-drawer').classList.remove('open');
+    document.getElementById('quizzo-drawer-backdrop').classList.remove('open');
+    drawerOpen = false;
+  }
+
+  function renderDrawerCards(data) {
+    var row = document.getElementById('quizzo-drawer-cards');
+    var q = (document.getElementById('quizzo-drawer-search').value || '').toLowerCase();
+    row.innerHTML = '';
+
+    var filtered = data.filter(function(bar) {
+      if (!bar.BUSINESS || !bar.WEEKDAY) return false;
+      if (!q) return true;
+      return JSON.stringify(bar).toLowerCase().includes(q);
+    });
+
+    if (filtered.length === 0) {
+      row.innerHTML = '<p style="color:#64748b;padding:20px;font-size:0.85rem;">No bars match your search.</p>';
+      return;
+    }
+
+    var drawerBarRefs = new Map(); // Map of name -> { thumbEl }
+
+    filtered.forEach(function(bar) {
+      var card = document.createElement('div');
+      card.className = 'drawer-card';
+
+      var thumbEl = document.createElement('div');
+      thumbEl.className = 'drawer-card-thumb-placeholder';
+      thumbEl.innerHTML = '<i class="fa-solid fa-martini-glass"></i>';
+
+      drawerBarRefs.set(bar.BUSINESS, { thumbEl: thumbEl });
+
+      var addr = [bar.ADDRESS_STREET, bar.ADDRESS_CITY].filter(Boolean).join(', ') || bar.NEIGHBORHOOD || '';
+      var prize = bar.PRIZE_1_TYPE ? bar.PRIZE_1_TYPE.replace(/_/g, ' ') : '';
+
+      var body = document.createElement('div');
+      body.className = 'drawer-card-body';
+      body.innerHTML = '<div class="drawer-card-name">' + (bar.BUSINESS || '') + '</div>' +
+        '<div class="drawer-card-meta">' + (bar.WEEKDAY || '') + ' · ' + (bar.TIME || '') + '</div>' +
+        (addr ? '<div class="drawer-card-meta">' + addr + '</div>' : '') +
+        (prize ? '<div class="drawer-card-tags"><span class="drawer-card-tag">🥇 ' + prize + '</span></div>' : '');
+
+      card.appendChild(thumbEl);
+      card.appendChild(body);
+
+      card.addEventListener('click', function() {
+        var markerByName = {};
+        markers.forEach(function(m) { if (m.businessName) markerByName[m.businessName] = m; });
+        var marker = markerByName[bar.BUSINESS];
+        if (marker) {
+          closeDrawer();
+          leafletmap.setView(marker.getLatLng(), 16);
+          marker.openPopup();
+        }
+      });
+
+      row.appendChild(card);
+    });
+
+    // Batch-fetch photos for drawer cards
+    if (drawerBarRefs.size) {
+      fetchAndApplyMetaForDrawer(drawerBarRefs, API_BASE);
+    }
+  }
+
+  // Expose so the main fetch can seed the data
+  window._quizzoDrawerSetData = function(data) {
+    drawerData = data;
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var listBtn  = document.getElementById('quizzo-list-btn');
+    var closeBtn = document.getElementById('quizzo-drawer-close');
+    var backdrop = document.getElementById('quizzo-drawer-backdrop');
+    var search   = document.getElementById('quizzo-drawer-search');
+
+    if (listBtn)  listBtn.addEventListener('click', openDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+    if (backdrop) backdrop.addEventListener('click', closeDrawer);
+    if (search)   search.addEventListener('input', function() { renderDrawerCards(drawerData); });
+  });
+})();

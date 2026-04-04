@@ -171,6 +171,7 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
     });
 
     populatePoolTable(data);
+    if (window._poolDrawerSetData) window._poolDrawerSetData(data);
 
     // ── Custom map search overlay ──────────────────────────────────────────
     const PoolSearchControl = L.Control.extend({
@@ -715,3 +716,83 @@ document.getElementById('pool-edit-form').addEventListener('submit', async funct
     })
     .catch(() => siteToast('Error submitting edit.', 'error'));
 });
+// ── Pool bars mobile bottom drawer ─────────────────────────────────────────
+(function() {
+  var drawerData = [];
+
+  function openPoolDrawer() {
+    document.getElementById('pool-drawer').classList.add('open');
+    document.getElementById('pool-drawer-backdrop').classList.add('open');
+    renderPoolDrawerCards(drawerData);
+  }
+
+  function closePoolDrawer() {
+    document.getElementById('pool-drawer').classList.remove('open');
+    document.getElementById('pool-drawer-backdrop').classList.remove('open');
+  }
+
+  function renderPoolDrawerCards(data) {
+    var row = document.getElementById('pool-drawer-cards');
+    var q = (document.getElementById('pool-drawer-search').value || '').toLowerCase();
+    row.innerHTML = '';
+
+    var filtered = data.filter(function(bar) {
+      if (!bar.Name) return false;
+      if (!q) return true;
+      return JSON.stringify(bar).toLowerCase().includes(q);
+    });
+
+    if (filtered.length === 0) {
+      row.innerHTML = '<p style="color:#64748b;padding:20px;font-size:0.85rem;">No bars match.</p>';
+      return;
+    }
+
+    filtered.forEach(function(bar) {
+      var card = document.createElement('div');
+      card.className = 'drawer-card';
+
+      var thumb = bar.photo_url
+        ? '<img class="drawer-card-thumb" src="' + bar.photo_url + '" alt="" loading="lazy" />'
+        : '<div class="drawer-card-thumb-placeholder"><i class="fa-solid fa-circle-dot"></i></div>';
+
+      var cost = bar.Payment_Model === 'Hourly' || bar.Payment_Model === 'per_hour'
+        ? (bar.Cost_Per_Hour ? '$' + bar.Cost_Per_Hour + '/hr' : bar.Payment_Model)
+        : (bar.Cost_Per_Game ? '$' + bar.Cost_Per_Game + '/game' : (bar.Payment_Model || ''));
+
+      card.innerHTML = thumb +
+        '<div class="drawer-card-body">' +
+          '<div class="drawer-card-name">' + (bar.Name || '') + '</div>' +
+          (bar.Neighborhood ? '<div class="drawer-card-meta">' + bar.Neighborhood + '</div>' : '') +
+          (cost ? '<div class="drawer-card-tags"><span class="drawer-card-tag">🎱 ' + cost + '</span></div>' : '') +
+          (bar.Vibe ? '<div class="drawer-card-tags"><span class="drawer-card-tag">' + bar.Vibe + '</span></div>' : '') +
+        '</div>';
+
+      card.addEventListener('click', function() {
+        var marker = poolMarkers.find(function(m) { return m.name === bar.Name; });
+        if (marker) {
+          closePoolDrawer();
+          poolMap.setView(marker.getLatLng(), 16);
+          marker.openPopup();
+        }
+      });
+
+      row.appendChild(card);
+    });
+  }
+
+  window._poolDrawerSetData = function(data) {
+    drawerData = data;
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var listBtn  = document.getElementById('pool-list-btn');
+    var closeBtn = document.getElementById('pool-drawer-close');
+    var backdrop = document.getElementById('pool-drawer-backdrop');
+    var search   = document.getElementById('pool-drawer-search');
+
+    if (listBtn)  listBtn.addEventListener('click', openPoolDrawer);
+    if (closeBtn) closeBtn.addEventListener('click', closePoolDrawer);
+    if (backdrop) backdrop.addEventListener('click', closePoolDrawer);
+    if (search)   search.addEventListener('input', function() { renderPoolDrawerCards(drawerData); });
+  });
+})();

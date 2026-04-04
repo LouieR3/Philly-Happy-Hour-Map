@@ -264,28 +264,16 @@
             <button class="mobile-filter-btn" id="quizzo-mobile-filter-btn" title="Open Filters">
               <i class="fa-solid fa-sliders"></i>
             </button>
+            <!-- Mobile: List trigger button overlaid on map -->
+            <button class="list-trigger-btn" id="quizzo-list-btn">
+              <i class="fa-solid fa-list"></i> List
+            </button>
             <div id="leaflet-map"></div>
           </div>
 
-          <!-- Filter Bars Column -->
+          <!-- Desktop list column (hidden on mobile) -->
           <div class="col-lg-4 mt-4 mt-lg-0" id="table-column">
             <div id="bar-table-container">
-              <!-- Mobile bottom-sheet handle (hidden on desktop) -->
-              <div class="sheet-handle-bar" id="quizzo-sheet-handle">
-                <div class="sheet-drag-pip"></div>
-                <div class="sheet-handle-row">
-                  <span class="sheet-handle-label">Quizzo Bars</span>
-                  <div class="sheet-handle-actions">
-                    <button class="btn btn-primary rounded-pill btn-sm sheet-action-btn" onclick="event.stopPropagation();document.getElementById('addBarModal').style.display='flex'">
-                      <i class="fa-solid fa-plus"></i> Add
-                    </button>
-                    <button class="btn btn-primary rounded-pill btn-sm sheet-action-btn" onclick="event.stopPropagation();document.getElementById('editBarModal').style.display='flex'">
-                      <i class="fa-solid fa-edit"></i> Edit
-                    </button>
-                  </div>
-                </div>
-                <input type="text" id="bar-search-sheet" class="sheet-search" placeholder="Search quizzo bars…" onclick="event.stopPropagation()" />
-              </div>
               <h3 class="text-center d-none d-lg-block">Filter Bars</h3>
               <input
                 type="text"
@@ -624,26 +612,15 @@
             <button class="mobile-filter-btn" id="pool-mobile-filter-btn" title="Open Filters">
               <i class="fa-solid fa-sliders"></i>
             </button>
+            <!-- Mobile: List trigger button overlaid on map -->
+            <button class="list-trigger-btn" id="pool-list-btn">
+              <i class="fa-solid fa-list"></i> List
+            </button>
             <div id="pool-leaflet-map"></div>
           </div>
+          <!-- Desktop list column (hidden on mobile) -->
           <div class="col-lg-4 mt-4 mt-lg-0" id="pool-table-column">
             <div id="pool-bar-table-container">
-              <!-- Mobile bottom-sheet handle (hidden on desktop) -->
-              <div class="sheet-handle-bar" id="pool-sheet-handle">
-                <div class="sheet-drag-pip"></div>
-                <div class="sheet-handle-row">
-                  <span class="sheet-handle-label">Pool Bars</span>
-                  <div class="sheet-handle-actions">
-                    <button class="btn btn-primary rounded-pill btn-sm sheet-action-btn" onclick="event.stopPropagation();document.getElementById('addPoolBarModal').style.display='flex'">
-                      <i class="fa-solid fa-plus"></i> Add
-                    </button>
-                    <button class="btn btn-primary rounded-pill btn-sm sheet-action-btn" onclick="event.stopPropagation();document.getElementById('editPoolBarModal').style.display='flex'">
-                      <i class="fa-solid fa-edit"></i> Edit
-                    </button>
-                  </div>
-                </div>
-                <input type="text" id="pool-bar-search-sheet" class="sheet-search" placeholder="Search pool bars…" onclick="event.stopPropagation()" />
-              </div>
               <h3 class="text-center d-none d-lg-block">Pool Bars</h3>
               <input type="text" id="pool-bar-search" class="form-control mb-3" placeholder="Search pool bars..." />
               <div id="pool-bar-list" class="bar-card-list"></div>
@@ -1170,5 +1147,29 @@
         $(".dataTables_length").addClass("bs-select");
       });
     </script> -->
+  <!-- ── Quizzo bottom drawer (mobile only) ───────────────────────── -->
+  <div class="drawer-backdrop" id="quizzo-drawer-backdrop"></div>
+  <div class="bottom-drawer" id="quizzo-drawer">
+    <div class="drawer-pip"></div>
+    <div class="drawer-header">
+      <span class="drawer-title">Quizzo Bars</span>
+      <input type="text" class="drawer-search" id="quizzo-drawer-search" placeholder="Search…" />
+      <button class="drawer-close" id="quizzo-drawer-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-card-row" id="quizzo-drawer-cards"></div>
+  </div>
+
+  <!-- ── Pool bottom drawer (mobile only) ──────────────────────────── -->
+  <div class="drawer-backdrop" id="pool-drawer-backdrop"></div>
+  <div class="bottom-drawer" id="pool-drawer">
+    <div class="drawer-pip"></div>
+    <div class="drawer-header">
+      <span class="drawer-title">Pool Bars</span>
+      <input type="text" class="drawer-search" id="pool-drawer-search" placeholder="Search…" />
+      <button class="drawer-close" id="pool-drawer-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-card-row" id="pool-drawer-cards"></div>
+  </div>
+
   </body>
 </html>
