@@ -1012,9 +1012,20 @@ document
   }
 
   function closeDrawer() {
-    document.getElementById('quizzo-drawer').classList.remove('open');
-    document.getElementById('quizzo-drawer-backdrop').classList.remove('open');
+    console.log('[Quizzo Drawer] closeDrawer() called');
+    const drawerEl = document.getElementById('quizzo-drawer');
+    const backdropEl = document.getElementById('quizzo-drawer-backdrop');
+    console.log('[Quizzo Drawer] Found drawer:', !!drawerEl, 'backdrop:', !!backdropEl);
+    if (drawerEl) {
+      console.log('[Quizzo Drawer] Removing open class from drawer');
+      drawerEl.classList.remove('open');
+    }
+    if (backdropEl) {
+      console.log('[Quizzo Drawer] Removing open class from backdrop');
+      backdropEl.classList.remove('open');
+    }
     drawerOpen = false;
+    console.log('[Quizzo Drawer] closeDrawer() complete');
   }
 
   function renderDrawerCards(data) {
@@ -1088,9 +1099,36 @@ document
   var closeBtn = document.getElementById('quizzo-drawer-close');
   var backdrop = document.getElementById('quizzo-drawer-backdrop');
   var search   = document.getElementById('quizzo-drawer-search');
+  var drawer   = document.getElementById('quizzo-drawer');
 
-  if (listBtn)  listBtn.addEventListener('click', openDrawer);
-  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+  console.log('[Quizzo Drawer] Elements found - listBtn:', !!listBtn, 'closeBtn:', !!closeBtn, 'backdrop:', !!backdrop, 'drawer:', !!drawer);
+
+  if (listBtn) {
+    listBtn.addEventListener('click', function() {
+      console.log('[Quizzo Drawer] List button clicked');
+      openDrawer();
+    });
+  }
+  if (closeBtn) {
+    closeBtn.addEventListener('click', function(e) {
+      console.log('[Quizzo Drawer] Close button clicked');
+      e.stopPropagation();
+      closeDrawer();
+    });
+  }
+  if (backdrop) {
+    backdrop.addEventListener('click', function(e) {
+      console.log('[Quizzo Drawer] Backdrop clicked');
+      closeDrawer();
+    });
+  }
   if (search)   search.addEventListener('input', function() { renderDrawerCards(drawerData); });
+  
+  // Keyboard close on Escape
+  if (drawer) document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      console.log('[Quizzo Drawer] Escape key pressed');
+      closeDrawer();
+    }
+  });
 })();
