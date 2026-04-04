@@ -514,18 +514,24 @@ document.querySelectorAll('.pool-tables-option').forEach((opt) => {
 });
 
 // Happy Hour toggle
-document.getElementById('pool-hh-button').addEventListener('click', () => {
-  poolActiveFilters.hasHappyHour = !poolActiveFilters.hasHappyHour;
-  setPoolFilterActive('pool-hh-button', poolActiveFilters.hasHappyHour);
-  applyPoolFilters();
-});
+const poolHhBtn = document.getElementById('pool-hh-button');
+if (poolHhBtn) {
+  poolHhBtn.addEventListener('click', () => {
+    poolActiveFilters.hasHappyHour = !poolActiveFilters.hasHappyHour;
+    setPoolFilterActive('pool-hh-button', poolActiveFilters.hasHappyHour);
+    applyPoolFilters();
+  });
+}
 
 // League toggle
-document.getElementById('pool-league-button').addEventListener('click', () => {
-  poolActiveFilters.hasLeague = !poolActiveFilters.hasLeague;
-  setPoolFilterActive('pool-league-button', poolActiveFilters.hasLeague);
-  applyPoolFilters();
-});
+const poolLeagueBtn = document.getElementById('pool-league-button');
+if (poolLeagueBtn) {
+  poolLeagueBtn.addEventListener('click', () => {
+    poolActiveFilters.hasLeague = !poolActiveFilters.hasLeague;
+    setPoolFilterActive('pool-league-button', poolActiveFilters.hasLeague);
+    applyPoolFilters();
+  });
+}
 
 // Reset
 document.getElementById('pool-reset-button').addEventListener('click', () => {
@@ -784,15 +790,14 @@ document.getElementById('pool-edit-form').addEventListener('submit', async funct
     drawerData = data;
   };
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var listBtn  = document.getElementById('pool-list-btn');
-    var closeBtn = document.getElementById('pool-drawer-close');
-    var backdrop = document.getElementById('pool-drawer-backdrop');
-    var search   = document.getElementById('pool-drawer-search');
+  // Initialize drawer controls (no DOMContentLoaded needed — script loads after DOM is ready)
+  var listBtn  = document.getElementById('pool-list-btn');
+  var closeBtn = document.getElementById('pool-drawer-close');
+  var backdrop = document.getElementById('pool-drawer-backdrop');
+  var search   = document.getElementById('pool-drawer-search');
 
-    if (listBtn)  listBtn.addEventListener('click', openPoolDrawer);
-    if (closeBtn) closeBtn.addEventListener('click', closePoolDrawer);
-    if (backdrop) backdrop.addEventListener('click', closePoolDrawer);
-    if (search)   search.addEventListener('input', function() { renderPoolDrawerCards(drawerData); });
-  });
+  if (listBtn)  listBtn.addEventListener('click', openPoolDrawer);
+  if (closeBtn) closeBtn.addEventListener('click', closePoolDrawer);
+  if (backdrop) backdrop.addEventListener('click', closePoolDrawer);
+  if (search)   search.addEventListener('input', function() { renderPoolDrawerCards(drawerData); });
 })();

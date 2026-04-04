@@ -1083,15 +1083,14 @@ document
     drawerData = data;
   };
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var listBtn  = document.getElementById('quizzo-list-btn');
-    var closeBtn = document.getElementById('quizzo-drawer-close');
-    var backdrop = document.getElementById('quizzo-drawer-backdrop');
-    var search   = document.getElementById('quizzo-drawer-search');
+  // Initialize drawer controls (no DOMContentLoaded needed — script loads after DOM is ready)
+  var listBtn  = document.getElementById('quizzo-list-btn');
+  var closeBtn = document.getElementById('quizzo-drawer-close');
+  var backdrop = document.getElementById('quizzo-drawer-backdrop');
+  var search   = document.getElementById('quizzo-drawer-search');
 
-    if (listBtn)  listBtn.addEventListener('click', openDrawer);
-    if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
-    if (backdrop) backdrop.addEventListener('click', closeDrawer);
-    if (search)   search.addEventListener('input', function() { renderDrawerCards(drawerData); });
-  });
+  if (listBtn)  listBtn.addEventListener('click', openDrawer);
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+  if (backdrop) backdrop.addEventListener('click', closeDrawer);
+  if (search)   search.addEventListener('input', function() { renderDrawerCards(drawerData); });
 })();

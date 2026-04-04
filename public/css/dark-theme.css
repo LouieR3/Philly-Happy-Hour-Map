@@ -135,6 +135,7 @@ h1, h2, h3, h4, h5, h6 {
 .pool-payment-option, .pool-tables-option {
   color: var(--mh-text) !important;
   text-align: center;
+  cursor: pointer;
 }
 .weekday-option:hover, .time-option:hover, .first-prize-option:hover,
 .prize-amount-option:hover, .neighborhood-option:hover, .region-option:hover,
