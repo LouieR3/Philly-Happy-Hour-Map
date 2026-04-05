@@ -1,5 +1,4 @@
 // ── State ──────────────────────────────────────────────────────────────────
-let adminToken = "";
 let liveData = [];
 
 const WEEKDAYS = [
@@ -11,14 +10,27 @@ const WEEKDAYS = [
   "SATURDAY",
   "SUNDAY",
 ];
-// const API_BASE = "https://philly-happy-hour-map-production.up.railway.app";
-// const API_BASE = "http://localhost:3000";
-// const API_BASE = window.location.origin;
 const API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:3000'
   : 'https://philly-happy-hour-map-production.up.railway.app';
-console.log(window.location.origin);
+
+// Check authentication on page load
+document.addEventListener("DOMContentLoaded", () => {
+  const adminToken = localStorage.getItem("adminToken");
+  if (!adminToken) {
+    window.location.href = "admin-login.html";
+    return;
+  }
+  // Token exists, proceed with loading data
+  initializeAdmin();
+});
 function adminFetch(url, method = "GET", body = null) {
+  const adminToken = localStorage.getItem("adminToken");
+  if (!adminToken) {
+    window.location.href = "admin-login.html";
+    return Promise.reject(new Error("Not authenticated"));
+  }
+  
   const opts = {
     method,
     headers: {
@@ -30,55 +42,62 @@ function adminFetch(url, method = "GET", body = null) {
   return fetch(API_BASE + url, opts);
 }
 
-// ── Auth ───────────────────────────────────────────────────────────────────
-function login() {
-  const pw = document.getElementById("admin-password").value.trim();
-  if (!pw) return;
-  adminToken = pw;
-  // Test the token immediately
+// ── Initialize Admin (called after auth check) ─────────────────────────────
+function initializeAdmin() {
+  console.log("Initializing admin dashboard...");
+  
+  // Load initial data
   Promise.all([
-    fetch(`${API_BASE}/admin/pending`, { headers: { "x-admin-token": adminToken } }),
-    fetch(`${API_BASE}/admin/pending-pool-bars`, { headers: { "x-admin-token": adminToken } }),
+    adminFetch("/admin/pending").then(r => r.json()),
+    adminFetch("/admin/pending-pool-bars").then(r => r.json()),
   ])
-    .then(([r1, r2]) => {
-      if (r1.status === 401) throw new Error("bad");
-      return Promise.all([r1.json(), r2.json()]);
-    })
     .then(([quizzoData, poolData]) => {
-      document.getElementById("login-screen").style.display = "none";
-      document.getElementById("app").style.display = "block";
+      console.log("Data loaded successfully");
       renderPending(quizzoData, poolData);
     })
-    .catch(() => {
-      document.getElementById("login-error").style.display = "block";
-      adminToken = "";
+    .catch(err => {
+      console.error("Failed to load admin data:", err);
+      toast("Failed to load admin data: " + err.message, "error");
     });
-}
 
-document.getElementById("admin-password").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") login();
-});
+  // Setup tab switching
+  document.querySelectorAll(".tab").forEach((tab) => {
+    tab.addEventListener("click", () => {
+      document
+        .querySelectorAll(".tab")
+        .forEach((t) => t.classList.remove("active"));
+      document
+        .querySelectorAll(".panel")
+        .forEach((p) => p.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
 
-function logout() {
-  adminToken = "";
-  document.getElementById("login-screen").style.display = "flex";
-  document.getElementById("app").style.display = "none";
-  document.getElementById("admin-password").value = "";
-}
-
-// ── Tabs ───────────────────────────────────────────────────────────────────
-document.querySelectorAll(".tab").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    document
-      .querySelectorAll(".tab")
-      .forEach((t) => t.classList.remove("active"));
-    document
-      .querySelectorAll(".panel")
-      .forEach((p) => p.classList.remove("active"));
-    tab.classList.add("active");
-    document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+      // Load data for specific tabs
+      if (tab.dataset.tab === "quizzo") loadQuizzoBars();
+      if (tab.dataset.tab === "pool") loadPoolBars();
+      if (tab.dataset.tab === "allbars") loadAllBars();
+      if (tab.dataset.tab === "photos") loadBarPhotos();
+      if (tab.dataset.tab === "unmatched") loadUnmatched();
+    });
   });
-});
+
+  // Setup Yelp search Enter key
+  const yelpInput = document.getElementById("yelp-search-input");
+  if (yelpInput) {
+    yelpInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") yelpSearch();
+    });
+  }
+
+  // Setup pool bar search
+  setupPoolSearch();
+}
+
+// ── Auth ───────────────────────────────────────────────────────────────────
+function handleLogout() {
+  localStorage.removeItem("adminToken");
+  window.location.href = "admin-login.html";
+}
 
 // ── Render Pending ─────────────────────────────────────────────────────────
 function renderPending({ submissions, edits }, poolPending = { submissions: [], edits: [] }) {
@@ -365,17 +384,7 @@ async function exportCsv() {
   }
 }
 
-function adminFetch(url, method = "GET", body = null) {
-  const opts = {
-    method,
-    headers: {
-      "x-admin-token": adminToken,
-      "Content-Type": "application/json",
-    },
-  };
-  if (body) opts.body = JSON.stringify(body);
-  return fetch(API_BASE + url, opts);
-}
+// ─────────────────────────────────────────────────────────────────────────
 
 function refreshBadge() {
   Promise.all([
@@ -661,7 +670,7 @@ function closePoolModal(e) {
 }
 
 // ── Pool bar search (prepopulate from bars collection) ────────────────────
-document.addEventListener("DOMContentLoaded", () => {
+function setupPoolSearch() {
   const searchInput = document.getElementById("pool-search-input");
   const searchResults = document.getElementById("pool-search-results");
   const searchResultsList = document.getElementById("pool-search-results-list");
@@ -676,7 +685,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      const res = await fetch(`${API_BASE}/api/search-bars?q=${encodeURIComponent(q)}`);
+      const res = await adminFetch(`/api/search-bars?q=${encodeURIComponent(q)}`);
       const bars = await res.json();
 
       searchResultsList.innerHTML = "";
@@ -688,8 +697,6 @@ document.addEventListener("DOMContentLoaded", () => {
         searchResultsList.appendChild(li);
       } else {
         bars.forEach((bar) => {
-          console.log("Search result:", bar);
-          console.log("bar:", bar["Yelp Rating"]);
           const li = document.createElement("li");
           li.style.padding = "8px";
           li.style.cursor = "pointer";
@@ -739,7 +746,7 @@ document.addEventListener("DOMContentLoaded", () => {
       searchResults.style.display = "none";
     }
   });
-});
+}
 
 // ── Save (create or update) ───────────────────────────────────────────────
 async function savePoolBar() {
@@ -837,27 +844,6 @@ async function deletePoolBar(id, name) {
     toast(err.message, "error");
   }
 }
-
-// ── Hook into tab click to load data ─────────────────────────────────────
-document.querySelectorAll(".tab").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    if (tab.dataset.tab === "pool" && poolData.length === 0) {
-      loadPoolBars();
-    }
-    if (tab.dataset.tab === "photos" && photosData.length === 0) {
-      loadBarPhotos();
-    }
-    if (tab.dataset.tab === "unmatched") {
-      loadUnmatched();
-    }
-    if (tab.dataset.tab === "quizzo" && quizzoData.length === 0) {
-      loadQuizzoBars();
-    }
-    if (tab.dataset.tab === "allbars" && allBarsData.length === 0) {
-      loadAllBars();
-    }
-  });
-});
 
 document.getElementById("yelp-search-input").addEventListener("keydown", (e) => {
   if (e.key === "Enter") yelpSearch();
@@ -1258,8 +1244,31 @@ async function yelpImport() {
       return;
     }
     if (!res.ok) throw new Error(data.error);
+    
+    const yelpAlias = yelpCurrentBar['Yelp Alias'];
+    const barName = yelpCurrentBar.Name;
+    
+    // Now fetch photos for the newly imported bar
     statusEl.innerHTML = `<span style="color:var(--green);"><i class="fa fa-check"></i> Added successfully (ID: ${data.id})</span>`;
-    toast(`${yelpCurrentBar.Name} added to bars collection ✓`, 'success');
+    toast(`${barName} added to bars collection ✓`, 'success');
+    
+    // Fetch photos in background
+    btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Fetching photos…';
+    try {
+      const photoRes = await adminFetch('/admin/fetch-bar-photos', 'POST', { yelpAlias });
+      const photoData = await photoRes.json();
+      if (photoRes.ok && photoData.photosCount > 0) {
+        statusEl.innerHTML += `<br><span style="color:var(--green);"><i class="fa fa-image"></i> ${photoData.photosCount} photo${photoData.photosCount !== 1 ? 's' : ''} added ✓</span>`;
+        toast(`Photos added for ${barName} ✓`, 'success');
+      } else if (photoRes.ok) {
+        statusEl.innerHTML += `<br><span style="color:var(--muted);"><i class="fa fa-image"></i> No photos available on Yelp</span>`;
+      }
+    } catch(photoErr) {
+      console.warn('Photo fetch background error:', photoErr);
+      // Don't fail the import if photo fetch fails
+      statusEl.innerHTML += `<br><span style="color:var(--muted);"><i class="fa fa-warning"></i> Could not fetch photos</span>`;
+    }
+    
     yelpCurrentBar = null;
   } catch(err) {
     statusEl.innerHTML = `<span style="color:#f87171;"><i class="fa fa-times"></i> ${err.message}</span>`;

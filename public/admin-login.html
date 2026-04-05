@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mappy Hour · Admin Login</title>
+  <!-- FAVICON -->
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1e40af;
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --border: #334155;
+      --text: #e2e8f0;
+      --error: #ef4444;
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: linear-gradient(135deg, var(--bg) 0%, #1a1f3a 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 48px 32px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .login-card h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .login-card p {
+      text-align: center;
+      color: #94a3b8;
+      margin-bottom: 32px;
+      font-size: 0.95rem;
+    }
+
+    input[type="password"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: #0f172a;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 16px;
+      transition: border-color 0.2s;
+    }
+
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: 'Montserrat', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-login:hover:not(:disabled) {
+      background: var(--primary-dark);
+    }
+
+    .btn-login:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #login-error {
+      display: none;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--error);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 16px;
+      color: #fca5a5;
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    #login-error.show {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="login-card">
+      <h1>🍸 Mappy Hour</h1>
+      <p>Admin Dashboard — enter your password to continue</p>
+      <input 
+        type="password" 
+        id="admin-password" 
+        placeholder="Admin password" 
+        autocomplete="off"
+      />
+      <button class="btn-login" id="login-btn" onclick="handleAdminLogin()">
+        <span id="btn-text">Sign In</span>
+      </button>
+      <div id="login-error"></div>
+    </div>
+  </div>
+
+  <script>
+    // API base URL (matches admin.js)
+    const API_BASE = window.location.hostname === 'localhost'
+      ? 'http://localhost:3000'
+      : 'https://philly-happy-hour-map-production.up.railway.app';
+
+    // Handle Enter key
+    document.getElementById("admin-password").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        handleAdminLogin();
+      }
+    });
+
+    async function handleAdminLogin() {
+      const pw = document.getElementById("admin-password").value.trim();
+      if (!pw) return;
+
+      const btn = document.getElementById("login-btn");
+      const btnText = document.getElementById("btn-text");
+      const errorEl = document.getElementById("login-error");
+
+      btn.disabled = true;
+      btnText.textContent = "Signing in...";
+      errorEl.classList.remove("show");
+
+      try {
+        // Test credentials with API
+        const response = await fetch(`${API_BASE}/admin/pending`, {
+          headers: { "x-admin-token": pw }
+        });
+
+        if (response.status === 401) {
+          throw new Error("Invalid password");
+        }
+
+        if (!response.ok) {
+          throw new Error("Authentication failed");
+        }
+
+        // Store token in localStorage
+        localStorage.setItem("adminToken", pw);
+
+        // Redirect to admin dashboard
+        window.location.href = "admin.html";
+      } catch (err) {
+        errorEl.textContent = "Incorrect password. Try again.";
+        errorEl.classList.add("show");
+        btn.disabled = false;
+        btnText.textContent = "Sign In";
+        document.getElementById("admin-password").value = "";
+      }
+    }
+  </script>
+
+</body>
+</html>

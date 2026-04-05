@@ -191,9 +191,51 @@ function adminAuth(req, res, next) {
 // ═══════════════════════════════════════════════════════════════════════════════
 
 // Live quizzo data (replaces CSV fetch in index.html)
+
+// ── Simple in-memory rate limiter for public endpoints ───────────────────────
+// Limits each IP to 60 requests per minute on public search/data routes
+const _rateLimitMap = new Map();
+function rateLimit(maxPerMinute = 60) {
+  return function(req, res, next) {
+    const ip  = req.ip || req.connection.remoteAddress || 'unknown';
+    const now = Date.now();
+    const windowMs = 60_000;
+    const entry = _rateLimitMap.get(ip) || { count: 0, start: now };
+
+    if (now - entry.start > windowMs) {
+      entry.count = 1;
+      entry.start = now;
+    } else {
+      entry.count++;
+    }
+    _rateLimitMap.set(ip, entry);
+
+    // Prune old entries every 5 minutes to avoid memory leak
+    if (_rateLimitMap.size > 5000) {
+      for (const [k, v] of _rateLimitMap) {
+        if (now - v.start > windowMs * 5) _rateLimitMap.delete(k);
+      }
+    }
+
+    if (entry.count > maxPerMinute) {
+      return res.status(429).json({ error: 'Too many requests — please slow down.' });
+    }
+    next();
+  };
+}
+
+// Stricter limit for the search endpoint (20/min per IP)
+const searchRateLimit = rateLimit(20);
+
 app.get('/api/quizzo', async (req, res) => {
   try {
-    const bars = await Quizzo.find({}, { __v: 0 }).lean();
+    const bars = await Quizzo.find({}, {
+      _id: 0, __v: 0,
+      // exclude internal/admin-only fields
+      Full_Address: 0,
+      OCCURRENCE_TYPES: 0,
+      BUSINESS_TAGS: 0,
+    }).lean();
     res.json(bars);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -512,7 +554,13 @@ app.delete('/admin/pool-bars/:id', adminAuth, async (req, res) => {
 // ─── Public Pool Bars route ────────────────────────────────────────────
 app.get('/api/pool-bars', async (req, res) => {
   try {
-    const bars = await PoolBar.find({}, { __v: 0 }).lean();
+    const bars = await PoolBar.find({}, {
+      _id: 0, __v: 0,
+      // exclude admin/internal fields from public response
+      Verified: 0,
+      Last_Verified: 0,
+      Notes: 0,
+    }).lean();
     res.json(bars);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -733,7 +781,7 @@ app.get('/api/bars', async (req, res) => {
   try {
     const bars = await Bar.find(
       { Latitude: { $exists: true, $ne: null }, Longitude: { $exists: true, $ne: null } },
-      { __v: 0 }
+      { _id: 0, __v: 0 }
     ).lean();
     res.json(bars);
   } catch (err) {
@@ -767,30 +815,30 @@ app.get('/api/bar-photos', async (req, res) => {
   }
 });
 
-app.get('/api/search-bars', async (req, res) => {
+app.get('/api/search-bars', searchRateLimit, async (req, res) => {
   try {
-    const q = (req.query.q || '').trim();
-    if (q.length < 2) return res.json([]);
+    const raw = (req.query.q || '').trim();
+    // Require at least 2 real word characters — blocks .* .+ and other regex patterns
+    if (raw.length < 2) return res.json([]);
+    // Escape all regex special chars so the query is always a literal string search
+    const safe = raw.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
     const bars = await Bar.find(
-      { Name: { $regex: q, $options: 'i' } },
-      { 
-        Name: 1, 
+      { Name: { $regex: safe, $options: 'i' } },
+      {
+        _id: 0,          // never expose internal Mongo IDs on public routes
+        Name: 1,
         'Yelp Alias': 1,
-        Address: 1, 
-        Latitude: 1, 
+        Address: 1,
+        Latitude: 1,
         Longitude: 1,
         Website: 1,
         'Yelp Rating': 1,
         Neighborhood: 1,
-        Monday: 1,
-        Tuesday: 1,
-        Wednesday: 1,
-        Thursday: 1,
-        Friday: 1,
-        Saturday: 1,
-        Sunday: 1
+        Neighborhoods: 1,
+        Monday: 1, Tuesday: 1, Wednesday: 1,
+        Thursday: 1, Friday: 1, Saturday: 1, Sunday: 1,
       }
-    ).limit(12).lean();
+    ).limit(10).lean();
     res.json(bars);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -800,33 +848,70 @@ app.get('/api/search-bars', async (req, res) => {
 // ─── Yelp Fusion helpers ────────────────────────────────────────────────────
 const https = require('https');
 
-function yelpGet(path) {
-  const keys = (() => {
-    // 1) Comma-separated env var (Railway / production)
-    if (process.env.YELP_API_KEYS) {
-      return process.env.YELP_API_KEYS.split(',').map(k => k.trim()).filter(Boolean);
+// Track current key index for cycling through multiple keys
+let yelpKeyIndex = 0;
+let cachedYelpKeys = null;
+
+function getYelpKeys() {
+  // Return cached keys if already loaded
+  if (cachedYelpKeys !== null) return cachedYelpKeys;
+
+  // 1) Comma-separated env var (Railway / production)
+  if (process.env.YELP_API_KEYS && process.env.YELP_API_KEYS.includes(',')) {
+    cachedYelpKeys = process.env.YELP_API_KEYS.split(',').map(k => k.trim()).filter(Boolean);
+    console.log(`[Yelp] Loaded ${cachedYelpKeys.length} keys from YELP_API_KEYS`);
+    return cachedYelpKeys;
+  }
+  
+  // 2) Single-key env var
+  if (process.env.YELP_API_KEY) {
+    cachedYelpKeys = [process.env.YELP_API_KEY];
+    console.log('[Yelp] Loaded 1 key from YELP_API_KEY');
+    return cachedYelpKeys;
+  }
+  
+  // 3) Local .env file with Python list format
+  try {
+    const raw = require('fs').readFileSync(require('path').join(__dirname, '.env'), 'utf8');
+    const m = raw.match(/yelp_api_keys\s*=\s*\[([\s\S]*?)\]/);
+    if (!m) {
+      cachedYelpKeys = [];
+      return cachedYelpKeys;
     }
-    // 2) Single-key env var
-    if (process.env.YELP_API_KEY) return [process.env.YELP_API_KEY];
-    // 3) Local .env file with Python list format
-    try {
-      const raw = require('fs').readFileSync(require('path').join(__dirname, '.env'), 'utf8');
-      const m = raw.match(/yelp_api_keys\s*=\s*\[([\s\S]*?)\]/);
-      if (!m) return [];
-      return [...m[1].matchAll(/"([^"]+)"/g)].map(r => r[1]);
-    } catch { return []; }
-  })();
-  const key = keys[0] || '';
+    cachedYelpKeys = [...m[1].matchAll(/"([^"]+)"/g)].map(r => r[1]).filter(Boolean);
+    console.log(`[Yelp] Loaded ${cachedYelpKeys.length} keys from .env yelp_api_keys`);
+    return cachedYelpKeys;
+  } catch (e) {
+    console.error('[Yelp] Error reading .env:', e.message);
+    cachedYelpKeys = [];
+    return cachedYelpKeys;
+  }
+}
+
+function yelpGet(path) {
+  const keys = getYelpKeys();
+  
+  if (!keys.length) {
+    console.error('[Yelp] No API keys found in YELP_API_KEYS, YELP_API_KEY, or .env');
+    return Promise.reject(new Error('Yelp API key not configured'));
+  }
+  
+  // Cycle through keys on each request
+  const key = keys[yelpKeyIndex % keys.length];
+  const keyNum = (yelpKeyIndex % keys.length) + 1;
+  yelpKeyIndex++;
   
   // Debug: log key status (without exposing the full key)
   if (!key) {
-    console.error('[Yelp] No API key found in YELP_API_KEYS, YELP_API_KEY, or .env');
-    throw new Error('Yelp API key not configured');
+    console.error('[Yelp] Selected key is empty');
+    return Promise.reject(new Error('Yelp API key is empty'));
   }
   if (key.length < 100) {
-    console.error(`[Yelp] API key appears invalid (${key.length} chars, expected ~128)`);
-    throw new Error(`Yelp API key invalid length: ${key.length} chars`);
+    console.error(`[Yelp] API key ${keyNum} appears invalid (${key.length} chars, expected ~128)`);
+    return Promise.reject(new Error(`Yelp API key invalid length: ${key.length} chars`));
   }
+  
+  console.log(`[Yelp] Using key ${keyNum}/${keys.length}`);
   
   return new Promise((resolve, reject) => {
     const req = https.get(
@@ -885,6 +970,37 @@ app.post('/admin/yelp-import', adminAuth, async (req, res) => {
     await bar.save();
     res.json({ success: true, id: bar._id });
   } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+// Fetch and store photos for a bar by Yelp Alias
+app.post('/admin/fetch-bar-photos', adminAuth, async (req, res) => {
+  try {
+    const { yelpAlias } = req.body;
+    if (!yelpAlias) return res.status(400).json({ error: 'yelpAlias required' });
+    
+    // Fetch business details from Yelp
+    const data = await yelpGet(`/v3/businesses/${encodeURIComponent(yelpAlias)}`);
+    const photos = (data.photos || []).slice(0, 3); // Get up to 3 photo URLs
+    
+    if (!photos.length) {
+      return res.json({ success: true, photosCount: 0, message: 'No photos available on Yelp' });
+    }
+    
+    // Update the bar document with photos
+    const result = await Bar.findOneAndUpdate(
+      { 'Yelp Alias': yelpAlias },
+      { Photos: photos },
+      { new: true }
+    );
+    
+    if (!result) {
+      return res.status(404).json({ error: 'Bar not found' });
+    }
+    
+    res.json({ success: true, photosCount: photos.length });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // Admin — all bars from mappy_hour bars collection (read-only)

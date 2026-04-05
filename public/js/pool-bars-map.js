@@ -799,43 +799,85 @@ document.getElementById('pool-edit-form').addEventListener('submit', async funct
 
   window._poolDrawerSetData = function(data) {
     drawerData = data;
+    console.log('[Pool Drawer] Data set, count:', data.length);
   };
 
-  // Initialize drawer controls (no DOMContentLoaded needed — script loads after DOM is ready)
-  var listBtn  = document.getElementById('pool-list-btn');
-  var closeBtn = document.getElementById('pool-drawer-close');
-  var backdrop = document.getElementById('pool-drawer-backdrop');
-  var search   = document.getElementById('pool-drawer-search');
-  var drawer   = document.getElementById('pool-drawer');
+  // Defer initialization until drawer elements are in DOM
+  // Use longer timeout to ensure all DOM is ready
+  setTimeout(function() {
+    console.log('[Pool Drawer] ===== INITIALIZATION START =====');
+    var listBtn  = document.getElementById('pool-list-btn');
+    var closeBtn = document.getElementById('pool-drawer-close');
+    var backdrop = document.getElementById('pool-drawer-backdrop');
+    var search   = document.getElementById('pool-drawer-search');
+    var drawer   = document.getElementById('pool-drawer');
+    var headerEl = document.querySelector('#pool-drawer .drawer-header');
 
-  console.log('[Pool Drawer] Elements found - listBtn:', !!listBtn, 'closeBtn:', !!closeBtn, 'backdrop:', !!backdrop, 'drawer:', !!drawer);
+    console.log('[Pool Drawer] Elements found:');
+    console.log('  - listBtn:', !!listBtn);
+    console.log('  - closeBtn:', !!closeBtn, closeBtn ? 'ID=' + closeBtn.id : '');
+    console.log('  - backdrop:', !!backdrop);
+    console.log('  - search:', !!search);
+    console.log('  - drawer:', !!drawer);
+    console.log('  - header:', !!headerEl);
 
-  if (listBtn) {
-    listBtn.addEventListener('click', function() {
-      console.log('[Pool Drawer] List button clicked');
-      openPoolDrawer();
-    });
-  }
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function(e) {
-      console.log('[Pool Drawer] Close button clicked');
-      e.stopPropagation();
-      closePoolDrawer();
-    });
-  }
-  if (backdrop) {
-    backdrop.addEventListener('click', function(e) {
-      console.log('[Pool Drawer] Backdrop clicked');
-      closePoolDrawer();
-    });
-  }
-  if (search)   search.addEventListener('input', function() { renderPoolDrawerCards(drawerData); });
-  
-  // Keyboard close on Escape
-  if (drawer) document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      console.log('[Pool Drawer] Escape key pressed');
-      closePoolDrawer();
+    if (listBtn) {
+      listBtn.addEventListener('click', function() {
+        console.log('[Pool Drawer] List button clicked');
+        openPoolDrawer();
+      });
     }
-  });
+    
+    if (closeBtn) {
+      console.log('[Pool Drawer] Attaching close button listener (by ID)');
+      closeBtn.addEventListener('click', function(e) {
+        console.log('[Pool Drawer] Close button clicked (direct)');
+        e.preventDefault();
+        e.stopPropagation();
+        closePoolDrawer();
+      });
+    } else {
+      console.warn('[Pool Drawer] Close button NOT found with ID pool-drawer-close');
+      var allCloseButtons = document.querySelectorAll('#pool-drawer .drawer-close');
+      console.log('[Pool Drawer] Found', allCloseButtons.length, 'close buttons via selector');
+      allCloseButtons.forEach(function(btn, idx) {
+        console.log('[Pool Drawer] Attaching listener to close button #' + idx);
+        btn.addEventListener('click', function(e) {
+          console.log('[Pool Drawer] Close button clicked (fallback #' + idx + ')');
+          e.preventDefault();
+          e.stopPropagation();
+          closePoolDrawer();
+        });
+      });
+    }
+    
+    if (backdrop) {
+      backdrop.addEventListener('click', function(e) {
+        console.log('[Pool Drawer] Backdrop clicked');
+        e.stopPropagation();
+        closePoolDrawer();
+      });
+    }
+    
+    if (search) {
+      console.log('[Pool Drawer] Attaching search listener');
+      search.addEventListener('input', function(e) {
+        console.log('[Pool Drawer] Search input changed, drawerData length:', drawerData.length);
+        renderPoolDrawerCards(drawerData);
+      });
+    } else {
+      console.warn('[Pool Drawer] Search input NOT found');
+    }
+    
+    // Keyboard close on Escape
+    if (drawer) {
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          console.log('[Pool Drawer] Escape key pressed');
+          closePoolDrawer();
+        }
+      });
+    }
+    console.log('[Pool Drawer] ===== INITIALIZATION COMPLETE =====');
+  }, 500);
 })();

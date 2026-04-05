@@ -1092,43 +1092,83 @@ document
   // Expose so the main fetch can seed the data
   window._quizzoDrawerSetData = function(data) {
     drawerData = data;
+    console.log('[Quizzo Drawer] Data set, count:', data.length);
   };
 
-  // Initialize drawer controls (no DOMContentLoaded needed — script loads after DOM is ready)
-  var listBtn  = document.getElementById('quizzo-list-btn');
-  var closeBtn = document.getElementById('quizzo-drawer-close');
-  var backdrop = document.getElementById('quizzo-drawer-backdrop');
-  var search   = document.getElementById('quizzo-drawer-search');
-  var drawer   = document.getElementById('quizzo-drawer');
+  // Defer initialization until drawer elements are in DOM
+  // Use longer timeout to ensure all DOM is ready
+  setTimeout(function() {
+    console.log('[Quizzo Drawer] ===== INITIALIZATION START =====');
+    var listBtn  = document.getElementById('quizzo-list-btn');
+    var closeBtn = document.getElementById('quizzo-drawer-close');
+    var backdrop = document.getElementById('quizzo-drawer-backdrop');
+    var search   = document.getElementById('quizzo-drawer-search');
+    var drawer   = document.getElementById('quizzo-drawer');
 
-  console.log('[Quizzo Drawer] Elements found - listBtn:', !!listBtn, 'closeBtn:', !!closeBtn, 'backdrop:', !!backdrop, 'drawer:', !!drawer);
+    console.log('[Quizzo Drawer] Elements found:');
+    console.log('  - listBtn:', !!listBtn);
+    console.log('  - closeBtn:', !!closeBtn, closeBtn ? 'ID=' + closeBtn.id : '');
+    console.log('  - backdrop:', !!backdrop);
+    console.log('  - search:', !!search);
+    console.log('  - drawer:', !!drawer);
 
-  if (listBtn) {
-    listBtn.addEventListener('click', function() {
-      console.log('[Quizzo Drawer] List button clicked');
-      openDrawer();
-    });
-  }
-  if (closeBtn) {
-    closeBtn.addEventListener('click', function(e) {
-      console.log('[Quizzo Drawer] Close button clicked');
-      e.stopPropagation();
-      closeDrawer();
-    });
-  }
-  if (backdrop) {
-    backdrop.addEventListener('click', function(e) {
-      console.log('[Quizzo Drawer] Backdrop clicked');
-      closeDrawer();
-    });
-  }
-  if (search)   search.addEventListener('input', function() { renderDrawerCards(drawerData); });
-  
-  // Keyboard close on Escape
-  if (drawer) document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      console.log('[Quizzo Drawer] Escape key pressed');
-      closeDrawer();
+    if (listBtn) {
+      listBtn.addEventListener('click', function() {
+        console.log('[Quizzo Drawer] List button clicked');
+        openDrawer();
+      });
     }
-  });
+    
+    if (closeBtn) {
+      console.log('[Quizzo Drawer] Attaching close button listener (by ID)');
+      closeBtn.addEventListener('click', function(e) {
+        console.log('[Quizzo Drawer] Close button clicked (direct)');
+        e.preventDefault();
+        e.stopPropagation();
+        closeDrawer();
+      });
+    } else {
+      console.warn('[Quizzo Drawer] Close button NOT found with ID quizzo-drawer-close');
+      var allCloseButtons = document.querySelectorAll('#quizzo-drawer .drawer-close');
+      console.log('[Quizzo Drawer] Found', allCloseButtons.length, 'close buttons via selector');
+      allCloseButtons.forEach(function(btn, idx) {
+        console.log('[Quizzo Drawer] Attaching listener to close button #' + idx);
+        btn.addEventListener('click', function(e) {
+          console.log('[Quizzo Drawer] Close button clicked (fallback #' + idx + ')');
+          e.preventDefault();
+          e.stopPropagation();
+          closeDrawer();
+        });
+      });
+    }
+    
+    if (backdrop) {
+      backdrop.addEventListener('click', function(e) {
+        console.log('[Quizzo Drawer] Backdrop clicked');
+        e.stopPropagation();
+        closeDrawer();
+      });
+    }
+    
+    if (search) {
+      console.log('[Quizzo Drawer] Attaching search listener');
+      search.addEventListener('input', function(e) {
+        console.log('[Quizzo Drawer] Search input changed, drawerData length:', drawerData.length);
+        renderDrawerCards(drawerData);
+      });
+    } else {
+      console.warn('[Quizzo Drawer] Search input NOT found');
+    }
+    
+    // Keyboard close on Escape
+    if (drawer) {
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          console.log('[Quizzo Drawer] Escape key pressed');
+          closeDrawer();
+        }
+      });
+    }
+    console.log('[Quizzo Drawer] ===== INITIALIZATION COMPLETE =====');
+  }, 500);
 })();

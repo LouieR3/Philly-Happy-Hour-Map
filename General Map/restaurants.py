@@ -12,6 +12,8 @@ import time
 import numpy as np
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
+from pymongo import MongoClient, UpdateOne
+from dotenv import load_dotenv
 
 # ------------------------------------------------
 # Full pipeline: find Philly bars → get Yelp info →
@@ -939,9 +941,110 @@ def step5_rename_and_export(df):
 
 
 # ═══════════════════════════════════════════════════════════════════════
-# MAIN
+# STEP 6 — Fetch and store photos to MongoDB
 # ═══════════════════════════════════════════════════════════════════════
-def main():
+def step6_fetch_and_store_photos(yelp, overwrite=False):
+    """
+    For every bar in mappy_hour.bars with a Yelp Alias but no Photos field,
+    fetch up to 3 photo URLs from Yelp business details and store them.
+    
+    Args:
+        yelp: YelpClientRotator instance
+        overwrite: If True, re-fetch photos even if they already exist
+    """
+    print("\n=== STEP 6: Fetching and storing bar photos to MongoDB ===")
+    
+    # Load .env for MongoDB connection
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
+    load_dotenv(os.path.join(env_path, ".env"))
+    
+    mongo_uri = os.getenv("MONGODB_URI", "")
+    if not mongo_uri:
+        print("  ⚠ MONGODB_URI not configured in .env — skipping photo fetch")
+        return
+    
+    try:
+        client = MongoClient(mongo_uri, serverSelectionTimeoutMS=15000)
+        db = client["mappy_hour"]
+        coll = db["bars"]
+        
+        # Test connection
+        client.server_info()
+        print(f"  ✓ Connected to MongoDB")
+    except Exception as e:
+        print(f"  ✗ MongoDB connection failed: {e}")
+        return
+    
+    # Query: bars with Yelp Alias
+    query = {"Yelp Alias": {"$exists": True, "$ne": ""}}
+    if not overwrite:
+        # Skip any that already have photos
+        query["Photos"] = {"$exists": False}
+    
+    bars = list(coll.find(query, {"_id": 1, "Name": 1, "Yelp Alias": 1}))
+    print(f"  Found {len(bars)} bars to process (overwrite={overwrite})")
+    
+    if not bars:
+        print("  ℹ No bars need photos — all have them. Use --overwrite to re-fetch.")
+        client.close()
+        return
+    
+    ops = []
+    success = 0
+    no_photo = 0
+    failed = 0
+    total = len(bars)
+    
+    for i, bar in enumerate(bars, 1):
+        alias = bar["Yelp Alias"]
+        name = bar.get("Name", alias)
+        print(f"  [{i}/{total}] {name} ({alias})")
+        
+        # Small delay between requests to avoid rate limiting
+        time.sleep(random.uniform(0.3, 0.7))
+        
+        try:
+            detail = yelp.business_query(id=alias)
+            photos = detail.get("photos", [])
+            
+            if not photos:
+                print(f"    No photos returned from Yelp")
+                no_photo += 1
+                continue
+            
+            print(f"    ✓ Found {len(photos)} photo(s)")
+            ops.append(
+                UpdateOne(
+                    {"_id": bar["_id"]},
+                    {"$set": {"Photos": photos}},
+                )
+            )
+            success += 1
+            
+            # Flush every 50 operations
+            if len(ops) >= 50:
+                result = coll.bulk_write(ops, ordered=False)
+                print(f"    → Flushed {len(ops)} ops (modified={result.modified_count})")
+                ops = []
+        
+        except Exception as e:
+            msg = str(e).upper()
+            if "RATE_LIMIT" in msg or "429" in msg or "TOO_MANY_REQUESTS" in msg:
+                print(f"    Rate limit hit: {e}")
+            else:
+                print(f"    Error: {e}")
+            failed += 1
+    
+    # Final flush
+    if ops:
+        result = coll.bulk_write(ops, ordered=False)
+        print(f"  → Final flush: {len(ops)} ops (modified={result.modified_count})")
+    
+    client.close()
+    
+    print(f"\n  Summary: {success} photos written | {no_photo} no photos | {failed} errors")
+    return success, no_photo, failed
+def main(fetch_photos=False, overwrite_photos=False):
     start = time.time()
 
     keys = _load_yelp_keys()
@@ -955,25 +1058,24 @@ def main():
     master_df = step4_find_reservation_links(master_df)
     master_df = step5_rename_and_export(master_df)
 
+    # Step 6: Optional photo fetching to MongoDB
+    if fetch_photos:
+        step6_fetch_and_store_photos(yelp, overwrite=overwrite_photos)
+
     print(f"\nDone in {time.time() - start:.1f}s — {len(master_df)} bars in {OUTPUT_CSV}")
 
 
 if __name__ == "__main__":
+    import argparse
+    
+    parser = argparse.ArgumentParser(description="Philly restaurants pipeline with optional photo fetching")
+    parser.add_argument("--fetch-photos", action="store_true", help="Fetch and store bar photos to MongoDB")
+    parser.add_argument("--overwrite", action="store_true", help="Re-fetch photos even if they already exist")
+    args = parser.parse_args()
+    
     _YELP_SESSION = None  # lazily initialised on first scrape
     # global _YELP_SESSION
     if _YELP_SESSION is None:
         _YELP_SESSION = _make_yelp_session()
-    url = YELP_BASE_URL + "balcony-bar-the-kimmel-center-philadelphia"
-    time.sleep(random.uniform(1.5, 3.0))  # randomised delay to avoid bot detection
-    print(url)
-    try:
-        yelp_response = _YELP_SESSION.get(url, timeout=15)
-        print(f"Status code: {yelp_response.status_code}")
-        soup = BeautifulSoup(yelp_response.text, "html.parser")
-        print(soup.prettify()[:1000])  # print the first 1000 chars of the page for debugging
-        script_tag = soup.find("script", {"data-apollo-state": True})
-        print(script_tag)  # print the first 1000 chars of the page for debugging
-    except Exception as e:
-        print(f"    Scrape error for balcony-bar-the-kimmel-center-philadelphia: {e}")
     
-    # main()
+    main(fetch_photos=args.fetch_photos, overwrite_photos=args.overwrite)

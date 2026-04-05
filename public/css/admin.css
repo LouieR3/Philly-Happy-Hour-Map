@@ -84,7 +84,7 @@ body {
 #login-error { color: var(--danger); font-size: 0.85rem; margin-top: 10px; display: none; }
 
 /* ── App Shell ── */
-#app { display: none; }
+/* #app { display: none; } */
 
 header {
     background: linear-gradient(90deg, #0f3d28, #1a6b4a);

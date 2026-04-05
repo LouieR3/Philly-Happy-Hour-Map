@@ -14,24 +14,13 @@
 </head>
 <body>
 
-  <!-- ── Login ── -->
-  <div id="login-screen">
-    <div class="login-card">
-      <h1>🍸 Mappy Hour</h1>
-      <p>Admin Dashboard — enter your password to continue</p>
-      <input type="password" id="admin-password" placeholder="Admin password" />
-      <button class="btn-login" onclick="login()">Sign In</button>
-      <div id="login-error">Incorrect password. Try again.</div>
-    </div>
-  </div>
-
   <!-- ── App ── -->
   <div id="app">
     <header>
       <h1>Mappy Hour <span>Admin</span></h1>
       <div class="header-right">
         <span class="badge-count" id="header-count">0 pending</span>
-        <button class="btn-logout" onclick="logout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
+        <button class="btn-logout" onclick="handleLogout()"><i class="fa fa-sign-out-alt"></i> Logout</button>
       </div>
     </header>
 

@@ -360,20 +360,20 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--mh-dark-2, #0a1628);
 }
 .bar-card-thumb {
-  width: 120px;
+  width: 10rem;
   min-width: 120px;
   object-fit: cover;
   flex-shrink: 0;
   display: block;
 }
 .bar-card-thumb-placeholder {
-  width: 120px;
+  width: 10rem;
   min-width: 120px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(255,255,255,0.04);
-  color: #334155;
+  color: #ffffff;
   font-size: 1.4rem;
   flex-shrink: 0;
 }
@@ -900,6 +900,8 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.82rem;
   outline: none;
   min-width: 0;
+  pointer-events: auto !important;
+  z-index: 1600;
 }
 .drawer-search::placeholder { color: #64748b; }
 .drawer-close {
@@ -911,8 +913,11 @@ h1, h2, h3, h4, h5, h6 {
   padding: 0 4px;
   line-height: 1;
   flex-shrink: 0;
+  pointer-events: auto !important;
+  z-index: 1610;
 }
 .drawer-close:hover { color: var(--mh-text, #e2e8f0); }
+.drawer-close:active { opacity: 0.7; }
 
 /* Horizontal scroll row of cards */
 .drawer-card-row {
