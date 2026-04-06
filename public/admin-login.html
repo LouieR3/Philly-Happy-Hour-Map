@@ -172,26 +172,23 @@
       errorEl.classList.remove("show");
 
       try {
-        // Test credentials with API
-        const response = await fetch(`${API_BASE}/admin/pending`, {
-          headers: { "x-admin-token": pw }
+        // POST password to login endpoint (will set HttpOnly cookie)
+        const response = await fetch(`${API_BASE}/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',  // Include cookies in response
+          body: JSON.stringify({ password: pw })
         });
 
-        if (response.status === 401) {
-          throw new Error("Invalid password");
-        }
-
         if (!response.ok) {
-          throw new Error("Authentication failed");
+          const data = await response.json();
+          throw new Error(data.error || "Authentication failed");
         }
 
-        // Store token in localStorage
-        localStorage.setItem("adminToken", pw);
-
-        // Redirect to admin dashboard
+        // Cookie is automatically set by server, redirect to admin dashboard
         window.location.href = "admin.html";
       } catch (err) {
-        errorEl.textContent = "Incorrect password. Try again.";
+        errorEl.textContent = err.message || "Incorrect password. Try again.";
         errorEl.classList.add("show");
         btn.disabled = false;
         btnText.textContent = "Sign In";

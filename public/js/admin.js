@@ -15,26 +15,30 @@ const API_BASE = window.location.hostname === 'localhost'
   : 'https://philly-happy-hour-map-production.up.railway.app';
 
 // Check authentication on page load
-document.addEventListener("DOMContentLoaded", () => {
-  const adminToken = localStorage.getItem("adminToken");
-  if (!adminToken) {
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const res = await fetch(API_BASE + '/admin/check-auth', {
+      credentials: 'include'  // Include cookies in request
+    });
+    const data = await res.json();
+    
+    if (!data.authenticated) {
+      window.location.href = "admin-login.html";
+      return;
+    }
+    // Authenticated, proceed with loading data
+    initializeAdmin();
+  } catch (err) {
+    console.error('Auth check failed:', err);
     window.location.href = "admin-login.html";
-    return;
   }
-  // Token exists, proceed with loading data
-  initializeAdmin();
 });
+
 function adminFetch(url, method = "GET", body = null) {
-  const adminToken = localStorage.getItem("adminToken");
-  if (!adminToken) {
-    window.location.href = "admin-login.html";
-    return Promise.reject(new Error("Not authenticated"));
-  }
-  
   const opts = {
     method,
+    credentials: 'include',  // Include cookies automatically
     headers: {
-      "x-admin-token": adminToken,
       "Content-Type": "application/json",
     },
   };
@@ -95,8 +99,15 @@ function initializeAdmin() {
 
 // ── Auth ───────────────────────────────────────────────────────────────────
 function handleLogout() {
-  localStorage.removeItem("adminToken");
-  window.location.href = "admin-login.html";
+  fetch(API_BASE + '/admin/logout', {
+    method: 'POST',
+    credentials: 'include'
+  }).then(() => {
+    window.location.href = "admin-login.html";
+  }).catch(err => {
+    console.error('Logout error:', err);
+    window.location.href = "admin-login.html";
+  });
 }
 
 // ── Render Pending ─────────────────────────────────────────────────────────

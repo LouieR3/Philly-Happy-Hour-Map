@@ -17,6 +17,7 @@ if (process.env.NODE_ENV !== 'production') {
 const express    = require('express');
 const mongoose   = require('mongoose');
 const cors       = require('cors');
+const cookieParser = require('cookie-parser');
 const { Parser } = require('json2csv');
 const path       = require('path');
 const fs         = require('fs');
@@ -64,9 +65,11 @@ app.use(cors({
     'http://127.0.0.1:5500',
     'https://www.philly-mappy-hour.com',
     'https://philly-mappy-hour.com',
-  ]
+  ],
+  credentials: true  // Allow cookies in CORS requests
 }));
 app.use(express.json());
+app.use(cookieParser());  // Parse cookies in requests
 
 // ─── Serve static files (your existing site) ────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public')));
@@ -179,12 +182,52 @@ const Quizzo      = quizzoDb.model('Quizzo',      quizzoSchema);
 const Pending     = quizzoDb.model('Pending',     pendingSchema);
 const PendingEdit = quizzoDb.model('PendingEdit', pendingEditSchema);
 
-// ─── Simple admin auth middleware ─────────────────────────────────────────────
+// ─── Simple admin auth middleware (read from HttpOnly cookie) ───────────────
 function adminAuth(req, res, next) {
-  const token = req.headers['x-admin-token'];
+  const token = req.cookies.adminToken;  // Read from HttpOnly cookie
   if (token && token === process.env.ADMIN_PASSWORD) return next();
   res.status(401).json({ error: 'Unauthorized' });
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// AUTHENTICATION ROUTES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Admin login endpoint
+app.post('/admin/login', (req, res) => {
+  const { password } = req.body;
+  if (!password) return res.status(400).json({ error: 'Password required' });
+  
+  if (password !== process.env.ADMIN_PASSWORD) {
+    return res.status(401).json({ error: 'Invalid password' });
+  }
+  
+  // Set HttpOnly, Secure cookie (token is the password for simplicity)
+  const isProduction = process.env.NODE_ENV === 'production';
+  res.cookie('adminToken', process.env.ADMIN_PASSWORD, {
+    httpOnly: true,      // Not accessible via JavaScript
+    secure: isProduction, // HTTPS only in production
+    sameSite: 'Strict',   // CSRF protection
+    maxAge: 24 * 60 * 60 * 1000  // 24 hours
+  });
+  
+  res.json({ success: true, message: 'Logged in successfully' });
+});
+
+// Admin logout endpoint
+app.post('/admin/logout', (req, res) => {
+  res.clearCookie('adminToken');
+  res.json({ success: true, message: 'Logged out' });
+});
+
+// Check if admin is authenticated
+app.get('/admin/check-auth', (req, res) => {
+  const token = req.cookies.adminToken;
+  if (token && token === process.env.ADMIN_PASSWORD) {
+    return res.json({ authenticated: true });
+  }
+  res.status(401).json({ authenticated: false });
+});
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // PUBLIC ROUTES

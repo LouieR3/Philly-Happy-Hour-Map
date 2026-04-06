@@ -21,6 +21,7 @@
   "homepage": "https://github.com/LouieR3/Philly-Happy-Hour-Map#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "csv-parse": "^6.2.1",
     "dotenv": "^16.4.5",

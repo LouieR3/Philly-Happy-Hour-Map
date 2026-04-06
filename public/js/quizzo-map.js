@@ -656,11 +656,52 @@ searchBar.addEventListener("input", () => {
   }
 });
 
+// ── Form submission throttling ─────────────────────────────────────────────
+// Helper to prevent duplicate/rapid form submissions
+function createQuizzoThrottledSubmitter(cooldownMs = 1000) {
+  let isSubmitting = false;
+  let lastSubmitTime = 0;
+  
+  return function(formElement, submitFn) {
+    return async function(event) {
+      event.preventDefault();
+      
+      const now = Date.now();
+      if (isSubmitting || (now - lastSubmitTime) < cooldownMs) {
+        console.warn('Form submission throttled — please wait before submitting again');
+        return;
+      }
+      
+      isSubmitting = true;
+      const submitBtn = formElement.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      
+      try {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Submitting...';
+        }
+        
+        await submitFn(event);
+        lastSubmitTime = Date.now();
+      } catch (error) {
+        console.error('Submission error:', error);
+      } finally {
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+    };
+  };
+}
+
+const throttleQuizzoSubmit = createQuizzoThrottledSubmitter(1500); // 1.5 second cooldown
+
 document
   .getElementById("bar-submission-form")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
-
+  .addEventListener("submit", throttleQuizzoSubmit(document.getElementById("bar-submission-form"), function (event) {
     // Collect form data
     const submission = {
       businessName: document.getElementById("business-name").value,
@@ -690,7 +731,7 @@ document
         console.error("Error:", error);
         alert("There was an error submitting your request. Please try again.");
       });
-  });
+}));
 // Populate the table with data from the CSV
 function populateTable(data) {
   const tableBody = document.querySelector("#bar-table tbody");

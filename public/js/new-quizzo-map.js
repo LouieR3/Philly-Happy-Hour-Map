@@ -759,10 +759,52 @@ searchBar.addEventListener("input", () => {
   }
 });
 
-document
-  .getElementById("bar-submission-form")
-  .addEventListener("submit", async function (event) {
-    event.preventDefault();
+// ─── Form submission throttling ─────────────────────────────────────────────────
+// Helper to prevent duplicate/rapid form submissions
+function createThrottledSubmitter(cooldownMs = 1000) {
+  let isSubmitting = false;
+  let lastSubmitTime = 0;
+  
+  return function(formElement, submitFn) {
+    return async function(event) {
+      event.preventDefault();
+      
+      const now = Date.now();
+      if (isSubmitting || (now - lastSubmitTime) < cooldownMs) {
+        console.warn('Form submission throttled — please wait before submitting again');
+        return;
+      }
+      
+      isSubmitting = true;
+      const submitBtn = formElement.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      
+      try {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Submitting...';
+        }
+        
+        await submitFn(event);
+        lastSubmitTime = Date.now();
+      } catch (error) {
+        console.error('Submission error:', error);
+      } finally {
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+    };
+  };
+}
+
+const throttleSubmit = createThrottledSubmitter(1500); // 1.5 second cooldown
+
+// ─── Bar submission form ────────────────────────────────────────────────────────
+const barSubmissionForm = document.getElementById("bar-submission-form");
+barSubmissionForm.addEventListener("submit", throttleSubmit(barSubmissionForm, async function (event) {
 
     const businessName = document.getElementById("business-name").value;
     const streetAddress = document.getElementById("street-address").value;
@@ -819,7 +861,7 @@ document
         console.error("Error:", error);
         siteToast("There was an error submitting your request. Please try again.", "error");
       });
-  });
+}));
 // Build a name → placeholder-el Map and kick off photo fetch
 function populateTable(data) {
   const markerByName = {};
@@ -956,11 +998,8 @@ document.getElementById("bar-search").addEventListener("input", (event) => {
 // Table is populated inside the main quizzo fetch above
 
 // ── Quizzo edit form submission ────────────────────────────────────────────
-document
-  .getElementById("edit-bar-form")
-  .addEventListener("submit", async function (event) {
-    event.preventDefault();
-
+const editBarForm = document.getElementById("edit-bar-form");
+editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async function (event) {
     const originalId   = document.getElementById("edit-original-id").value;
     const originalName = document.getElementById("edit-business-name").value;
 
@@ -998,7 +1037,7 @@ document
         console.error("Edit submission error:", err);
         siteToast("There was an error submitting your edit. Please try again.", "error");
       });
-  });
+}));
 // ── Quizzo mobile bottom drawer ────────────────────────────────────────────
 (function() {
   var drawerData = [];   // all bars — set when data loads

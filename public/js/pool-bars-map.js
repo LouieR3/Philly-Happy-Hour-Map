@@ -578,8 +578,52 @@ document.getElementById('pool-payment-model-select').addEventListener('change', 
   document.getElementById('pool-cost-hour-field').style.display = (v === 'Hourly') ? 'block' : 'none';
 });
 
+// ── Form submission throttling ─────────────────────────────────────────────
+// Helper to prevent duplicate/rapid form submissions
+function createThrottledPoolSubmitter(cooldownMs = 1000) {
+  let isSubmitting = false;
+  let lastSubmitTime = 0;
+  
+  return function(formElement, submitFn) {
+    return async function(event) {
+      event.preventDefault();
+      
+      const now = Date.now();
+      if (isSubmitting || (now - lastSubmitTime) < cooldownMs) {
+        console.warn('Form submission throttled — please wait before submitting again');
+        return;
+      }
+      
+      isSubmitting = true;
+      const submitBtn = formElement.querySelector('button[type="submit"]');
+      const originalText = submitBtn ? submitBtn.textContent : '';
+      
+      try {
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Submitting...';
+        }
+        
+        await submitFn(event);
+        lastSubmitTime = Date.now();
+      } catch (error) {
+        console.error('Submission error:', error);
+      } finally {
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
+      }
+    };
+  };
+}
+
+const throttlePoolSubmit = createThrottledPoolSubmitter(1500); // 1.5 second cooldown
+
 // Submit new pool bar
-document.getElementById('pool-bar-submission-form').addEventListener('submit', async function (e) {
+const poolSubmissionForm = document.getElementById('pool-bar-submission-form');
+poolSubmissionForm.addEventListener('submit', throttlePoolSubmit(poolSubmissionForm, async function (e) {
   e.preventDefault();
   const isPhilly      = document.getElementById('pool-philly-yes').checked;
   const streetAddress = document.getElementById('pool-street-address').value;
@@ -630,7 +674,7 @@ document.getElementById('pool-bar-submission-form').addEventListener('submit', a
       bootstrap.Modal.getInstance(document.getElementById('addPoolBarModal')).hide();
     })
     .catch(() => siteToast('Error submitting. Please try again.', 'error'));
-});
+}));
 
 // Edit pool bar — search
 // Note: uses 'pool-edit-search-results' to avoid ID collision with add modal
@@ -694,7 +738,8 @@ document.getElementById('pool-edit-payment-model').addEventListener('change', fu
 });
 
 // Submit pool bar edit
-document.getElementById('pool-edit-form').addEventListener('submit', async function (e) {
+const poolEditForm = document.getElementById('pool-edit-form');
+poolEditForm.addEventListener('submit', throttlePoolSubmit(poolEditForm, async function (e) {
   e.preventDefault();
   const originalId   = document.getElementById('pool-edit-original-id').value;
   const originalName = document.getElementById('pool-edit-name').value;
@@ -721,7 +766,7 @@ document.getElementById('pool-edit-form').addEventListener('submit', async funct
       bootstrap.Modal.getInstance(document.getElementById('editPoolBarModal')).hide();
     })
     .catch(() => siteToast('Error submitting edit.', 'error'));
-});
+}));
 // ── Pool bars mobile bottom drawer ─────────────────────────────────────────
 (function() {
   var drawerData = [];
