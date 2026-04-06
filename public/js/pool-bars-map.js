@@ -631,11 +631,16 @@ poolSubmissionForm.addEventListener('submit', throttlePoolSubmit(poolSubmissionF
   let lat = parseFloat(document.getElementById('pool-lat').value) || null;
   let lng = parseFloat(document.getElementById('pool-lng').value) || null;
   
+  // Check if we have initial coords from search result (means streetAddress is already full)
+  const hadInitialCoords = lat && lng;
+  
+  // Define city, state, zip outside if block so they're always available
+  let city  = isPhilly ? 'Philadelphia' : document.getElementById('pool-address-city').value;
+  let state = isPhilly ? 'PA' : document.getElementById('pool-address-state').value;
+  let zip   = isPhilly ? '' : document.getElementById('pool-address-zip').value;
+  
   let fullAddress = streetAddress;
   if (!lat || !lng) {
-    const city  = isPhilly ? 'Philadelphia' : document.getElementById('pool-address-city').value;
-    const state = isPhilly ? 'PA' : document.getElementById('pool-address-state').value;
-    const zip   = isPhilly ? '' : document.getElementById('pool-address-zip').value;
     fullAddress = `${streetAddress}, ${city}, ${state}${zip ? ' ' + zip : ''}`;
     
     try {
@@ -643,6 +648,13 @@ poolSubmissionForm.addEventListener('submit', throttlePoolSubmit(poolSubmissionF
       const gd  = await geo.json();
       lat = gd.lat; lng = gd.lng;
     } catch (_) {}
+  }
+
+  // If we had initial coords from search, don't duplicate city/state/zip in submission
+  if (hadInitialCoords) {
+    city = '';
+    state = '';
+    zip = '';
   }
 
   const neighborhood = (isPhilly && lat && lng) ? (getNhFromLatLng(lat, lng, poolGeoJson) || '') : '';

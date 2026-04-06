@@ -17,19 +17,27 @@ const API_BASE = window.location.hostname === 'localhost'
 // Check authentication on page load
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const res = await fetch(API_BASE + '/admin/check-auth', {
-      credentials: 'include'  // Include cookies in request
+    // 1. Check if the user is already fully logged in
+    const authRes = await fetch(API_BASE + '/admin/check-auth', {
+      credentials: 'include'
     });
-    const data = await res.json();
+    const authData = await authRes.json();
     
-    if (!data.authenticated) {
-      window.location.href = "admin-login.html";
+    if (authData.authenticated) {
+      // User is fully authenticated, proceed to load admin dashboard
+      document.body.classList.add('auth-complete');
+      initializeAdmin();
       return;
     }
-    // Authenticated, proceed with loading data
-    initializeAdmin();
+    
+    // 2. If not authenticated, send them to the unified login page
+    // This page now handles both the Captcha and the Password stages.
+    console.log('Not authenticated, redirecting to admin-login');
+    window.location.href = "admin-login.html";
+
   } catch (err) {
     console.error('Auth check failed:', err);
+    // On error, safe bet is to send back to the login/captcha entry point
     window.location.href = "admin-login.html";
   }
 });

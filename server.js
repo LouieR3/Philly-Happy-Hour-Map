@@ -207,7 +207,7 @@ app.post('/admin/login', (req, res) => {
   res.cookie('adminToken', process.env.ADMIN_PASSWORD, {
     httpOnly: true,      // Not accessible via JavaScript
     secure: isProduction, // HTTPS only in production
-    sameSite: 'Strict',   // CSRF protection
+    sameSite: 'Lax',     // Allow cookie on same-site top-level navigations
     maxAge: 24 * 60 * 60 * 1000  // 24 hours
   });
   
@@ -224,6 +224,17 @@ app.post('/admin/logout', (req, res) => {
 app.get('/admin/check-auth', (req, res) => {
   const token = req.cookies.adminToken;
   if (token && token === process.env.ADMIN_PASSWORD) {
+    return res.json({ authenticated: true });
+  }
+  res.status(401).json({ authenticated: false });
+});
+
+// Check if user passed captcha or has admin token (for gating admin pages)
+app.get('/admin/check-captcha', (req, res) => {
+  const hasAdminToken = req.cookies.adminToken && req.cookies.adminToken === process.env.ADMIN_PASSWORD;
+  const hasCaptchaPassed = !!req.cookies.captchaPassed;
+  
+  if (hasAdminToken || hasCaptchaPassed) {
     return res.json({ authenticated: true });
   }
   res.status(401).json({ authenticated: false });
@@ -1184,5 +1195,47 @@ app.get('/api/me', verifyFirebaseToken, (req, res) => {
   const { uid, email, name, picture } = req.firebaseUser;
   res.json({ uid, email, name, picture });
 });
+
+// ─── Custom Captcha Validation ─────────────────────────────────────────────
+app.post('/api/verify-captcha', (req, res) => {
+  const { selectedIndices } = req.body; // Expecting an array like [0, 3, 8]
+  
+  
+  if (!selectedIndices || !Array.isArray(selectedIndices) || selectedIndices.length === 0) {
+    return res.status(400).json({ error: 'No selection made' });
+  }
+
+  // Get answer from .env and convert to array (preserving order)
+  const correctAnswersRaw = process.env.CAPTCHA_ANSWER || '';
+  
+  if (!correctAnswersRaw) {
+    return res.status(500).json({ error: 'Server configuration error' });
+  }
+  
+  const correctAnswers = correctAnswersRaw.split(',').map(n => Number(n.trim()));
+  const userAnswers = selectedIndices.map(Number);
+
+  // Compare arrays — must match EXACTLY in order (not sorted)
+  const isCorrect = JSON.stringify(correctAnswers) === JSON.stringify(userAnswers);
+
+  if (isCorrect) {
+    // Set a cookie that expires in 10 minutes to allow access to admin-login.html
+    res.cookie('captchaPassed', 'true', { 
+      httpOnly: true, 
+      maxAge: 10 * 60 * 1000, 
+      sameSite: 'Lax' 
+    });
+    return res.json({ success: true });
+  }
+
+  res.status(401).json({ error: 'Incorrect selection or wrong order. Try again.' });
+});
+// app.get('/admin-login.html', (req, res, next) => {
+//   if (req.cookies.captchaPassed === 'true') {
+//     next(); // Let them through
+//   } else {
+//     res.redirect('/iron-wall.html'); // Send them back to captcha
+//   }
+// });
 
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));

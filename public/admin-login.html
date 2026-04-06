@@ -3,199 +3,249 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mappy Hour · Admin Login</title>
-  <!-- FAVICON -->
+  <title>Mappy Hour · Admin Access</title>
   <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
-
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
-  <link href="https://use.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet" />
   
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     :root {
       --primary: #2563eb;
-      --primary-dark: #1e40af;
       --bg: #0f172a;
       --surface: #1e293b;
-      --border: #334155;
       --text: #e2e8f0;
       --error: #ef4444;
     }
 
+    /* Hide until auth check completes */
+    body { display: none; }
+    body.auth-complete { display: flex; }
+
     body {
       font-family: 'Lato', sans-serif;
-      background: linear-gradient(135deg, var(--bg) 0%, #1a1f3a 100%);
-      min-height: 100vh;
-      display: flex;
+      background: var(--bg);
+      color: var(--text);
       align-items: center;
       justify-content: center;
-      color: var(--text);
+      min-height: 100vh;
+      margin: 0;
     }
 
     .login-container {
-      width: 100%;
-      max-width: 400px;
-      padding: 20px;
-    }
-
-    .login-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 48px 32px;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+      width: 100%;
+      max-width: 380px;
+      overflow: hidden;
     }
 
-    .login-card h1 {
-      font-family: 'Montserrat', sans-serif;
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-      text-align: center;
+    /* Stage Transitions */
+    .stage { display: none; }
+    .stage.active { display: block; animation: fadeIn 0.4s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .login-card p {
-      text-align: center;
-      color: #94a3b8;
-      margin-bottom: 32px;
-      font-size: 0.95rem;
+    /* Captcha Styling */
+    .instruction { margin-bottom: 20px; text-align: center; }
+    .instruction h2 { font-family: 'Montserrat'; font-size: 1.1rem; color: var(--primary); }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
+    .tile {
+      aspect-ratio: 1/1;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 3px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .tile.selected { border-color: var(--primary); filter: brightness(0.7); }
+
+    /* Password Stage Styling */
+    .input-group { margin-bottom: 20px; }
     input[type="password"] {
       width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      padding: 12px;
       background: #0f172a;
-      color: var(--text);
-      font-size: 1rem;
-      margin-bottom: 16px;
-      transition: border-color 0.2s;
-    }
-
-    input[type="password"]:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .btn-login {
-      width: 100%;
-      padding: 12px 16px;
-      background: var(--primary);
+      border: 1px solid #334155;
       color: white;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
       border: none;
+      color: white;
+      font-weight: 700;
       border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
-      font-family: 'Montserrat', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
     }
 
-    .btn-login:hover:not(:disabled) {
-      background: var(--primary-dark);
-    }
-
-    .btn-login:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    #login-error {
-      display: none;
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid var(--error);
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-top: 16px;
-      color: #fca5a5;
-      font-size: 0.9rem;
-      text-align: center;
-    }
-
-    #login-error.show {
-      display: block;
-    }
+    .error-msg { color: var(--error); font-size: 0.85rem; margin-top: 10px; text-align: center; min-height: 1.2rem; }
   </style>
 </head>
 <body>
 
-  <div class="login-container">
-    <div class="login-card">
-      <h1>🍸 Mappy Hour</h1>
-      <p>Admin Dashboard — enter your password to continue</p>
-      <input 
-        type="password" 
-        id="admin-password" 
-        placeholder="Admin password" 
-        autocomplete="off"
-      />
-      <button class="btn-login" id="login-btn" onclick="handleAdminLogin()">
-        <span id="btn-text">Sign In</span>
-      </button>
-      <div id="login-error"></div>
+<div class="login-container">
+  
+  <div id="stage-captcha" class="stage active">
+    <div class="instruction">
+      <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 5px;">Step 1: Security Sequence</p>
+      <h2>Select the images in order <br>'Pussy, Power, Pasta'</h2>
     </div>
+    <div class="grid" id="captcha-grid"></div>
+    <button onclick="verifyCaptcha()">Verify Identity</button>
   </div>
 
-  <script>
-    // API base URL (matches admin.js)
-    const API_BASE = window.location.hostname === 'localhost'
-      ? 'http://localhost:3000'
-      : 'https://philly-happy-hour-map-production.up.railway.app';
+  <div id="stage-password" class="stage">
+    <div class="instruction">
+      <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 5px;">Step 2: Authenticate</p>
+      <h2>Enter Administrator Password</h2>
+    </div>
+    <div class="input-group">
+      <input type="password" id="admin-password" placeholder="••••••••" onkeypress="if(event.key==='Enter') handleLogin()">
+    </div>
+    <button id="login-btn" onclick="handleLogin()">Sign In</button>
+  </div>
 
-    // Handle Enter key
-    document.getElementById("admin-password").addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        handleAdminLogin();
+  <div id="global-error" class="error-msg"></div>
+</div>
+
+<script>
+  const API_BASE = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000' 
+    : 'https://philly-happy-hour-map-production.up.railway.app';
+
+  // Check auth before showing page
+  async function checkAuthBeforeRender() {
+    try {
+      const res = await fetch(`${API_BASE}/admin/check-captcha`, {
+        credentials: 'include'
+      });
+      
+      if (!res.ok) {
+        console.log('[Auth] Not authenticated, redirecting to captcha');
+        window.location.href = 'iron-wall.html';
+        return false;
       }
-    });
-
-    async function handleAdminLogin() {
-      const pw = document.getElementById("admin-password").value.trim();
-      if (!pw) return;
-
-      const btn = document.getElementById("login-btn");
-      const btnText = document.getElementById("btn-text");
-      const errorEl = document.getElementById("login-error");
-
-      btn.disabled = true;
-      btnText.textContent = "Signing in...";
-      errorEl.classList.remove("show");
-
-      try {
-        // POST password to login endpoint (will set HttpOnly cookie)
-        const response = await fetch(`${API_BASE}/admin/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',  // Include cookies in response
-          body: JSON.stringify({ password: pw })
-        });
-
-        if (!response.ok) {
-          const data = await response.json();
-          throw new Error(data.error || "Authentication failed");
-        }
-
-        // Cookie is automatically set by server, redirect to admin dashboard
-        window.location.href = "admin.html";
-      } catch (err) {
-        errorEl.textContent = err.message || "Incorrect password. Try again.";
-        errorEl.classList.add("show");
-        btn.disabled = false;
-        btnText.textContent = "Sign In";
-        document.getElementById("admin-password").value = "";
-      }
+      
+      // Auth passed, show page
+      document.body.classList.add('auth-complete');
+      return true;
+    } catch (err) {
+      console.error('[Auth] Check failed:', err);
+      window.location.href = 'iron-wall.html';
+      return false;
     }
-  </script>
+  }
+
+  // Run auth check immediately if document already loaded, or on DOMContentLoaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', checkAuthBeforeRender);
+  } else {
+    checkAuthBeforeRender();
+  }
+
+  let selectedIndices = [];
+  const gridIndices = [0,1,2,3,4,5,6,7,8]; // Shuffling logic can be added here
+
+  // Initialize Grid
+  // Initialize Grid
+  const grid = document.getElementById('captcha-grid');
+  
+  gridIndices.forEach(idx => {
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+    
+    // 1. Try loading as .jpg first
+    const jpgUrl = `assets/img/captcha/${idx}.jpg`;
+    const pngUrl = `assets/img/captcha/${idx}.png`;
+    
+    tile.style.backgroundImage = `url('${jpgUrl}')`;
+
+    // 2. Error handling: if .jpg fails, try .png
+    // We create a temporary image object to test the URL
+    const imgTester = new Image();
+    imgTester.src = jpgUrl;
+    
+    imgTester.onerror = () => {
+      // If the .jpg didn't work, switch the tile to .png
+      tile.style.backgroundImage = `url('${pngUrl}')`;
+    };
+
+    tile.onclick = () => {
+      if (selectedIndices.includes(idx)) {
+        selectedIndices = selectedIndices.filter(i => i !== idx);
+        tile.classList.remove('selected');
+      } else {
+        selectedIndices.push(idx);
+        tile.classList.add('selected');
+      }
+    };
+    grid.appendChild(tile);
+  });
+
+  async function verifyCaptcha() {
+    const errorEl = document.getElementById('global-error');
+    errorEl.textContent = "";
+
+    try {
+      const res = await fetch(`${API_BASE}/api/verify-captcha`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ selectedIndices })
+      });
+
+      if (res.ok) {
+        document.getElementById('stage-captcha').classList.remove('active');
+        document.getElementById('stage-password').classList.add('active');
+      } else {
+        errorEl.textContent = "Identity verification failed.";
+        selectedIndices = [];
+        document.querySelectorAll('.tile').forEach(t => t.classList.remove('selected'));
+      }
+    } catch (err) {
+      errorEl.textContent = "Server error.";
+    }
+  }
+
+  async function handleLogin() {
+    const pw = document.getElementById('admin-password').value;
+    const errorEl = document.getElementById('global-error');
+    
+    try {
+      const res = await fetch(`${API_BASE}/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ password: pw })
+      });
+
+      if (res.ok) {
+        window.location.href = 'admin.html';
+      } else {
+        const data = await res.json();
+        errorEl.textContent = data.error || "Login failed.";
+      }
+    } catch (err) {
+      errorEl.textContent = "Connection error.";
+    }
+  }
+</script>
 
 </body>
 </html>
