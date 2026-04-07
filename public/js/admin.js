@@ -32,11 +32,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     
     // 2. If not authenticated, send them to the unified login page
     // This page now handles both the Captcha and the Password stages.
-    console.log('Not authenticated, redirecting to admin-login');
+    // console.log('Not authenticated, redirecting to admin-login');
     window.location.href = "admin-login.html";
 
   } catch (err) {
-    console.error('Auth check failed:', err);
+    // console.error('Auth check failed:', err);
     // On error, safe bet is to send back to the login/captcha entry point
     window.location.href = "admin-login.html";
   }
