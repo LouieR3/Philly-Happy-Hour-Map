@@ -1230,12 +1230,4 @@ app.post('/api/verify-captcha', (req, res) => {
 
   res.status(401).json({ error: 'Incorrect selection or wrong order. Try again.' });
 });
-// app.get('/admin-login.html', (req, res, next) => {
-//   if (req.cookies.captchaPassed === 'true') {
-//     next(); // Let them through
-//   } else {
-//     res.redirect('/iron-wall.html'); // Send them back to captcha
-//   }
-// });
-
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));
