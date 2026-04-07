@@ -132,8 +132,40 @@
 
   // Check auth before showing page
   async function checkAuthBeforeRender() {
-    // Show page immediately - admin-login is now the main entry point
-    document.body.classList.add('auth-complete');
+    try {
+      // Check if user is fully authenticated (has adminToken)
+      const authRes = await fetch(`${API_BASE}/admin/check-auth`, {
+        credentials: 'include'
+      });
+      
+      if (authRes.ok) {
+        // User is fully authenticated, redirect to admin dashboard
+        console.log('[Auth] User already authenticated, redirecting to admin');
+        window.location.href = 'admin.html';
+        return;
+      }
+      
+      // Check if user passed captcha (has captchaPassed cookie)
+      const captchaRes = await fetch(`${API_BASE}/admin/check-captcha`, {
+        credentials: 'include'
+      });
+      
+      if (captchaRes.ok) {
+        // User passed captcha, show password stage
+        console.log('[Auth] Captcha passed, showing password stage');
+        document.body.classList.add('auth-complete');
+        document.getElementById('stage-captcha').classList.remove('active');
+        document.getElementById('stage-password').classList.add('active');
+      } else {
+        // Fresh start, show captcha stage
+        console.log('[Auth] New user, showing captcha stage');
+        document.body.classList.add('auth-complete');
+      }
+    } catch (err) {
+      console.error('[Auth] Check failed:', err);
+      // On error, show captcha stage anyway
+      document.body.classList.add('auth-complete');
+    }
   }
 
   // Run auth check immediately if document already loaded, or on DOMContentLoaded
@@ -144,11 +176,17 @@
   }
 
   let selectedIndices = [];
-  const gridIndices = [0,1,2,3,4,5,6,7,8]; // Shuffling logic can be added here
+  const gridIndices = [0,1,2,3,4,5,6,7,8];
+
+  // Shuffle helper
+  function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
+  }
 
   // Initialize Grid
-  // Initialize Grid
   const grid = document.getElementById('captcha-grid');
+  
+  shuffle(gridIndices);  // Shuffle on each load
   
   gridIndices.forEach(idx => {
     const tile = document.createElement('div');
@@ -186,6 +224,8 @@
     const errorEl = document.getElementById('global-error');
     errorEl.textContent = "";
 
+    console.log('[Captcha] Verifying selection:', selectedIndices);
+
     try {
       const res = await fetch(`${API_BASE}/api/verify-captcha`, {
         method: 'POST',
@@ -193,15 +233,21 @@
         body: JSON.stringify({ selectedIndices })
       });
 
+      console.log('[Captcha] Response status:', res.status);
+
       if (res.ok) {
+        console.log('[Captcha] ✓ Correct! Setting captchaPassed cookie and showing password stage');
         document.getElementById('stage-captcha').classList.remove('active');
         document.getElementById('stage-password').classList.add('active');
       } else {
-        errorEl.textContent = "Identity verification failed.";
+        const data = await res.json();
+        console.log('[Captcha] ✗ Incorrect:', data.error);
+        errorEl.textContent = data.error || "Identity verification failed.";
         selectedIndices = [];
         document.querySelectorAll('.tile').forEach(t => t.classList.remove('selected'));
       }
     } catch (err) {
+      console.error('[Captcha] Exception:', err);
       errorEl.textContent = "Server error.";
     }
   }
@@ -210,7 +256,13 @@
     const pw = document.getElementById('admin-password').value;
     const errorEl = document.getElementById('global-error');
     
+    if (!pw) {
+      errorEl.textContent = "Please enter a password.";
+      return;
+    }
+    
     try {
+      console.log('[Login] Attempting password login...');
       const res = await fetch(`${API_BASE}/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -218,14 +270,20 @@
         body: JSON.stringify({ password: pw })
       });
 
+      console.log('[Login] Response status:', res.status);
+      
       if (res.ok) {
+        console.log('[Login] Success! Token cookie set, redirecting to admin.html');
         window.location.href = 'admin.html';
       } else {
         const data = await res.json();
+        console.log('[Login] Error response:', data);
         errorEl.textContent = data.error || "Login failed.";
+        document.getElementById('admin-password').value = "";
       }
     } catch (err) {
-      errorEl.textContent = "Connection error.";
+      console.error('[Login] Exception:', err);
+      errorEl.textContent = "Connection error. Check server running?";
     }
   }
 </script>
