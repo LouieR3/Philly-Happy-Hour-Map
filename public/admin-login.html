@@ -132,25 +132,8 @@
 
   // Check auth before showing page
   async function checkAuthBeforeRender() {
-    try {
-      const res = await fetch(`${API_BASE}/admin/check-captcha`, {
-        credentials: 'include'
-      });
-      
-      if (!res.ok) {
-        console.log('[Auth] Not authenticated, redirecting to captcha');
-        window.location.href = 'iron-wall.html';
-        return false;
-      }
-      
-      // Auth passed, show page
-      document.body.classList.add('auth-complete');
-      return true;
-    } catch (err) {
-      console.error('[Auth] Check failed:', err);
-      window.location.href = 'iron-wall.html';
-      return false;
-    }
+    // Show page immediately - admin-login is now the main entry point
+    document.body.classList.add('auth-complete');
   }
 
   // Run auth check immediately if document already loaded, or on DOMContentLoaded
