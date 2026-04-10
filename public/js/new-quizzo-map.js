@@ -636,6 +636,20 @@ editBarButton.addEventListener("click", () => {
   new bootstrap.Modal(document.getElementById("editBarModal")).show();
 });
 
+// Mobile buttons for Add/Edit (visible only on mobile)
+const mobileAddBtn = document.getElementById("quizzo-mobile-add-btn");
+const mobileEditBtn = document.getElementById("quizzo-mobile-edit-btn");
+if (mobileAddBtn) {
+  mobileAddBtn.addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("addBarModal")).show();
+  });
+}
+if (mobileEditBtn) {
+  mobileEditBtn.addEventListener("click", () => {
+    new bootstrap.Modal(document.getElementById("editBarModal")).show();
+  });
+}
+
 // ── Search-from-bars for Add Bar modal ────────────────────────────────────────
 const quizzoSearchInput       = document.getElementById('quizzo-search-input');
 const quizzoSearchResultsList = document.getElementById('quizzo-search-results-list');

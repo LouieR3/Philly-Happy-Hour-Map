@@ -260,15 +260,23 @@
         <!-- Map + Filter Bars Row -->
         <div class="row mt-3 align-items-start">
           <!-- Map Column -->
-          <div class="col-lg-8" id="map-column" style="position: relative;">
+          <div class="col-lg-8" id="map-column">
             <button class="mobile-filter-btn" id="quizzo-mobile-filter-btn" title="Open Filters">
               <i class="fa-solid fa-sliders"></i>
             </button>
-            <!-- Mobile: List trigger button overlaid on map -->
-            <button class="list-trigger-btn" id="quizzo-list-btn">
-              <i class="fa-solid fa-list"></i> List
-            </button>
             <div id="leaflet-map"></div>
+            <!-- Mobile: Action buttons row (below map on mobile only) -->
+            <div class="mobile-action-buttons-wrapper d-lg-none d-flex d-flex justify-content-center gap-2 mt-3">
+              <button class="btn btn-sm btn-primary rounded-pill" id="quizzo-mobile-add-btn" title="Add New Bar">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button class="list-trigger-btn" id="quizzo-list-btn">
+                <i class="fa-solid fa-list"></i> List
+              </button>
+              <button class="btn btn-sm btn-primary rounded-pill" id="quizzo-mobile-edit-btn" title="Edit Bar">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+            </div>
           </div>
 
           <!-- Desktop list column (hidden on mobile) -->
@@ -608,15 +616,23 @@
 
         <!-- Map + Sidebar -->
         <div class="row mt-3 align-items-start">
-          <div class="col-lg-8" id="pool-map-column" style="position: relative;">
+          <div class="col-lg-8" id="pool-map-column">
             <button class="mobile-filter-btn" id="pool-mobile-filter-btn" title="Open Filters">
               <i class="fa-solid fa-sliders"></i>
             </button>
-            <!-- Mobile: List trigger button overlaid on map -->
-            <button class="list-trigger-btn" id="pool-list-btn">
-              <i class="fa-solid fa-list"></i> List
-            </button>
             <div id="pool-leaflet-map"></div>
+            <!-- Mobile: Action buttons row (below map on mobile only) -->
+            <div class="mobile-action-buttons-wrapper d-lg-none d-flex justify-content-center gap-2 mt-3">
+              <button class="btn btn-sm btn-primary rounded-pill" id="pool-mobile-add-btn" title="Add New Pool Bar">
+                <i class="fa-solid fa-plus"></i>
+              </button>
+              <button class="list-trigger-btn" id="pool-list-btn">
+                <i class="fa-solid fa-list"></i> List
+              </button>
+              <button class="btn btn-sm btn-primary rounded-pill" id="pool-mobile-edit-btn" title="Edit Pool Bar">
+                <i class="fa-solid fa-pencil"></i>
+              </button>
+            </div>
           </div>
           <!-- Desktop list column (hidden on mobile) -->
           <div class="col-lg-4 mt-4 mt-lg-0" id="pool-table-column">

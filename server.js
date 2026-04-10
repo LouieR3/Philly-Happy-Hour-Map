@@ -198,9 +198,19 @@ app.post('/admin/login', (req, res) => {
   const { password } = req.body;
   if (!password) return res.status(400).json({ error: 'Password required' });
   
+  // Require that user has passed captcha first (check captchaPassed cookie)
+  const hasCaptchaPassed = req.cookies.captchaPassed && 
+                           req.cookies.captchaPassed === process.env.ADMIN_PASSWORD;
+  if (!hasCaptchaPassed) {
+    return res.status(401).json({ error: 'Must complete captcha first' });
+  }
+  
   if (password !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Invalid password' });
   }
+  
+  // Clear the captcha cookie and set the admin token
+  res.clearCookie('captchaPassed');
   
   // Set HttpOnly, Secure cookie (token is the password for simplicity)
   const isProduction = process.env.NODE_ENV === 'production';
@@ -232,7 +242,11 @@ app.get('/admin/check-auth', (req, res) => {
 // Check if user passed captcha or has admin token (for gating admin pages)
 app.get('/admin/check-captcha', (req, res) => {
   const hasAdminToken = req.cookies.adminToken && req.cookies.adminToken === process.env.ADMIN_PASSWORD;
-  const hasCaptchaPassed = !!req.cookies.captchaPassed;
+  
+  // Check if user has captcha cookie with correct value (server-side verification)
+  // Note: The cookie value must match ADMIN_PASSWORD to prevent forged cookies
+  const hasCaptchaPassed = req.cookies.captchaPassed && 
+                           req.cookies.captchaPassed === process.env.ADMIN_PASSWORD;
   
   if (hasAdminToken || hasCaptchaPassed) {
     return res.json({ authenticated: true });
@@ -1219,11 +1233,14 @@ app.post('/api/verify-captcha', (req, res) => {
   const isCorrect = JSON.stringify(correctAnswers) === JSON.stringify(userAnswers);
 
   if (isCorrect) {
-    // Set a cookie that expires in 10 minutes to allow access to admin-login.html
-    res.cookie('captchaPassed', 'true', { 
-      httpOnly: true, 
-      maxAge: 10 * 60 * 1000, 
-      sameSite: 'Lax' 
+    // Set httpOnly cookie with ADMIN_PASSWORD as value (prevents token forging)
+    // Cookie expires in 30 minutes to allow captcha → password stage
+    const isProduction = process.env.NODE_ENV === 'production';
+    res.cookie('captchaPassed', process.env.ADMIN_PASSWORD, { 
+      httpOnly: true,      // JavaScript cannot access/modify this cookie
+      secure: isProduction, // HTTPS only in production
+      sameSite: 'Lax',     // CSRF protection
+      maxAge: 30 * 60 * 1000  // 30 minutes
     });
     return res.json({ success: true });
   }

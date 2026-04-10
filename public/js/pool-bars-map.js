@@ -563,6 +563,20 @@ document.getElementById('edit-pool-bar-button').addEventListener('click', () => 
   new bootstrap.Modal(document.getElementById('editPoolBarModal')).show();
 });
 
+// Mobile buttons for Add/Edit Pool Bars (visible only on mobile)
+const poolMobileAddBtn = document.getElementById('pool-mobile-add-btn');
+const poolMobileEditBtn = document.getElementById('pool-mobile-edit-btn');
+if (poolMobileAddBtn) {
+  poolMobileAddBtn.addEventListener('click', () => {
+    new bootstrap.Modal(document.getElementById('addPoolBarModal')).show();
+  });
+}
+if (poolMobileEditBtn) {
+  poolMobileEditBtn.addEventListener('click', () => {
+    new bootstrap.Modal(document.getElementById('editPoolBarModal')).show();
+  });
+}
+
 // Philly toggle in add pool bar form
 document.querySelectorAll('input[name="poolIsPhiladelphia"]').forEach((radio) => {
   radio.addEventListener('change', () => {
@@ -821,25 +835,33 @@ poolEditForm.addEventListener('submit', throttlePoolSubmit(poolEditForm, async f
       return;
     }
 
+    // Track placeholder elements for photo injection
+    var photoTargets = new Map();
+
     filtered.forEach(function(bar) {
       var card = document.createElement('div');
       card.className = 'drawer-card';
 
-      var thumb = bar.photo_url
-        ? '<img class="drawer-card-thumb" src="' + bar.photo_url + '" alt="" loading="lazy" />'
-        : '<div class="drawer-card-thumb-placeholder"><i class="fa-solid fa-circle-dot"></i></div>';
+      var placeholder = document.createElement('div');
+      placeholder.className = 'drawer-card-thumb-placeholder';
+      placeholder.innerHTML = '<i class="fa-solid fa-circle-dot"></i>';
+      photoTargets.set(bar.Name, placeholder);
 
       var cost = bar.Payment_Model === 'Hourly' || bar.Payment_Model === 'per_hour'
         ? (bar.Cost_Per_Hour ? '$' + bar.Cost_Per_Hour + '/hr' : bar.Payment_Model)
         : (bar.Cost_Per_Game ? '$' + bar.Cost_Per_Game + '/game' : (bar.Payment_Model || ''));
 
-      card.innerHTML = thumb +
-        '<div class="drawer-card-body">' +
+      var body = document.createElement('div');
+      body.className = 'drawer-card-body';
+      body.innerHTML =
           '<div class="drawer-card-name">' + (bar.Name || '') + '</div>' +
           (bar.Neighborhood ? '<div class="drawer-card-meta">' + bar.Neighborhood + '</div>' : '') +
           (cost ? '<div class="drawer-card-tags"><span class="drawer-card-tag">🎱 ' + cost + '</span></div>' : '') +
           (bar.Vibe ? '<div class="drawer-card-tags"><span class="drawer-card-tag">' + bar.Vibe + '</span></div>' : '') +
-        '</div>';
+        '';
+
+      card.appendChild(placeholder);
+      card.appendChild(body);
 
       card.addEventListener('click', function() {
         var marker = poolMarkers.find(function(m) { return m.name === bar.Name; });
@@ -852,6 +874,33 @@ poolEditForm.addEventListener('submit', throttlePoolSubmit(poolEditForm, async f
 
       row.appendChild(card);
     });
+
+    // Fetch and apply photos to drawer cards
+    if (photoTargets.size > 0) {
+      fetchPoolPhotosForDrawer(photoTargets);
+    }
+  }
+
+  // Fetch photos for drawer cards and inject them
+  async function fetchPoolPhotosForDrawer(nameToEl) {
+    if (!nameToEl.size) return;
+    try {
+      const names = [...nameToEl.keys()];
+      const res = await fetch(`${POOL_API_BASE}/api/bar-photos?names=${encodeURIComponent(names.join('|'))}`);
+      const metaMap = await res.json();
+      Object.entries(metaMap).forEach(([name, meta]) => {
+        const el = nameToEl.get(name);
+        if (!el || !meta.photos?.length) return;
+        const img = document.createElement('img');
+        img.className = 'drawer-card-thumb';
+        img.src = meta.photos[0];
+        img.alt = name;
+        img.loading = 'lazy';
+        el.replaceWith(img);
+      });
+    } catch (e) {
+      console.warn('[pool-drawer-photos]', e.message);
+    }
   }
 
   window._poolDrawerSetData = function(data) {
