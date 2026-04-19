@@ -888,21 +888,141 @@
       </div>
     </section>
 
-    <!-- Sports Bars Section (Coming Soon) -->
-    <section class="page-section portfolio" id="sports-bars">
+    <!-- Sports Bars Section -->
+    <section class="page-section section-alt" id="sports-bars">
       <div class="container-xxxl">
         <span class="section-eyebrow">Niche Maps</span>
         <h2 class="page-section-heading text-center text-uppercase mb-0">Philly Sports Bar Map</h2>
         <div class="divider-custom">
           <div class="divider-custom-line"></div>
-          <div class="divider-custom-icon"><i class="fa-solid fa-earth-americas"></i></div>
+          <div class="divider-custom-icon"><i class="fa-solid fa-tv"></i></div>
           <div class="divider-custom-line"></div>
         </div>
-        <div class="coming-soon-section">
-          <div class="coming-soon-icon"><i class="fa-solid fa-tv"></i></div>
-          <h3>Coming Soon</h3>
-          <p class="lead">We're mapping Philly's best sports bars — TV counts, NFL packages, game-day specials, and more. Check back soon.</p>
+
+        <!-- Sports Bar Filters -->
+        <div id="sports-filters" class="filter-box mb-3">
+
+          <!-- League filter -->
+          <div id="sports-league-filter" style="position:relative;">
+            <button id="sports-league-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-trophy" style="margin-right:8px;"></i>
+              <span class="filter-label">League</span>
+              <i class="fa-solid fa-caret-down" style="margin-left:8px;"></i>
+            </button>
+            <div id="sports-league-dropdown" style="display:none;position:absolute;top:100%;background:#1a2332;border:1px solid #2d3a4f;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:1000;min-width:160px;">
+              <ul id="sports-league-options" style="list-style:none;margin:0;padding:8px 0;"></ul>
+            </div>
+          </div>
+
+          <!-- Team filter -->
+          <div id="sports-team-filter" style="position:relative;">
+            <button id="sports-team-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-shield-halved" style="margin-right:8px;"></i>
+              <span class="filter-label">Team</span>
+              <i class="fa-solid fa-caret-down" style="margin-left:8px;"></i>
+            </button>
+            <div id="sports-team-dropdown" style="display:none;position:absolute;top:100%;left:0;background:#1a2332;border:1px solid #2d3a4f;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:1000;min-width:220px;">
+              <ul id="sports-team-options" style="list-style:none;margin:0;padding:8px 0;max-height:280px;overflow-y:auto;"></ul>
+            </div>
+          </div>
+
+          <!-- Philly-only toggle -->
+          <button id="sports-philly-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-bell" style="margin-right:8px;"></i>Philly Teams
+          </button>
+
+          <!-- Region filter -->
+          <div id="sports-region-filter" style="position:relative;">
+            <button id="sports-region-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-map" style="margin-right:8px;"></i>
+              <span class="filter-label">Philly Region</span>
+              <i class="fa-solid fa-caret-down" style="margin-left:8px;"></i>
+            </button>
+            <div id="sports-region-dropdown" style="display:none;position:absolute;top:100%;left:0;background:#1a2332;border:1px solid #2d3a4f;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:1000;min-width:180px;">
+              <ul id="sports-region-options" style="list-style:none;margin:0;padding:8px 0;max-height:220px;overflow-y:auto;"></ul>
+            </div>
+          </div>
+
+          <!-- Neighborhood filter -->
+          <div id="sports-neighborhood-filter" style="position:relative;">
+            <button id="sports-neighborhood-button" class="btn btn-primary rounded-pill">
+              <i class="fa-solid fa-map-marker-alt" style="margin-right:8px;"></i>
+              <span class="filter-label">Neighborhood</span>
+              <i class="fa-solid fa-caret-down" style="margin-left:8px;"></i>
+            </button>
+            <div id="sports-neighborhood-dropdown" style="display:none;position:absolute;top:100%;left:0;background:#1a2332;border:1px solid #2d3a4f;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.4);z-index:1000;min-width:200px;">
+              <ul id="sports-neighborhood-options" style="list-style:none;margin:0;padding:8px 0;max-height:220px;overflow-y:auto;"></ul>
+            </div>
+          </div>
+
+          <button id="sports-reset-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-rotate-left" style="margin-right:8px;"></i>Reset
+          </button>
         </div>
+
+        <!-- Map + Sidebar -->
+        <div class="row mt-3 align-items-start">
+          <div class="col-lg-8" id="sports-map-column">
+            <button class="basemap-toggle-btn" id="sports-basemap-toggle" title="Toggle Map Style">
+              <i class="fa-solid fa-sun"></i>
+              <span>Light Mode</span>
+            </button>
+            <button class="mobile-filter-btn" id="sports-mobile-filter-btn" title="Open Filters">
+              <i class="fa-solid fa-sliders"></i>
+            </button>
+            <div id="sports-leaflet-map"></div>
+            <!-- Mobile action buttons (below map on mobile only) -->
+            <div class="mobile-action-buttons-wrapper d-lg-none d-flex justify-content-center gap-2 mt-3">
+              <button class="list-trigger-btn" id="sports-list-btn">
+                <i class="fa-solid fa-list"></i> List
+              </button>
+            </div>
+          </div>
+
+          <!-- Desktop list column -->
+          <div class="col-lg-4 mt-4 mt-lg-0" id="sports-table-column">
+            <div id="sports-bar-table-container">
+              <h3 class="text-center d-none d-lg-block">Sports Bars</h3>
+              <input type="text" id="sports-bar-search" class="form-control mb-3" placeholder="Search sports bars..." />
+              <div id="sports-bar-list" class="bar-card-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Filter Modal -->
+        <div class="mobile-filter-modal" id="sports-mobile-filter-modal">
+          <div class="mobile-filter-header">
+            <h2>Filters</h2>
+            <button class="mobile-filter-close" id="sports-filter-close">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+          <div class="mobile-filter-content">
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">League</label>
+              <div class="mobile-filter-buttons" id="mobile-sports-league-buttons">
+                <button class="mobile-filter-btn-option active" data-value="All">All</button>
+                <button class="mobile-filter-btn-option" data-value="NFL">NFL</button>
+                <button class="mobile-filter-btn-option" data-value="NBA">NBA</button>
+                <button class="mobile-filter-btn-option" data-value="MLB">MLB</button>
+                <button class="mobile-filter-btn-option" data-value="NHL">NHL</button>
+                <button class="mobile-filter-btn-option" data-value="MLS">MLS</button>
+                <button class="mobile-filter-btn-option" data-value="Premier League">PL</button>
+              </div>
+            </div>
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Neighborhood</label>
+              <select class="mobile-filter-dropdown-select" id="mobile-sports-neighborhood-select">
+                <option value="">All Neighborhoods</option>
+              </select>
+            </div>
+          </div>
+          <div class="mobile-filter-footer">
+            <button class="btn-reset" id="sports-mobile-filter-reset">Reset</button>
+            <button class="btn-apply" id="sports-mobile-filter-apply">Apply</button>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -1093,6 +1213,8 @@
     <script src="js/new-quizzo-map.js"></script>
     <!-- POOL BARS MAP -->
     <script src="js/pool-bars-map.js"></script>
+    <!-- SPORTS BARS MAP -->
+    <script src="js/sports-bars-map.js"></script>
     <!-- MOBILE BOTTOM SHEET -->
     <script>
       (function () {
@@ -1123,8 +1245,9 @@
           });
         }
 
-        initSheet('table-column',      'quizzo-sheet-handle', 'bar-search',      'bar-list');
-        initSheet('pool-table-column', 'pool-sheet-handle',   'pool-bar-search', 'pool-bar-list');
+        initSheet('table-column',       'quizzo-sheet-handle',  'bar-search',       'bar-list');
+        initSheet('pool-table-column',  'pool-sheet-handle',    'pool-bar-search',  'pool-bar-list');
+        initSheet('sports-table-column','sports-sheet-handle',  'sports-bar-search','sports-bar-list');
       })();
     </script>
     <!-- PHILLY BAR MAP (basic init) -->
@@ -1193,6 +1316,18 @@
       <button class="drawer-close" id="pool-drawer-close"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="drawer-card-row" id="pool-drawer-cards"></div>
+  </div>
+
+  <!-- ── Sports Bars bottom drawer (mobile only) ────────────────────── -->
+  <div class="drawer-backdrop" id="sports-drawer-backdrop"></div>
+  <div class="bottom-drawer" id="sports-drawer">
+    <div class="drawer-pip"></div>
+    <div class="drawer-header">
+      <span class="drawer-title">Sports Bars</span>
+      <input type="text" class="drawer-search" id="sports-drawer-search" placeholder="Search…" />
+      <button class="drawer-close" id="sports-drawer-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-card-row" id="sports-drawer-cards"></div>
   </div>
 
   </body>

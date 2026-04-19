@@ -1247,4 +1247,131 @@ app.post('/api/verify-captcha', (req, res) => {
 
   res.status(401).json({ error: 'Incorrect selection or wrong order. Try again.' });
 });
+// ═══════════════════════════════════════════════════════════════════════════════
+// SPORTS BARS ROUTES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const sportsTeamSchema = new mongoose.Schema({
+  team_name:    String,
+  league:       String,   // "NFL" | "NBA" | "MLB" | "NHL" | "MLS" | "Premier League"
+  city:         String,
+  abbreviation: String,
+  logo_url:     String,
+  sportsdb_id:  String,
+}, { collection: 'sports_teams' });
+
+const sportsBarSchema = new mongoose.Schema({
+  Name:          String,
+  Address:       String,
+  Latitude:      Number,
+  Longitude:     Number,
+  Phone:         String,
+  Website:       String,
+  'Yelp Rating': Number,
+  'Yelp Alias':  String,
+  Price:         String,
+  Categories:    mongoose.Schema.Types.Mixed,
+  Neighborhood:  String,
+  Photos:        [String],
+  Monday: String, Tuesday: String, Wednesday: String,
+  Thursday: String, Friday: String, Saturday: String, Sunday: String,
+  // Sports-specific fields
+  philly_affiliates:             [String],
+  other_nhl_nba_mlb_nfl_teams:   [String],
+  premier_league_team:           String,
+  other_soccer_teams:            [String],
+  team_ids:                      [mongoose.Schema.Types.ObjectId],
+}, { collection: 'sports_bars', strict: false });
+
+const SportsTeam = mappyHourDb.model('SportsTeam', sportsTeamSchema);
+const SportsBar  = mappyHourDb.model('SportsBar',  sportsBarSchema);
+
+// GET /api/sports-teams — populate filter dropdowns (optional ?league= filter)
+app.get('/api/sports-teams', async (req, res) => {
+  try {
+    const filter = req.query.league ? { league: req.query.league } : {};
+    const teams  = await SportsTeam.find(filter, { _id: 0, __v: 0 }).lean();
+    res.json(teams);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/sports-bars — public sports bars endpoint
+// Optional query params: ?league=NFL  ?team=Eagles  ?philly=true
+app.get('/api/sports-bars', async (req, res) => {
+  try {
+    const { league, team, philly } = req.query;
+
+    const dbFilter = {
+      Latitude:  { $exists: true, $ne: null },
+      Longitude: { $exists: true, $ne: null },
+    };
+
+    let bars = await SportsBar.find(dbFilter, { __v: 0 }).lean();
+
+    // Post-fetch filtering (team names span multiple array fields)
+    if (philly === 'true') {
+      bars = bars.filter(b => (b.philly_affiliates || []).length > 0);
+    }
+
+    if (team) {
+      const q = team.toLowerCase();
+      bars = bars.filter(b => {
+        const allTeams = [
+          ...(b.philly_affiliates || []),
+          ...(b.other_nhl_nba_mlb_nfl_teams || []),
+          b.premier_league_team,
+          ...(b.other_soccer_teams || []),
+        ].filter(Boolean);
+        return allTeams.some(t => t.toLowerCase().includes(q));
+      });
+    }
+
+    if (league) {
+      // Resolve which team names belong to this league, then filter bars that
+      // support at least one of those teams
+      const leagueTeams = await SportsTeam.find({ league }, { team_name: 1 }).lean();
+      const leagueTeamNames = new Set(leagueTeams.map(t => t.team_name));
+      bars = bars.filter(b => {
+        const allTeams = [
+          ...(b.philly_affiliates || []),
+          ...(b.other_nhl_nba_mlb_nfl_teams || []),
+          b.premier_league_team,
+          ...(b.other_soccer_teams || []),
+        ].filter(Boolean);
+        return allTeams.some(t => leagueTeamNames.has(t));
+      });
+    }
+
+    res.json(bars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Admin: CRUD for sports bars
+app.get('/admin/sports-bars', adminAuth, async (req, res) => {
+  try {
+    const bars = await SportsBar.find({}, { __v: 0 }).lean();
+    res.json(bars);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/admin/sports-bars/:id', adminAuth, async (req, res) => {
+  try {
+    const bar = await SportsBar.findByIdAndUpdate(
+      req.params.id, { $set: req.body }, { new: true }
+    );
+    if (!bar) return res.status(404).json({ error: 'Not found' });
+    res.json({ success: true, bar });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));
