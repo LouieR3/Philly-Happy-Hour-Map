@@ -416,6 +416,12 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
 }
 
+/* ── Map columns positioning ──────────────────────────────── */
+#map-column,
+#pool-map-column {
+  position: relative;
+}
+
 /* ── Pool map ─────────────────────────────────────────────── */
 #pool-leaflet-map {
   width: 100%;
@@ -471,7 +477,7 @@ h1, h2, h3, h4, h5, h6 {
 .mobile-filter-btn {
   display: none;
   position: absolute;
-  top: 12px;
+  top: 60px;
   right: 24px;
   z-index: 500;
   background: rgba(11, 15, 24, 0.92) !important;
@@ -491,6 +497,34 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(16, 185, 129, 0.15) !important;
   border-color: var(--mh-green) !important;
   color: var(--mh-green) !important;
+}
+
+/* ── Basemap Toggle Button ────────────────────────────────── */
+.basemap-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 auto 12px auto;
+  padding: 8px 16px;
+  background: rgba(11, 15, 24, 0.92);
+  border: 1px solid var(--mh-border);
+  color: var(--mh-text);
+  border-radius: 1.2rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.basemap-toggle-btn:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--mh-green);
+  color: var(--mh-green);
+}
+
+.basemap-toggle-btn i {
+  font-size: 16px;
 }
 
 /* ── Mobile Filter Modal ────────────────────────────────── */

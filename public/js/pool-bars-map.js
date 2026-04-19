@@ -6,10 +6,40 @@ console.log(POOL_API_BASE);
 var poolMap = L.map('pool-leaflet-map').setView([39.951, -75.163], 12);
 poolMap.zoomControl.setPosition('bottomright');
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+var poolBasemapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap & CartoDB',
   subdomains: 'abcd',
 }).addTo(poolMap);
+
+var poolIsLightMode = false;
+
+// ─── Basemap toggle functionality ─────────────────────────────────────────
+function togglePoolBasemap() {
+  if (poolIsLightMode) {
+    // Switch to dark
+    poolMap.removeLayer(poolBasemapLayer);
+    poolBasemapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap & CartoDB',
+      subdomains: 'abcd',
+    }).addTo(poolMap);
+    poolIsLightMode = false;
+    document.getElementById('pool-basemap-toggle').innerHTML = '<i class="fa-solid fa-moon"></i><span>Dark Mode</span>';
+  } else {
+    // Switch to light
+    poolMap.removeLayer(poolBasemapLayer);
+    poolBasemapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap & CartoDB',
+      subdomains: 'abcd',
+    }).addTo(poolMap);
+    poolIsLightMode = true;
+    document.getElementById('pool-basemap-toggle').innerHTML = '<i class="fa-solid fa-sun"></i><span>Light Mode</span>';
+  }
+}
+
+const poolToggleBtn = document.getElementById('pool-basemap-toggle');
+if (poolToggleBtn) {
+  poolToggleBtn.addEventListener('click', togglePoolBasemap);
+}
 
 // ─── Marker icon ──────────────────────────────────────────────────────────────
 function createPoolIcon(color = '#10b981') {
