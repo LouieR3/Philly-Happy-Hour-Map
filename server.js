@@ -1360,7 +1360,7 @@ app.get('/admin/sports-bars', adminAuth, async (req, res) => {
   }
 });
 
-app.put('/admin/sports-bars/:id', adminAuth, async (req, res) => {
+app.patch('/admin/sports-bars/:id', adminAuth, async (req, res) => {
   try {
     const bar = await SportsBar.findByIdAndUpdate(
       req.params.id, { $set: req.body }, { new: true }

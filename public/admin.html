@@ -43,6 +43,9 @@
       <div class="tab" data-tab="pool">
         Pool Bars <span class="tab-badge" id="badge-pool">0</span>
       </div>
+      <div class="tab" data-tab="sports">
+        Sports Bars
+      </div>
       <div class="tab" data-tab="allbars">
         All Bars
       </div>
@@ -152,7 +155,36 @@
           </table>
         </div>
       </div>
-      <!-- Yelp Import Panel -->
+
+      <!-- Sports Bars Panel -->
+      <div class="panel" id="panel-sports">
+        <div class="section-header">
+          <h2>Sports Bars <span id="sports-count" style="font-size:0.85rem;font-weight:400;color:var(--muted);"></span></h2>
+        </div>
+
+        <div class="pool-filters">
+          <div class="search-wrap" style="flex:1; margin-bottom:0;">
+            <i class="fa fa-search"></i>
+            <input type="text" id="sports-search" placeholder="Search by name, neighborhood, address…" oninput="filterSports(this.value)" />
+          </div>
+        </div>
+
+        <div class="table-wrap" style="margin-top:16px;">
+          <table id="sports-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Neighborhood</th>
+                <th>Philly Teams</th>
+                <th>Other Teams</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="sports-tbody"></tbody>
+          </table>
+        </div>
+      </div>
       <div class="panel" id="panel-yelp">
         <div class="section-header">
           <h2>Yelp Import</h2>
@@ -519,6 +551,48 @@
       <div class="modal-footer">
         <button class="btn-reject" onclick="closePoolModal()">Cancel</button>
         <button class="btn-approve" onclick="savePoolBar()"><i class="fa fa-save"></i> Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Sports Bar Modal ── -->
+  <div id="sports-modal-overlay" class="modal-overlay" onclick="closeSportsModal(event)">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Edit Sports Bar Teams</h3>
+        <button class="modal-close" onclick="closeSportsModal()"><i class="fa fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="sports-modal-id" />
+        
+        <div class="modal-section-label">Bar Information</div>
+        <div class="modal-grid">
+          <div class="modal-field modal-field-wide"><label>Name</label><input type="text" id="sports-Name" disabled /></div>
+          <div class="modal-field modal-field-wide"><label>Address</label><input type="text" id="sports-Address" disabled /></div>
+          <div class="modal-field modal-field-wide"><label>Neighborhood</label><input type="text" id="sports-Neighborhood" disabled /></div>
+        </div>
+
+        <div class="modal-section-label">Philly-Based Teams</div>
+        <div id="sports-philly-teams-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px;">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="modal-section-label">Other Pro Teams (NFL, NBA, MLB, NHL, MLS)</div>
+        <div id="sports-other-teams-container" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px;">
+          <!-- Populated dynamically -->
+        </div>
+
+        <div class="modal-section-label">Premier League Team</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:16px;">
+          <select id="sports-premier-league-team">
+            <option value="">None</option>
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-reject" onclick="closeSportsModal()">Cancel</button>
+        <button class="btn-approve" onclick="saveSportsBar()"><i class="fa fa-save"></i> Save</button>
       </div>
     </div>
   </div>

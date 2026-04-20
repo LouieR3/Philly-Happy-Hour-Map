@@ -87,6 +87,10 @@ function initializeAdmin() {
       // Load data for specific tabs
       if (tab.dataset.tab === "quizzo") loadQuizzoBars();
       if (tab.dataset.tab === "pool") loadPoolBars();
+      if (tab.dataset.tab === "sports") {
+        loadSportsTeams();
+        loadSportsBars();
+      }
       if (tab.dataset.tab === "allbars") loadAllBars();
       if (tab.dataset.tab === "photos") loadBarPhotos();
       if (tab.dataset.tab === "unmatched") loadUnmatched();
@@ -1531,5 +1535,217 @@ async function addQuizzoToMasterBars(id, name) {
     renderUnmatchedTable(unmatchedData);
   } catch (err) {
     toast('Failed: ' + err.message, 'error');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SPORTS BARS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let sportsData = [];
+let sportsFiltered = [];
+let sportsTeamsData = [];  // all teams from sports_teams collection
+
+// ── Load sports bars from API ──────────────────────────────────────────────
+async function loadSportsBars() {
+  try {
+    const res = await adminFetch("/admin/sports-bars");
+    const data = await res.json();
+    sportsData = data;
+    sportsFiltered = data;
+    renderSportsTable(data);
+    document.getElementById("sports-count").textContent = `(${data.length})`;
+  } catch (err) {
+    toast("Failed to load sports bars: " + err.message, "error");
+  }
+}
+
+// ── Load teams for modal dropdowns ─────────────────────────────────────────
+async function loadSportsTeams() {
+  try {
+    const res = await adminFetch("/api/sports-teams");
+    sportsTeamsData = await res.json();
+  } catch (err) {
+    console.warn("Failed to load sports teams:", err.message);
+  }
+}
+
+// ── Render table ───────────────────────────────────────────────────────────
+function renderSportsTable(data) {
+  const tbody = document.getElementById("sports-tbody");
+  tbody.innerHTML = "";
+  if (!Array.isArray(data)) return;
+  if (data.length === 0) {
+    tbody.innerHTML = "<tr><td colspan='6' style='text-align:center;padding:24px;color:var(--muted);'>No sports bars found</td></tr>";
+    return;
+  }
+
+  data.forEach((bar) => {
+    const row = document.createElement("tr");
+    const phillyTeams = (bar.philly_affiliates || []).filter(Boolean).join(", ");
+    const otherTeams = [
+      ...(bar.other_nhl_nba_mlb_nfl_teams || []),
+      bar.premier_league_team,
+      ...(bar.other_soccer_teams || []),
+    ].filter(Boolean).join(", ");
+
+    row.innerHTML = `
+      <td>${bar.Name || "—"}</td>
+      <td>${bar.Address || "—"}</td>
+      <td>${bar.Neighborhood || "—"}</td>
+      <td><small>${phillyTeams || "—"}</small></td>
+      <td><small>${otherTeams || "—"}</small></td>
+      <td>
+        <button class="btn-icon" onclick="openSportsModal('${bar._id}')" title="Edit teams">
+          <i class="fa fa-edit"></i>
+        </button>
+      </td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+// ── Filter ────────────────────────────────────────────────────────────────
+function filterSports(q) {
+  const lowerQ = q.trim().toLowerCase();
+  sportsFiltered = sportsData.filter((bar) => {
+    const name = (bar.Name || "").toLowerCase();
+    const addr = (bar.Address || "").toLowerCase();
+    const nh = (bar.Neighborhood || "").toLowerCase();
+    return name.includes(lowerQ) || addr.includes(lowerQ) || nh.includes(lowerQ);
+  });
+  renderSportsTable(sportsFiltered);
+}
+
+// ── Modal open ─────────────────────────────────────────────────────────────
+function openSportsModal(id) {
+  const bar = sportsData.find((b) => b._id === id);
+  if (!bar) return;
+
+  document.getElementById("sports-modal-id").value = id;
+  document.getElementById("sports-Name").value = bar.Name || "";
+  document.getElementById("sports-Address").value = bar.Address || "";
+  document.getElementById("sports-Neighborhood").value = bar.Neighborhood || "";
+
+  // Build Philly teams checkboxes
+  const phillyContainer = document.getElementById("sports-philly-teams-container");
+  phillyContainer.innerHTML = "";
+
+  // Philly teams: Eagles, Phillies, 76ers, Flyers, Union
+  const phillyTeams = ["Philadelphia Eagles", "Philadelphia Phillies", "Philadelphia 76ers", "Philadelphia Flyers", "Philadelphia Union"];
+  const currentPhilly = new Set(bar.philly_affiliates || []);
+
+  phillyTeams.forEach((team) => {
+    const label = document.createElement("label");
+    label.className = "modal-check";
+    const input = document.createElement("input");
+    input.type = "checkbox";
+    input.className = "sports-philly-check";
+    input.value = team;
+    input.checked = currentPhilly.has(team);
+    label.appendChild(input);
+    const span = document.createElement("span");
+    span.textContent = team.replace("Philadelphia ", "");
+    label.appendChild(span);
+    phillyContainer.appendChild(label);
+  });
+
+  // Build other teams multi-select by league
+  const otherContainer = document.getElementById("sports-other-teams-container");
+  otherContainer.innerHTML = "";
+
+  const currentOther = new Set([
+    ...(bar.other_nhl_nba_mlb_nfl_teams || []),
+    ...(bar.other_soccer_teams || []),
+  ]);
+
+  // Group teams by league
+  const LEAGUE_ORDER = ["NFL", "NBA", "MLB", "NHL", "MLS"];
+  LEAGUE_ORDER.forEach((league) => {
+    const leagueTeams = sportsTeamsData.filter((t) => t.league === league);
+    if (leagueTeams.length === 0) return;
+
+    const leagueDiv = document.createElement("div");
+    leagueDiv.style.gridColumn = "span 9999";
+    leagueDiv.style.fontSize = "0.85rem";
+    leagueDiv.style.fontWeight = "700";
+    leagueDiv.style.color = "var(--muted)";
+    leagueDiv.style.marginTop = "8px";
+    leagueDiv.textContent = league;
+    otherContainer.appendChild(leagueDiv);
+
+    leagueTeams.forEach((team) => {
+      const label = document.createElement("label");
+      label.className = "modal-check";
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.className = "sports-other-check";
+      input.value = team.team_name;
+      input.checked = currentOther.has(team.team_name);
+      label.appendChild(input);
+      const span = document.createElement("span");
+      span.textContent = team.team_name;
+      label.appendChild(span);
+      otherContainer.appendChild(label);
+    });
+  });
+
+  // Populate Premier League dropdown
+  const premierSelect = document.getElementById("sports-premier-league-team");
+  premierSelect.innerHTML = "<option value=''>None</option>";
+  const premierTeams = sportsTeamsData.filter((t) => t.league === "Premier League").sort((a, b) => a.team_name.localeCompare(b.team_name));
+  premierTeams.forEach((team) => {
+    const opt = document.createElement("option");
+    opt.value = team.team_name;
+    opt.textContent = team.team_name;
+    opt.selected = bar.premier_league_team === team.team_name;
+    premierSelect.appendChild(opt);
+  });
+
+  document.getElementById("sports-modal-overlay").classList.add("open");
+}
+
+function closeSportsModal(e) {
+  if (e && e.target !== document.getElementById("sports-modal-overlay")) return;
+  document.getElementById("sports-modal-overlay").classList.remove("open");
+}
+
+// ── Save ───────────────────────────────────────────────────────────────────
+async function saveSportsBar() {
+  const id = document.getElementById("sports-modal-id").value;
+  if (!id) {
+    toast("No bar selected", "error");
+    return;
+  }
+
+  // Collect Philly teams
+  const phillyTeams = [];
+  document.querySelectorAll(".sports-philly-check:checked").forEach((el) => {
+    phillyTeams.push(el.value);
+  });
+
+  // Collect other teams
+  const otherTeams = [];
+  document.querySelectorAll(".sports-other-check:checked").forEach((el) => {
+    otherTeams.push(el.value);
+  });
+
+  // Get premier league team
+  const premierLeagueTeam = document.getElementById("sports-premier-league-team").value || null;
+
+  try {
+    const res = await adminFetch(`/admin/sports-bars/${id}`, "PATCH", {
+      philly_affiliates: phillyTeams,
+      other_nhl_nba_mlb_nfl_teams: otherTeams,
+      premier_league_team: premierLeagueTeam,
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    toast("Sports bar updated successfully");
+    closeSportsModal();
+    loadSportsBars();
+  } catch (err) {
+    toast("Failed to save: " + err.message, "error");
   }
 }

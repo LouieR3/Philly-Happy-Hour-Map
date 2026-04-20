@@ -15,10 +15,12 @@ import sys
 import time
 import requests
 from pymongo import MongoClient, UpdateOne
+from dotenv import load_dotenv
 from pymongo.errors import BulkWriteError
 
+load_dotenv()
 # ─── Configuration ────────────────────────────────────────────────────────────
-MONGO_URI  = os.environ.get("MONGODB_URI") or os.environ.get("MONGO_URI")
+MONGO_URI = os.getenv("MONGODB_URI", "")
 DB_NAME    = "mappy_hour"
 COLLECTION = "sports_teams"
 
@@ -45,15 +47,35 @@ def fetch_teams(sportsdb_league_name: str) -> list:
     return resp.json().get("teams") or []
 
 
+def fetch_team_details(team_id: str) -> dict:
+    """Fetch complete team details using the lookup endpoint for better data quality."""
+    url = f"{API_BASE}/lookupteam.php"
+    resp = requests.get(url, params={"id": team_id}, timeout=15)
+    resp.raise_for_status()
+    result = resp.json().get("teams")
+    return result[0] if result else {}
+
+
 def build_doc(raw: dict, league_key: str) -> dict:
-    """Map TheSportsDB fields to our sports_teams schema."""
+    """Map TheSportsDB fields to our sports_teams schema.
+    
+    Note: The lookup endpoint (used in fetch_team_details) returns more complete data
+    than search_all_teams, particularly for strTeamBadge and strStadiumDescription
+    which contain better city/location info for international teams.
+    """
+    # Extract city with fallback logic
+    city = (raw.get("strCity") or "").strip()
+    # If city is missing, try strCountry as a fallback, but prefer stadium location if available
+    if not city:
+        # Some teams have location info in stadium-related fields
+        city = (raw.get("strCountry") or "").strip()
+    
     return {
         "team_name":    (raw.get("strTeam") or "").strip(),
         "league":       league_key,
-        # strCity can be missing for some international clubs; fall back to country
-        "city":         (raw.get("strCity") or raw.get("strCountry") or "").strip(),
+        "city":         city,
         "abbreviation": (raw.get("strTeamShort") or "").strip(),
-        # strTeamBadge is a stable CDN image hosted by TheSportsDB
+        # strTeamBadge from the lookup endpoint is more reliable than search endpoint
         "logo_url":     (raw.get("strTeamBadge") or "").strip(),
         "sportsdb_id":  str(raw.get("idTeam") or ""),
     }
@@ -75,6 +97,7 @@ def main():
     print(f"Connected → {DB_NAME}.{COLLECTION}\n")
 
     ops = []
+    total_teams_found = 0
 
     for league_key, league_name in LEAGUES.items():
         print(f"Fetching {league_key:15s} ({league_name}) … ", end="", flush=True)
@@ -84,19 +107,38 @@ def main():
             print(f"FAILED — {exc}")
             continue
 
-        print(f"{len(teams)} teams")
+        print(f"{len(teams)} teams found")
 
+        # For each team, fetch full details using the lookup endpoint
         for raw in teams:
-            doc = build_doc(raw, league_key)
-            if not doc["team_name"]:
+            team_id = raw.get("idTeam")
+            if not team_id:
                 continue
-            ops.append(
-                UpdateOne(
-                    {"team_name": doc["team_name"], "league": league_key},
-                    {"$set": doc},
-                    upsert=True,
+            
+            try:
+                # Fetch full team details (includes better logo and city data)
+                full_team = fetch_team_details(str(team_id))
+                if not full_team:
+                    continue
+                    
+                doc = build_doc(full_team, league_key)
+                if not doc["team_name"]:
+                    continue
+                    
+                ops.append(
+                    UpdateOne(
+                        {"team_name": doc["team_name"], "league": league_key},
+                        {"$set": doc},
+                        upsert=True,
+                    )
                 )
-            )
+                total_teams_found += 1
+                
+                # Be polite to the free tier — delay between lookups
+                time.sleep(DELAY)
+            except Exception as exc:
+                print(f"  ⚠ Failed to lookup team {team_id}: {exc}")
+                continue
 
         time.sleep(DELAY)
 

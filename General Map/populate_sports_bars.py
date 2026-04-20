@@ -19,9 +19,11 @@ import re
 import sys
 from pymongo import MongoClient, UpdateOne
 from pymongo.errors import BulkWriteError
+from dotenv import load_dotenv
 
+load_dotenv()
 # ─── Configuration ────────────────────────────────────────────────────────────
-MONGO_URI  = os.environ.get("MONGODB_URI") or os.environ.get("MONGO_URI")
+MONGO_URI = os.getenv("MONGODB_URI", "")
 DB_NAME    = "mappy_hour"
 SOURCE_COL = "bars"
 DEST_COL   = "sports_bars"

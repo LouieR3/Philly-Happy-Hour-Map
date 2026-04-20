@@ -505,6 +505,28 @@ tbody td { padding: 10px 12px; vertical-align: middle; }
 .verified-yes { background: #e8f5ee; color: var(--primary); }
 .verified-no  { background: #fdecea; color: var(--danger); }
 
+/* ── Sports bars styling ── */
+.sports-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+}
+
+.sports-check input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.sports-check label {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--text);
+  margin: 0;
+}
+
 /* ── Modal overlay ── */
 .modal-overlay {
   display: none;
