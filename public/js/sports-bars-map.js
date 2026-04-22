@@ -717,6 +717,20 @@ async function loadSportsData() {
 
     if (window._sportsDrawerSetData) window._sportsDrawerSetData(bars);
 
+    // ── Auto-select Premier League on initial load ──────────────────────────
+    sportsActiveFilters.league = 'Premier League';
+    setSportsFilterLabel('sports-league-button', 'Premier League');
+    setSportsFilterActive('sports-league-button', true);
+    buildSportsTeamDropdownForLeague(sportsAllTeams, 'Premier League');
+
+    // Sync mobile modal pill to Premier League as well
+    document.querySelectorAll('#mobile-sports-league-buttons .mobile-filter-btn-option').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.value === 'Premier League');
+    });
+
+    applySportsFilters();
+    // ────────────────────────────────────────────────────────────────────────
+
   } catch (e) {
     console.error('[sports] Failed to load bars:', e.message);
   }
@@ -738,13 +752,14 @@ if (sportsPhillyBtn) {
 var sportsResetBtn = document.getElementById('sports-reset-button');
 if (sportsResetBtn) {
   sportsResetBtn.addEventListener('click', function() {
-    sportsActiveFilters.league       = null;
+    // Reset all filters, then restore Premier League as the default
+    sportsActiveFilters.league       = 'Premier League';
     sportsActiveFilters.team         = null;
     sportsActiveFilters.phillyOnly   = false;
     sportsActiveFilters.neighborhood = null;
     sportsActiveFilters.region       = null;
-    setSportsFilterLabel('sports-league-button',       'League');
-    setSportsFilterActive('sports-league-button',       false);
+    setSportsFilterLabel('sports-league-button',       'Premier League');
+    setSportsFilterActive('sports-league-button',       true);
     setSportsFilterLabel('sports-team-button',          'Team');
     setSportsFilterActive('sports-team-button',         false);
     setSportsFilterActive('sports-philly-button',       false);
@@ -752,7 +767,11 @@ if (sportsResetBtn) {
     setSportsFilterActive('sports-region-button',       false);
     setSportsFilterLabel('sports-neighborhood-button',  'Neighborhood');
     setSportsFilterActive('sports-neighborhood-button', false);
-    clearSportsTeamDropdown();
+    buildSportsTeamDropdownForLeague(sportsAllTeams, 'Premier League');
+    // Sync mobile modal pill
+    document.querySelectorAll('#mobile-sports-league-buttons .mobile-filter-btn-option').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.value === 'Premier League');
+    });
     sportsMap.setView([39.951, -75.163], 12);
     applySportsFilters();
   });
