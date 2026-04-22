@@ -195,32 +195,31 @@ function adminAuth(req, res, next) {
 
 // Admin login endpoint
 app.post('/admin/login', (req, res) => {
-  const { password } = req.body;
+  const { password, captchaToken } = req.body;
   if (!password) return res.status(400).json({ error: 'Password required' });
-  
-  // Require that user has passed captcha first (check captchaPassed cookie)
-  const hasCaptchaPassed = req.cookies.captchaPassed && 
-                           req.cookies.captchaPassed === process.env.ADMIN_PASSWORD;
-  if (!hasCaptchaPassed) {
+
+  // Validate the captcha token issued by /api/verify-captcha
+  const expiry = _captchaTokens.get(captchaToken);
+  if (!captchaToken || expiry === undefined || expiry < Date.now()) {
+    _captchaTokens.delete(captchaToken);
     return res.status(401).json({ error: 'Must complete captcha first' });
   }
-  
+
   if (password !== process.env.ADMIN_PASSWORD) {
     return res.status(401).json({ error: 'Invalid password' });
   }
-  
-  // Clear the captcha cookie and set the admin token
-  res.clearCookie('captchaPassed');
-  
-  // Set HttpOnly, Secure cookie (token is the password for simplicity)
+
+  // Consume the token — single use
+  _captchaTokens.delete(captchaToken);
+
   const isProduction = process.env.NODE_ENV === 'production';
   res.cookie('adminToken', process.env.ADMIN_PASSWORD, {
-    httpOnly: true,      // Not accessible via JavaScript
-    secure: isProduction, // HTTPS only in production
-    sameSite: 'Lax',     // Allow cookie on same-site top-level navigations
-    maxAge: 24 * 60 * 60 * 1000  // 24 hours
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: 'Lax',
+    maxAge: 24 * 60 * 60 * 1000
   });
-  
+
   res.json({ success: true, message: 'Logged in successfully' });
 });
 
@@ -1210,39 +1209,36 @@ app.get('/api/me', verifyFirebaseToken, (req, res) => {
   res.json({ uid, email, name, picture });
 });
 
+// ─── In-memory captcha token store (survives the captcha→password step) ─────
+const crypto = require('crypto');
+const _captchaTokens = new Map(); // token -> expiry timestamp
+
 // ─── Custom Captcha Validation ─────────────────────────────────────────────
 app.post('/api/verify-captcha', (req, res) => {
-  const { selectedIndices } = req.body; // Expecting an array like [0, 3, 8]
-  
-  
+  const { selectedIndices } = req.body;
+
   if (!selectedIndices || !Array.isArray(selectedIndices) || selectedIndices.length === 0) {
     return res.status(400).json({ error: 'No selection made' });
   }
 
-  // Get answer from .env and convert to array (preserving order)
   const correctAnswersRaw = process.env.CAPTCHA_ANSWER || '';
-  
   if (!correctAnswersRaw) {
     return res.status(500).json({ error: 'Server configuration error' });
   }
-  
+
   const correctAnswers = correctAnswersRaw.split(',').map(n => Number(n.trim()));
   const userAnswers = selectedIndices.map(Number);
-
-  // Compare arrays — must match EXACTLY in order (not sorted)
   const isCorrect = JSON.stringify(correctAnswers) === JSON.stringify(userAnswers);
 
   if (isCorrect) {
-    // Set httpOnly cookie with ADMIN_PASSWORD as value (prevents token forging)
-    // Cookie expires in 30 minutes to allow captcha → password stage
-    const isProduction = process.env.NODE_ENV === 'production';
-    res.cookie('captchaPassed', process.env.ADMIN_PASSWORD, { 
-      httpOnly: true,      // JavaScript cannot access/modify this cookie
-      secure: isProduction, // HTTPS only in production
-      sameSite: 'Lax',     // CSRF protection
-      maxAge: 30 * 60 * 1000  // 30 minutes
-    });
-    return res.json({ success: true });
+    // Issue a short-lived server-side token instead of relying on a cookie
+    const token = crypto.randomBytes(32).toString('hex');
+    _captchaTokens.set(token, Date.now() + 30 * 60 * 1000);
+    // Prune expired tokens
+    for (const [t, exp] of _captchaTokens) {
+      if (exp < Date.now()) _captchaTokens.delete(t);
+    }
+    return res.json({ success: true, token });
   }
 
   res.status(401).json({ error: 'Incorrect selection or wrong order. Try again.' });

@@ -201,6 +201,7 @@
     checkAuthBeforeRender();
   }
 
+  let captchaToken = null; // held in memory after captcha passes
   let selectedIndices = [];
   const gridIndices = [0,1,2,3,4,5,6,7,8];
 
@@ -263,7 +264,8 @@
     //   console.log('[Captcha] Response status:', res.status);
 
       if (res.ok) {
-        // console.log('[Captcha] ✓ Correct! Setting captchaPassed cookie and showing password stage');
+        const data = await res.json();
+        captchaToken = data.token;
         document.getElementById('stage-captcha').classList.remove('active');
         document.getElementById('stage-password').classList.add('active');
       } else {
@@ -304,7 +306,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ password: pw })
+        body: JSON.stringify({ password: pw, captchaToken })
       });
 
     //   console.log('[Login] Response status:', res.status);
