@@ -90,6 +90,7 @@ function initializeAdmin() {
       if (tab.dataset.tab === "sports") {
         loadSportsTeams();
         loadSportsBars();
+        loadAvailableBars();
       }
       if (tab.dataset.tab === "allbars") loadAllBars();
       if (tab.dataset.tab === "photos") loadBarPhotos();
@@ -1599,6 +1600,9 @@ function renderSportsTable(data) {
         <button class="btn-icon" onclick="openSportsModal('${bar._id}')" title="Edit teams">
           <i class="fa fa-edit"></i>
         </button>
+        <button class="btn-icon btn-danger" onclick="removeSportsBar('${bar._id}', '${(bar.Name || "").replace(/'/g, "\\'")}')" title="Remove from sports bars">
+          <i class="fa fa-trash"></i>
+        </button>
       </td>
     `;
     tbody.appendChild(row);
@@ -1659,35 +1663,49 @@ function openSportsModal(id) {
     ...(bar.other_soccer_teams || []),
   ]);
 
-  // Group teams by league
+  // Group teams by league — render each as a dropdown (like Premier League)
   const LEAGUE_ORDER = ["NFL", "NBA", "MLB", "NHL", "MLS"];
   LEAGUE_ORDER.forEach((league) => {
-    const leagueTeams = sportsTeamsData.filter((t) => t.league === league);
+    const leagueTeams = sportsTeamsData
+      .filter((t) => t.league === league)
+      .sort((a, b) => a.team_name.localeCompare(b.team_name));
     if (leagueTeams.length === 0) return;
 
-    const leagueDiv = document.createElement("div");
-    leagueDiv.style.gridColumn = "span 9999";
-    leagueDiv.style.fontSize = "0.85rem";
-    leagueDiv.style.fontWeight = "700";
-    leagueDiv.style.color = "var(--muted)";
-    leagueDiv.style.marginTop = "8px";
-    leagueDiv.textContent = league;
-    otherContainer.appendChild(leagueDiv);
+    const leagueId = "sports-league-team-" + league.toLowerCase();
+
+    const wrapper = document.createElement("div");
+    wrapper.style.display = "flex";
+    wrapper.style.flexDirection = "column";
+    wrapper.style.gap = "4px";
+
+    const leagueLabel = document.createElement("label");
+    leagueLabel.htmlFor = leagueId;
+    leagueLabel.style.fontSize = "0.85rem";
+    leagueLabel.style.fontWeight = "700";
+    leagueLabel.style.color = "var(--muted)";
+    leagueLabel.textContent = league;
+    wrapper.appendChild(leagueLabel);
+
+    const select = document.createElement("select");
+    select.id = leagueId;
+    select.className = "sports-league-select";
+    select.dataset.league = league;
+
+    const noneOpt = document.createElement("option");
+    noneOpt.value = "";
+    noneOpt.textContent = "None";
+    select.appendChild(noneOpt);
 
     leagueTeams.forEach((team) => {
-      const label = document.createElement("label");
-      label.className = "modal-check";
-      const input = document.createElement("input");
-      input.type = "checkbox";
-      input.className = "sports-other-check";
-      input.value = team.team_name;
-      input.checked = currentOther.has(team.team_name);
-      label.appendChild(input);
-      const span = document.createElement("span");
-      span.textContent = team.team_name;
-      label.appendChild(span);
-      otherContainer.appendChild(label);
+      const opt = document.createElement("option");
+      opt.value = team.team_name;
+      opt.textContent = team.team_name;
+      opt.selected = currentOther.has(team.team_name);
+      select.appendChild(opt);
     });
+
+    wrapper.appendChild(select);
+    otherContainer.appendChild(wrapper);
   });
 
   // Populate Premier League dropdown
@@ -1724,10 +1742,10 @@ async function saveSportsBar() {
     phillyTeams.push(el.value);
   });
 
-  // Collect other teams
+  // Collect other teams from league dropdowns
   const otherTeams = [];
-  document.querySelectorAll(".sports-other-check:checked").forEach((el) => {
-    otherTeams.push(el.value);
+  document.querySelectorAll(".sports-league-select").forEach((el) => {
+    if (el.value) otherTeams.push(el.value);
   });
 
   // Get premier league team
@@ -1747,5 +1765,90 @@ async function saveSportsBar() {
     loadSportsBars();
   } catch (err) {
     toast("Failed to save: " + err.message, "error");
+  }
+}
+
+// ── Remove from sports_bars ───────────────────────────────────────────────────
+async function removeSportsBar(id, name) {
+  if (!confirm(`Remove "${name}" from sports bars collection?`)) return;
+  
+  try {
+    const res = await adminFetch(`/admin/sports-bars/${id}`, "DELETE");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    toast(`"${name}" removed from sports bars`);
+    loadSportsBars();
+    loadAvailableBars();
+  } catch (err) {
+    toast("Failed to remove: " + err.message, "error");
+  }
+}
+
+// ── Load available bars (not in sports_bars) ───────────────────────────────
+let availableBarsData = [];
+let availableBarsFiltered = [];
+
+async function loadAvailableBars() {
+  try {
+    const res = await adminFetch("/admin/non-sports-bars");
+    availableBarsData = await res.json();
+    availableBarsFiltered = availableBarsData;
+    renderAvailableBarsTable(availableBarsData);
+    document.getElementById("available-count").textContent = `(${availableBarsData.length})`;
+  } catch (err) {
+    toast("Failed to load available bars: " + err.message, "error");
+  }
+}
+
+// ── Filter available bars ──────────────────────────────────────────────────
+function filterAvailableBars(q) {
+  const lower = q.toLowerCase();
+  availableBarsFiltered = availableBarsData.filter(bar => {
+    const name = (bar.Name || "").toLowerCase();
+    const addr = (bar.Address || "").toLowerCase();
+    const hood = (bar.Neighborhood || "").toLowerCase();
+    return name.includes(lower) || addr.includes(lower) || hood.includes(lower);
+  });
+  renderAvailableBarsTable(availableBarsFiltered);
+}
+
+// ── Render available bars table ────────────────────────────────────────────
+function renderAvailableBarsTable(data) {
+  const tbody = document.getElementById("available-tbody");
+  tbody.innerHTML = "";
+  
+  if (!Array.isArray(data)) return;
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted);">All bars are already in sports collection</td></tr>';
+    return;
+  }
+
+  data.forEach(bar => {
+    const row = tbody.insertRow();
+    row.innerHTML = `
+      <td>${bar.Name || "—"}</td>
+      <td>${bar.Address || "—"}</td>
+      <td>${bar.Neighborhood || "—"}</td>
+      <td>${bar.Phone || "—"}</td>
+      <td>${bar["Yelp Rating"] || "—"}</td>
+      <td>
+        <button class="btn-table-action" onclick="addBarToSports('${bar._id}', '${(bar.Name || "").replace(/'/g, "\\'")}')">
+          <i class="fa fa-plus"></i> Add
+        </button>
+      </td>
+    `;
+  });
+}
+
+// ── Add bar to sports_bars ─────────────────────────────────────────────────
+async function addBarToSports(id, name) {
+  try {
+    const res = await adminFetch(`/admin/add-sports-bar/${id}`, "POST");
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    
+    toast(`"${name}" added to sports bars collection`);
+    loadSportsBars();
+    loadAvailableBars();
+  } catch (err) {
+    toast("Failed to add bar: " + err.message, "error");
   }
 }

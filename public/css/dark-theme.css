@@ -474,6 +474,14 @@ h1, h2, h3, h4, h5, h6 {
     display: none;
   }
   #pool-leaflet-map { border-radius: 1rem; }
+  
+  .basemap-toggle-btn {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 auto 12px auto;
+  }
 }
 
 /* ── Scrollbar styling (Webkit) ───────────────────────────── */
@@ -514,7 +522,11 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  margin: 0 auto 12px auto;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
   padding: 8px 16px;
   background: rgba(11, 15, 24, 0.92);
   border: 1px solid var(--mh-border);
@@ -824,23 +836,26 @@ h1, h2, h3, h4, h5, h6 {
   .mobile-filter-btn {
     display: flex !important;
   }
-  #pool-filters, #filters {
+  #pool-filters, #filters, #sports-filters {
     display: none !important;
   }
 
   /* Desktop list column hidden on mobile — list lives in the drawer */
   #table-column,
-  #pool-table-column {
+  #pool-table-column,
+  #sports-table-column {
     display: none !important;
   }
 
   /* Give maps bottom padding so the drawer handle doesn't overlap controls */
   #map-column,
-  #pool-map-column {
+  #pool-map-column,
+  #sports-map-column {
     padding-bottom: 64px;
   }
   #leaflet-map,
-  #pool-leaflet-map {
+  #pool-leaflet-map,
+  #sports-leaflet-map {
     min-height: 58vh;
   }
 

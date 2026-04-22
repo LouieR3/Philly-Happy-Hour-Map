@@ -25,7 +25,7 @@ DB_NAME    = "mappy_hour"
 COLLECTION = "sports_teams"
 
 API_BASE = "https://www.thesportsdb.com/api/v1/json/3"
-DELAY    = 0.6   # seconds between API calls — be polite to the free tier
+DELAY    = 1.0   # seconds between league API calls
 
 # Friendly league key → TheSportsDB league name string
 LEAGUES = {
@@ -33,7 +33,7 @@ LEAGUES = {
     "NBA":            "NBA",
     "MLB":            "MLB",
     "NHL":            "NHL",
-    "MLS":            "Major League Soccer",
+    # "MLS":            "Major League Soccer",
     "Premier League": "English Premier League",
 }
 
@@ -47,36 +47,60 @@ def fetch_teams(sportsdb_league_name: str) -> list:
     return resp.json().get("teams") or []
 
 
-def fetch_team_details(team_id: str) -> dict:
-    """Fetch complete team details using the lookup endpoint for better data quality."""
-    url = f"{API_BASE}/lookupteam.php"
-    resp = requests.get(url, params={"id": team_id}, timeout=15)
-    resp.raise_for_status()
-    result = resp.json().get("teams")
-    return result[0] if result else {}
-
-
 def build_doc(raw: dict, league_key: str) -> dict:
-    """Map TheSportsDB fields to our sports_teams schema.
+    """Map TheSportsDB search_all_teams fields to our sports_teams schema.
     
-    Note: The lookup endpoint (used in fetch_team_details) returns more complete data
-    than search_all_teams, particularly for strTeamBadge and strStadiumDescription
-    which contain better city/location info for international teams.
+    For American sports (NFL, NBA, MLB, NHL):
+    - Uses strTeamAlternate as team name
+    - Extracts city by removing strTeamAlternate from strTeam
+    
+    For other sports (e.g., Premier League):
+    - Uses strTeam as team name
+    - Extracts city from strLocation: "Neighborhood, City, Country" format
     """
-    # Extract city with fallback logic
-    city = (raw.get("strCity") or "").strip()
-    # If city is missing, try strCountry as a fallback, but prefer stadium location if available
-    if not city:
-        # Some teams have location info in stadium-related fields
-        city = (raw.get("strCountry") or "").strip()
+    american_sports = {"NFL", "NBA", "MLB", "NHL"}
+    
+    # Extract team name and city based on league type
+    if league_key in american_sports:
+        team_name = (raw.get("strTeamAlternate") or "").strip()
+        full_team = (raw.get("strTeam") or "").strip()
+        # Extract city by removing the team alternate name from full team name
+        if team_name and full_team.endswith(team_name):
+            city = full_team[:-len(team_name)].strip()
+        else:
+            city = ""
+    else:
+        # For non-American sports, use strTeam as team name
+        team_name = (raw.get("strTeam") or "").strip()
+        # Extract city from strLocation (format: "Neighborhood, City, Country")
+        city = ""
+        if raw.get("strLocation"):
+            parts = [p.strip() for p in raw.get("strLocation", "").split(",")]
+            if len(parts) >= 2:
+                city = parts[1]  # Middle part is the city
+            elif len(parts) == 1:
+                city = parts[0]  # Fallback to first part if only one
+        
+        # If location-based extraction failed, try strCity
+        if not city:
+            city = (raw.get("strCity") or "").strip()
+        
+        # If still no city, try country as last resort
+        if not city:
+            city = (raw.get("strCountry") or "").strip()
+    
+    # Try both badge field names for maximum compatibility
+    logo_url = (raw.get("strTeamBadge") or "").strip()
+    if not logo_url:
+        logo_url = (raw.get("strBadge") or "").strip()
     
     return {
-        "team_name":    (raw.get("strTeam") or "").strip(),
+        "team_name":    team_name,
         "league":       league_key,
         "city":         city,
         "abbreviation": (raw.get("strTeamShort") or "").strip(),
-        # strTeamBadge from the lookup endpoint is more reliable than search endpoint
-        "logo_url":     (raw.get("strTeamBadge") or "").strip(),
+        "logo_url":     logo_url,
+        "team_color":   (raw.get("strColour1") or "").strip(),
         "sportsdb_id":  str(raw.get("idTeam") or ""),
     }
 
@@ -109,36 +133,26 @@ def main():
 
         print(f"{len(teams)} teams found")
 
-        # For each team, fetch full details using the lookup endpoint
+        # Process each team directly from search results
         for raw in teams:
-            team_id = raw.get("idTeam")
-            if not team_id:
+            if not raw.get("strTeam"):
                 continue
             
-            try:
-                # Fetch full team details (includes better logo and city data)
-                full_team = fetch_team_details(str(team_id))
-                if not full_team:
-                    continue
-                    
-                doc = build_doc(full_team, league_key)
-                if not doc["team_name"]:
-                    continue
-                    
-                ops.append(
-                    UpdateOne(
-                        {"team_name": doc["team_name"], "league": league_key},
-                        {"$set": doc},
-                        upsert=True,
-                    )
-                )
-                total_teams_found += 1
-                
-                # Be polite to the free tier — delay between lookups
-                time.sleep(DELAY)
-            except Exception as exc:
-                print(f"  ⚠ Failed to lookup team {team_id}: {exc}")
+            doc = build_doc(raw, league_key)
+            if not doc["team_name"]:
                 continue
+                
+            ops.append(
+                UpdateOne(
+                    {"team_name": doc["team_name"], "league": league_key},
+                    {"$set": doc},
+                    upsert=True,
+                )
+            )
+            total_teams_found += 1
+            
+            # Modest delay between records
+            time.sleep(0.1)
 
         time.sleep(DELAY)
 

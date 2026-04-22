@@ -1095,20 +1095,15 @@ editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async functio
   }
 
   function closeDrawer() {
-    console.log('[Quizzo Drawer] closeDrawer() called');
     const drawerEl = document.getElementById('quizzo-drawer');
     const backdropEl = document.getElementById('quizzo-drawer-backdrop');
-    console.log('[Quizzo Drawer] Found drawer:', !!drawerEl, 'backdrop:', !!backdropEl);
     if (drawerEl) {
-      console.log('[Quizzo Drawer] Removing open class from drawer');
       drawerEl.classList.remove('open');
     }
     if (backdropEl) {
-      console.log('[Quizzo Drawer] Removing open class from backdrop');
       backdropEl.classList.remove('open');
     }
     drawerOpen = false;
-    console.log('[Quizzo Drawer] closeDrawer() complete');
   }
 
   function renderDrawerCards(data) {
@@ -1175,37 +1170,25 @@ editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async functio
   // Expose so the main fetch can seed the data
   window._quizzoDrawerSetData = function(data) {
     drawerData = data;
-    console.log('[Quizzo Drawer] Data set, count:', data.length);
   };
 
   // Defer initialization until drawer elements are in DOM
   // Use longer timeout to ensure all DOM is ready
   setTimeout(function() {
-    console.log('[Quizzo Drawer] ===== INITIALIZATION START =====');
     var listBtn  = document.getElementById('quizzo-list-btn');
     var closeBtn = document.getElementById('quizzo-drawer-close');
     var backdrop = document.getElementById('quizzo-drawer-backdrop');
     var search   = document.getElementById('quizzo-drawer-search');
     var drawer   = document.getElementById('quizzo-drawer');
 
-    console.log('[Quizzo Drawer] Elements found:');
-    console.log('  - listBtn:', !!listBtn);
-    console.log('  - closeBtn:', !!closeBtn, closeBtn ? 'ID=' + closeBtn.id : '');
-    console.log('  - backdrop:', !!backdrop);
-    console.log('  - search:', !!search);
-    console.log('  - drawer:', !!drawer);
-
     if (listBtn) {
       listBtn.addEventListener('click', function() {
-        console.log('[Quizzo Drawer] List button clicked');
         openDrawer();
       });
     }
     
     if (closeBtn) {
-      console.log('[Quizzo Drawer] Attaching close button listener (by ID)');
       closeBtn.addEventListener('click', function(e) {
-        console.log('[Quizzo Drawer] Close button clicked (direct)');
         e.preventDefault();
         e.stopPropagation();
         closeDrawer();
@@ -1213,11 +1196,8 @@ editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async functio
     } else {
       console.warn('[Quizzo Drawer] Close button NOT found with ID quizzo-drawer-close');
       var allCloseButtons = document.querySelectorAll('#quizzo-drawer .drawer-close');
-      console.log('[Quizzo Drawer] Found', allCloseButtons.length, 'close buttons via selector');
       allCloseButtons.forEach(function(btn, idx) {
-        console.log('[Quizzo Drawer] Attaching listener to close button #' + idx);
         btn.addEventListener('click', function(e) {
-          console.log('[Quizzo Drawer] Close button clicked (fallback #' + idx + ')');
           e.preventDefault();
           e.stopPropagation();
           closeDrawer();
@@ -1227,16 +1207,13 @@ editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async functio
     
     if (backdrop) {
       backdrop.addEventListener('click', function(e) {
-        console.log('[Quizzo Drawer] Backdrop clicked');
         e.stopPropagation();
         closeDrawer();
       });
     }
     
     if (search) {
-      console.log('[Quizzo Drawer] Attaching search listener');
       search.addEventListener('input', function(e) {
-        console.log('[Quizzo Drawer] Search input changed, drawerData length:', drawerData.length);
         renderDrawerCards(drawerData);
       });
     } else {
@@ -1247,11 +1224,9 @@ editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async functio
     if (drawer) {
       document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-          console.log('[Quizzo Drawer] Escape key pressed');
           closeDrawer();
         }
       });
     }
-    console.log('[Quizzo Drawer] ===== INITIALIZATION COMPLETE =====');
   }, 500);
 })();

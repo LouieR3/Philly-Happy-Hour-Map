@@ -35,8 +35,26 @@ const sportsToggleBtn = document.getElementById('sports-basemap-toggle');
 if (sportsToggleBtn) sportsToggleBtn.addEventListener('click', toggleSportsBasemap);
 
 // ─── Marker icon ──────────────────────────────────────────────────────────────
-function createSportsIcon(color) {
+function createSportsIcon(color, logoUrl) {
   color = color || '#f59e0b';
+  
+  // If logo URL provided, use it as the icon
+  if (logoUrl) {
+    return L.divIcon({
+      html: `<div class="custom-pin">
+        <div class="pin-circle" style="background-color:${color};overflow:hidden;">
+          <img src="${logoUrl}" style="width:100%;height:100%;object-fit:cover;" alt="team-logo" />
+        </div>
+        <div class="pin-tail" style="background-color:${color};"></div>
+      </div>`,
+      className: 'custom-fa-icon',
+      iconSize: [30, 30],
+      iconAnchor: [15, 30],
+      popupAnchor: [0, -30],
+    });
+  }
+  
+  // Default TV icon
   return L.divIcon({
     html: `<div class="custom-pin">
       <div class="pin-circle" style="background-color:${color};">
@@ -67,6 +85,7 @@ function leagueColor(league) {
 // ─── State ────────────────────────────────────────────────────────────────────
 var sportsMarkers = [];
 var sportsAllData = [];
+var sportsAllTeams = [];
 var sportsGeoJson = null;
 var sportsTeamLogoMap  = {};   // team_name → logo_url
 var sportsTeamLeagueMap = {};  // team_name → league key
@@ -80,6 +99,44 @@ const sportsActiveFilters = {
 };
 
 // ─── Filter engine ────────────────────────────────────────────────────────────
+function updateMarkerIconForFilter(marker) {
+  let newColor = '#f59e0b';
+  let newLogo = null;
+
+  // If a specific team is selected, use that team's color and logo
+  if (sportsActiveFilters.team) {
+    const selectedTeam = sportsAllTeams.find(t => t.team_name === sportsActiveFilters.team);
+    if (selectedTeam) {
+      newColor = selectedTeam.team_color || '#f59e0b';
+      newLogo = selectedTeam.logo_url;
+    }
+  } 
+  // If a league is selected, find first team from that league that the bar has
+  else if (sportsActiveFilters.league) {
+    for (let team of marker.allTeams) {
+      const teamObj = sportsAllTeams.find(t => t.team_name === team && t.league === sportsActiveFilters.league);
+      if (teamObj) {
+        newColor = teamObj.team_color || '#f59e0b';
+        newLogo = teamObj.logo_url;
+        break;
+      }
+    }
+    // If no team from this league found, use league color with TV icon
+    if (!newLogo) {
+      newColor = leagueColor(sportsActiveFilters.league);
+    }
+  }
+  // No filter - use default
+  else {
+    if (marker.defaultColor !== undefined) {
+      newColor = marker.defaultColor;
+      newLogo = marker.defaultLogo;
+    }
+  }
+
+  marker.setIcon(createSportsIcon(newColor, newLogo));
+}
+
 function applySportsFilters() {
   sportsMarkers.forEach(function(marker) {
     if (!(marker instanceof L.Marker)) return;
@@ -91,6 +148,7 @@ function applySportsFilters() {
 
     if (passes) {
       if (!sportsMap.hasLayer(marker)) marker.addTo(sportsMap);
+      updateMarkerIconForFilter(marker);
     } else {
       if (sportsMap.hasLayer(marker)) sportsMap.removeLayer(marker);
     }
@@ -329,12 +387,31 @@ function buildSportsTeamDropdown(teams) {
   });
 }
 
+// Build team dropdown filtered to only selected league
+function buildSportsTeamDropdownForLeague(allTeams, league) {
+  var filtered = league ? allTeams.filter(function(t) { return t.league === league; }) : allTeams;
+  buildSportsTeamDropdown(filtered);
+}
+
+// Build empty team dropdown (when no league is selected)
+function clearSportsTeamDropdown() {
+  var opts = document.getElementById('sports-team-options');
+  if (!opts) return;
+  opts.innerHTML = '';
+  
+  var msg = document.createElement('li');
+  msg.style.cssText = 'padding:12px;color:#94a3b8;font-size:12px;text-align:center;font-style:italic;';
+  msg.textContent = 'Select a league first';
+  opts.appendChild(msg);
+}
+
 // ─── Populate league dropdown ─────────────────────────────────────────────────
 function buildSportsLeagueDropdown() {
   var opts = document.getElementById('sports-league-options');
   if (!opts) return;
 
-  var LEAGUES = ['All', 'NFL', 'NBA', 'MLB', 'NHL', 'MLS', 'Premier League'];
+  // var LEAGUES = ['All', 'NFL', 'NBA', 'MLB', 'NHL', 'MLS', 'Premier League'];
+  var LEAGUES = ['All', 'NFL', 'Premier League'];
   var DD_STYLE     = 'padding:7px 12px;cursor:pointer;color:#e2e8f0;display:flex;align-items:center;gap:8px;';
   var DD_HOVER_IN  = function() { this.style.background = 'rgba(255,255,255,0.08)'; };
   var DD_HOVER_OUT = function() { this.style.background = ''; };
@@ -360,6 +437,7 @@ function buildSportsLeagueDropdown() {
         sportsActiveFilters.league = null;
         setSportsFilterLabel('sports-league-button', 'League');
         setSportsFilterActive('sports-league-button', false);
+        clearSportsTeamDropdown();
       } else {
         sportsActiveFilters.league = league;
         sportsActiveFilters.team   = null;
@@ -367,6 +445,7 @@ function buildSportsLeagueDropdown() {
         setSportsFilterActive('sports-league-button', true);
         setSportsFilterLabel('sports-team-button', 'Team');
         setSportsFilterActive('sports-team-button', false);
+        buildSportsTeamDropdownForLeague(sportsAllTeams, league);
       }
       document.getElementById('sports-league-dropdown').style.display = 'none';
       applySportsFilters();
@@ -571,14 +650,15 @@ async function loadSportsData() {
   try {
     var teamsRes = await fetch(SPORTS_API_BASE + '/api/sports-teams');
     var teams    = await teamsRes.json();
+    sportsAllTeams = teams;
     teams.forEach(function(t) {
       sportsTeamLogoMap[t.team_name]   = t.logo_url;
       sportsTeamLeagueMap[t.team_name] = t.league;
     });
-    buildSportsTeamDropdown(teams);
+    clearSportsTeamDropdown();
   } catch (e) {
     console.warn('[sports] Failed to load teams:', e.message);
-    buildSportsTeamDropdown([]);
+    clearSportsTeamDropdown();
   }
 
   buildSportsLeagueDropdown();
@@ -597,14 +677,27 @@ async function loadSportsData() {
       var { allTeams, leagues } = getBarTeamSets(row);
       var hasPhillyAffil = (row.philly_affiliates || []).length > 0;
 
-      // Pick marker color: Philly bars get Eagles-navy, others by primary league
-      var primaryLeague = Array.from(leagues)[0] || null;
-      var color = hasPhillyAffil ? '#002d62'
-        : primaryLeague ? leagueColor(primaryLeague)
-        : '#f59e0b';
+      // For Premier League teams: use team_color and logo_url
+      var markerColor = '#f59e0b';
+      var markerLogo = null;
+      if (row.premier_league_team) {
+        var plTeam = sportsAllTeams.find(function(t) { 
+          return t.team_name === row.premier_league_team && t.league === 'Premier League'; 
+        });
+        if (plTeam) {
+          markerColor = plTeam.team_color || '#f59e0b';
+          markerLogo = plTeam.logo_url;
+        }
+      } else {
+        // Pick marker color: Philly bars get Eagles-navy, others by primary league
+        var primaryLeague = Array.from(leagues)[0] || null;
+        markerColor = hasPhillyAffil ? '#002d62'
+          : primaryLeague ? leagueColor(primaryLeague)
+          : '#f59e0b';
+      }
 
       var popupContent = buildSportsPopup(row);
-      var marker = L.marker([lat, lng], { icon: createSportsIcon(color) })
+      var marker = L.marker([lat, lng], { icon: createSportsIcon(markerColor, markerLogo) })
         .bindPopup(popupContent, { maxWidth: 260 });
 
       marker.name          = row.Name;
@@ -659,6 +752,7 @@ if (sportsResetBtn) {
     setSportsFilterActive('sports-region-button',       false);
     setSportsFilterLabel('sports-neighborhood-button',  'Neighborhood');
     setSportsFilterActive('sports-neighborhood-button', false);
+    clearSportsTeamDropdown();
     sportsMap.setView([39.951, -75.163], 12);
     applySportsFilters();
   });

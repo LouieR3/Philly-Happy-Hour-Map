@@ -1372,6 +1372,53 @@ app.patch('/admin/sports-bars/:id', adminAuth, async (req, res) => {
   }
 });
 
+// Remove a sports bar
+app.delete('/admin/sports-bars/:id', adminAuth, async (req, res) => {
+  try {
+    await SportsBar.findByIdAndDelete(req.params.id);
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Get all bars that are NOT in sports_bars
+app.get('/admin/non-sports-bars', adminAuth, async (req, res) => {
+  try {
+    const sportsBarIds = await SportsBar.find({}, { _id: 1 }).lean();
+    const sportsBarIdSet = new Set(sportsBarIds.map(b => b._id.toString()));
+    
+    const allBars = await Bar.find({}).lean();
+    const filtered = allBars.filter(b => !sportsBarIdSet.has(b._id.toString()));
+    
+    res.json(filtered);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Add a bar to sports_bars from general bars collection
+app.post('/admin/add-sports-bar/:id', adminAuth, async (req, res) => {
+  try {
+    const bar = await Bar.findById(req.params.id).lean();
+    if (!bar) return res.status(404).json({ error: 'Bar not found' });
+    
+    const newSportsBar = new SportsBar({
+      ...bar,
+      philly_affiliates:           [],
+      other_nhl_nba_mlb_nfl_teams: [],
+      premier_league_team:         null,
+      other_soccer_teams:          [],
+      team_ids:                    [],
+    });
+    
+    const saved = await newSportsBar.save();
+    res.json(saved);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));

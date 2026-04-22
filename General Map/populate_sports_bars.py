@@ -31,6 +31,9 @@ DEST_COL   = "sports_bars"
 # Matches "sports bar", "sports_bar", "SportsBar", "sports-bar", etc.
 SPORTS_BAR_RE = re.compile(r"sports[\s_\-]?bar", re.IGNORECASE)
 
+# Matches "Irish Pub"
+IRISH_PUB_RE = re.compile(r"Irish\s+Pub", re.IGNORECASE)
+
 # New fields added to sports bar documents; only written on first insert
 SPORTS_DEFAULTS = {
     # Philadelphia-specific team affiliations (Eagles, Phillies, Flyers, Sixers, Union)
@@ -56,6 +59,17 @@ def is_sports_bar(doc: dict) -> bool:
     elif not isinstance(cats, list):
         cats = [str(cats)]
     return any(SPORTS_BAR_RE.search(str(c)) for c in cats)
+
+
+def is_irish_pub(doc: dict) -> bool:
+    """Return True when any category value looks like 'Irish Pub'."""
+    # categories may be a list of strings or a single comma-separated string
+    cats = doc.get("categories") or doc.get("Categories") or []
+    if isinstance(cats, str):
+        cats = [c.strip() for c in cats.split(",")]
+    elif not isinstance(cats, list):
+        cats = [str(cats)]
+    return any(IRISH_PUB_RE.search(str(c)) for c in cats)
 
 
 def build_upsert_op(bar: dict) -> UpdateOne:
@@ -95,23 +109,38 @@ def main():
     print(f"Connected → scanning {DB_NAME}.{SOURCE_COL} …")
     all_bars    = list(source.find({}))
     sports_bars = [b for b in all_bars if is_sports_bar(b)]
+    
+    # Find Irish Pubs not already in sports_bars
+    existing_sports_bar_ids = set(b["_id"] for b in dest.find({}, {"_id": 1}))
+    irish_pubs = [b for b in all_bars 
+                  if is_irish_pub(b) and b["_id"] not in existing_sports_bar_ids]
 
     print(f"  Total bars in source  : {len(all_bars)}")
     print(f"  Matched as sports bars: {len(sports_bars)}")
+    print(f"  Irish Pubs (not in sports_bars): {len(irish_pubs)}")
 
-    if not sports_bars:
-        print("\nNo sports bars found. Check that your categories field contains")
-        print("values like 'Sports Bars' or 'Sports Bar' in the bars collection.")
+    if not sports_bars and not irish_pubs:
+        print("\nNo sports bars or Irish pubs found. Check that your categories field contains")
+        print("values like 'Sports Bar' or 'Irish Pub' in the bars collection.")
         client.close()
         return
 
+    # Combine both lists
+    all_to_insert = sports_bars + irish_pubs
+
     # Print a sample of matched bar names for verification
-    print("\nSample matches (first 10):")
-    for bar in sports_bars[:10]:
+    print("\nSample sports bars (first 5):")
+    for bar in sports_bars[:5]:
         cats = bar.get("categories") or bar.get("Categories") or []
         print(f"  {bar.get('Name', '—'):40s}  {cats}")
+    
+    if irish_pubs:
+        print("\nSample Irish pubs to add (first 5):")
+        for bar in irish_pubs[:5]:
+            cats = bar.get("categories") or bar.get("Categories") or []
+            print(f"  {bar.get('Name', '—'):40s}  {cats}")
 
-    ops = [build_upsert_op(b) for b in sports_bars]
+    ops = [build_upsert_op(b) for b in all_to_insert]
 
     print(f"\nUpserting {len(ops)} records into {DB_NAME}.{DEST_COL} … ", end="", flush=True)
     try:

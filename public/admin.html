@@ -159,30 +159,66 @@
       <!-- Sports Bars Panel -->
       <div class="panel" id="panel-sports">
         <div class="section-header">
-          <h2>Sports Bars <span id="sports-count" style="font-size:0.85rem;font-weight:400;color:var(--muted);"></span></h2>
+          <h2>Sports Bars Management</h2>
         </div>
 
-        <div class="pool-filters">
-          <div class="search-wrap" style="flex:1; margin-bottom:0;">
-            <i class="fa fa-search"></i>
-            <input type="text" id="sports-search" placeholder="Search by name, neighborhood, address…" oninput="filterSports(this.value)" />
+        <!-- Current Sports Bars -->
+        <div style="margin-bottom: 32px;">
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--text);">
+            Current Sports Bars <span id="sports-count" style="font-size:0.8rem;font-weight:400;color:var(--muted);"></span>
+          </h3>
+          <div class="pool-filters">
+            <div class="search-wrap" style="flex:1; margin-bottom:0;">
+              <i class="fa fa-search"></i>
+              <input type="text" id="sports-search" placeholder="Search by name, neighborhood, address…" oninput="filterSports(this.value)" />
+            </div>
+          </div>
+          <div class="table-wrap" style="margin-top:16px;">
+            <table id="sports-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Neighborhood</th>
+                  <th>Philly Teams</th>
+                  <th>Other Teams</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="sports-tbody"></tbody>
+            </table>
           </div>
         </div>
 
-        <div class="table-wrap" style="margin-top:16px;">
-          <table id="sports-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Address</th>
-                <th>Neighborhood</th>
-                <th>Philly Teams</th>
-                <th>Other Teams</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="sports-tbody"></tbody>
-          </table>
+        <!-- Add Bars to Sports_Bars -->
+        <div style="border-top: 1px solid var(--border); padding-top: 24px;">
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 12px; color: var(--text);">
+            Add Bars to Sports Collection <span id="available-count" style="font-size:0.8rem;font-weight:400;color:var(--muted);"></span>
+          </h3>
+          <p style="color: var(--muted); font-size: 0.85rem; margin-bottom: 16px;">
+            Below are all bars in the general collection that are not yet in sports_bars. Click "Add" to move them to the sports bar collection.
+          </p>
+          <div class="pool-filters">
+            <div class="search-wrap" style="flex:1; margin-bottom:0;">
+              <i class="fa fa-search"></i>
+              <input type="text" id="available-search" placeholder="Search by name, neighborhood, address…" oninput="filterAvailableBars(this.value)" />
+            </div>
+          </div>
+          <div class="table-wrap" style="margin-top:16px;">
+            <table id="available-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th>Neighborhood</th>
+                  <th>Phone</th>
+                  <th>Rating</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="available-tbody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div class="panel" id="panel-yelp">

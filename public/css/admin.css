@@ -493,6 +493,7 @@ tbody td { padding: 10px 12px; vertical-align: middle; }
 .btn-table-action:hover { opacity: 0.8; }
 .btn-edit-pool   { background: #e8f5ee; color: var(--primary); margin-right: 6px; }
 .btn-delete-pool { background: #fdecea; color: var(--danger); }
+.btn-add-sports  { background: #e8f5ee; color: var(--primary); }
 
 .verified-badge {
   display: inline-block;
