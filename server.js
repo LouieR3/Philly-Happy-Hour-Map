@@ -65,6 +65,7 @@ app.use(cors({
     'http://127.0.0.1:5500',
     'https://www.philly-mappy-hour.com',
     'https://philly-mappy-hour.com',
+    'https://philly-happy-hour-map-production.up.railway.app',
   ],
   credentials: true  // Allow cookies in CORS requests
 }));
