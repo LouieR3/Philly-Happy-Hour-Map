@@ -1419,24 +1419,3 @@ app.post('/admin/add-sports-bar/:id', adminAuth, async (req, res) => {
 // ─────────────────────────────────────────────────────────────────────────────
 
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));
-    if (!bar) return res.status(404).json({ error: 'Bar not found' });
-    
-    const newSportsBar = new SportsBar({
-      ...bar,
-      philly_affiliates:           [],
-      other_nhl_nba_mlb_nfl_teams: [],
-      premier_league_team:         null,
-      other_soccer_teams:          [],
-      team_ids:                    [],
-    });
-    
-    const saved = await newSportsBar.save();
-    res.json(saved);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-// ─────────────────────────────────────────────────────────────────────────────
-
-app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));
