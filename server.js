@@ -213,43 +213,30 @@ app.post('/admin/login', (req, res) => {
   // Consume the token — single use
   _captchaTokens.delete(captchaToken);
 
-  // Always use secure on HTTPS domains; for localhost use false
-  const isSecure = req.hostname !== 'localhost' && req.hostname !== '127.0.0.1';
+  const isProduction = process.env.NODE_ENV === 'production';
   res.cookie('adminToken', process.env.ADMIN_PASSWORD, {
     httpOnly: true,
-    secure: isSecure,
-    sameSite: 'Strict',
-    path: '/',
-    domain: undefined,  // Let Express use the request domain automatically
+    secure: isProduction,
+    sameSite: 'Lax',
     maxAge: 24 * 60 * 60 * 1000
   });
 
-  console.log(`[Auth] Login successful. Set adminToken cookie (secure=${isSecure}, domain=${req.hostname})`);
   res.json({ success: true, message: 'Logged in successfully' });
 });
 
 // Admin logout endpoint
 app.post('/admin/logout', (req, res) => {
-  const isSecure = req.hostname !== 'localhost' && req.hostname !== '127.0.0.1';
-  res.clearCookie('adminToken', {
-    httpOnly: true,
-    secure: isSecure,
-    sameSite: 'Strict',
-    path: '/'
-  });
+  res.clearCookie('adminToken');
   res.json({ success: true, message: 'Logged out' });
 });
 
 // Check if admin is authenticated
 app.get('/admin/check-auth', (req, res) => {
   const token = req.cookies.adminToken;
-  const isAuthenticated = token && token === process.env.ADMIN_PASSWORD;
-  
-  if (!isAuthenticated) {
-    console.log(`[Auth] Check failed: no valid token. Cookies: ${Object.keys(req.cookies).join(', ') || 'none'}`);
+  if (token && token === process.env.ADMIN_PASSWORD) {
+    return res.json({ authenticated: true });
   }
-  
-  res.status(isAuthenticated ? 200 : 401).json({ authenticated: isAuthenticated });
+  res.status(401).json({ authenticated: false });
 });
 
 // Check if user passed captcha or has admin token (for gating admin pages)
@@ -1232,13 +1219,11 @@ app.post('/api/verify-captcha', (req, res) => {
   const { selectedIndices } = req.body;
 
   if (!selectedIndices || !Array.isArray(selectedIndices) || selectedIndices.length === 0) {
-    console.log('[Captcha] Validation failed: no selection');
     return res.status(400).json({ error: 'No selection made' });
   }
 
   const correctAnswersRaw = process.env.CAPTCHA_ANSWER || '';
   if (!correctAnswersRaw) {
-    console.log('[Captcha] Error: CAPTCHA_ANSWER not configured');
     return res.status(500).json({ error: 'Server configuration error' });
   }
 
@@ -1250,12 +1235,6 @@ app.post('/api/verify-captcha', (req, res) => {
     // Issue a short-lived server-side token instead of relying on a cookie
     const token = crypto.randomBytes(32).toString('hex');
     _captchaTokens.set(token, Date.now() + 30 * 60 * 1000);
-    console.log(`[Captcha] ✓ Passed. Issued token (${_captchaTokens.size} tokens in memory)`);
-    res.json({ token });
-  } else {
-    console.log(`[Captcha] ✗ Failed. Expected ${correctAnswers.join(',')}, got ${userAnswers.join(',')}`);
-    res.status(401).json({ error: 'Incorrect selection or wrong order. Try again.' });
-  }
     // Prune expired tokens
     for (const [t, exp] of _captchaTokens) {
       if (exp < Date.now()) _captchaTokens.delete(t);
@@ -1419,6 +1398,27 @@ app.get('/admin/non-sports-bars', adminAuth, async (req, res) => {
 app.post('/admin/add-sports-bar/:id', adminAuth, async (req, res) => {
   try {
     const bar = await Bar.findById(req.params.id).lean();
+    if (!bar) return res.status(404).json({ error: 'Bar not found' });
+    
+    const newSportsBar = new SportsBar({
+      ...bar,
+      philly_affiliates:           [],
+      other_nhl_nba_mlb_nfl_teams: [],
+      premier_league_team:         null,
+      other_soccer_teams:          [],
+      team_ids:                    [],
+    });
+    
+    const saved = await newSportsBar.save();
+    res.json(saved);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));
     if (!bar) return res.status(404).json({ error: 'Bar not found' });
     
     const newSportsBar = new SportsBar({

@@ -77,6 +77,23 @@ function getQuizzoNhFromLatLng(lat, lng) {
   }
   return null;
 }
+const TIME_BUCKETS = ['6 - 7', '7 - 8', '8 - 9'];
+
+function getTimeBucket(timeStr) {
+  if (!timeStr) return null;
+  const m = timeStr.match(/(\d+)(?::(\d+))?\s*(AM|PM)/i);
+  if (!m) return null;
+  let h = parseInt(m[1], 10);
+  const min = parseInt(m[2] || '0', 10);
+  if (m[3].toUpperCase() === 'PM' && h !== 12) h += 12;
+  if (m[3].toUpperCase() === 'AM' && h === 12) h = 0;
+  const t = h + min / 60;
+  if (t >= 18 && t < 19) return '6 - 7';
+  if (t >= 19 && t < 20) return '7 - 8';
+  if (t >= 20 && t < 21) return '8 - 9';
+  return null;
+}
+
 const activeFilters = {
   weekday: null,
   time: null,
@@ -90,7 +107,7 @@ function applyFilters() {
     if (!(marker instanceof L.Marker)) return;
     const passes =
       (!activeFilters.weekday || marker.weekday === activeFilters.weekday) &&
-      (!activeFilters.time || marker.time === activeFilters.time) &&
+      (!activeFilters.time || getTimeBucket(marker.time) === activeFilters.time) &&
       (!activeFilters.firstPrize || marker.firstPrize === activeFilters.firstPrize) &&
       (!activeFilters.prizeAmount || marker.prizeAmount === activeFilters.prizeAmount) &&
       (activeFilters.neighborhoods.size === 0 || activeFilters.neighborhoods.has(marker.neighborhood));
@@ -115,11 +132,7 @@ function setFilterActive(buttonId, isActive) {
 fetch(`${API_BASE}/api/quizzo`)
   .then((response) => response.json())
   .then(function (data) {
-    const times = [
-      ...new Set(data.map((row) => row.TIME).filter((eventType) => eventType)),
-    ].sort((a, b) => {
-      return new Date(`1970/01/01 ${a}`) - new Date(`1970/01/01 ${b}`);
-    });
+
     const eventTypes = [
       ...new Set(
         data
@@ -145,16 +158,16 @@ fetch(`${API_BASE}/api/quizzo`)
       ),
     ].sort();
 
-    // Populate the Start Time dropdown
+    // Populate the Start Time dropdown — grouped into hour buckets
     const timeOptions = document.getElementById("time-options");
-    times.forEach((time) => {
+    TIME_BUCKETS.forEach((bucket) => {
       const li = document.createElement("li");
       li.className = "time-option";
-      li.setAttribute("data-value", time);
-      li.textContent = time;
+      li.setAttribute("data-value", bucket);
+      li.textContent = bucket + ' PM';
       li.addEventListener("click", () => {
-        activeFilters.time = time;
-        setFilterLabel("time-button", time);
+        activeFilters.time = bucket;
+        setFilterLabel("time-button", bucket + ' PM');
         setFilterActive("time-button", true);
         document.getElementById("time-dropdown").style.display = "none";
         applyFilters();
@@ -407,7 +420,7 @@ fetch(`${API_BASE}/api/quizzo`)
         // Mobile filter options
         if (typeof populateQuizzoMobileFilterOptions === 'function') {
           populateQuizzoMobileFilterOptions({
-            times: times,
+            times: TIME_BUCKETS,
             firstPrizes: firstPrizes,
             prizeAmounts: prizeAmounts,
             neighborhoods: Object.keys(nhHasMarker).sort()
@@ -546,7 +559,7 @@ fetch(`${API_BASE}/api/quizzo`)
     // Populate mobile filter options
     if (window.populateQuizzoMobileFilterOptions) {
       window.populateQuizzoMobileFilterOptions({
-        times: times,
+        times: TIME_BUCKETS,
         firstPrizes: firstPrizes,
         prizeAmounts: prizeAmounts,
         neighborhoods: neighborhoods
