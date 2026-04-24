@@ -159,36 +159,44 @@
   // Check auth before showing page
   async function checkAuthBeforeRender() {
     try {
+      console.log('[Auth] Starting auth check on hostname:', window.location.hostname);
+      
       // Check if user is fully authenticated (has adminToken)
       const authRes = await fetch(`${API_BASE}/admin/check-auth`, {
-        credentials: 'include'
+        credentials: 'include',
+        method: 'GET'
       });
+      
+      console.log(`[Auth] check-auth response: ${authRes.status}`, authRes.status === 200 ? '✓' : '✗');
       
       if (authRes.ok) {
         // User is fully authenticated, redirect to admin dashboard
-        // console.log('[Auth] User already authenticated, redirecting to admin');
+        console.log('[Auth] User already authenticated, redirecting to admin');
         window.location.href = 'admin.html';
         return;
       }
       
       // Check if user passed captcha (has captchaPassed cookie)
       const captchaRes = await fetch(`${API_BASE}/admin/check-captcha`, {
-        credentials: 'include'
+        credentials: 'include',
+        method: 'GET'
       });
+      
+      console.log(`[Auth] check-captcha response: ${captchaRes.status}`, captchaRes.status === 200 ? '✓' : '✗');
       
       if (captchaRes.ok) {
         // User passed captcha, show password stage
-        // console.log('[Auth] Captcha passed, showing password stage');
+        console.log('[Auth] Captcha passed, showing password stage');
         document.body.classList.add('auth-complete');
         document.getElementById('stage-captcha').classList.remove('active');
         document.getElementById('stage-password').classList.add('active');
       } else {
         // Fresh start, show captcha stage
-        // console.log('[Auth] New user, showing captcha stage');
+        console.log('[Auth] New user, showing captcha stage');
         document.body.classList.add('auth-complete');
       }
     } catch (err) {
-    //   console.error('[Auth] Check failed:', err);
+      console.error('[Auth] Check failed:', err);
       // On error, show captcha stage anyway
       document.body.classList.add('auth-complete');
     }
@@ -251,7 +259,7 @@
     const errorEl = document.getElementById('global-error');
     errorEl.textContent = "";
 
-    // console.log('[Captcha] Verifying selection:', selectedIndices);
+    console.log('[Captcha] Verifying selection:', selectedIndices);
 
     try {
       const res = await fetch(`${API_BASE}/api/verify-captcha`, {
@@ -261,22 +269,23 @@
         body: JSON.stringify({ selectedIndices })
       });
 
-    //   console.log('[Captcha] Response status:', res.status);
+      console.log('[Captcha] Response status:', res.status);
 
       if (res.ok) {
         const data = await res.json();
         captchaToken = data.token;
+        console.log('[Captcha] ✓ Passed. Got token:', !!captchaToken);
         document.getElementById('stage-captcha').classList.remove('active');
         document.getElementById('stage-password').classList.add('active');
       } else {
         const data = await res.json();
-        // console.log('[Captcha] ✗ Incorrect:', data.error);
+        console.log('[Captcha] ✗ Incorrect:', data.error);
         errorEl.textContent = data.error || "Identity verification failed.";
         selectedIndices = [];
         document.querySelectorAll('.tile').forEach(t => t.classList.remove('selected'));
       }
     } catch (err) {
-    //   console.error('[Captcha] Exception:', err);
+      console.error('[Captcha] Exception:', err);
       errorEl.textContent = "Server error.";
     }
   }
@@ -301,7 +310,7 @@
     }
     
     try {
-    //   console.log('[Login] Attempting password login...');
+      console.log('[Login] Attempting password login with captchaToken:', !!captchaToken);
       const res = await fetch(`${API_BASE}/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -309,19 +318,24 @@
         body: JSON.stringify({ password: pw, captchaToken })
       });
 
-    //   console.log('[Login] Response status:', res.status);
+      console.log('[Login] Response status:', res.status);
       
       if (res.ok) {
-        // console.log('[Login] Success! Token cookie set, redirecting to admin.html');
+        console.log('[Login] ✓ Success! Checking if adminToken cookie was set...');
+        // Verify the cookie was actually set before redirecting
+        const checkRes = await fetch(`${API_BASE}/admin/check-auth`, {
+          credentials: 'include'
+        });
+        console.log('[Login] Cookie verification:', checkRes.status, checkRes.ok ? '✓' : '✗');
         window.location.href = 'admin.html';
       } else {
         const data = await res.json();
-        // console.log('[Login] Error response:', data);
+        console.log('[Login] ✗ Error response:', data);
         errorEl.textContent = data.error || "Login failed.";
         document.getElementById('admin-password').value = "";
       }
     } catch (err) {
-    //   console.error('[Login] Exception:', err);
+      console.error('[Login] Exception:', err);
       errorEl.textContent = "Connection error. Check server running?";
     }
   }

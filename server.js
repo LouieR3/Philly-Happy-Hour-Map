@@ -213,30 +213,42 @@ app.post('/admin/login', (req, res) => {
   // Consume the token — single use
   _captchaTokens.delete(captchaToken);
 
-  const isProduction = process.env.NODE_ENV === 'production';
+  // Always use secure on HTTPS domains; for localhost use false
+  const isSecure = req.hostname !== 'localhost' && req.hostname !== '127.0.0.1';
   res.cookie('adminToken', process.env.ADMIN_PASSWORD, {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: 'Lax',
+    secure: isSecure,
+    sameSite: 'Strict',
+    path: '/',
     maxAge: 24 * 60 * 60 * 1000
   });
 
+  console.log(`[Auth] Login successful. Set adminToken cookie (secure=${isSecure}, hostname=${req.hostname})`);
   res.json({ success: true, message: 'Logged in successfully' });
 });
 
 // Admin logout endpoint
 app.post('/admin/logout', (req, res) => {
-  res.clearCookie('adminToken');
+  const isSecure = req.hostname !== 'localhost' && req.hostname !== '127.0.0.1';
+  res.clearCookie('adminToken', {
+    httpOnly: true,
+    secure: isSecure,
+    sameSite: 'Strict',
+    path: '/'
+  });
   res.json({ success: true, message: 'Logged out' });
 });
 
 // Check if admin is authenticated
 app.get('/admin/check-auth', (req, res) => {
   const token = req.cookies.adminToken;
-  if (token && token === process.env.ADMIN_PASSWORD) {
-    return res.json({ authenticated: true });
+  const isAuthenticated = token && token === process.env.ADMIN_PASSWORD;
+  
+  if (!isAuthenticated) {
+    console.log(`[Auth] Check failed: no valid token. Cookies received: ${Object.keys(req.cookies).join(', ') || '(none)'}`);
   }
-  res.status(401).json({ authenticated: false });
+  
+  res.status(isAuthenticated ? 200 : 401).json({ authenticated: isAuthenticated });
 });
 
 // Check if user passed captcha or has admin token (for gating admin pages)
