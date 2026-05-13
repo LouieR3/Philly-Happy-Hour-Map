@@ -316,6 +316,48 @@ td.war-null     { color: var(--sb-muted); }
 }
 .btn-add-player:hover { border-color: var(--sb-green); color: var(--sb-green-br); }
 
+.btn-edit-stats {
+  background: none;
+  border: 1px solid var(--sb-border);
+  color: var(--sb-text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-edit-stats:hover { border-color: var(--sb-green); color: var(--sb-green-br); }
+
+.btn-clear-stats {
+  background: none;
+  border: 1px solid var(--sb-red);
+  color: var(--sb-red);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.15s;
+}
+.btn-clear-stats:hover { background: rgba(248,113,113,0.12); }
+
+.status-upcoming {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sb-muted);
+  border: 1px solid var(--sb-border);
+  padding: 4px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
 .btn-submit {
   background: var(--sb-green);
   border: none;

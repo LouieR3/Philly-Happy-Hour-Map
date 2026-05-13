@@ -41,14 +41,12 @@ const GAME_COLS = [
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 async function init() {
-  // Wire tab clicks via delegation (handles dynamically-added tabs too)
   document.getElementById('tab-bar').addEventListener('click', e => {
     const tab = e.target.closest('.tab[data-panel]');
     if (tab) switchTab(tab.dataset.panel);
   });
 
   await checkAuth();
-  buildEnterGamePanel();
   await Promise.all([loadSeason(), loadGames()]);
 }
 
@@ -90,8 +88,8 @@ async function loadSeason() {
 
 function renderSeasonBanner({ record, run_diff }) {
   document.getElementById('season-record').textContent = `${record.W}-${record.L}-${record.T}`;
-  const rdEl   = document.getElementById('season-rundiff');
-  const sign   = run_diff > 0 ? '+' : '';
+  const rdEl = document.getElementById('season-rundiff');
+  const sign = run_diff > 0 ? '+' : '';
   rdEl.textContent = run_diff !== 0 ? `Run Diff: ${sign}${run_diff}` : '';
   rdEl.className   = 'run-diff' + (run_diff > 0 ? ' positive' : run_diff < 0 ? ' negative' : '');
 }
@@ -99,7 +97,7 @@ function renderSeasonBanner({ record, run_diff }) {
 function renderSeasonTable(players) {
   const panel = document.getElementById('panel-season');
   if (!players || !players.length) {
-    panel.innerHTML = `<div class="empty-state"><i class="fa-solid fa-baseball"></i><p>No games recorded yet.</p></div>`;
+    panel.innerHTML = `<div class="empty-state"><i class="fa-solid fa-baseball"></i><p>No games recorded yet. Enter stats on a game tab to get started.</p></div>`;
     return;
   }
 
@@ -107,8 +105,7 @@ function renderSeasonTable(players) {
 
   const headerCells = SEASON_COLS.map(col => {
     const cls = col.key === sortCol
-      ? (sortDir === 'asc' ? 'sort-asc' : 'sort-desc')
-      : '';
+      ? (sortDir === 'asc' ? 'sort-asc' : 'sort-desc') : '';
     return `<th class="${cls}" onclick="setSort('${col.key}')">${col.label}</th>`;
   }).join('');
 
@@ -123,7 +120,6 @@ function renderSeasonTable(players) {
       } else {
         display = val != null ? val : '—';
       }
-
       let warClass = '';
       if (col.key === 'WAR') {
         if      (val == null) warClass = 'war-null';
@@ -185,39 +181,38 @@ function buildGameTabs(games) {
   const tabBar  = document.getElementById('tab-bar');
   const content = document.getElementById('content');
 
-  // Remove stale game tabs/panels and admin tab
   document.querySelectorAll('.game-tab, .game-panel').forEach(el => el.remove());
-  document.getElementById('tab-enter-game')?.remove();
 
   games.forEach(game => {
+    const hasStats = game.players && game.players.length > 0 && game.result;
+
+    // Tab
     const tab = document.createElement('div');
     tab.className = 'tab game-tab';
     tab.dataset.panel = `game-${game._id}`;
-    tab.innerHTML = `Game ${game.game_number} <span class="result-${game.result}" style="font-size:0.75rem;margin-left:4px">${game.result}</span>`;
+    if (hasStats) {
+      tab.innerHTML = `<span style="font-size:0.75rem;margin-right:3px;" class="result-${game.result}">${game.result}</span> Game ${game.game_number}`;
+    } else {
+      tab.textContent = `Game ${game.game_number}`;
+    }
     tabBar.appendChild(tab);
 
+    // Panel
     const panel = document.createElement('div');
     panel.id = `panel-game-${game._id}`;
     panel.className = 'panel game-panel';
-    panel.innerHTML = buildGamePanelHTML(game);
+    panel.innerHTML = hasStats ? buildBoxScoreHTML(game) : buildStatsFormHTML(game);
     content.appendChild(panel);
   });
-
-  const enterTab = document.createElement('div');
-  enterTab.id = 'tab-enter-game';
-  enterTab.className = 'tab';
-  enterTab.dataset.panel = 'enter-game';
-  enterTab.textContent = '+ Enter Game';
-  tabBar.appendChild(enterTab);
 }
 
-function buildGamePanelHTML(game) {
+// ─── Box score view ───────────────────────────────────────────────────────────
+
+function buildBoxScoreHTML(game) {
   const dateStr = game.date
     ? new Date(game.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     : '';
   const resultWord = { W: 'Win', L: 'Loss', T: 'Tie' }[game.result] || '';
-
-  const deleteBtnClass = `delete-game-btn${isAdmin ? ' admin-visible' : ''}`;
 
   const headerCells = GAME_COLS.map(c => `<th>${c.label}</th>`).join('');
   const rows = (game.players || []).map(p => {
@@ -228,6 +223,11 @@ function buildGamePanelHTML(game) {
     }).join('');
     return `<tr>${cells}</tr>`;
   }).join('');
+
+  const editBtn  = `<button class="btn-edit-stats" onclick="showStatsForm('${game._id}')"><i class="fa-solid fa-pen-to-square"></i> Edit Stats</button>`;
+  const clearBtn = isAdmin
+    ? `<button class="btn-clear-stats" onclick="clearStats('${game._id}')"><i class="fa-solid fa-xmark"></i> Clear</button>`
+    : '';
 
   return `
     <div class="game-header">
@@ -242,9 +242,9 @@ function buildGamePanelHTML(game) {
         </div>
         <div class="game-meta">${dateStr}${dateStr ? ' · ' : ''}Game ${game.game_number}</div>
       </div>
-      <button class="${deleteBtnClass}" onclick="deleteGame('${game._id}')">
-        <i class="fa-solid fa-trash-can"></i> Delete
-      </button>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        ${editBtn}${clearBtn}
+      </div>
     </div>
     <div class="stats-table-wrap">
       <table>
@@ -254,53 +254,47 @@ function buildGamePanelHTML(game) {
     </div>`;
 }
 
-// ─── Delete game ──────────────────────────────────────────────────────────────
+// ─── Stats entry form ─────────────────────────────────────────────────────────
 
-async function deleteGame(id) {
-  if (!confirm('Delete this game? Season stats will be recalculated.')) return;
-  try {
-    const res = await fetch(`${API_BASE}/admin/softball/games/${id}`, {
-      method: 'DELETE',
-      credentials: 'include',
-    });
-    if (!res.ok) throw new Error();
-    await Promise.all([loadSeason(), loadGames()]);
-    switchTab('season');
-  } catch {
-    alert('Failed to delete game.');
-  }
-}
+function buildStatsFormHTML(game) {
+  const dateStr = game.date
+    ? new Date(game.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    : '';
+  const hasExisting = game.players && game.players.length > 0;
+  const playerRows  = hasExisting
+    ? game.players.map(p => playerInputRowHTML(p)).join('')
+    : [0, 1, 2].map(() => playerInputRowHTML()).join('');
 
-// ─── Enter Game Form ──────────────────────────────────────────────────────────
-
-function buildEnterGamePanel() {
-  const panel = document.getElementById('panel-enter-game');
-  panel.innerHTML = `
+  return `
+    <div class="game-header">
+      <div>
+        <div class="game-matchup" style="font-size:1.1rem;">
+          Game ${game.game_number} &mdash; ${game.opponent}
+        </div>
+        <div class="game-meta">${dateStr}</div>
+      </div>
+      <span class="status-upcoming">No Stats Yet</span>
+    </div>
     <div class="form-card">
-      <div class="section-label">Game Details</div>
+      <div class="section-label">Score &amp; Result</div>
       <div class="form-row">
         <div class="form-group">
-          <label>Date</label>
-          <input type="date" id="fg-date" />
-        </div>
-        <div class="form-group">
-          <label>Opponent</label>
-          <input type="text" id="fg-opponent" placeholder="Team name" />
-        </div>
-        <div class="form-group">
           <label>Our Score</label>
-          <input type="number" id="fg-our-score" min="0" placeholder="0" />
+          <input type="number" id="sg-our-${game._id}" min="0"
+            value="${game.our_score != null ? game.our_score : ''}" placeholder="0" />
         </div>
         <div class="form-group">
           <label>Opp. Score</label>
-          <input type="number" id="fg-opp-score" min="0" placeholder="0" />
+          <input type="number" id="sg-opp-${game._id}" min="0"
+            value="${game.opponent_score != null ? game.opponent_score : ''}" placeholder="0" />
         </div>
         <div class="form-group">
           <label>Result</label>
-          <select id="fg-result">
-            <option value="W">Win</option>
-            <option value="L">Loss</option>
-            <option value="T">Tie</option>
+          <select id="sg-result-${game._id}">
+            <option value="">—</option>
+            <option value="W" ${game.result === 'W' ? 'selected' : ''}>Win</option>
+            <option value="L" ${game.result === 'L' ? 'selected' : ''}>Loss</option>
+            <option value="T" ${game.result === 'T' ? 'selected' : ''}>Tie</option>
           </select>
         </div>
       </div>
@@ -311,120 +305,134 @@ function buildEnterGamePanel() {
           <thead>
             <tr>
               <th style="min-width:140px">Player</th>
-              <th>AB</th>
-              <th>H</th>
-              <th>2B</th>
-              <th>3B</th>
-              <th>HR</th>
-              <th>RBI</th>
-              <th>R</th>
+              <th>AB</th><th>H</th><th>2B</th><th>3B</th><th>HR</th><th>RBI</th><th>R</th>
               <th></th>
             </tr>
           </thead>
-          <tbody id="player-rows"></tbody>
+          <tbody id="sg-rows-${game._id}">${playerRows}</tbody>
         </table>
       </div>
-
-      <button class="btn-add-player" onclick="addPlayerRow()">+ Add Player</button>
+      <button class="btn-add-player" onclick="addGamePlayerRow('${game._id}')">+ Add Player</button>
       <br />
-      <button class="btn-submit" onclick="submitGame()">Save Game</button>
-      <div class="form-status" id="form-status"></div>
+      <button class="btn-submit" onclick="submitStats('${game._id}')">Save Stats</button>
+      <div class="form-status" id="sg-status-${game._id}"></div>
     </div>`;
-
-  document.getElementById('fg-date').valueAsDate = new Date();
-  for (let i = 0; i < 3; i++) addPlayerRow();
 }
 
-function addPlayerRow() {
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td><input type="text"   placeholder="Name"  class="pr-name" /></td>
-    <td><input type="number" placeholder="0" min="0" class="pr-ab"  /></td>
-    <td><input type="number" placeholder="0" min="0" class="pr-h"   /></td>
-    <td><input type="number" placeholder="0" min="0" class="pr-2b"  /></td>
-    <td><input type="number" placeholder="0" min="0" class="pr-3b"  /></td>
-    <td><input type="number" placeholder="0" min="0" class="pr-hr"  /></td>
-    <td><input type="number" placeholder="0" min="0" class="pr-rbi" /></td>
-    <td><input type="number" placeholder="0" min="0" class="pr-r"   /></td>
-    <td><button class="remove-row-btn" onclick="this.closest('tr').remove()" title="Remove">×</button></td>`;
-  document.getElementById('player-rows').appendChild(tr);
+function playerInputRowHTML(p = {}) {
+  const v = (val) => val != null && val !== '' ? val : '';
+  return `<tr>
+    <td><input type="text"   placeholder="Name" class="pr-name" value="${(p.name || '').replace(/"/g, '&quot;')}" /></td>
+    <td><input type="number" placeholder="0" min="0" class="pr-ab"  value="${v(p.AB)}"    /></td>
+    <td><input type="number" placeholder="0" min="0" class="pr-h"   value="${v(p.H)}"     /></td>
+    <td><input type="number" placeholder="0" min="0" class="pr-2b"  value="${v(p['2B'])}" /></td>
+    <td><input type="number" placeholder="0" min="0" class="pr-3b"  value="${v(p['3B'])}" /></td>
+    <td><input type="number" placeholder="0" min="0" class="pr-hr"  value="${v(p.HR)}"    /></td>
+    <td><input type="number" placeholder="0" min="0" class="pr-rbi" value="${v(p.RBI)}"   /></td>
+    <td><input type="number" placeholder="0" min="0" class="pr-r"   value="${v(p.R)}"     /></td>
+    <td><button class="remove-row-btn" onclick="this.closest('tr').remove()" title="Remove">×</button></td>
+  </tr>`;
 }
 
-async function submitGame() {
-  const statusEl = document.getElementById('form-status');
-  statusEl.className = 'form-status';
-  statusEl.textContent = '';
+function addGamePlayerRow(gameId) {
+  const tbody = document.getElementById(`sg-rows-${gameId}`);
+  if (tbody) tbody.insertAdjacentHTML('beforeend', playerInputRowHTML());
+}
 
-  const date       = document.getElementById('fg-date').value;
-  const opponent   = document.getElementById('fg-opponent').value.trim();
-  const our_score  = document.getElementById('fg-our-score').value;
-  const opp_score  = document.getElementById('fg-opp-score').value;
-  const result     = document.getElementById('fg-result').value;
+function showStatsForm(gameId) {
+  const game = gamesData.find(g => g._id === gameId);
+  if (!game) return;
+  const panel = document.getElementById(`panel-game-${gameId}`);
+  if (panel) panel.innerHTML = buildStatsFormHTML(game);
+}
 
-  if (!opponent) {
-    statusEl.className = 'form-status error';
-    statusEl.textContent = 'Opponent name is required.';
+async function submitStats(gameId) {
+  const statusEl = document.getElementById(`sg-status-${gameId}`);
+  if (statusEl) { statusEl.textContent = ''; statusEl.className = 'form-status'; }
+
+  const our_score = document.getElementById(`sg-our-${gameId}`)?.value;
+  const opp_score = document.getElementById(`sg-opp-${gameId}`)?.value;
+  const result    = document.getElementById(`sg-result-${gameId}`)?.value;
+
+  if (!result) {
+    if (statusEl) { statusEl.className = 'form-status error'; statusEl.textContent = 'Select a result (W / L / T).'; }
     return;
   }
 
   const players = [];
-  for (const row of document.querySelectorAll('#player-rows tr')) {
-    const name = row.querySelector('.pr-name').value.trim();
+  for (const row of document.querySelectorAll(`#sg-rows-${gameId} tr`)) {
+    const name = row.querySelector('.pr-name')?.value.trim();
     if (!name) continue;
     players.push({
       name,
-      AB:    parseInt(row.querySelector('.pr-ab').value)  || 0,
-      H:     parseInt(row.querySelector('.pr-h').value)   || 0,
-      '2B':  parseInt(row.querySelector('.pr-2b').value)  || 0,
-      '3B':  parseInt(row.querySelector('.pr-3b').value)  || 0,
-      HR:    parseInt(row.querySelector('.pr-hr').value)  || 0,
-      RBI:   parseInt(row.querySelector('.pr-rbi').value) || 0,
-      R:     parseInt(row.querySelector('.pr-r').value)   || 0,
+      AB:    parseInt(row.querySelector('.pr-ab')?.value)  || 0,
+      H:     parseInt(row.querySelector('.pr-h')?.value)   || 0,
+      '2B':  parseInt(row.querySelector('.pr-2b')?.value)  || 0,
+      '3B':  parseInt(row.querySelector('.pr-3b')?.value)  || 0,
+      HR:    parseInt(row.querySelector('.pr-hr')?.value)  || 0,
+      RBI:   parseInt(row.querySelector('.pr-rbi')?.value) || 0,
+      R:     parseInt(row.querySelector('.pr-r')?.value)   || 0,
     });
   }
 
   if (!players.length) {
-    statusEl.className = 'form-status error';
-    statusEl.textContent = 'Add at least one player.';
+    if (statusEl) { statusEl.className = 'form-status error'; statusEl.textContent = 'Add at least one player.'; }
     return;
   }
 
-  const btn = document.querySelector('.btn-submit');
-  btn.disabled = true;
-  btn.textContent = 'Saving…';
+  const btn = document.querySelector(`#panel-game-${gameId} .btn-submit`);
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
 
   try {
-    const res = await fetch(`${API_BASE}/admin/softball/games`, {
-      method: 'POST',
+    const res = await fetch(`${API_BASE}/api/softball/games/${gameId}`, {
+      method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ date, opponent, our_score, opponent_score: opp_score, result, players }),
+      body: JSON.stringify({ our_score, opponent_score: opp_score, result, players }),
     });
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Save failed');
 
-    await Promise.all([loadSeason(), loadGames()]);
+    // Update local cache and swap to box score view
+    const idx = gamesData.findIndex(g => g._id === gameId);
+    if (idx !== -1) gamesData[idx] = data;
 
-    // Reset form (panel still intact — just clear rows)
-    document.getElementById('player-rows').innerHTML = '';
-    for (let i = 0; i < 3; i++) addPlayerRow();
-    document.getElementById('fg-opponent').value  = '';
-    document.getElementById('fg-our-score').value = '';
-    document.getElementById('fg-opp-score').value = '';
-    document.getElementById('fg-date').valueAsDate = new Date();
+    const panel = document.getElementById(`panel-game-${gameId}`);
+    if (panel) panel.innerHTML = buildBoxScoreHTML(data);
 
-    // Restore active state on enter-game tab (buildGameTabs re-adds it without active class)
-    switchTab('enter-game');
+    const tab = document.querySelector(`[data-panel="game-${gameId}"]`);
+    if (tab) tab.innerHTML = `<span style="font-size:0.75rem;margin-right:3px;" class="result-${data.result}">${data.result}</span> Game ${data.game_number}`;
 
-    document.getElementById('form-status').className  = 'form-status success';
-    document.getElementById('form-status').textContent = `Game ${data.game_number} saved!`;
+    await loadSeason();
   } catch (err) {
-    statusEl.className  = 'form-status error';
-    statusEl.textContent = err.message || 'Failed to save game.';
-  } finally {
-    const b = document.querySelector('.btn-submit');
-    if (b) { b.disabled = false; b.textContent = 'Save Game'; }
+    if (statusEl) { statusEl.className = 'form-status error'; statusEl.textContent = err.message || 'Failed to save.'; }
+    if (btn) { btn.disabled = false; btn.textContent = 'Save Stats'; }
+  }
+}
+
+async function clearStats(gameId) {
+  if (!confirm('Clear all stats for this game?')) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/softball/games/${gameId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ our_score: null, opponent_score: null, result: null, players: [] }),
+    });
+    if (!res.ok) throw new Error();
+    const data = await res.json();
+
+    const idx = gamesData.findIndex(g => g._id === gameId);
+    if (idx !== -1) gamesData[idx] = data;
+
+    const panel = document.getElementById(`panel-game-${gameId}`);
+    if (panel) panel.innerHTML = buildStatsFormHTML(data);
+
+    const tab = document.querySelector(`[data-panel="game-${gameId}"]`);
+    if (tab) tab.textContent = `Game ${data.game_number}`;
+
+    await loadSeason();
+  } catch {
+    alert('Failed to clear stats.');
   }
 }
 

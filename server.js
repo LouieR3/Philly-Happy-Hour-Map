@@ -1451,11 +1451,43 @@ const softballGameSchema = new mongoose.Schema({
   opponent:       { type: String },
   our_score:      { type: Number },
   opponent_score: { type: Number },
-  result:         { type: String, enum: ['W', 'L', 'T'] },
+  result:         { type: String },
   players:        [playerStatSchema],
 }, { collection: 'softball_games' });
 
 const SoftballGame = mappyHourDb.model('SoftballGame', softballGameSchema);
+
+const SOFTBALL_SCHEDULE = [
+  { game_number:  1, date: new Date('2026-05-13'), opponent: 'Voith & Mactavish'  },
+  { game_number:  2, date: new Date('2026-05-20'), opponent: 'Friday and Friends'  },
+  { game_number:  3, date: new Date('2026-05-27'), opponent: 'Bats'                },
+  { game_number:  4, date: new Date('2026-06-03'), opponent: 'Team Awesome'        },
+  { game_number:  5, date: new Date('2026-06-10'), opponent: 'Trane'               },
+  { game_number:  6, date: new Date('2026-06-17'), opponent: 'Bala Engineers'      },
+  { game_number:  7, date: new Date('2026-06-24'), opponent: 'JWA'                 },
+  { game_number:  8, date: new Date('2026-07-01'), opponent: 'Perkins Eastman'     },
+  { game_number:  9, date: new Date('2026-07-08'), opponent: 'Jacobs Engineering'  },
+  { game_number: 10, date: new Date('2026-07-15'), opponent: 'Team Meyer'          },
+  { game_number: 11, date: new Date('2026-07-22'), opponent: 'Stantec'             },
+  { game_number: 12, date: new Date('2026-07-29'), opponent: 'Red'                 },
+];
+
+async function seedSoftballSchedule() {
+  for (const game of SOFTBALL_SCHEDULE) {
+    const exists = await SoftballGame.findOne({ game_number: game.game_number });
+    if (!exists) {
+      await new SoftballGame({
+        game_number: game.game_number,
+        date:        game.date,
+        opponent:    game.opponent,
+        players:     [],
+      }).save();
+    }
+  }
+  console.log('[Softball] Schedule ready');
+}
+
+mappyHourDb.once('open', () => seedSoftballSchedule().catch(console.error));
 
 function calcPlayerStats(p) {
   const AB  = p.AB  || 0;
@@ -1505,20 +1537,40 @@ app.post('/admin/softball/games', async (req, res) => {
   }
 });
 
+// PUT — update stats for a pre-set game (public, no auth required)
+app.put('/api/softball/games/:id', async (req, res) => {
+  try {
+    const { our_score, opponent_score, result, players } = req.body;
+    const update = {
+      our_score:      our_score      != null ? Number(our_score)      : null,
+      opponent_score: opponent_score != null ? Number(opponent_score) : null,
+      result:         result         || null,
+      players:        (players || []).map(calcPlayerStats),
+    };
+    const updated = await SoftballGame.findByIdAndUpdate(req.params.id, update, { new: true }).lean();
+    if (!updated) return res.status(404).json({ error: 'Game not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/softball/season', async (req, res) => {
   try {
     const games = await SoftballGame.find({}).lean();
-    if (!games.length) return res.json({ players: [], record: { W: 0, L: 0, T: 0 }, run_diff: 0 });
+    // Only count games that have stats entered
+    const played = games.filter(g => g.players && g.players.length > 0 && g.result);
+    if (!played.length) return res.json({ players: [], record: { W: 0, L: 0, T: 0 }, run_diff: 0 });
 
     const record = { W: 0, L: 0, T: 0 };
     let run_diff = 0;
-    for (const g of games) {
+    for (const g of played) {
       if (g.result in record) record[g.result]++;
       run_diff += (g.our_score || 0) - (g.opponent_score || 0);
     }
 
     const playerMap = {};
-    for (const g of games) {
+    for (const g of played) {
       for (const p of g.players) {
         if (!playerMap[p.name]) {
           playerMap[p.name] = { name: p.name, AB: 0, H: 0, '1B': 0, '2B': 0, '3B': 0, HR: 0, RBI: 0, R: 0 };
