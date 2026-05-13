@@ -12,7 +12,7 @@ const WEEKDAYS = [
 ];
 const API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:3000'
-  : '';
+  : 'https://philly-happy-hour-map-production.up.railway.app';
 
 // Check authentication on page load
 document.addEventListener("DOMContentLoaded", async () => {

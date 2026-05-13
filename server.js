@@ -213,11 +213,11 @@ app.post('/admin/login', (req, res) => {
   // Consume the token — single use
   _captchaTokens.delete(captchaToken);
 
-  const isSecure = req.hostname !== 'localhost' && req.hostname !== '127.0.0.1';
+  const isProd = process.env.NODE_ENV === 'production';
   res.cookie('adminToken', process.env.ADMIN_PASSWORD, {
     httpOnly: true,
-    secure: isSecure,
-    sameSite: 'Lax',
+    secure: isProd,
+    sameSite: isProd ? 'None' : 'Lax',
     path: '/',
     maxAge: 24 * 60 * 60 * 1000
   });
@@ -228,11 +228,11 @@ app.post('/admin/login', (req, res) => {
 
 // Admin logout endpoint
 app.post('/admin/logout', (req, res) => {
-  const isSecure = req.hostname !== 'localhost' && req.hostname !== '127.0.0.1';
+  const isProdLogout = process.env.NODE_ENV === 'production';
   res.clearCookie('adminToken', {
     httpOnly: true,
-    secure: isSecure,
-    sameSite: 'Lax',
+    secure: isProdLogout,
+    sameSite: isProdLogout ? 'None' : 'Lax',
     path: '/'
   });
   res.json({ success: true, message: 'Logged out' });
