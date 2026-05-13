@@ -1428,6 +1428,176 @@ app.post('/admin/add-sports-bar/:id', adminAuth, async (req, res) => {
   }
 });
 
+// ─── Softball League ─────────────────────────────────────────────────────────
+
+const playerStatSchema = new mongoose.Schema({
+  name:  { type: String, required: true },
+  AB:    { type: Number, default: 0 },
+  H:     { type: Number, default: 0 },
+  '1B':  { type: Number, default: 0 },
+  '2B':  { type: Number, default: 0 },
+  '3B':  { type: Number, default: 0 },
+  HR:    { type: Number, default: 0 },
+  RBI:   { type: Number, default: 0 },
+  R:     { type: Number, default: 0 },
+  TB:    { type: Number },
+  AVG:   { type: Number },
+  SLG:   { type: Number },
+  OPS:   { type: Number },
+}, { _id: false });
+
+const softballGameSchema = new mongoose.Schema({
+  game_number:    { type: Number },
+  date:           { type: Date },
+  opponent:       { type: String },
+  our_score:      { type: Number },
+  opponent_score: { type: Number },
+  result:         { type: String, enum: ['W', 'L', 'T'] },
+  players:        [playerStatSchema],
+}, { collection: 'softball_games' });
+
+const SoftballGame = mappyHourDb.model('SoftballGame', softballGameSchema);
+
+function calcPlayerStats(p) {
+  const AB  = p.AB  || 0;
+  const H   = p.H   || 0;
+  const dbl = p['2B'] || 0;
+  const tpl = p['3B'] || 0;
+  const hr  = p.HR  || 0;
+  const sgl = Math.max(0, H - dbl - tpl - hr);
+  const TB  = sgl + 2 * dbl + 3 * tpl + 4 * hr;
+  const AVG = AB > 0 ? parseFloat((H / AB).toFixed(3))  : 0;
+  const SLG = AB > 0 ? parseFloat((TB / AB).toFixed(3)) : 0;
+  const OPS = parseFloat((AVG + SLG).toFixed(3));
+  return {
+    name: p.name, AB, H,
+    '1B': sgl, '2B': dbl, '3B': tpl, HR: hr,
+    RBI: p.RBI || 0, R: p.R || 0,
+    TB, AVG, SLG, OPS,
+  };
+}
+
+app.get('/api/softball/games', async (req, res) => {
+  try {
+    const games = await SoftballGame.find({}).sort({ game_number: 1 }).lean();
+    res.json(games);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/admin/softball/games', adminAuth, async (req, res) => {
+  try {
+    const { date, opponent, our_score, opponent_score, result, players } = req.body;
+    const count = await SoftballGame.countDocuments();
+    const game = new SoftballGame({
+      game_number:    count + 1,
+      date:           date || new Date(),
+      opponent:       opponent || 'TBD',
+      our_score:      Number(our_score) || 0,
+      opponent_score: Number(opponent_score) || 0,
+      result:         result || 'W',
+      players:        (players || []).map(calcPlayerStats),
+    });
+    const saved = await game.save();
+    res.json(saved);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/softball/season', async (req, res) => {
+  try {
+    const games = await SoftballGame.find({}).lean();
+    if (!games.length) return res.json({ players: [], record: { W: 0, L: 0, T: 0 }, run_diff: 0 });
+
+    const record = { W: 0, L: 0, T: 0 };
+    let run_diff = 0;
+    for (const g of games) {
+      if (g.result in record) record[g.result]++;
+      run_diff += (g.our_score || 0) - (g.opponent_score || 0);
+    }
+
+    const playerMap = {};
+    for (const g of games) {
+      for (const p of g.players) {
+        if (!playerMap[p.name]) {
+          playerMap[p.name] = { name: p.name, AB: 0, H: 0, '1B': 0, '2B': 0, '3B': 0, HR: 0, RBI: 0, R: 0 };
+        }
+        const pm = playerMap[p.name];
+        pm.AB    += p.AB    || 0;
+        pm.H     += p.H     || 0;
+        pm['1B'] += p['1B'] || 0;
+        pm['2B'] += p['2B'] || 0;
+        pm['3B'] += p['3B'] || 0;
+        pm.HR    += p.HR    || 0;
+        pm.RBI   += p.RBI   || 0;
+        pm.R     += p.R     || 0;
+      }
+    }
+
+    const players = Object.values(playerMap).map(p => {
+      const TB  = p['1B'] + 2 * p['2B'] + 3 * p['3B'] + 4 * p.HR;
+      const AVG = p.AB > 0 ? p.H / p.AB : 0;
+      const SLG = p.AB > 0 ? TB / p.AB  : 0;
+      const RC  = p.AB > 0 ? p.H * (TB / p.AB) : 0;
+      return { ...p, TB, AVG, SLG, OPS: AVG + SLG, RC };
+    });
+
+    // WAR — exact logic from softball.py
+    const MINIMUM_NUMBER_ABS = 6;
+    const eligible = players.filter(p => p.AB >= MINIMUM_NUMBER_ABS);
+
+    let replacement_rc_per_ab = 0;
+    if (eligible.length >= 1) {
+      const sorted = [...eligible].sort((a, b) => a.AVG - b.AVG);
+      const pool   = sorted.slice(0, Math.min(5, sorted.length));
+      const replacement_avg      = pool.reduce((s, p) => s + p.AVG, 0) / pool.length;
+      const pool_total_tb        = pool.reduce((s, p) => s + p.TB,  0);
+      const pool_total_ab        = pool.reduce((s, p) => s + p.AB,  0);
+      const replacement_tb_per_ab = pool_total_ab > 0 ? pool_total_tb / pool_total_ab : 0;
+      replacement_rc_per_ab       = replacement_avg * replacement_tb_per_ab;
+    }
+
+    const result_players = players.map(p => {
+      const Replacement_RC = p.AB * replacement_rc_per_ab;
+      const WAR = eligible.length >= 1
+        ? parseFloat(((p.RC - Replacement_RC) / 12).toFixed(2))
+        : null;
+      return {
+        name:  p.name,
+        AB:    p.AB,
+        H:     p.H,
+        '2B':  p['2B'],
+        '3B':  p['3B'],
+        HR:    p.HR,
+        RBI:   p.RBI,
+        R:     p.R,
+        TB:    p.TB,
+        AVG:   parseFloat(p.AVG.toFixed(3)),
+        SLG:   parseFloat(p.SLG.toFixed(3)),
+        OPS:   parseFloat((p.AVG + p.SLG).toFixed(3)),
+        RC:    parseFloat(p.RC.toFixed(2)),
+        WAR,
+      };
+    });
+
+    res.json({ players: result_players, record, run_diff });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/admin/softball/games/:id', adminAuth, async (req, res) => {
+  try {
+    const deleted = await SoftballGame.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ error: 'Game not found' });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 app.listen(PORT, () => console.log(`Mappy Hour server running on port ${PORT}`));

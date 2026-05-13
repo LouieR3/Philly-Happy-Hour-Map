@@ -1,0 +1,365 @@
+/* ============================================================
+   PENNONI SOFTBALL — DARK STATS THEME
+   ============================================================ */
+
+:root {
+  --sb-bg:      #0b0f18;
+  --sb-surface: #111827;
+  --sb-card:    #1a2332;
+  --sb-input:   #253045;
+  --sb-border:  #2d3a4f;
+  --sb-green:   #10b981;
+  --sb-green-br:#34d399;
+  --sb-text:    #e2e8f0;
+  --sb-muted:   #94a3b8;
+  --sb-red:     #f87171;
+  --sb-yellow:  #fbbf24;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Lato', sans-serif;
+  background: var(--sb-bg);
+  color: var(--sb-text);
+  min-height: 100vh;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+header {
+  background: var(--sb-surface);
+  border-bottom: 1px solid var(--sb-border);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+header h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+header h1 span { color: var(--sb-green-br); }
+
+.season-banner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 0.9rem;
+}
+
+.record-badge {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--sb-green-br);
+}
+
+.run-diff          { color: var(--sb-muted); }
+.run-diff.positive { color: var(--sb-green); }
+.run-diff.negative { color: var(--sb-red);   }
+
+/* ── Tabs ─────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  background: var(--sb-surface);
+  border-bottom: 1px solid var(--sb-border);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.tab {
+  padding: 12px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--sb-muted);
+  border-bottom: 3px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.tab:hover { color: var(--sb-text); }
+.tab.active {
+  color: var(--sb-green-br);
+  border-bottom-color: var(--sb-green-br);
+}
+.tab.admin-tab { color: var(--sb-yellow); }
+.tab.admin-tab.active { color: var(--sb-yellow); border-bottom-color: var(--sb-yellow); }
+
+/* ── Panels ───────────────────────────────────────────────── */
+.panel { display: none; padding: 24px; }
+.panel.active { display: block; }
+
+/* ── Stats table ──────────────────────────────────────────── */
+.stats-table-wrap {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--sb-border);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+thead th {
+  background: var(--sb-card);
+  padding: 10px 14px;
+  text-align: right;
+  white-space: nowrap;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--sb-muted);
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s;
+}
+thead th:hover { color: var(--sb-text); }
+thead th.sort-asc::after  { content: ' ↑'; color: var(--sb-green-br); }
+thead th.sort-desc::after { content: ' ↓'; color: var(--sb-green-br); }
+thead th:first-child { text-align: left; }
+
+tbody tr {
+  border-top: 1px solid var(--sb-border);
+  transition: background 0.15s;
+}
+tbody tr:hover { background: rgba(52, 211, 153, 0.04); }
+
+tbody td {
+  padding: 9px 14px;
+  text-align: right;
+  color: var(--sb-text);
+}
+tbody td:first-child { text-align: left; font-weight: 600; }
+
+/* WAR coloring */
+td.war-positive { color: var(--sb-green);  font-weight: 700; }
+td.war-negative { color: var(--sb-red);    font-weight: 700; }
+td.war-zero     { color: var(--sb-muted);  font-weight: 600; }
+td.war-null     { color: var(--sb-muted); }
+
+/* ── Game box score ───────────────────────────────────────── */
+.game-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--sb-card);
+  border: 1px solid var(--sb-border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.game-matchup {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+.game-matchup .score { font-size: 1.4rem; }
+
+.result-W { color: var(--sb-green-br); }
+.result-L { color: var(--sb-red);      }
+.result-T { color: var(--sb-yellow);   }
+
+.game-meta {
+  font-size: 0.8rem;
+  color: var(--sb-muted);
+  margin-top: 4px;
+}
+
+.delete-game-btn {
+  display: none;
+  background: none;
+  border: 1px solid var(--sb-red);
+  color: var(--sb-red);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+.delete-game-btn:hover { background: rgba(248, 113, 113, 0.15); }
+.admin-visible { display: inline-flex !important; }
+
+/* ── Enter Game Form ──────────────────────────────────────── */
+.form-card {
+  background: var(--sb-card);
+  border: 1px solid var(--sb-border);
+  border-radius: 10px;
+  padding: 24px;
+  max-width: 960px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sb-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  background: var(--sb-input);
+  border: 1px solid var(--sb-border);
+  color: var(--sb-text);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-family: 'Lato', sans-serif;
+}
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--sb-green);
+}
+.form-group select option { background: var(--sb-card); }
+
+.section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--sb-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--sb-border);
+}
+
+/* Player entry table */
+.player-table-wrap { overflow-x: auto; margin-bottom: 12px; }
+
+.player-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.83rem;
+}
+
+.player-table th {
+  background: var(--sb-input);
+  padding: 8px 10px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--sb-muted);
+  white-space: nowrap;
+}
+.player-table th:first-child { text-align: left; }
+
+.player-table td {
+  padding: 4px 4px;
+  border-top: 1px solid var(--sb-border);
+}
+
+.player-table input[type="text"],
+.player-table input[type="number"] {
+  background: var(--sb-input);
+  border: 1px solid var(--sb-border);
+  color: var(--sb-text);
+  padding: 6px 8px;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 0.85rem;
+  font-family: 'Lato', sans-serif;
+  text-align: center;
+}
+.player-table input[type="text"] { text-align: left; }
+.player-table input:focus { outline: none; border-color: var(--sb-green); }
+
+.remove-row-btn {
+  background: none;
+  border: none;
+  color: var(--sb-red);
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 1rem;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+.remove-row-btn:hover { opacity: 1; }
+
+.btn-add-player {
+  background: none;
+  border: 1px dashed var(--sb-border);
+  color: var(--sb-muted);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.83rem;
+  margin-bottom: 20px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-add-player:hover { border-color: var(--sb-green); color: var(--sb-green-br); }
+
+.btn-submit {
+  background: var(--sb-green);
+  border: none;
+  color: #0b0f18;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  padding: 12px 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-submit:hover   { background: var(--sb-green-br); }
+.btn-submit:active  { transform: scale(0.98); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+.form-status {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  min-height: 1.2rem;
+}
+.form-status.error   { color: var(--sb-red);      }
+.form-status.success { color: var(--sb-green-br); }
+
+/* ── Empty / Loading states ───────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--sb-muted);
+}
+.empty-state i    { font-size: 3rem; margin-bottom: 16px; opacity: 0.35; display: block; }
+.empty-state p    { font-size: 0.95rem; }
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--sb-muted);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 600px) {
+  header          { padding: 12px 16px; }
+  header h1       { font-size: 1.15rem; }
+  .panel          { padding: 16px; }
+  .form-card      { padding: 16px; }
+  .season-banner  { flex-direction: column; align-items: flex-end; gap: 4px; }
+}

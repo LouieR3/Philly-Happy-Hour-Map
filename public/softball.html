@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pennoni · Softball</title>
+  <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v6.7.2/css/all.css" rel="stylesheet" />
+  <link href="css/softball.css" rel="stylesheet" />
+</head>
+<body>
+
+<header>
+  <h1>Pennoni <span>Softball</span></h1>
+  <div class="season-banner">
+    <span class="record-badge" id="season-record">–</span>
+    <span class="run-diff" id="season-rundiff"></span>
+  </div>
+</header>
+
+<div class="tabs" id="tab-bar">
+  <div class="tab active" data-panel="season">Season</div>
+</div>
+
+<div id="content">
+  <div id="panel-season" class="panel active">
+    <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i></div>
+  </div>
+  <div id="panel-enter-game" class="panel"></div>
+</div>
+
+<script>
+  const API_BASE = window.location.hostname === 'localhost'
+    ? 'http://localhost:3000'
+    : 'https://philly-happy-hour-map-production.up.railway.app';
+</script>
+<script src="js/softball.js"></script>
+</body>
+</html>
