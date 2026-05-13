@@ -48,6 +48,7 @@ async function init() {
   });
 
   await checkAuth();
+  buildEnterGamePanel();
   await Promise.all([loadSeason(), loadGames()]);
 }
 
@@ -58,7 +59,6 @@ async function checkAuth() {
   } catch {
     isAdmin = false;
   }
-  if (isAdmin) buildEnterGamePanel();
 }
 
 // ─── Tab switching ────────────────────────────────────────────────────────────
@@ -203,14 +203,12 @@ function buildGameTabs(games) {
     content.appendChild(panel);
   });
 
-  if (isAdmin) {
-    const tab = document.createElement('div');
-    tab.id = 'tab-enter-game';
-    tab.className = 'tab admin-tab';
-    tab.dataset.panel = 'enter-game';
-    tab.textContent = '+ Enter Game';
-    tabBar.appendChild(tab);
-  }
+  const enterTab = document.createElement('div');
+  enterTab.id = 'tab-enter-game';
+  enterTab.className = 'tab';
+  enterTab.dataset.panel = 'enter-game';
+  enterTab.textContent = '+ Enter Game';
+  tabBar.appendChild(enterTab);
 }
 
 function buildGamePanelHTML(game) {

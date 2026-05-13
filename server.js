@@ -213,12 +213,11 @@ app.post('/admin/login', (req, res) => {
   // Consume the token — single use
   _captchaTokens.delete(captchaToken);
 
-  // Always use secure on HTTPS domains; for localhost use false
   const isSecure = req.hostname !== 'localhost' && req.hostname !== '127.0.0.1';
   res.cookie('adminToken', process.env.ADMIN_PASSWORD, {
     httpOnly: true,
     secure: isSecure,
-    sameSite: 'Strict',
+    sameSite: 'Lax',
     path: '/',
     maxAge: 24 * 60 * 60 * 1000
   });
@@ -233,7 +232,7 @@ app.post('/admin/logout', (req, res) => {
   res.clearCookie('adminToken', {
     httpOnly: true,
     secure: isSecure,
-    sameSite: 'Strict',
+    sameSite: 'Lax',
     path: '/'
   });
   res.json({ success: true, message: 'Logged out' });
@@ -1486,7 +1485,7 @@ app.get('/api/softball/games', async (req, res) => {
   }
 });
 
-app.post('/admin/softball/games', adminAuth, async (req, res) => {
+app.post('/admin/softball/games', async (req, res) => {
   try {
     const { date, opponent, our_score, opponent_score, result, players } = req.body;
     const count = await SoftballGame.countDocuments();
