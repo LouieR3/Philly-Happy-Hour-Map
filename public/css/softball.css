@@ -311,10 +311,42 @@ td.war-null     { color: var(--sb-muted); }
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.83rem;
-  margin-bottom: 20px;
   transition: border-color 0.15s, color 0.15s;
 }
 .btn-add-player:hover { border-color: var(--sb-green); color: var(--sb-green-br); }
+
+.btn-load-prev {
+  background: none;
+  border: 1px dashed var(--sb-border);
+  color: var(--sb-muted);
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.83rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: border-color 0.15s, color 0.15s;
+}
+.btn-load-prev:hover { border-color: var(--sb-yellow); color: var(--sb-yellow); }
+
+/* ── Drag-and-drop row reordering ─────────────────────────── */
+.drag-handle {
+  cursor: grab;
+  color: var(--sb-muted);
+  text-align: center !important;
+  padding: 0 6px !important;
+  width: 20px;
+  font-size: 0.85rem;
+  user-select: none;
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+.drag-handle:hover  { opacity: 1; }
+.drag-handle:active { cursor: grabbing; }
+
+tr.dragging  { opacity: 0.3; }
+tr.drag-over { outline: 2px solid var(--sb-green-br); outline-offset: -2px; }
 
 .btn-edit-stats {
   background: none;

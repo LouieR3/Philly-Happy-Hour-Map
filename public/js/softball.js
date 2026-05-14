@@ -203,6 +203,7 @@ function buildGameTabs(games) {
     panel.className = 'panel game-panel';
     panel.innerHTML = hasStats ? buildBoxScoreHTML(game) : buildStatsFormHTML(game);
     content.appendChild(panel);
+    if (!hasStats) initDragDrop(document.getElementById(`sg-rows-${game._id}`));
   });
 }
 
@@ -264,6 +265,10 @@ function buildStatsFormHTML(game) {
   const playerRows  = hasExisting
     ? game.players.map(p => playerInputRowHTML(p)).join('')
     : [0, 1, 2].map(() => playerInputRowHTML()).join('');
+  const prevGame = gamesData.find(g => g.game_number === game.game_number - 1);
+  const copyBtn = prevGame
+    ? `<button class="btn-load-prev" onclick="loadPreviousRoster('${game._id}')"><i class="fa-solid fa-rotate-left"></i> Copy Last Roster</button>`
+    : '';
 
   return `
     <div class="game-header">
@@ -304,6 +309,7 @@ function buildStatsFormHTML(game) {
         <table class="player-table">
           <thead>
             <tr>
+              <th style="width:20px;"></th>
               <th style="min-width:140px">Player</th>
               <th>AB</th><th>H</th><th>2B</th><th>3B</th><th>HR</th><th>RBI</th><th>R</th>
               <th></th>
@@ -312,8 +318,10 @@ function buildStatsFormHTML(game) {
           <tbody id="sg-rows-${game._id}">${playerRows}</tbody>
         </table>
       </div>
-      <button class="btn-add-player" onclick="addGamePlayerRow('${game._id}')">+ Add Player</button>
-      <br />
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+        <button class="btn-add-player" style="margin-bottom:0;" onclick="addGamePlayerRow('${game._id}')">+ Add Player</button>
+        ${copyBtn}
+      </div>
       <button class="btn-submit" onclick="submitStats('${game._id}')">Save Stats</button>
       <div class="form-status" id="sg-status-${game._id}"></div>
     </div>`;
@@ -321,7 +329,8 @@ function buildStatsFormHTML(game) {
 
 function playerInputRowHTML(p = {}) {
   const v = (val) => val != null && val !== '' ? val : '';
-  return `<tr>
+  return `<tr draggable="true">
+    <td class="drag-handle"><i class="fa-solid fa-grip-vertical"></i></td>
     <td><input type="text"   placeholder="Name" class="pr-name" value="${(p.name || '').replace(/"/g, '&quot;')}" /></td>
     <td><input type="number" placeholder="0" min="0" class="pr-ab"  value="${v(p.AB)}"    /></td>
     <td><input type="number" placeholder="0" min="0" class="pr-h"   value="${v(p.H)}"     /></td>
@@ -339,11 +348,69 @@ function addGamePlayerRow(gameId) {
   if (tbody) tbody.insertAdjacentHTML('beforeend', playerInputRowHTML());
 }
 
+function initDragDrop(tbody) {
+  if (!tbody) return;
+  let dragRow = null;
+
+  tbody.addEventListener('dragstart', e => {
+    dragRow = e.target.closest('tr');
+    if (!dragRow) return;
+    e.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => { if (dragRow) dragRow.classList.add('dragging'); }, 0);
+  });
+
+  tbody.addEventListener('dragend', () => {
+    if (dragRow) dragRow.classList.remove('dragging');
+    tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+    dragRow = null;
+  });
+
+  tbody.addEventListener('dragover', e => {
+    e.preventDefault();
+    const tr = e.target.closest('tr');
+    if (!tr || tr === dragRow) return;
+    tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+    tr.classList.add('drag-over');
+  });
+
+  tbody.addEventListener('drop', e => {
+    e.preventDefault();
+    const targetTr = e.target.closest('tr');
+    if (!targetTr || targetTr === dragRow || !dragRow) return;
+    const rows = [...tbody.querySelectorAll('tr')];
+    const fromIdx = rows.indexOf(dragRow);
+    const toIdx   = rows.indexOf(targetTr);
+    if (fromIdx < toIdx) {
+      tbody.insertBefore(dragRow, targetTr.nextSibling);
+    } else {
+      tbody.insertBefore(dragRow, targetTr);
+    }
+    tbody.querySelectorAll('tr').forEach(r => r.classList.remove('drag-over'));
+  });
+}
+
+function loadPreviousRoster(gameId) {
+  const game = gamesData.find(g => g._id === gameId);
+  if (!game) return;
+  const prev = gamesData.find(g => g.game_number === game.game_number - 1);
+  if (!prev?.players?.length) {
+    alert('No roster found from the previous game.');
+    return;
+  }
+  const tbody = document.getElementById(`sg-rows-${gameId}`);
+  if (!tbody) return;
+  tbody.innerHTML = prev.players.map(p => playerInputRowHTML({ name: p.name })).join('');
+  initDragDrop(tbody);
+}
+
 function showStatsForm(gameId) {
   const game = gamesData.find(g => g._id === gameId);
   if (!game) return;
   const panel = document.getElementById(`panel-game-${gameId}`);
-  if (panel) panel.innerHTML = buildStatsFormHTML(game);
+  if (panel) {
+    panel.innerHTML = buildStatsFormHTML(game);
+    initDragDrop(document.getElementById(`sg-rows-${gameId}`));
+  }
 }
 
 async function submitStats(gameId) {
@@ -425,7 +492,10 @@ async function clearStats(gameId) {
     if (idx !== -1) gamesData[idx] = data;
 
     const panel = document.getElementById(`panel-game-${gameId}`);
-    if (panel) panel.innerHTML = buildStatsFormHTML(data);
+    if (panel) {
+      panel.innerHTML = buildStatsFormHTML(data);
+      initDragDrop(document.getElementById(`sg-rows-${gameId}`));
+    }
 
     const tab = document.querySelector(`[data-panel="game-${gameId}"]`);
     if (tab) tab.textContent = `Game ${data.game_number}`;
