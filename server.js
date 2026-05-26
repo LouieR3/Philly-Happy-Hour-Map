@@ -1558,13 +1558,20 @@ app.put('/api/softball/games/:id', async (req, res) => {
 app.get('/api/softball/season', async (req, res) => {
   try {
     const games = await SoftballGame.find({}).lean();
-    // Only count games that have stats entered
-    const played = games.filter(g => g.players && g.players.length > 0 && g.result);
-    if (!played.length) return res.json({ players: [], record: { W: 0, L: 0, T: 0 }, run_diff: 0 });
+    // Games with stats, plus WF (forfeit win) and RO (rain out)
+    const resolved = games.filter(g => g.result && (
+      (g.players && g.players.length > 0) || g.result === 'WF' || g.result === 'RO'
+    ));
+    if (!resolved.length) return res.json({ players: [], record: { W: 0, L: 0, T: 0 }, run_diff: 0 });
+
+    // Only stat-bearing games count for player aggregation
+    const played = resolved.filter(g => g.players && g.players.length > 0);
 
     const record = { W: 0, L: 0, T: 0 };
     let run_diff = 0;
-    for (const g of played) {
+    for (const g of resolved) {
+      if (g.result === 'WF') { record.W++; run_diff += 7; continue; }
+      if (g.result === 'RO') continue; // rain out: no record, no run diff
       if (g.result in record) record[g.result]++;
       run_diff += (g.our_score || 0) - (g.opponent_score || 0);
     }

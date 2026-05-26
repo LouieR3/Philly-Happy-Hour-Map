@@ -184,13 +184,16 @@ function buildGameTabs(games) {
   document.querySelectorAll('.game-tab, .game-panel').forEach(el => el.remove());
 
   games.forEach(game => {
-    const hasStats = game.players && game.players.length > 0 && game.result;
+    const isResolved = game.result && (
+      (game.players && game.players.length > 0) ||
+      game.result === 'WF' || game.result === 'RO'
+    );
 
     // Tab
     const tab = document.createElement('div');
     tab.className = 'tab game-tab';
     tab.dataset.panel = `game-${game._id}`;
-    if (hasStats) {
+    if (isResolved) {
       tab.innerHTML = `<span style="font-size:0.75rem;margin-right:3px;" class="result-${game.result}">${game.result}</span> Game ${game.game_number}`;
     } else {
       tab.textContent = `Game ${game.game_number}`;
@@ -201,9 +204,9 @@ function buildGameTabs(games) {
     const panel = document.createElement('div');
     panel.id = `panel-game-${game._id}`;
     panel.className = 'panel game-panel';
-    panel.innerHTML = hasStats ? buildBoxScoreHTML(game) : buildStatsFormHTML(game);
+    panel.innerHTML = isResolved ? buildBoxScoreHTML(game) : buildStatsFormHTML(game);
     content.appendChild(panel);
-    if (!hasStats) initDragDrop(document.getElementById(`sg-rows-${game._id}`));
+    if (!isResolved) initDragDrop(document.getElementById(`sg-rows-${game._id}`));
   });
 }
 
@@ -213,6 +216,32 @@ function buildBoxScoreHTML(game) {
   const dateStr = game.date
     ? new Date(game.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
     : '';
+
+  if (game.result === 'WF' || game.result === 'RO') {
+    const isWF    = game.result === 'WF';
+    const title   = isWF ? 'Win by Forfeit' : 'Rain Out';
+    const note    = isWF ? 'Pennoni wins 7–0 by forfeit. No player stats recorded.' : 'Game not played due to weather. No stats recorded.';
+    const icon    = isWF ? 'fa-trophy' : 'fa-cloud-rain';
+    const clearBtn = isAdmin
+      ? `<button class="btn-clear-stats" onclick="clearStats('${game._id}')"><i class="fa-solid fa-xmark"></i> Clear</button>`
+      : '';
+    return `
+      <div class="game-header">
+        <div>
+          <div class="game-matchup" style="font-size:1.1rem;">
+            <span class="result-${game.result}">${title}</span>
+            <span style="font-size:0.9rem;color:var(--sb-muted);">&nbsp;vs ${game.opponent}</span>
+          </div>
+          <div class="game-meta">${dateStr}${dateStr ? ' · ' : ''}Game ${game.game_number}</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">${clearBtn}</div>
+      </div>
+      <div class="empty-state" style="padding:40px 20px;">
+        <i class="fa-solid ${icon}"></i>
+        <p>${note}</p>
+      </div>`;
+  }
+
   const resultWord = { W: 'Win', L: 'Loss', T: 'Tie' }[game.result] || '';
 
   const headerCells = GAME_COLS.map(c => `<th>${c.label}</th>`).join('');
@@ -295,32 +324,38 @@ function buildStatsFormHTML(game) {
         </div>
         <div class="form-group">
           <label>Result</label>
-          <select id="sg-result-${game._id}">
+          <select id="sg-result-${game._id}" onchange="handleResultChange('${game._id}')">
             <option value="">—</option>
-            <option value="W" ${game.result === 'W' ? 'selected' : ''}>Win</option>
-            <option value="L" ${game.result === 'L' ? 'selected' : ''}>Loss</option>
-            <option value="T" ${game.result === 'T' ? 'selected' : ''}>Tie</option>
+            <option value="W"  ${game.result === 'W'  ? 'selected' : ''}>Win</option>
+            <option value="L"  ${game.result === 'L'  ? 'selected' : ''}>Loss</option>
+            <option value="T"  ${game.result === 'T'  ? 'selected' : ''}>Tie</option>
+            <option value="WF" ${game.result === 'WF' ? 'selected' : ''}>Win by Forfeit</option>
+            <option value="RO" ${game.result === 'RO' ? 'selected' : ''}>Rain Out</option>
           </select>
         </div>
       </div>
 
-      <div class="section-label">Player Stats</div>
-      <div class="player-table-wrap">
-        <table class="player-table">
-          <thead>
-            <tr>
-              <th style="width:20px;"></th>
-              <th style="min-width:140px">Player</th>
-              <th>AB</th><th>H</th><th>2B</th><th>3B</th><th>HR</th><th>RBI</th><th>R</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="sg-rows-${game._id}">${playerRows}</tbody>
-        </table>
-      </div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
-        <button class="btn-add-player" style="margin-bottom:0;" onclick="addGamePlayerRow('${game._id}')">+ Add Player</button>
-        ${copyBtn}
+      <div id="sg-special-note-${game._id}" class="special-result-note" style="display:none;"></div>
+
+      <div id="sg-player-section-${game._id}">
+        <div class="section-label">Player Stats</div>
+        <div class="player-table-wrap">
+          <table class="player-table">
+            <thead>
+              <tr>
+                <th style="width:20px;"></th>
+                <th style="min-width:140px">Player</th>
+                <th>AB</th><th>H</th><th>2B</th><th>3B</th><th>HR</th><th>RBI</th><th>R</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="sg-rows-${game._id}">${playerRows}</tbody>
+          </table>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+          <button class="btn-add-player" style="margin-bottom:0;" onclick="addGamePlayerRow('${game._id}')">+ Add Player</button>
+          ${copyBtn}
+        </div>
       </div>
       <button class="btn-submit" onclick="submitStats('${game._id}')">Save Stats</button>
       <div class="form-status" id="sg-status-${game._id}"></div>
@@ -346,6 +381,29 @@ function playerInputRowHTML(p = {}) {
 function addGamePlayerRow(gameId) {
   const tbody = document.getElementById(`sg-rows-${gameId}`);
   if (tbody) tbody.insertAdjacentHTML('beforeend', playerInputRowHTML());
+}
+
+function handleResultChange(gameId) {
+  const result      = document.getElementById(`sg-result-${gameId}`)?.value;
+  const playerSec   = document.getElementById(`sg-player-section-${gameId}`);
+  const noteEl      = document.getElementById(`sg-special-note-${gameId}`);
+  const ourInput    = document.getElementById(`sg-our-${gameId}`);
+  const oppInput    = document.getElementById(`sg-opp-${gameId}`);
+
+  if (result === 'WF') {
+    if (ourInput) ourInput.value = 7;
+    if (oppInput) oppInput.value = 0;
+    if (playerSec) playerSec.style.display = 'none';
+    if (noteEl) { noteEl.textContent = 'Win by Forfeit — score recorded as 7–0, no player stats.'; noteEl.style.display = 'block'; }
+  } else if (result === 'RO') {
+    if (ourInput) ourInput.value = '';
+    if (oppInput) oppInput.value = '';
+    if (playerSec) playerSec.style.display = 'none';
+    if (noteEl) { noteEl.textContent = 'Rain Out — game not played, no stats recorded.'; noteEl.style.display = 'block'; }
+  } else {
+    if (playerSec) playerSec.style.display = '';
+    if (noteEl) { noteEl.textContent = ''; noteEl.style.display = 'none'; }
+  }
 }
 
 function initDragDrop(tbody) {
@@ -410,6 +468,7 @@ function showStatsForm(gameId) {
   if (panel) {
     panel.innerHTML = buildStatsFormHTML(game);
     initDragDrop(document.getElementById(`sg-rows-${gameId}`));
+    if (game.result === 'WF' || game.result === 'RO') handleResultChange(gameId);
   }
 }
 
@@ -422,29 +481,32 @@ async function submitStats(gameId) {
   const result    = document.getElementById(`sg-result-${gameId}`)?.value;
 
   if (!result) {
-    if (statusEl) { statusEl.className = 'form-status error'; statusEl.textContent = 'Select a result (W / L / T).'; }
+    if (statusEl) { statusEl.className = 'form-status error'; statusEl.textContent = 'Select a result.'; }
     return;
   }
 
+  const isSpecial = result === 'WF' || result === 'RO';
   const players = [];
-  for (const row of document.querySelectorAll(`#sg-rows-${gameId} tr`)) {
-    const name = row.querySelector('.pr-name')?.value.trim();
-    if (!name) continue;
-    players.push({
-      name,
-      AB:    parseInt(row.querySelector('.pr-ab')?.value)  || 0,
-      H:     parseInt(row.querySelector('.pr-h')?.value)   || 0,
-      '2B':  parseInt(row.querySelector('.pr-2b')?.value)  || 0,
-      '3B':  parseInt(row.querySelector('.pr-3b')?.value)  || 0,
-      HR:    parseInt(row.querySelector('.pr-hr')?.value)  || 0,
-      RBI:   parseInt(row.querySelector('.pr-rbi')?.value) || 0,
-      R:     parseInt(row.querySelector('.pr-r')?.value)   || 0,
-    });
-  }
 
-  if (!players.length) {
-    if (statusEl) { statusEl.className = 'form-status error'; statusEl.textContent = 'Add at least one player.'; }
-    return;
+  if (!isSpecial) {
+    for (const row of document.querySelectorAll(`#sg-rows-${gameId} tr`)) {
+      const name = row.querySelector('.pr-name')?.value.trim();
+      if (!name) continue;
+      players.push({
+        name,
+        AB:    parseInt(row.querySelector('.pr-ab')?.value)  || 0,
+        H:     parseInt(row.querySelector('.pr-h')?.value)   || 0,
+        '2B':  parseInt(row.querySelector('.pr-2b')?.value)  || 0,
+        '3B':  parseInt(row.querySelector('.pr-3b')?.value)  || 0,
+        HR:    parseInt(row.querySelector('.pr-hr')?.value)  || 0,
+        RBI:   parseInt(row.querySelector('.pr-rbi')?.value) || 0,
+        R:     parseInt(row.querySelector('.pr-r')?.value)   || 0,
+      });
+    }
+    if (!players.length) {
+      if (statusEl) { statusEl.className = 'form-status error'; statusEl.textContent = 'Add at least one player.'; }
+      return;
+    }
   }
 
   const btn = document.querySelector(`#panel-game-${gameId} .btn-submit`);
@@ -454,7 +516,12 @@ async function submitStats(gameId) {
     const res = await fetch(`${API_BASE}/api/softball/games/${gameId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ our_score, opponent_score: opp_score, result, players }),
+      body: JSON.stringify({
+        our_score:      result === 'WF' ? 7 : (result === 'RO' ? null : our_score),
+        opponent_score: result === 'WF' ? 0 : (result === 'RO' ? null : opp_score),
+        result,
+        players,
+      }),
     });
 
     const data = await res.json();

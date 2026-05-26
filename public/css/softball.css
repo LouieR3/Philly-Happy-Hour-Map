@@ -166,9 +166,21 @@ td.war-null     { color: var(--sb-muted); }
 }
 .game-matchup .score { font-size: 1.4rem; }
 
-.result-W { color: var(--sb-green-br); }
-.result-L { color: var(--sb-red);      }
-.result-T { color: var(--sb-yellow);   }
+.result-W  { color: var(--sb-green-br); }
+.result-L  { color: var(--sb-red);      }
+.result-T  { color: var(--sb-yellow);   }
+.result-WF { color: var(--sb-green-br); }
+.result-RO { color: var(--sb-muted);    }
+
+.special-result-note {
+  background: var(--sb-input);
+  border: 1px solid var(--sb-border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  color: var(--sb-muted);
+  margin-bottom: 16px;
+}
 
 .game-meta {
   font-size: 0.8rem;
