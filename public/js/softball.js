@@ -38,6 +38,18 @@ const GAME_COLS = [
   { key: 'OPS',  label: 'OPS', fmt: v => (v != null ? (+v).toFixed(3) : '.000') },
 ];
 
+const STAT_TIPS = {
+  TB:  { title: 'Total Bases',            formula: '1B + (2 × 2B) + (3 × 3B) + (4 × HR)' },
+  AVG: { title: 'Batting Average',        formula: 'H ÷ AB' },
+  SLG: { title: 'Slugging Percentage',    formula: 'TB ÷ AB',         note: 'Measures raw power — total bases earned per at-bat.' },
+  OPS: { title: 'On-base Plus Slugging',  formula: 'AVG + SLG',       note: 'Overall offensive value combining average and power.' },
+  RC:  { title: 'Runs Created',           formula: 'H × (TB ÷ AB)',   note: 'Estimates how many runs a batter contributes to the team.' },
+  WAR: { title: 'Wins Above Replacement', formula: '(RC − Replacement RC) ÷ 12',
+         note: 'Replacement RC = avg RC rate of the bottom-5 eligible batters (≥ 6 AB). A WAR &gt; 0 means you add wins over a replacement-level player.' },
+};
+
+let _statTooltip = null;
+
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 async function init() {
@@ -106,7 +118,10 @@ function renderSeasonTable(players) {
   const headerCells = SEASON_COLS.map(col => {
     const cls = col.key === sortCol
       ? (sortDir === 'asc' ? 'sort-asc' : 'sort-desc') : '';
-    return `<th class="${cls}" onclick="setSort('${col.key}')">${col.label}</th>`;
+    const infoIcon = STAT_TIPS[col.key]
+      ? ` <i class="fa-solid fa-circle-info stat-info" data-stat="${col.key}" onmouseenter="showStatTip(this)" onmouseleave="hideStatTip()" onclick="event.stopPropagation()"></i>`
+      : '';
+    return `<th class="${cls}" onclick="setSort('${col.key}')">${col.label}${infoIcon}</th>`;
   }).join('');
 
   const rows = sorted.map(p => {
@@ -164,6 +179,34 @@ function setSort(col) {
   if (seasonData) renderSeasonTable(seasonData.players);
 }
 
+function showStatTip(el) {
+  const info = STAT_TIPS[el.dataset.stat];
+  if (!info) return;
+  if (!_statTooltip) {
+    _statTooltip = document.createElement('div');
+    _statTooltip.id = 'stat-tooltip';
+    document.body.appendChild(_statTooltip);
+  }
+  _statTooltip.innerHTML = `
+    <div class="stip-title">${info.title}</div>
+    <div class="stip-formula">${info.formula}</div>
+    ${info.note ? `<div class="stip-note">${info.note}</div>` : ''}`;
+  _statTooltip.style.display = 'block';
+  const rect = el.getBoundingClientRect();
+  const tw = _statTooltip.offsetWidth;
+  const th = _statTooltip.offsetHeight;
+  let left = rect.left + rect.width / 2 - tw / 2;
+  let top  = rect.top - th - 10;
+  left = Math.max(8, Math.min(left, window.innerWidth - tw - 8));
+  if (top < 8) top = rect.bottom + 10;
+  _statTooltip.style.left = left + 'px';
+  _statTooltip.style.top  = top  + 'px';
+}
+
+function hideStatTip() {
+  if (_statTooltip) _statTooltip.style.display = 'none';
+}
+
 // ─── Games ────────────────────────────────────────────────────────────────────
 
 async function loadGames() {
@@ -206,7 +249,7 @@ function buildGameTabs(games) {
     panel.className = 'panel game-panel';
     panel.innerHTML = isResolved ? buildBoxScoreHTML(game) : buildStatsFormHTML(game);
     content.appendChild(panel);
-    if (!isResolved) initDragDrop(document.getElementById(`sg-rows-${game._id}`));
+    if (!isResolved) initFormPanel(game._id);
   });
 }
 
@@ -254,6 +297,17 @@ function buildBoxScoreHTML(game) {
     return `<tr>${cells}</tr>`;
   }).join('');
 
+  const t = (game.players || []).reduce((acc, p) => {
+    ['AB','H','2B','3B','HR','RBI','R','TB'].forEach(c => { acc[c] = (acc[c] || 0) + (p[c] || 0); });
+    return acc;
+  }, {});
+  if (t.AB > 0) { t.AVG = t.H / t.AB; t.SLG = t.TB / t.AB; t.OPS = t.AVG + t.SLG; }
+  const totalsRow = GAME_COLS.map(col => {
+    if (col.key === 'name') return `<td><strong>Totals</strong></td>`;
+    const val = t[col.key];
+    return `<td>${col.fmt ? col.fmt(val || 0) : (val != null ? val : '—')}</td>`;
+  }).join('');
+
   const editBtn  = `<button class="btn-edit-stats" onclick="showStatsForm('${game._id}')"><i class="fa-solid fa-pen-to-square"></i> Edit Stats</button>`;
   const clearBtn = isAdmin
     ? `<button class="btn-clear-stats" onclick="clearStats('${game._id}')"><i class="fa-solid fa-xmark"></i> Clear</button>`
@@ -280,6 +334,7 @@ function buildBoxScoreHTML(game) {
       <table>
         <thead><tr>${headerCells}</tr></thead>
         <tbody>${rows}</tbody>
+        <tfoot><tr class="totals-row">${totalsRow}</tr></tfoot>
       </table>
     </div>`;
 }
@@ -350,6 +405,13 @@ function buildStatsFormHTML(game) {
               </tr>
             </thead>
             <tbody id="sg-rows-${game._id}">${playerRows}</tbody>
+            <tfoot id="sg-tfoot-${game._id}">
+              <tr class="totals-row">
+                <td></td><td><strong>Totals</strong></td>
+                <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+                <td></td>
+              </tr>
+            </tfoot>
           </table>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
@@ -380,7 +442,10 @@ function playerInputRowHTML(p = {}) {
 
 function addGamePlayerRow(gameId) {
   const tbody = document.getElementById(`sg-rows-${gameId}`);
-  if (tbody) tbody.insertAdjacentHTML('beforeend', playerInputRowHTML());
+  if (tbody) {
+    tbody.insertAdjacentHTML('beforeend', playerInputRowHTML());
+    updateFormTotals(gameId);
+  }
 }
 
 function handleResultChange(gameId) {
@@ -403,6 +468,7 @@ function handleResultChange(gameId) {
   } else {
     if (playerSec) playerSec.style.display = '';
     if (noteEl) { noteEl.textContent = ''; noteEl.style.display = 'none'; }
+    updateFormTotals(gameId);
   }
 }
 
@@ -447,6 +513,44 @@ function initDragDrop(tbody) {
   });
 }
 
+function updateFormTotals(gameId) {
+  const tbody = document.getElementById(`sg-rows-${gameId}`);
+  const tfoot = document.getElementById(`sg-tfoot-${gameId}`);
+  if (!tbody || !tfoot) return;
+  let AB = 0, H = 0, d2 = 0, d3 = 0, HR = 0, RBI = 0, R = 0;
+  for (const row of tbody.querySelectorAll('tr')) {
+    AB  += parseInt(row.querySelector('.pr-ab')?.value)  || 0;
+    H   += parseInt(row.querySelector('.pr-h')?.value)   || 0;
+    d2  += parseInt(row.querySelector('.pr-2b')?.value)  || 0;
+    d3  += parseInt(row.querySelector('.pr-3b')?.value)  || 0;
+    HR  += parseInt(row.querySelector('.pr-hr')?.value)  || 0;
+    RBI += parseInt(row.querySelector('.pr-rbi')?.value) || 0;
+    R   += parseInt(row.querySelector('.pr-r')?.value)   || 0;
+  }
+  tfoot.innerHTML = `<tr class="totals-row">
+    <td></td><td><strong>Totals</strong></td>
+    <td>${AB}</td><td>${H}</td><td>${d2}</td><td>${d3}</td><td>${HR}</td><td>${RBI}</td><td>${R}</td>
+    <td></td>
+  </tr>`;
+}
+
+function initFormTotals(gameId) {
+  const tbody = document.getElementById(`sg-rows-${gameId}`);
+  if (!tbody) return;
+  tbody.addEventListener('input', () => updateFormTotals(gameId));
+  tbody.addEventListener('click', e => {
+    if (e.target.closest('.remove-row-btn')) {
+      setTimeout(() => updateFormTotals(gameId), 0);
+    }
+  });
+  updateFormTotals(gameId);
+}
+
+function initFormPanel(gameId) {
+  initDragDrop(document.getElementById(`sg-rows-${gameId}`));
+  initFormTotals(gameId);
+}
+
 function loadPreviousRoster(gameId) {
   const game = gamesData.find(g => g._id === gameId);
   if (!game) return;
@@ -458,7 +562,7 @@ function loadPreviousRoster(gameId) {
   const tbody = document.getElementById(`sg-rows-${gameId}`);
   if (!tbody) return;
   tbody.innerHTML = prev.players.map(p => playerInputRowHTML({ name: p.name })).join('');
-  initDragDrop(tbody);
+  updateFormTotals(gameId);
 }
 
 function showStatsForm(gameId) {
@@ -467,7 +571,7 @@ function showStatsForm(gameId) {
   const panel = document.getElementById(`panel-game-${gameId}`);
   if (panel) {
     panel.innerHTML = buildStatsFormHTML(game);
-    initDragDrop(document.getElementById(`sg-rows-${gameId}`));
+    initFormPanel(gameId);
     if (game.result === 'WF' || game.result === 'RO') handleResultChange(gameId);
   }
 }
@@ -561,7 +665,7 @@ async function clearStats(gameId) {
     const panel = document.getElementById(`panel-game-${gameId}`);
     if (panel) {
       panel.innerHTML = buildStatsFormHTML(data);
-      initDragDrop(document.getElementById(`sg-rows-${gameId}`));
+      initFormPanel(gameId);
     }
 
     const tab = document.querySelector(`[data-panel="game-${gameId}"]`);
