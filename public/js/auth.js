@@ -9,6 +9,8 @@ import {
   signOut,
   onAuthStateChanged,
   GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
 
 // ── Replace these values with your Firebase project's web app config ──────────
@@ -40,9 +42,43 @@ window.signInWithGoogle = async () => {
   }
 };
 
+// Email/password auth (SCOPE Phase 2). Resolve to the user on success or throw.
+window.signInWithEmail = async (email, password) => {
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  return cred.user;
+};
+
+window.signUpWithEmail = async (email, password) => {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  return cred.user;
+};
+
 // Called by "Sign out" button
 window.signOutUser = async () => {
   await signOut(auth);
+};
+
+// ── Authenticated fetch + submission gating ──────────────────────────────────
+// Wraps fetch and attaches the current user's Firebase ID token as a Bearer
+// header. The server verifies this token on gated routes (submissions), so the
+// token — not a spoofable client flag — is what authorizes the write.
+window.authedFetch = async (url, options = {}) => {
+  const token = await window.getIdToken();
+  const headers = { ...(options.headers || {}) };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  return fetch(url, { ...options, headers });
+};
+
+// Returns true if a user is signed in; otherwise prompts sign-in and returns false.
+// Submission forms call this before sending so anonymous users get a clear
+// "sign in to contribute" path instead of a silent 401.
+window.requireSignIn = (message) => {
+  if (window.currentUser) return true;
+  if (typeof window.siteToast === 'function') {
+    window.siteToast(message || 'Please sign in to contribute.', 'error');
+  }
+  window.signInWithGoogle();
+  return false;
 };
 
 // Update navbar whenever auth state changes

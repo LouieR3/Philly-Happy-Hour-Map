@@ -863,6 +863,9 @@ const throttleSubmit = createThrottledSubmitter(1500); // 1.5 second cooldown
 const barSubmissionForm = document.getElementById("bar-submission-form");
 barSubmissionForm.addEventListener("submit", throttleSubmit(barSubmissionForm, async function (event) {
 
+    // Submission gating (SCOPE Phase 2): only authenticated users can contribute.
+    if (typeof window.requireSignIn === "function" && !window.requireSignIn("Please sign in to submit a bar.")) return;
+
     const businessName = document.getElementById("business-name").value;
     const streetAddress = document.getElementById("street-address").value;
     const isPhilly = document.getElementById("is-philly-yes").checked;
@@ -903,7 +906,7 @@ barSubmissionForm.addEventListener("submit", throttleSubmit(barSubmissionForm, a
       host, notes,
     };
 
-    fetch(`${API_BASE}/submit-bar`, {
+    window.authedFetch(`${API_BASE}/submit-bar`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(submission),
@@ -1057,6 +1060,9 @@ document.getElementById("bar-search").addEventListener("input", (event) => {
 // ── Quizzo edit form submission ────────────────────────────────────────────
 const editBarForm = document.getElementById("edit-bar-form");
 editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async function (event) {
+    // Submission gating (SCOPE Phase 2): only authenticated users can contribute.
+    if (typeof window.requireSignIn === "function" && !window.requireSignIn("Please sign in to suggest an edit.")) return;
+
     const originalId   = document.getElementById("edit-original-id").value;
     const originalName = document.getElementById("edit-business-name").value;
 
@@ -1078,7 +1084,7 @@ editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async functio
     if (newPrize2)  changes.PRIZE_2_TYPE    = newPrize2.toUpperCase().replace(/ /g, '_');
     if (newHost)    changes.HOST            = newHost.toUpperCase();
 
-    fetch(`${API_BASE}/submit-edit`, {
+    window.authedFetch(`${API_BASE}/submit-edit`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ originalBusiness: originalName, originalId, changes, notes }),

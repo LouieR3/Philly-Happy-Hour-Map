@@ -14,6 +14,22 @@ const API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:3000'
   : 'https://philly-happy-hour-map-production.up.railway.app';
 
+// XSS DEFENSE: pending submissions are arbitrary, unmoderated user input that is
+// rendered into this admin page via innerHTML. Without escaping, a submitter
+// could inject markup like `<img src=x onerror=...>` in any field (business
+// name, notes, address, edit values…) and run script in the admin's session
+// when the dashboard loads. esc() neutralizes the HTML-significant characters
+// for both element text and double-quoted attribute contexts.
+function esc(s) {
+  if (s === undefined || s === null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // Check authentication on page load
 document.addEventListener("DOMContentLoaded", async () => {
   try {
@@ -222,15 +238,15 @@ function buildSubmissionCard(s, type = "quizzo") {
   card.innerHTML = `
     <div class="card-header">
         <div>
-        <div class="card-title">${name}</div>
-        <div class="card-meta">Submitted ${submitted}</div>
+        <div class="card-title">${esc(name)}</div>
+        <div class="card-meta">Submitted ${esc(submitted)}</div>
         </div>
         <span class="pill ${pillClass}">${pillLabel}</span>
     </div>
 
     <div class="card-fields">${infoFields}</div>
 
-    ${s.notes || s.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${s.notes || s.NOTES}</div>` : ""}
+    ${s.notes || s.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${esc(s.notes || s.NOTES)}</div>` : ""}
 
     <details class="edit-section">
         <summary>Override fields before approving</summary>
@@ -267,19 +283,19 @@ function buildEditCard(e, type = "quizzo") {
   card.innerHTML = `
     <div class="card-header">
         <div>
-        <div class="card-title">${e.originalBusiness || e.originalName || "—"}</div>
-        <div class="card-meta">Edit submitted ${submitted}</div>
+        <div class="card-title">${esc(e.originalBusiness || e.originalName || "—")}</div>
+        <div class="card-meta">Edit submitted ${esc(submitted)}</div>
         </div>
         <span class="pill ${pillClass}">${pillLabel}</span>
     </div>
 
     <div class="card-fields">
         ${Object.entries(changes)
-          .map(([k, v]) => `<div class="field"><label>${k}</label><span class="changed">${v}</span></div>`)
+          .map(([k, v]) => `<div class="field"><label>${esc(k)}</label><span class="changed">${esc(v)}</span></div>`)
           .join("")}
     </div>
 
-    ${e.notes || e.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${e.notes || e.NOTES}</div>` : ""}
+    ${e.notes || e.NOTES ? `<div class="notes-box"><i class="fa fa-comment"></i> ${esc(e.notes || e.NOTES)}</div>` : ""}
 
     <div class="card-actions">
         <button class="btn-reject"  onclick="${rejectHandler}">
@@ -294,15 +310,17 @@ function buildEditCard(e, type = "quizzo") {
 }
 
 // ── Field helpers ──────────────────────────────────────────────────────────
+// `value`/`selected` may be user-submitted, so they are HTML-escaped. `label`,
+// `name`, `id`, and `options` are developer-controlled constants.
 function field(label, value) {
-  return `<div class="field"><label>${label}</label><span>${value}</span></div>`;
+  return `<div class="field"><label>${label}</label><span>${esc(value)}</span></div>`;
 }
 
 function editInput(name, label, value, id) {
   return `
     <div>
         <div class="field-label">${label}</div>
-        <input type="text" id="override-${id}-${name}" value="${value || ""}" placeholder="${label}" />
+        <input type="text" id="override-${id}-${name}" value="${esc(value)}" placeholder="${esc(label)}" />
     </div>`;
 }
 
@@ -310,7 +328,7 @@ function editSelect(name, label, options, selected, id) {
   const opts = options
     .map(
       (o) =>
-        `<option value="${o}" ${o === selected ? "selected" : ""}>${o}</option>`,
+        `<option value="${esc(o)}" ${o === selected ? "selected" : ""}>${esc(o)}</option>`,
     )
     .join("");
   return `

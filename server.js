@@ -43,7 +43,17 @@ const admin = require('firebase-admin');
   }
 })();
 
-// Middleware: verify Firebase ID token sent as Authorization: Bearer <token>
+// Emails that are granted admin access purely by signing in with Firebase.
+// Comma-separated env var overrides the default; matched case-insensitively.
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'lrodriguez@pennoni.com')
+  .split(',')
+  .map(e => e.trim().toLowerCase())
+  .filter(Boolean);
+
+// Middleware: verify Firebase ID token sent as Authorization: Bearer <token>.
+// admin.auth().verifyIdToken cryptographically validates the JWT signature
+// against Google's public keys and rejects tampered or expired tokens, so a
+// forged/expired token can never populate req.firebaseUser.
 async function verifyFirebaseToken(req, res, next) {
   const header = req.headers.authorization || '';
   const token  = header.startsWith('Bearer ') ? header.slice(7) : null;
@@ -59,18 +69,57 @@ async function verifyFirebaseToken(req, res, next) {
 const app  = express();
 const PORT = process.env.PORT || 3000;
 
+// Single source of truth for trusted browser origins — used both by CORS and by
+// the admin CSRF origin guard below.
+const ALLOWED_ORIGINS = [
+  'http://localhost:3000',
+  'http://127.0.0.1:5500',
+  'https://www.philly-mappy-hour.com',
+  'https://philly-mappy-hour.com',
+  'https://philly-happy-hour-map-production.up.railway.app',
+];
+
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://127.0.0.1:5500',
-    'https://www.philly-mappy-hour.com',
-    'https://philly-mappy-hour.com',
-    'https://philly-happy-hour-map-production.up.railway.app',
-  ],
+  // Reflect only allowlisted origins (instead of a permissive '*'); requests
+  // from any other origin get no CORS headers and are blocked by the browser.
+  origin: ALLOWED_ORIGINS,
   credentials: true  // Allow cookies in CORS requests
 }));
 app.use(express.json());
 app.use(cookieParser());  // Parse cookies in requests
+
+// ─── NoSQL injection sanitizer ───────────────────────────────────────────────
+// VULN: Express/qs parses query strings and JSON bodies into nested objects, so
+// a request like `?league[$ne]=x` or `{ "originalBusiness": { "$gt": "" } }`
+// reaches Mongoose as a Mongo operator object instead of a plain string,
+// letting an attacker bypass filters or match arbitrary documents.
+// FIX: recursively strip any object key that begins with '$' or contains '.'
+// (the two characters Mongo treats as operators / dotted paths) from every
+// request body, query, and params object before any route/DB code runs. Values
+// that are meant to be strings stay strings; only operator-shaped keys are removed.
+const crypto = require('crypto');
+
+function sanitizeMongo(value) {
+  if (Array.isArray(value)) {
+    value.forEach(sanitizeMongo);
+  } else if (value && typeof value === 'object') {
+    for (const key of Object.keys(value)) {
+      if (key.startsWith('$') || key.includes('.')) {
+        delete value[key];
+      } else {
+        sanitizeMongo(value[key]);
+      }
+    }
+  }
+  return value;
+}
+
+app.use((req, res, next) => {
+  if (req.body)   sanitizeMongo(req.body);
+  if (req.query)  sanitizeMongo(req.query);
+  if (req.params) sanitizeMongo(req.params);
+  next();
+});
 
 // ─── Serve static files (your existing site) ────────────────────────────────
 app.use(express.static(path.join(__dirname, 'public')));
@@ -150,6 +199,7 @@ const pendingSchema = new mongoose.Schema({
   PRIZE_2_AMOUNT: String,
   HOST:           String,
   NOTES:          String,    // optional submitter notes
+  submittedBy:    { uid: String, email: String }, // authenticated Firebase user
   submittedAt:    { type: Date, default: Date.now },
   status:         { type: String, default: 'pending' }, // pending | approved | rejected
 }, { collection: 'pending' });
@@ -175,6 +225,7 @@ const pendingEditSchema = new mongoose.Schema({
     HOST:           String,
   },
   NOTES:        String,
+  submittedBy:  { uid: String, email: String }, // authenticated Firebase user
   submittedAt:  { type: Date, default: Date.now },
   status:       { type: String, default: 'pending' },
 }, { collection: 'pending_edits' });
@@ -183,85 +234,149 @@ const Quizzo      = quizzoDb.model('Quizzo',      quizzoSchema);
 const Pending     = quizzoDb.model('Pending',     pendingSchema);
 const PendingEdit = quizzoDb.model('PendingEdit', pendingEditSchema);
 
-// ─── Simple admin auth middleware (read from HttpOnly cookie) ───────────────
+// ─── Signed admin session tokens ─────────────────────────────────────────────
+// VULN: the old scheme stored the literal ADMIN_PASSWORD as the cookie value and
+// authorized any request whose `adminToken` cookie equaled the password. An
+// attacker who learned (or guessed) the password could set the cookie by hand,
+// and more importantly there was no integrity protection — the cookie was just a
+// shared secret echoed back. There was also no real per-session expiry tied to
+// the token itself.
+// FIX: issue a stateless HMAC-signed session token of the form
+// `<base64url(payload)>.<base64url(hmac)>`. The payload carries the role and an
+// absolute expiry; the signature is computed with a server-only secret. A
+// tampered payload or forged signature fails the timing-safe comparison, and an
+// expired payload is rejected — so manually crafting a cookie cannot grant access.
+const SESSION_SECRET = process.env.SESSION_SECRET
+  || (process.env.ADMIN_PASSWORD ? 'mappy:' + process.env.ADMIN_PASSWORD : null)
+  || crypto.randomBytes(32).toString('hex');
+const ADMIN_SESSION_MS = 24 * 60 * 60 * 1000; // 24h
+
+function signAdminSession(extra = {}) {
+  const payload = { role: 'admin', exp: Date.now() + ADMIN_SESSION_MS, ...extra };
+  const body = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const sig  = crypto.createHmac('sha256', SESSION_SECRET).update(body).digest('base64url');
+  return `${body}.${sig}`;
+}
+
+function verifyAdminSession(token) {
+  if (!token || typeof token !== 'string') return null;
+  const dot = token.indexOf('.');
+  if (dot < 1) return null;
+  const body = token.slice(0, dot);
+  const sig  = token.slice(dot + 1);
+  const expected = crypto.createHmac('sha256', SESSION_SECRET).update(body).digest('base64url');
+  const a = Buffer.from(sig);
+  const b = Buffer.from(expected);
+  // Constant-time compare to avoid signature-timing leaks
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+  let payload;
+  try { payload = JSON.parse(Buffer.from(body, 'base64url').toString('utf8')); }
+  catch { return null; }
+  if (payload.role !== 'admin' || !payload.exp || payload.exp < Date.now()) return null;
+  return payload;
+}
+
+function adminCookieOptions() {
+  const isProd = process.env.NODE_ENV === 'production';
+  return {
+    httpOnly: true,
+    secure: isProd,
+    sameSite: isProd ? 'None' : 'Lax',
+    path: '/',
+    maxAge: ADMIN_SESSION_MS,
+  };
+}
+
+// ─── Admin auth middleware (verifies the signed HttpOnly session cookie) ─────
+// CSRF DEFENSE: the admin cookie is SameSite=None in production (required for the
+// static-host → Railway cross-origin setup), so the browser would attach it to
+// cross-site requests. For state-changing methods we additionally require the
+// Origin header — when present — to be in the allowlist, rejecting forged
+// cross-site requests. (Cross-origin JSON requests are already preflighted and
+// blocked by CORS; this is defense in depth for any non-preflighted method.)
 function adminAuth(req, res, next) {
-  const token = req.cookies.adminToken;  // Read from HttpOnly cookie
-  if (token && token === process.env.ADMIN_PASSWORD) return next();
-  res.status(401).json({ error: 'Unauthorized' });
+  const session = verifyAdminSession(req.cookies.adminToken);
+  if (!session) return res.status(401).json({ error: 'Unauthorized' });
+
+  const origin = req.headers.origin;
+  if (req.method !== 'GET' && origin && !ALLOWED_ORIGINS.includes(origin)) {
+    return res.status(403).json({ error: 'Cross-origin request blocked' });
+  }
+
+  req.admin = session;
+  next();
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // AUTHENTICATION ROUTES
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// Admin login endpoint
+// Admin login endpoint (password + captcha fallback path)
 app.post('/admin/login', (req, res) => {
   const { password, captchaToken } = req.body;
-  if (!password) return res.status(400).json({ error: 'Password required' });
+  if (!password || typeof password !== 'string') return res.status(400).json({ error: 'Password required' });
 
   // Validate the captcha token issued by /api/verify-captcha
-  const expiry = _captchaTokens.get(captchaToken);
+  const expiry = typeof captchaToken === 'string' ? _captchaTokens.get(captchaToken) : undefined;
   if (!captchaToken || expiry === undefined || expiry < Date.now()) {
-    _captchaTokens.delete(captchaToken);
+    if (typeof captchaToken === 'string') _captchaTokens.delete(captchaToken);
     return res.status(401).json({ error: 'Must complete captcha first' });
   }
 
-  if (password !== process.env.ADMIN_PASSWORD) {
+  // Timing-safe password comparison so login time doesn't leak the password.
+  const expected = Buffer.from(process.env.ADMIN_PASSWORD || '');
+  const provided = Buffer.from(password);
+  const passwordOk = expected.length === provided.length && crypto.timingSafeEqual(expected, provided);
+  if (!passwordOk) {
     return res.status(401).json({ error: 'Invalid password' });
   }
 
-  // Consume the token — single use
+  // Consume the captcha token — single use
   _captchaTokens.delete(captchaToken);
 
-  const isProd = process.env.NODE_ENV === 'production';
-  res.cookie('adminToken', process.env.ADMIN_PASSWORD, {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: isProd ? 'None' : 'Lax',
-    path: '/',
-    maxAge: 24 * 60 * 60 * 1000
-  });
+  // Issue a signed session token (NOT the password) as an HttpOnly cookie.
+  res.cookie('adminToken', signAdminSession({ via: 'password' }), adminCookieOptions());
 
-  console.log(`[Auth] Login successful. Set adminToken cookie (secure=${isSecure}, hostname=${req.hostname})`);
+  const isProd = process.env.NODE_ENV === 'production';
+  console.log(`[Auth] Password login successful. Signed admin session issued (secure=${isProd}, hostname=${req.hostname})`);
   res.json({ success: true, message: 'Logged in successfully' });
+});
+
+// Admin login via Firebase identity (Google / email). Auto-grants admin to
+// designated admin emails (SCOPE Phase 2) without the captcha+password flow.
+// Requires a verified Firebase ID token whose email is in ADMIN_EMAILS.
+app.post('/admin/firebase-login', verifyFirebaseToken, (req, res) => {
+  const email = (req.firebaseUser.email || '').toLowerCase();
+  const emailVerified = req.firebaseUser.email_verified;
+  if (!email || !emailVerified || !ADMIN_EMAILS.includes(email)) {
+    return res.status(403).json({ error: 'This account is not authorized for admin access' });
+  }
+  res.cookie('adminToken', signAdminSession({ via: 'firebase', email, uid: req.firebaseUser.uid }), adminCookieOptions());
+  console.log(`[Auth] Firebase admin login: ${email}`);
+  res.json({ success: true, message: 'Admin access granted' });
 });
 
 // Admin logout endpoint
 app.post('/admin/logout', (req, res) => {
-  const isProdLogout = process.env.NODE_ENV === 'production';
-  res.clearCookie('adminToken', {
-    httpOnly: true,
-    secure: isProdLogout,
-    sameSite: isProdLogout ? 'None' : 'Lax',
-    path: '/'
-  });
+  res.clearCookie('adminToken', { ...adminCookieOptions(), maxAge: undefined });
   res.json({ success: true, message: 'Logged out' });
 });
 
-// Check if admin is authenticated
+// Check if admin is authenticated (validates the signed session cookie)
 app.get('/admin/check-auth', (req, res) => {
-  const token = req.cookies.adminToken;
-  const isAuthenticated = token && token === process.env.ADMIN_PASSWORD;
-  
-  if (!isAuthenticated) {
-    console.log(`[Auth] Check failed: no valid token. Cookies received: ${Object.keys(req.cookies).join(', ') || '(none)'}`);
+  const session = verifyAdminSession(req.cookies.adminToken);
+  if (!session) {
+    console.log(`[Auth] Check failed: no valid session. Cookies received: ${Object.keys(req.cookies).join(', ') || '(none)'}`);
   }
-  
-  res.status(isAuthenticated ? 200 : 401).json({ authenticated: isAuthenticated });
+  res.status(session ? 200 : 401).json({ authenticated: !!session });
 });
 
-// Check if user passed captcha or has admin token (for gating admin pages)
+// Gate the admin login page: report whether a valid admin session already
+// exists. (The captcha→password handshake itself is gated by the single-use,
+// server-side captcha token, so no forgeable "captchaPassed" cookie is needed.)
 app.get('/admin/check-captcha', (req, res) => {
-  const hasAdminToken = req.cookies.adminToken && req.cookies.adminToken === process.env.ADMIN_PASSWORD;
-  
-  // Check if user has captcha cookie with correct value (server-side verification)
-  // Note: The cookie value must match ADMIN_PASSWORD to prevent forged cookies
-  const hasCaptchaPassed = req.cookies.captchaPassed && 
-                           req.cookies.captchaPassed === process.env.ADMIN_PASSWORD;
-  
-  if (hasAdminToken || hasCaptchaPassed) {
-    return res.json({ authenticated: true });
-  }
+  const session = verifyAdminSession(req.cookies.adminToken);
+  if (session) return res.json({ authenticated: true });
   res.status(401).json({ authenticated: false });
 });
 
@@ -336,34 +451,43 @@ app.get('/api/geocode', async (req, res) => {
   }
 });
 
-// Submit a new bar
-app.post('/submit-bar', async (req, res) => {
+// Coerce a request value to a trimmed string (defends downstream code against
+// non-string inputs that survive sanitization, e.g. numbers/arrays).
+function asString(v) {
+  if (v === undefined || v === null) return '';
+  return String(Array.isArray(v) ? v.join(' ') : v).trim();
+}
+
+// Submit a new bar — GATED: only authenticated users may contribute (SCOPE Phase 2)
+app.post('/submit-bar', verifyFirebaseToken, async (req, res) => {
   try {
     const { businessName, streetAddress, city, state, zip, neighborhood,
             fullAddress, lat, lng, weekday, time,
             firstPrize, firstPrizeAmount, secondPrize, secondPrizeAmount,
             host, notes } = req.body;
 
-    if (!businessName) return res.status(400).json({ error: 'Business name is required' });
+    const name = asString(businessName);
+    if (!name) return res.status(400).json({ error: 'Business name is required' });
 
     const submission = new Pending({
-      BUSINESS:       businessName.trim().toUpperCase(),
-      ADDRESS:        fullAddress || streetAddress,
-      ADDRESS_STREET: streetAddress,
-      ADDRESS_CITY:   city || 'Philadelphia',
-      ADDRESS_STATE:  state || 'PA',
-      ADDRESS_ZIP:    zip || '',
-      NEIGHBORHOOD:   neighborhood?.toUpperCase(),
-      Latitude:       lat,
-      Longitude:      lng,
-      WEEKDAY:        weekday?.toUpperCase(),
-      TIME:           time,
-      PRIZE_1_TYPE:   firstPrize,
-      PRIZE_1_AMOUNT: firstPrizeAmount,
-      PRIZE_2_TYPE:   secondPrize,
-      PRIZE_2_AMOUNT: secondPrizeAmount,
-      HOST:           host?.toUpperCase(),
-      NOTES:          notes,
+      BUSINESS:       name.toUpperCase(),
+      ADDRESS:        asString(fullAddress) || asString(streetAddress),
+      ADDRESS_STREET: asString(streetAddress),
+      ADDRESS_CITY:   asString(city) || 'Philadelphia',
+      ADDRESS_STATE:  asString(state) || 'PA',
+      ADDRESS_ZIP:    asString(zip),
+      NEIGHBORHOOD:   asString(neighborhood).toUpperCase(),
+      Latitude:       lat != null ? Number(lat) : undefined,
+      Longitude:      lng != null ? Number(lng) : undefined,
+      WEEKDAY:        asString(weekday).toUpperCase(),
+      TIME:           asString(time),
+      PRIZE_1_TYPE:   asString(firstPrize),
+      PRIZE_1_AMOUNT: asString(firstPrizeAmount),
+      PRIZE_2_TYPE:   asString(secondPrize),
+      PRIZE_2_AMOUNT: asString(secondPrizeAmount),
+      HOST:           asString(host).toUpperCase(),
+      NOTES:          asString(notes),
+      submittedBy:    { uid: req.firebaseUser.uid, email: req.firebaseUser.email },
     });
 
     await submission.save();
@@ -373,13 +497,22 @@ app.post('/submit-bar', async (req, res) => {
   }
 });
 
-// Submit an edit to an existing bar
-app.post('/submit-edit', async (req, res) => {
+// Submit an edit to an existing bar — GATED: only authenticated users (SCOPE Phase 2)
+app.post('/submit-edit', verifyFirebaseToken, async (req, res) => {
   try {
     const { originalBusiness, originalId, changes, notes } = req.body;
-    if (!originalBusiness) return res.status(400).json({ error: 'originalBusiness is required' });
+    const business = asString(originalBusiness);
+    if (!business) return res.status(400).json({ error: 'originalBusiness is required' });
 
-    const edit = new PendingEdit({ originalBusiness, originalId, changes, notes });
+    // `changes` keys are constrained by pendingEditSchema; the global sanitizer
+    // already stripped any Mongo-operator keys from the payload.
+    const edit = new PendingEdit({
+      originalBusiness: business,
+      originalId:       asString(originalId) || undefined,
+      changes:          (changes && typeof changes === 'object' && !Array.isArray(changes)) ? changes : {},
+      notes:            asString(notes),
+      submittedBy:      { uid: req.firebaseUser.uid, email: req.firebaseUser.email },
+    });
     await edit.save();
     res.json({ success: true, message: 'Edit submitted for review — thanks!' });
   } catch (err) {
@@ -663,6 +796,7 @@ const pendingPoolBarSchema = new mongoose.Schema({
   costPerHour:   Number,
   notes:         String,
   yelpData:      mongoose.Schema.Types.Mixed,
+  submittedBy:   { uid: String, email: String }, // authenticated Firebase user
   submittedAt:   { type: Date, default: Date.now },
   status:        { type: String, default: 'pending' },
 }, { collection: 'pending_pool_bars' });
@@ -672,6 +806,7 @@ const pendingPoolBarEditSchema = new mongoose.Schema({
   originalName: { type: String, required: true },
   changes:      mongoose.Schema.Types.Mixed,
   notes:        String,
+  submittedBy:  { uid: String, email: String }, // authenticated Firebase user
   submittedAt:  { type: Date, default: Date.now },
   status:       { type: String, default: 'pending' },
 }, { collection: 'pending_pool_bar_edits' });
@@ -679,12 +814,14 @@ const pendingPoolBarEditSchema = new mongoose.Schema({
 const PendingPoolBar     = mappyHourDb.model('PendingPoolBar',     pendingPoolBarSchema);
 const PendingPoolBarEdit = mappyHourDb.model('PendingPoolBarEdit', pendingPoolBarEditSchema);
 
-app.post('/submit-pool-bar', async (req, res) => {
+// GATED: only authenticated users may contribute (SCOPE Phase 2)
+app.post('/submit-pool-bar', verifyFirebaseToken, async (req, res) => {
   try {
     const { name, yelpAlias } = req.body;
-    if (!name) return res.status(400).json({ error: 'Bar name is required' });
+    if (!name || typeof name !== 'string') return res.status(400).json({ error: 'Bar name is required' });
 
-    let enriched = { ...req.body, name: name.trim() };
+    let enriched = { ...req.body, name: name.trim(),
+      submittedBy: { uid: req.firebaseUser.uid, email: req.firebaseUser.email } };
 
     // If no Yelp alias supplied, try to find it automatically
     if (!yelpAlias) {
@@ -727,11 +864,18 @@ app.post('/submit-pool-bar', async (req, res) => {
   }
 });
 
-app.post('/submit-pool-bar-edit', async (req, res) => {
+// GATED: only authenticated users may contribute (SCOPE Phase 2)
+app.post('/submit-pool-bar-edit', verifyFirebaseToken, async (req, res) => {
   try {
     const { originalId, originalName, changes, notes } = req.body;
-    if (!originalName) return res.status(400).json({ error: 'originalName is required' });
-    const edit = new PendingPoolBarEdit({ originalId, originalName, changes, notes });
+    if (!originalName || typeof originalName !== 'string') return res.status(400).json({ error: 'originalName is required' });
+    const edit = new PendingPoolBarEdit({
+      originalId: asString(originalId) || undefined,
+      originalName,
+      changes: (changes && typeof changes === 'object' && !Array.isArray(changes)) ? changes : {},
+      notes: asString(notes),
+      submittedBy: { uid: req.firebaseUser.uid, email: req.firebaseUser.email },
+    });
     await edit.save();
     res.json({ success: true, message: 'Pool bar edit submitted for review — thanks!' });
   } catch (err) {
@@ -1222,7 +1366,7 @@ app.get('/api/me', verifyFirebaseToken, (req, res) => {
 });
 
 // ─── In-memory captcha token store (survives the captcha→password step) ─────
-const crypto = require('crypto');
+// `crypto` is required once near the top of the file.
 const _captchaTokens = new Map(); // token -> expiry timestamp
 
 // ─── Custom Captcha Validation ─────────────────────────────────────────────
@@ -1309,7 +1453,11 @@ app.get('/api/sports-teams', async (req, res) => {
 // Optional query params: ?league=NFL  ?team=Eagles  ?philly=true
 app.get('/api/sports-bars', async (req, res) => {
   try {
-    const { league, team, philly } = req.query;
+    // Coerce query params to strings — the global sanitizer strips Mongo
+    // operators, and asString guards against any residual non-string shape.
+    const league = asString(req.query.league);
+    const team   = asString(req.query.team);
+    const philly = asString(req.query.philly);
 
     const dbFilter = {
       Latitude:  { $exists: true, $ne: null },
@@ -1517,7 +1665,10 @@ app.get('/api/softball/games', async (req, res) => {
   }
 });
 
-app.post('/admin/softball/games', async (req, res) => {
+// VULN: this /admin/ route was missing the adminAuth gate, so anyone could
+// create softball games. FIX: require a valid admin session like the sibling
+// delete route.
+app.post('/admin/softball/games', adminAuth, async (req, res) => {
   try {
     const { date, opponent, our_score, opponent_score, result, players } = req.body;
     const count = await SoftballGame.countDocuments();

@@ -669,6 +669,8 @@ const throttlePoolSubmit = createThrottledPoolSubmitter(1500); // 1.5 second coo
 const poolSubmissionForm = document.getElementById('pool-bar-submission-form');
 poolSubmissionForm.addEventListener('submit', throttlePoolSubmit(poolSubmissionForm, async function (e) {
   e.preventDefault();
+  // Submission gating (SCOPE Phase 2): only authenticated users can contribute.
+  if (typeof window.requireSignIn === 'function' && !window.requireSignIn('Please sign in to submit a pool bar.')) return;
   const isPhilly      = document.getElementById('pool-philly-yes').checked;
   const streetAddress = document.getElementById('pool-street-address').value;
   
@@ -716,7 +718,7 @@ poolSubmissionForm.addEventListener('submit', throttlePoolSubmit(poolSubmissionF
     notes:         document.getElementById('pool-sub-notes').value,
   };
 
-  fetch(`${POOL_API_BASE}/submit-pool-bar`, {
+  window.authedFetch(`${POOL_API_BASE}/submit-pool-bar`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(submission),
@@ -797,6 +799,8 @@ document.getElementById('pool-edit-payment-model').addEventListener('change', fu
 const poolEditForm = document.getElementById('pool-edit-form');
 poolEditForm.addEventListener('submit', throttlePoolSubmit(poolEditForm, async function (e) {
   e.preventDefault();
+  // Submission gating (SCOPE Phase 2): only authenticated users can contribute.
+  if (typeof window.requireSignIn === 'function' && !window.requireSignIn('Please sign in to suggest an edit.')) return;
   const originalId   = document.getElementById('pool-edit-original-id').value;
   const originalName = document.getElementById('pool-edit-name').value;
   const changes = {
@@ -809,7 +813,7 @@ poolEditForm.addEventListener('submit', throttlePoolSubmit(poolEditForm, async f
   };
   const notes = document.getElementById('pool-edit-notes').value;
  
-  fetch(`${POOL_API_BASE}/submit-pool-bar-edit`, {
+  window.authedFetch(`${POOL_API_BASE}/submit-pool-bar-edit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ originalId, originalName, changes, notes }),
