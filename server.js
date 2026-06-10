@@ -45,7 +45,7 @@ const admin = require('firebase-admin');
 
 // Emails that are granted admin access purely by signing in with Firebase.
 // Comma-separated env var overrides the default; matched case-insensitively.
-const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'lrodriguez@pennoni.com')
+const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'lou3@lourodriguez.com')
   .split(',')
   .map(e => e.trim().toLowerCase())
   .filter(Boolean);

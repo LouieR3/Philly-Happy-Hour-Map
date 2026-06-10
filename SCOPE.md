@@ -92,7 +92,7 @@ Philly Mappy Hour is a hyper-local geospatial application designed to help Phila
 #### Target State
 * **Google OAuth + Email/Password login** via Firebase Authentication for general users.
 * **Admin access** determined by identity, not a separate password page:
-  * If the user is logged in with `lrodriguez@pennoni.com` (or other designated admin emails), the admin dashboard is unlocked automatically — no separate login flow needed.
+  * If the user is logged in with `lou3@lourodriguez.com` (or other designated admin emails), the admin dashboard is unlocked automatically — no separate login flow needed.
   * The CAPTCHA remains as the single gate for the pure-password admin path (fallback for direct admin access without a Google account).
 * **Submission gating:** Only authenticated users (Google or email login) can submit new bars or edit existing bars. Anonymous users see the map but get a "Sign in to contribute" prompt on the submit form.
 * **Session persistence:** Firebase ID tokens stored client-side; verified server-side on protected routes.
@@ -120,7 +120,7 @@ Philly Mappy Hour is a hyper-local geospatial application designed to help Phila
 ### Phase 2: Authentication & Submission Gating *(Current Focus)*
 * Firebase Google OAuth + email/password login UI (sign-in modal or dedicated page)
 * Server middleware to verify Firebase ID tokens on POST `/submit-bar` and POST `/submit-edit`
-* Admin role check: if decoded Firebase UID matches admin email (`lrodriguez@pennoni.com`), grant admin session automatically — no CAPTCHA needed
+* Admin role check: if decoded Firebase UID matches admin email (`lou3@lourodriguez.com`), grant admin session automatically — no CAPTCHA needed
 * "Sign in to contribute" prompt on submission forms for unauthenticated users; map browsing remains public
 * User profile page (submitted bars history, saved bars placeholder)
 
@@ -259,6 +259,6 @@ Every server-side interaction in this project goes through Railway — database 
 * **`API_BASE` rule:** In every JS file that makes fetch calls, `API_BASE` in production must always be `https://philly-happy-hour-map-production.up.railway.app`. Relative URLs (`API_BASE = ''`) will 404 because the static host has no routes.
 * **Cross-origin cookies:** Admin session cookie uses `SameSite: None; Secure: true` in production to allow `credentials: 'include'` fetch calls from the static host to Railway. Locally: `SameSite: Lax; Secure: false`.
 * **Softball data:** Lives in `mappy_hour` DB, `softball_games` collection. Schedule seeded on server startup (idempotent).
-* **Admin email:** `lrodriguez@pennoni.com` — designated for auto-admin access under the Firebase auth model.
+* **Admin email:** `lou3@lourodriguez.com` — designated for auto-admin access under the Firebase auth model.
 * **Environment:** Railway sets `NODE_ENV=production` automatically. Local dev uses `.env` with `dotenv`.
 * **Admin email:** `lou3@lourodriguez.com` — this is the target identity for auto-admin access under the new auth model.
