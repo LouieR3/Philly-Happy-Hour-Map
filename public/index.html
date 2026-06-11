@@ -42,6 +42,7 @@
     <link href="css/styles.css" rel="stylesheet" />
     <link href="css/nav-style.css" rel="stylesheet" />
     <link href="css/dark-theme.css" rel="stylesheet" />
+    <link href="css/map-hub.css" rel="stylesheet" />
   </head>
   <body id="page-top">
     <!-- Navigation-->
@@ -73,6 +74,23 @@
         </div>
       </div>
     </nav>
+
+    <!-- Mobile map-hub tab bar (mobile only; hidden on desktop via CSS) -->
+    <nav class="map-hub-tabs d-lg-none" id="map-hub-tabs" aria-label="Map dashboards">
+      <button type="button" class="hub-tab" data-section="quizzo">
+        <i class="fa-solid fa-lightbulb" aria-hidden="true"></i><span>Quizzo</span>
+      </button>
+      <button type="button" class="hub-tab" data-section="pool-bars">
+        <i class="fa-solid fa-circle-dot" aria-hidden="true"></i><span>Pool</span>
+      </button>
+      <button type="button" class="hub-tab" data-section="sports-bars">
+        <i class="fa-solid fa-futbol" aria-hidden="true"></i><span>Sports</span>
+      </button>
+      <button type="button" class="hub-tab hub-tab-locked" data-section="" aria-disabled="true">
+        <i class="fa-solid fa-lock" aria-hidden="true"></i><span>Happy&nbsp;Hr</span>
+      </button>
+    </nav>
+
     <!-- Masthead -->
     <!-- <header class="masthead text-white text-center "> -->
     <header class="masthead bg-primary text-white text-center gradient">
@@ -1218,6 +1236,8 @@
     <script src="js/pool-bars-map.js"></script>
     <!-- SPORTS BARS MAP -->
     <script src="js/sports-bars-map.js"></script>
+    <!-- MOBILE MAP HUB (tabs + zero-scroll shell; mobile only) -->
+    <script src="js/map-hub.js"></script>
     <!-- MOBILE BOTTOM SHEET -->
     <script>
       (function () {

@@ -1,0 +1,138 @@
+/* ============================================================
+   MAPPY HOUR — MOBILE MAP HUB
+   Tab-based consolidation of the Quizzo / Pool / Sports maps into
+   a single zero-scroll, app-like view on mobile.
+
+   Scope: everything here is gated by `@media (max-width: 991.98px)`
+   (Bootstrap's lg breakpoint, matching the existing col-lg-* layout)
+   AND the `body.hub-active` class that map-hub.js toggles. Desktop is
+   never affected. Remove the <link>, <script>, and #map-hub-tabs
+   element to fully revert.
+   Dark theme: reuses the --mh-* tokens from dark-theme.css.
+   ============================================================ */
+
+/* Tab bar is mobile-only; hidden on desktop by default. */
+.map-hub-tabs { display: none; }
+
+@media (max-width: 991.98px) {
+
+  /* ── Tab strip: fixed directly under the navbar ──────────────── */
+  .map-hub-tabs {
+    display: flex;
+    position: fixed;
+    top: var(--hub-nav-h, 56px);
+    left: 0;
+    right: 0;
+    z-index: 1020;            /* below navbar (1030) so the hamburger menu overlays it */
+    background: rgba(11, 15, 24, 0.96);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--mh-border, #2d3a4f);
+  }
+  .hub-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 4px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--mh-text-muted, #94a3b8);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .hub-tab i { font-size: 1rem; }
+  .hub-tab.active {
+    color: var(--mh-green-br, #34d399);
+    border-bottom-color: var(--mh-green-br, #34d399);
+  }
+  .hub-tab:not(.active):hover { color: var(--mh-text, #e2e8f0); }
+
+  /* Locked (in-development) tab — visibly disabled, but still tappable
+     so the tap can surface a "coming soon" message instead of dying. */
+  .hub-tab-locked { color: #475569; cursor: default; }
+  .hub-tab-locked i { font-size: 0.82rem; }
+  .hub-tab-locked .hub-tab-lockwrap { position: relative; }
+
+  /* ── Zero-scroll shell ───────────────────────────────────────── */
+  body.hub-active {
+    overflow: hidden;
+    height: 100dvh;
+    overscroll-behavior: none;
+  }
+
+  /* Hide the non-map page blocks and any inactive map section. Kept as
+     explicit, low-specificity selectors on purpose: an earlier catch-all
+     using :not(#id) injected ID specificity that outranked the rule
+     re-showing the active section, collapsing it to height 0. */
+  body.hub-active .masthead,
+  body.hub-active #meet-the-team,
+  body.hub-active #bar-map,
+  body.hub-active .footer {
+    display: none !important;
+  }
+  body.hub-active .hub-map:not(.hub-current) {
+    display: none !important;
+  }
+
+  /* The active map section becomes a fixed shell filling the space
+     below the navbar + tab strip. */
+  body.hub-active .page-section.hub-current {
+    display: block !important;
+    position: fixed;
+    top: calc(var(--hub-nav-h, 56px) + var(--hub-tabs-h, 52px));
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden;
+  }
+
+  /* Collapse the section's editorial chrome so the map gets the height. */
+  body.hub-active .hub-current .section-eyebrow,
+  body.hub-active .hub-current .page-section-heading,
+  body.hub-active .hub-current .divider-custom {
+    display: none !important;
+  }
+
+  /* Make the container → row → map column chain fill the shell. */
+  body.hub-active .hub-current .container-xxxl,
+  body.hub-active .hub-current .container,
+  body.hub-active .hub-current .row {
+    height: 100%;
+    max-width: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body.hub-active .hub-current [id$="map-column"] {
+    height: 100%;
+    padding: 0 !important;
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+  body.hub-active .hub-current #leaflet-map,
+  body.hub-active .hub-current #pool-leaflet-map,
+  body.hub-active .hub-current #sports-leaflet-map {
+    height: 100% !important;
+    min-height: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Float the add / list / edit action row over the bottom of the map
+     instead of stacking it below (which would reintroduce page scroll). */
+  body.hub-active .hub-current .mobile-action-buttons-wrapper {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 16px;
+    margin: 0 !important;
+    z-index: 460;
+  }
+}
