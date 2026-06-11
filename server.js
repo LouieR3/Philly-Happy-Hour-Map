@@ -1076,39 +1076,56 @@ let yelpKeyIndex = 0;
 let cachedYelpKeys = null;
 
 function getYelpKeys() {
-  // Return cached keys if already loaded
-  if (cachedYelpKeys !== null) return cachedYelpKeys;
+  if (cachedYelpKeys !== null && cachedYelpKeys.length > 0) return cachedYelpKeys;
 
-  // 1) Comma-separated env var (Railway / production)
-  if (process.env.YELP_API_KEYS && process.env.YELP_API_KEYS.includes(',')) {
-    cachedYelpKeys = process.env.YELP_API_KEYS.split(',').map(k => k.trim()).filter(Boolean);
-    console.log(`[Yelp] Loaded ${cachedYelpKeys.length} keys from YELP_API_KEYS`);
-    return cachedYelpKeys;
+  // 1) YELP_API_KEYS env var — one key or comma-separated list (Railway)
+  if (process.env.YELP_API_KEYS) {
+    const keys = process.env.YELP_API_KEYS.split(',').map(k => k.trim()).filter(Boolean);
+    if (keys.length) {
+      cachedYelpKeys = keys;
+      console.log(`[Yelp] Loaded ${keys.length} key(s) from YELP_API_KEYS`);
+      return cachedYelpKeys;
+    }
   }
-  
-  // 2) Single-key env var
+
+  // 2) YELP_API_KEY singular env var
   if (process.env.YELP_API_KEY) {
     cachedYelpKeys = [process.env.YELP_API_KEY];
     console.log('[Yelp] Loaded 1 key from YELP_API_KEY');
     return cachedYelpKeys;
   }
-  
-  // 3) Local .env file with Python list format
+
+  // 3) Local .env file — Python list format: yelp_api_keys = ["key1", ...]
+  //    or plain KEY=value: YELP_API_KEY=... / YELP_API_KEYS=...
   try {
     const raw = require('fs').readFileSync(require('path').join(__dirname, '.env'), 'utf8');
-    const m = raw.match(/yelp_api_keys\s*=\s*\[([\s\S]*?)\]/);
-    if (!m) {
-      cachedYelpKeys = [];
-      return cachedYelpKeys;
+
+    const listMatch = raw.match(/yelp_api_keys\s*=\s*\[([\s\S]*?)\]/i);
+    if (listMatch) {
+      const keys = [...listMatch[1].matchAll(/"([^"]+)"/g)].map(r => r[1]).filter(Boolean);
+      if (keys.length) {
+        cachedYelpKeys = keys;
+        console.log(`[Yelp] Loaded ${keys.length} key(s) from .env yelp_api_keys list`);
+        return cachedYelpKeys;
+      }
     }
-    cachedYelpKeys = [...m[1].matchAll(/"([^"]+)"/g)].map(r => r[1]).filter(Boolean);
-    console.log(`[Yelp] Loaded ${cachedYelpKeys.length} keys from .env yelp_api_keys`);
-    return cachedYelpKeys;
+
+    const kvMatch = raw.match(/^YELP_API_KEYS?\s*=\s*(.+)$/im);
+    if (kvMatch) {
+      const val = kvMatch[1].trim().replace(/^['"]|['"]$/g, '');
+      const keys = val.split(',').map(k => k.trim()).filter(Boolean);
+      if (keys.length) {
+        cachedYelpKeys = keys;
+        console.log(`[Yelp] Loaded ${keys.length} key(s) from .env YELP_API_KEY(S)`);
+        return cachedYelpKeys;
+      }
+    }
   } catch (e) {
     console.error('[Yelp] Error reading .env:', e.message);
-    cachedYelpKeys = [];
-    return cachedYelpKeys;
   }
+
+  cachedYelpKeys = [];
+  return cachedYelpKeys;
 }
 
 function yelpGet(path) {
