@@ -342,6 +342,44 @@
   border: 2px solid white;
   box-shadow: 0 0 2px rgba(0,0,0,0.3);
 }
+
+/* Pool bar map — payment-type legend (bottom-left Leaflet control) */
+.pool-legend-control {
+  background: rgba(26, 35, 50, 0.92);
+  color: #e2e8f0;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-family: 'Red Hat Text', sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+.pool-legend-title {
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
+}
+.pool-legend-row { display: flex; align-items: center; gap: 6px; }
+.pool-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.pool-legend-note {
+  margin-top: 5px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.55);
+}
+@media (max-width: 600px) {
+  .pool-legend-control { font-size: 11px; padding: 6px 8px; }
+  .pool-legend-note { display: none; }
+}
+
 #map {
   width: 100%;
   height: 70vh;
