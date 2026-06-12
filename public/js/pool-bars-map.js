@@ -42,16 +42,21 @@ if (poolToggleBtn) {
 }
 
 // ─── Marker icon ──────────────────────────────────────────────────────────────
-// Hue encodes payment type (see paymentColor); the number inside the pin is the
-// table count — the top decision factor — so it reads at a glance without a popup.
-// Falls back to the dot glyph when the table count is unknown.
-function createPoolIcon(color = '#10b981', count = null) {
-  const inner = (count && count > 0)
-    ? `<span style="font-size:14px;font-weight:700;line-height:1;">${count}</span>`
-    : `<i class="fa-solid fa-circle-dot" style="font-size:11px;"></i>`;
+// Hue (the pin background) encodes payment type — see paymentColor(). The glyph
+// is an 8-ball so the marker reads as "pool" at a glance; the colored ring around
+// it carries the payment-type meaning.
+function eightBallSvg() {
+  return `<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="11" fill="#111827"/>
+      <circle cx="12" cy="12" r="5.5" fill="#ffffff"/>
+      <text x="12" y="12.4" text-anchor="middle" dominant-baseline="central"
+            font-family="Arial, sans-serif" font-size="8" font-weight="700" fill="#111827">8</text>
+    </svg>`;
+}
+function createPoolIcon(color = '#10b981') {
   return L.divIcon({
     html: `<div class="custom-pin">
-      <div class="pin-circle" style="background-color:${color};">${inner}</div>
+      <div class="pin-circle" style="background-color:${color};">${eightBallSvg()}</div>
       <div class="pin-tail" style="background-color:${color};"></div>
     </div>`,
     className: 'custom-fa-icon',
@@ -64,8 +69,7 @@ function createPoolIcon(color = '#10b981', count = null) {
 function paymentColor(model) {
   if (!model) return '#34d399';
   const m = model.toLowerCase();
-  if (m.includes('coin'))              return '#60a5fa';   // blue
-  if (m.includes('hour'))              return '#fbbf24';   // yellow
+  if (m.includes('hour'))              return '#e07b00';   // strong amber (hourly)
   if (m.includes('free'))              return '#c084fc';   // purple
   return '#34d399';                                        // green (per_game / default)
 }
@@ -74,7 +78,6 @@ function paymentColor(model) {
 function paymentLabel(model) {
   if (!model) return 'Per game';
   const m = model.toLowerCase();
-  if (m.includes('coin')) return 'Coin-op';
   if (m.includes('hour')) return 'Hourly';
   if (m.includes('free')) return 'Free play';
   return 'Per game';
@@ -83,8 +86,7 @@ function paymentLabel(model) {
 // Single source of truth for the marker legend — colors mirror paymentColor()
 // so the legend can never drift from what's actually drawn on the map.
 const POOL_PAYMENT_TIERS = [
-  { label: 'Coin-op',   color: '#60a5fa' },
-  { label: 'Hourly',    color: '#fbbf24' },
+  { label: 'Hourly',    color: '#e07b00' },
   { label: 'Free play', color: '#c084fc' },
   { label: 'Per game',  color: '#34d399' },
 ];
@@ -166,8 +168,10 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
   .then((data) => {
     poolAllData = data;
 
-    // Populate Payment Model dropdown
-    const paymentModels = [...new Set(data.map((d) => d.Payment_Model).filter(Boolean))].sort();
+    // Populate Payment Model dropdown (coin-op intentionally excluded as an option)
+    const paymentModels = [...new Set(data.map((d) => d.Payment_Model).filter(Boolean))]
+      .filter((pm) => !/coin/i.test(pm))
+      .sort();
     const pmOptions = document.getElementById('pool-payment-options');
     paymentModels.forEach((pm) => {
       const li = document.createElement('li');
@@ -216,6 +220,19 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
           <div style="font-size:10px;color:rgba(255,255,255,0.6);margin-top:2px;">${label}</div>
         </div>`;
 
+      // Vibe: a labeled section with each descriptor as its own pill.
+      const vibePills = String(row.Vibe || '')
+        .split(/[,/]| and /i)
+        .map((v) => v.trim())
+        .filter(Boolean)
+        .map((v) => `<span style="background:rgba(255,255,255,0.08);color:#e2e8f0;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;">${escPoolHtml(v)}</span>`)
+        .join('');
+      const vibeSection = vibePills ? `
+            <div style="margin-top:12px;">
+              <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.05em;color:rgba(255,255,255,0.6);margin-bottom:5px;">Vibe</div>
+              <div style="display:flex;gap:6px;flex-wrap:wrap;">${vibePills}</div>
+            </div>` : '';
+
       const chips = [];
       if (row.Has_Happy_Hour) chips.push(`<span style="background:rgba(52,211,153,0.14);color:#34d399;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;">Happy hour</span>`);
       if (row['Yelp Rating'])  chips.push(`<span style="background:rgba(251,191,36,0.14);color:#fbbf24;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;">★ ${escPoolHtml(row['Yelp Rating'])}</span>`);
@@ -233,14 +250,14 @@ fetch(`${POOL_API_BASE}/api/pool-bars`)
               ${statBlock(escPoolHtml(price.value), price.sub || 'price')}
               ${statBlock(payVal, 'payment', 13)}
             </div>
-            ${row.Vibe ? `<p style="margin:10px 0 0;font-size:12px;color:rgba(255,255,255,0.75);font-style:italic;">“${escPoolHtml(row.Vibe)}”</p>` : ''}
+            ${vibeSection}
             ${chips.length ? `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">${chips.join('')}</div>` : ''}
             ${row.Website ? `<a href="${escPoolHtml(row.Website)}" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;font-size:12px;color:#34d399;text-decoration:none;">Visit website →</a>` : ''}
           </div>
         </div>`;
 
       const marker = L.marker([lat, lng], {
-        icon: createPoolIcon(color, row.Number_of_Tables ? Number(row.Number_of_Tables) : null)
+        icon: createPoolIcon(color)
       }).bindPopup(popupContent, { maxWidth: 260 });
       marker.paymentModel = row.Payment_Model || null;
       marker.tableCount   = row.Number_of_Tables ? Number(row.Number_of_Tables) : 0;

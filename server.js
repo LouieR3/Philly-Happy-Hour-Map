@@ -1128,31 +1128,14 @@ function getYelpKeys() {
   return cachedYelpKeys;
 }
 
-function yelpGet(path) {
-  const keys = getYelpKeys();
-  
-  if (!keys.length) {
-    console.error('[Yelp] No API keys found in YELP_API_KEYS, YELP_API_KEY, or .env');
-    return Promise.reject(new Error('Yelp API key not configured'));
-  }
-  
-  // Cycle through keys on each request
-  const key = keys[yelpKeyIndex % keys.length];
-  const keyNum = (yelpKeyIndex % keys.length) + 1;
-  yelpKeyIndex++;
-  
-  // Debug: log key status (without exposing the full key)
-  if (!key) {
-    console.error('[Yelp] Selected key is empty');
-    return Promise.reject(new Error('Yelp API key is empty'));
-  }
-  if (key.length < 100) {
-    console.error(`[Yelp] API key ${keyNum} appears invalid (${key.length} chars, expected ~128)`);
-    return Promise.reject(new Error(`Yelp API key invalid length: ${key.length} chars`));
-  }
-  
-  console.log(`[Yelp] Using key ${keyNum}/${keys.length}`);
-  
+// Keys that returned 401/403 — revoked or not authorized for the endpoint.
+// We skip these on subsequent requests so a single dead key in the pool can't
+// keep poisoning ~1-in-N round-robin requests.
+const _yelpBadKeys = new Set();
+
+// Single HTTP attempt. Resolves with { status, json } (json is null if the body
+// wasn't valid JSON) so the caller can branch on the real HTTP status.
+function _yelpRequestOnce(path, key) {
   return new Promise((resolve, reject) => {
     const req = https.get(
       { hostname: 'api.yelp.com', path, headers: { Authorization: `Bearer ${key}` } },
@@ -1160,13 +1143,64 @@ function yelpGet(path) {
         let data = '';
         res.on('data', c => data += c);
         res.on('end', () => {
-          try { resolve(JSON.parse(data)); }
-          catch (e) { reject(e); }
+          let json = null;
+          try { json = JSON.parse(data); } catch (e) { /* non-JSON body */ }
+          resolve({ status: res.statusCode, json });
         });
       }
     );
     req.on('error', reject);
   });
+}
+
+// Fetch from Yelp with automatic failover across the key pool.
+// BUG FIXED: the old code round-robined ALL keys and ignored the HTTP status,
+// so one revoked key (Yelp 401 UNAUTHORIZED_ACCESS_TOKEN) made roughly 1-in-N
+// requests fail at random — the intermittent "Yelp Import breaks" symptom.
+// Now we skip known-bad keys and retry the next key on 401/403/429.
+async function yelpGet(path) {
+  const allKeys = getYelpKeys().filter(k => k && k.length >= 100);
+  if (!allKeys.length) {
+    console.error('[Yelp] No valid API keys found in YELP_API_KEYS, YELP_API_KEY, or .env');
+    throw new Error('Yelp API key not configured');
+  }
+
+  // Prefer keys not already flagged bad; if every key is flagged, reset and
+  // retry them all (a previously-failing key may have been re-enabled).
+  let candidates = allKeys.filter(k => !_yelpBadKeys.has(k));
+  if (!candidates.length) { _yelpBadKeys.clear(); candidates = allKeys.slice(); }
+
+  let lastError = null;
+  for (let attempt = 0; attempt < candidates.length; attempt++) {
+    const key = candidates[(yelpKeyIndex++) % candidates.length];
+    let resp;
+    try {
+      resp = await _yelpRequestOnce(path, key);
+    } catch (e) {
+      lastError = e;                       // network error — try the next key
+      continue;
+    }
+
+    if (resp.status === 401 || resp.status === 403) {
+      _yelpBadKeys.add(key);               // revoked/unauthorized — don't use again
+      lastError = new Error(
+        (resp.json && resp.json.error && resp.json.error.description) ||
+        `Yelp authorization failed (${resp.status})`
+      );
+      console.warn(`[Yelp] Key rejected (${resp.status}); failing over to next key`);
+      continue;
+    }
+    if (resp.status === 429) {
+      lastError = new Error('Yelp rate limit reached');
+      continue;                            // a different key may have quota
+    }
+
+    // 2xx (or a non-auth API error body the caller inspects via data.error)
+    if (resp.json) return resp.json;
+    lastError = new Error(`Yelp returned a non-JSON response (status ${resp.status})`);
+  }
+
+  throw lastError || new Error('Yelp request failed');
 }
 
 // Yelp search — returns up to 10 matches
