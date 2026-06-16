@@ -242,9 +242,13 @@ function populateSportsSidebar(data) {
   list.innerHTML = '';
   var photoTargets = new Map();
 
-  var sorted = data.slice().sort(function(a, b) {
-    return (a.Name || '').localeCompare(b.Name || '');
-  });
+  // Keep the caller's order when "Near Me" is active (already distance-sorted);
+  // otherwise sort alphabetically by name.
+  var sorted = window.mappyUserLocation
+    ? data.slice()
+    : data.slice().sort(function(a, b) {
+        return (a.Name || '').localeCompare(b.Name || '');
+      });
 
   sorted.forEach(function(row) {
     if (!row.Name) return;
@@ -927,3 +931,16 @@ if (sportsBarSearchInput) {
     if (drawer)   document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeSportsDrawer(); });
   }, 500);
 })();
+
+// ── Location services: "Near Me" (SCOPE Phase 3) ────────────────────────────
+if (window.LocationServices) {
+  window.LocationServices.attach({
+    map:           sportsMap,
+    getData:       function () { return sportsAllData; },
+    getLatLng:     function (r) { return [r.Latitude, r.Longitude]; },
+    getName:       function (r) { return r.Name; },
+    renderList:    function (d) { populateSportsSidebar(d); },
+    setDrawerData: function (d) { if (window._sportsDrawerSetData) window._sportsDrawerSetData(d); },
+    listSelectors: ['#sports-bar-list', '#sports-drawer-cards'],
+  });
+}

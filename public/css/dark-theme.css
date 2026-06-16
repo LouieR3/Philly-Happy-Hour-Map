@@ -1111,3 +1111,62 @@ h1, h2, h3, h4, h5, h6 {
   background: transparent;
 }
 .drawer-backdrop.open { display: block; }
+
+/* ── Location services: "Near Me" control, you-are-here marker, distance ── */
+.mappy-locate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: rgba(11, 15, 24, 0.92);
+  border: 1px solid var(--mh-border);
+  color: var(--mh-text);
+  border-radius: 1.2rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+}
+.mappy-locate-btn:hover {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: var(--mh-green);
+  color: var(--mh-green-br);
+}
+.mappy-locate-btn.active {
+  background: var(--mh-green);
+  border-color: var(--mh-green);
+  color: #04140d;
+}
+.mappy-locate-btn.loading { opacity: 0.7; pointer-events: none; }
+.mappy-locate-btn.loading i { animation: mappy-spin 0.8s linear infinite; }
+@keyframes mappy-spin { to { transform: rotate(360deg); } }
+
+/* Pulsing "you are here" dot */
+.mappy-here-pin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 rgba(59, 130, 246, 0.6);
+  animation: mappy-pulse 1.8s ease-out infinite;
+}
+@keyframes mappy-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.55); }
+  70%  { box-shadow: 0 0 0 14px rgba(59, 130, 246, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+}
+
+/* Per-row distance label injected into the lists when "Near Me" is on */
+.mappy-dist {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: rgba(59, 130, 246, 0.16);
+  color: #93c5fd;
+  font-size: 0.7rem;
+  font-weight: 700;
+  vertical-align: middle;
+}

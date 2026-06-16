@@ -1249,3 +1249,16 @@ editBarForm.addEventListener("submit", throttleSubmit(editBarForm, async functio
     }
   }, 500);
 })();
+
+// ── Location services: "Near Me" (SCOPE Phase 3) ────────────────────────────
+if (window.LocationServices) {
+  window.LocationServices.attach({
+    map:           leafletmap,
+    getData:       function () { return liveData; },
+    getLatLng:     function (r) { return [r.Latitude, r.Longitude]; },
+    getName:       function (r) { return r.BUSINESS; },
+    renderList:    function (d) { populateTable(d); },
+    setDrawerData: function (d) { if (window._quizzoDrawerSetData) window._quizzoDrawerSetData(d); },
+    listSelectors: ['#bar-list', '#quizzo-drawer-cards'],
+  });
+}

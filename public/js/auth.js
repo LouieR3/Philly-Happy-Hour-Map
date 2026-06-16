@@ -69,6 +69,16 @@ window.authedFetch = async (url, options = {}) => {
   return fetch(url, { ...options, headers });
 };
 
+// Opens the sign-in modal if present; otherwise falls back to a Google popup.
+window.openAuthModal = () => {
+  const el = document.getElementById('authModal');
+  if (el && window.bootstrap && window.bootstrap.Modal) {
+    window.bootstrap.Modal.getOrCreateInstance(el).show();
+  } else {
+    window.signInWithGoogle();
+  }
+};
+
 // Returns true if a user is signed in; otherwise prompts sign-in and returns false.
 // Submission forms call this before sending so anonymous users get a clear
 // "sign in to contribute" path instead of a silent 401.
@@ -77,11 +87,78 @@ window.requireSignIn = (message) => {
   if (typeof window.siteToast === 'function') {
     window.siteToast(message || 'Please sign in to contribute.', 'error');
   }
-  window.signInWithGoogle();
+  window.openAuthModal();
   return false;
 };
 
-// Update navbar whenever auth state changes
+// ── Sign-in modal wiring (email/password + Google) ───────────────────────────
+let _authMode = 'signin'; // 'signin' | 'signup'
+function _setAuthError(msg) {
+  const e = document.getElementById('auth-error');
+  if (e) e.textContent = msg || '';
+}
+function _friendlyAuthError(code) {
+  switch (code) {
+    case 'auth/invalid-email':        return 'That email address looks invalid.';
+    case 'auth/missing-password':     return 'Please enter a password.';
+    case 'auth/weak-password':        return 'Password should be at least 6 characters.';
+    case 'auth/email-already-in-use': return 'An account already exists for that email — try signing in.';
+    case 'auth/invalid-credential':
+    case 'auth/wrong-password':
+    case 'auth/user-not-found':       return 'Email or password is incorrect.';
+    default:                          return 'Something went wrong. Please try again.';
+  }
+}
+function initAuthModal() {
+  const form = document.getElementById('auth-email-form');
+  if (!form) return;
+  const toggle    = document.getElementById('auth-toggle-mode');
+  const submitBtn = document.getElementById('auth-submit-btn');
+  const title     = document.getElementById('auth-modal-title');
+  const googleBtn = document.getElementById('auth-google-modal-btn');
+
+  function applyMode() {
+    const signup = _authMode === 'signup';
+    if (title)     title.textContent     = signup ? 'Create your account' : 'Sign in';
+    if (submitBtn) submitBtn.textContent = signup ? 'Create account' : 'Sign in';
+    if (toggle)    toggle.innerHTML = signup
+      ? 'Already have an account? <a href="#" role="button">Sign in</a>'
+      : 'New here? <a href="#" role="button">Create an account</a>';
+    _setAuthError('');
+  }
+  applyMode();
+
+  if (toggle) toggle.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') { e.preventDefault(); _authMode = _authMode === 'signup' ? 'signin' : 'signup'; applyMode(); }
+  });
+  if (googleBtn) googleBtn.addEventListener('click', () => window.signInWithGoogle());
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    _setAuthError('');
+    const email = document.getElementById('auth-email').value.trim();
+    const pw    = document.getElementById('auth-password').value;
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.dataset._t = submitBtn.textContent; submitBtn.textContent = 'Please wait…'; }
+    try {
+      if (_authMode === 'signup') await window.signUpWithEmail(email, pw);
+      else                        await window.signInWithEmail(email, pw);
+      form.reset();
+      // onAuthStateChanged closes the modal on success.
+    } catch (err) {
+      _setAuthError(_friendlyAuthError(err && err.code));
+    } finally {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = submitBtn.dataset._t || 'Sign in'; }
+    }
+  });
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initAuthModal);
+} else {
+  initAuthModal();
+}
+
+// Update navbar whenever auth state changes, broadcast for other pages, and
+// close the sign-in modal once a user is signed in.
 onAuthStateChanged(auth, async (user) => {
   window.currentUser = user;
 
@@ -89,20 +166,32 @@ onAuthStateChanged(auth, async (user) => {
   const btnSignOut = document.getElementById('auth-signout-btn');
   const authName   = document.getElementById('auth-user-name');
   const authAvatar = document.getElementById('auth-user-avatar');
+  const profileLi  = document.getElementById('auth-profile-li');
 
   if (user) {
     if (btnSignIn)  btnSignIn.style.display  = 'none';
     if (btnSignOut) btnSignOut.style.display = '';
     if (authName)   authName.textContent     = user.displayName || user.email;
     if (authName)   authName.style.display   = '';
+    if (profileLi)  profileLi.style.display   = '';
     if (authAvatar && user.photoURL) {
       authAvatar.src           = user.photoURL;
       authAvatar.style.display = '';
+    }
+    // Close the auth modal if it's open.
+    const modalEl = document.getElementById('authModal');
+    if (modalEl && window.bootstrap && window.bootstrap.Modal) {
+      const inst = window.bootstrap.Modal.getInstance(modalEl);
+      if (inst) inst.hide();
     }
   } else {
     if (btnSignIn)  btnSignIn.style.display  = '';
     if (btnSignOut) btnSignOut.style.display = 'none';
     if (authName)   authName.style.display   = 'none';
+    if (profileLi)  profileLi.style.display   = 'none';
     if (authAvatar) authAvatar.style.display = 'none';
   }
+
+  // Broadcast so non-index pages (e.g. profile.html) can react.
+  document.dispatchEvent(new CustomEvent('auth-changed', { detail: { user } }));
 });

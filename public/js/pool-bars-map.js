@@ -460,7 +460,11 @@ function populatePoolTable(data) {
   list.innerHTML = '';
   const photoTargets = new Map();
 
-  const sorted = [...data].sort((a, b) => (Number(b.Number_of_Tables) || 0) - (Number(a.Number_of_Tables) || 0));
+  // Keep the caller's order when "Near Me" is active (already distance-sorted);
+  // otherwise default to most-tables-first.
+  const sorted = window.mappyUserLocation
+    ? [...data]
+    : [...data].sort((a, b) => (Number(b.Number_of_Tables) || 0) - (Number(a.Number_of_Tables) || 0));
   sorted.forEach((row) => {
     if (!row.Name) return;
 
@@ -1085,3 +1089,16 @@ poolEditForm.addEventListener('submit', throttlePoolSubmit(poolEditForm, async f
     }
   }, 500);
 })();
+
+// ── Location services: "Near Me" (SCOPE Phase 3) ────────────────────────────
+if (window.LocationServices) {
+  window.LocationServices.attach({
+    map:           poolMap,
+    getData:       function () { return poolAllData; },
+    getLatLng:     function (r) { return [r.Latitude, r.Longitude]; },
+    getName:       function (r) { return r.Name; },
+    renderList:    function (d) { populatePoolTable(d); },
+    setDrawerData: function (d) { if (window._poolDrawerSetData) window._poolDrawerSetData(d); },
+    listSelectors: ['#pool-bar-list', '#pool-drawer-cards'],
+  });
+}

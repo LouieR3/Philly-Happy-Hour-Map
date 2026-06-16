@@ -1416,6 +1416,37 @@ app.get('/api/me', verifyFirebaseToken, (req, res) => {
   res.json({ uid, email, name, picture });
 });
 
+// Returns the signed-in user's own contribution history (new bars + edits,
+// across both quizzo and pool collections) for the profile page. Scoped to the
+// caller's verified uid, so a user can only ever see their own submissions.
+app.get('/api/my-submissions', verifyFirebaseToken, async (req, res) => {
+  try {
+    const uid = req.firebaseUser.uid;
+    const by  = { 'submittedBy.uid': uid };
+    const [bars, edits, poolBars, poolEdits] = await Promise.all([
+      Pending.find(by).sort({ submittedAt: -1 }).lean(),
+      PendingEdit.find(by).sort({ submittedAt: -1 }).lean(),
+      PendingPoolBar.find(by).sort({ submittedAt: -1 }).lean(),
+      PendingPoolBarEdit.find(by).sort({ submittedAt: -1 }).lean(),
+    ]);
+    const norm = (items, kind) => items.map(i => ({
+      kind,                                                  // new-bar | edit | new-pool-bar | pool-edit
+      name:        i.BUSINESS || i.name || i.originalBusiness || i.originalName || '—',
+      status:      i.status || 'pending',
+      submittedAt: i.submittedAt,
+    }));
+    const submissions = [
+      ...norm(bars, 'new-bar'),
+      ...norm(poolBars, 'new-pool-bar'),
+      ...norm(edits, 'edit'),
+      ...norm(poolEdits, 'pool-edit'),
+    ].sort((a, b) => new Date(b.submittedAt) - new Date(a.submittedAt));
+    res.json({ submissions });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ─── In-memory captcha token store (survives the captcha→password step) ─────
 // `crypto` is required once near the top of the file.
 const _captchaTokens = new Map(); // token -> expiry timestamp
