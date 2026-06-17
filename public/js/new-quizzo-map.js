@@ -133,6 +133,9 @@ fetch(`${API_BASE}/api/quizzo`)
   .then((response) => response.json())
   .then(function (data) {
 
+    // Expose the loaded rows so location services ("Near Me") can read/sort them.
+    liveData = data;
+
     const eventTypes = [
       ...new Set(
         data

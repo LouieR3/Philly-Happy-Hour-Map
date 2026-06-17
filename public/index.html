@@ -59,11 +59,12 @@
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sports-bars">Sports Bars</a></li>
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#meet-the-team">About</a></li>
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#bar-map">Bar Map</a></li>
-            <li class="nav-item mx-0" id="auth-profile-li" style="display:none;"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="profile.html">Profile</a></li>
             <!-- Auth -->
             <li class="nav-item mx-0 mx-lg-1 d-flex align-items-center gap-2" style="padding: 4px 0;">
-              <img id="auth-user-avatar" src="" alt="" style="display:none;width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" />
-              <span id="auth-user-name" class="nav-link py-0 px-0 px-lg-2" style="display:none;font-size:0.85rem;"></span>
+              <a id="auth-profile-link" href="profile.html" title="View your profile" class="d-flex align-items-center gap-2 text-decoration-none" style="display:none !important;cursor:pointer;">
+                <img id="auth-user-avatar" src="" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" />
+                <span id="auth-user-name" class="nav-link py-0 px-0 px-lg-2" style="font-size:0.85rem;"></span>
+              </a>
               <button id="auth-signin-btn" onclick="openAuthModal()" class="btn btn-sm btn-outline-light py-1 px-3" style="font-size:0.8rem;white-space:nowrap;">
                 Sign in
               </button>
@@ -948,6 +949,11 @@
           <!-- Philly-only toggle -->
           <button id="sports-philly-button" class="btn btn-primary rounded-pill">
             <i class="fa-solid fa-bell" style="margin-right:8px;"></i>Philly Teams
+          </button>
+
+          <!-- World Cup layer toggle -->
+          <button id="sports-worldcup-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-trophy" style="margin-right:8px;"></i>World Cup
           </button>
 
           <!-- Region filter -->

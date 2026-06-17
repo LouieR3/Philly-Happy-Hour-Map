@@ -162,21 +162,21 @@ if (document.readyState === 'loading') {
 onAuthStateChanged(auth, async (user) => {
   window.currentUser = user;
 
-  const btnSignIn  = document.getElementById('auth-signin-btn');
-  const btnSignOut = document.getElementById('auth-signout-btn');
-  const authName   = document.getElementById('auth-user-name');
-  const authAvatar = document.getElementById('auth-user-avatar');
-  const profileLi  = document.getElementById('auth-profile-li');
+  const btnSignIn   = document.getElementById('auth-signin-btn');
+  const btnSignOut  = document.getElementById('auth-signout-btn');
+  const authName    = document.getElementById('auth-user-name');
+  const authAvatar  = document.getElementById('auth-user-avatar');
+  const profileLink = document.getElementById('auth-profile-link');
 
   if (user) {
     if (btnSignIn)  btnSignIn.style.display  = 'none';
     if (btnSignOut) btnSignOut.style.display = '';
     if (authName)   authName.textContent     = user.displayName || user.email;
-    if (authName)   authName.style.display   = '';
-    if (profileLi)  profileLi.style.display   = '';
-    if (authAvatar && user.photoURL) {
-      authAvatar.src           = user.photoURL;
-      authAvatar.style.display = '';
+    // The whole avatar+name area is a link to the profile page.
+    if (profileLink) profileLink.style.display = 'flex';
+    if (authAvatar) {
+      if (user.photoURL) { authAvatar.src = user.photoURL; authAvatar.style.display = ''; }
+      else { authAvatar.style.display = 'none'; }
     }
     // Close the auth modal if it's open.
     const modalEl = document.getElementById('authModal');
@@ -187,9 +187,7 @@ onAuthStateChanged(auth, async (user) => {
   } else {
     if (btnSignIn)  btnSignIn.style.display  = '';
     if (btnSignOut) btnSignOut.style.display = 'none';
-    if (authName)   authName.style.display   = 'none';
-    if (profileLi)  profileLi.style.display   = 'none';
-    if (authAvatar) authAvatar.style.display = 'none';
+    if (profileLink) profileLink.style.display = 'none';
   }
 
   // Broadcast so non-index pages (e.g. profile.html) can react.

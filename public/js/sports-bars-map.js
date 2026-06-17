@@ -94,12 +94,24 @@ const sportsActiveFilters = {
   league:       null,
   team:         null,
   phillyOnly:   false,
+  worldCup:     false,
   neighborhood: null,
   region:       null,
 };
 
+// World Cup pin icon (2026). Used for the Fan Fest and for world_cup watch bars
+// while the World Cup layer is active.
+var WORLD_CUP_ICON = 'assets/img/World_Cup_Logo_2026.png';
+
 // ─── Filter engine ────────────────────────────────────────────────────────────
 function updateMarkerIconForFilter(marker) {
+  // World Cup pin: the Fan Fest always, and any world_cup bar while the World
+  // Cup layer is active.
+  if (marker.isFanFest || (sportsActiveFilters.worldCup && marker.worldCup)) {
+    marker.setIcon(createSportsIcon('#111827', WORLD_CUP_ICON));
+    return;
+  }
+
   let newColor = '#f59e0b';
   let newLogo = null;
 
@@ -137,11 +149,26 @@ function updateMarkerIconForFilter(marker) {
   marker.setIcon(createSportsIcon(newColor, newLogo));
 }
 
+// Rows from sportsAllData that pass the active filters (same predicate the
+// marker loop uses), so the sidebar/drawer can mirror what's shown on the map.
+function getFilteredSportsBars() {
+  return (sportsAllData || []).filter(function(row) {
+    var sets = getBarTeamSets(row);
+    var hasPhilly = (row.philly_affiliates || []).length > 0;
+    return (!sportsActiveFilters.phillyOnly || hasPhilly) &&
+           (!sportsActiveFilters.worldCup   || row.world_cup) &&
+           (!sportsActiveFilters.league     || sets.leagues.has(sportsActiveFilters.league)) &&
+           (!sportsActiveFilters.team       || sets.allTeams.has(sportsActiveFilters.team)) &&
+           (!sportsActiveFilters.neighborhood || (row.Neighborhood || null) === sportsActiveFilters.neighborhood);
+  });
+}
+
 function applySportsFilters() {
   sportsMarkers.forEach(function(marker) {
     if (!(marker instanceof L.Marker)) return;
     const passes =
       (!sportsActiveFilters.phillyOnly || marker.hasPhillyAffil) &&
+      (!sportsActiveFilters.worldCup   || marker.worldCup) &&
       (!sportsActiveFilters.league     || marker.leagues.has(sportsActiveFilters.league)) &&
       (!sportsActiveFilters.team       || marker.allTeams.has(sportsActiveFilters.team)) &&
       (!sportsActiveFilters.neighborhood || marker.neighborhood === sportsActiveFilters.neighborhood);
@@ -153,6 +180,19 @@ function applySportsFilters() {
       if (sportsMap.hasLayer(marker)) sportsMap.removeLayer(marker);
     }
   });
+
+  // Keep the sidebar + drawer in sync with the active filter (BUG: previously
+  // the list always showed every sports bar even when the map was filtered).
+  var filtered = getFilteredSportsBars();
+  if (window.mappyUserLocation && typeof window.mappyHaversineMiles === 'function') {
+    var u = window.mappyUserLocation;
+    filtered = filtered.slice().sort(function(a, b) {
+      return window.mappyHaversineMiles(u.lat, u.lng, +a.Latitude, +a.Longitude) -
+             window.mappyHaversineMiles(u.lat, u.lng, +b.Latitude, +b.Longitude);
+    });
+  }
+  populateSportsSidebar(filtered);
+  if (window._sportsDrawerSetData) window._sportsDrawerSetData(filtered);
 }
 
 // ─── Filter UI helpers ────────────────────────────────────────────────────────
@@ -183,6 +223,20 @@ function getBarTeamSets(bar) {
 
 // ─── Build popup HTML ─────────────────────────────────────────────────────────
 function buildSportsPopup(bar) {
+  // FIFA World Cup Fan Fest gets a dedicated card with a register button.
+  if (bar.is_fan_fest) {
+    return '<div style="font-family:\'Red Hat Text\',sans-serif;width:240px;border-radius:8px;overflow:hidden;">' +
+      '<div style="background:#5b21b6;padding:12px 16px;">' +
+        '<p style="margin:0;font-size:15px;font-weight:600;color:#fff;">🏆 ' + (bar.Name || 'Fan Fest') + '</p>' +
+        (bar.Address ? '<p style="margin:3px 0 0;font-size:12px;color:rgba(255,255,255,0.8);">' + bar.Address + '</p>' : '') +
+      '</div>' +
+      '<div style="padding:12px 14px;background:#1a2332;color:#e2e8f0;">' +
+        '<p style="margin:0 0 10px;font-size:12px;color:rgba(255,255,255,0.75);">Official FIFA World Cup 2026 fan festival in Philadelphia.</p>' +
+        (bar.register_url ? '<a href="' + bar.register_url + '" target="_blank" rel="noopener" ' +
+          'style="display:block;text-align:center;background:#5b21b6;color:#fff;text-decoration:none;font-weight:600;font-size:13px;padding:9px 12px;border-radius:8px;">Register →</a>' : '') +
+      '</div></div>';
+  }
+
   const phillyTeams = (bar.philly_affiliates || []).filter(Boolean);
   const otherTeams  = [
     ...(bar.other_nhl_nba_mlb_nfl_teams || []),
@@ -700,6 +754,12 @@ async function loadSportsData() {
           : '#f59e0b';
       }
 
+      // Doc-level logo (e.g. Celtic FC on The Plough & the Stars) overrides the
+      // team/league logo. The Fan Fest (and the World Cup layer) use the WC pin.
+      if (row.logo_url) markerLogo = row.logo_url;
+      var isFanFest = !!row.is_fan_fest;
+      if (isFanFest) { markerLogo = WORLD_CUP_ICON; markerColor = '#111827'; }
+
       var popupContent = buildSportsPopup(row);
       var marker = L.marker([lat, lng], { icon: createSportsIcon(markerColor, markerLogo) })
         .bindPopup(popupContent, { maxWidth: 260 });
@@ -709,6 +769,10 @@ async function loadSportsData() {
       marker.allTeams      = allTeams;
       marker.leagues       = leagues;
       marker.hasPhillyAffil = hasPhillyAffil;
+      marker.worldCup      = !!row.world_cup;
+      marker.isFanFest     = isFanFest;
+      marker.defaultColor  = markerColor;
+      marker.defaultLogo   = markerLogo;
       marker.neighborhood  = row.Neighborhood || null;
 
       sportsMarkers.push(marker);
@@ -748,6 +812,16 @@ if (sportsPhillyBtn) {
   sportsPhillyBtn.addEventListener('click', function() {
     sportsActiveFilters.phillyOnly = !sportsActiveFilters.phillyOnly;
     setSportsFilterActive('sports-philly-button', sportsActiveFilters.phillyOnly);
+    applySportsFilters();
+  });
+}
+
+// ─── World Cup layer toggle ─────────────────────────────────────────────────
+var sportsWorldCupBtn = document.getElementById('sports-worldcup-button');
+if (sportsWorldCupBtn) {
+  sportsWorldCupBtn.addEventListener('click', function() {
+    sportsActiveFilters.worldCup = !sportsActiveFilters.worldCup;
+    setSportsFilterActive('sports-worldcup-button', sportsActiveFilters.worldCup);
     applySportsFilters();
   });
 }
@@ -936,7 +1010,7 @@ if (sportsBarSearchInput) {
 if (window.LocationServices) {
   window.LocationServices.attach({
     map:           sportsMap,
-    getData:       function () { return sportsAllData; },
+    getData:       function () { return getFilteredSportsBars(); },
     getLatLng:     function (r) { return [r.Latitude, r.Longitude]; },
     getName:       function (r) { return r.Name; },
     renderList:    function (d) { populateSportsSidebar(d); },
