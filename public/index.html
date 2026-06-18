@@ -43,6 +43,19 @@
     <link href="css/nav-style.css" rel="stylesheet" />
     <link href="css/dark-theme.css" rel="stylesheet" />
     <link href="css/map-hub.css" rel="stylesheet" />
+    <style>
+      /* Navbar profile link: avatar + name behave as one hover/click target. */
+      #auth-profile-link { transition: opacity 0.15s ease; }
+      #auth-profile-link:hover, #auth-profile-link:focus { opacity: 0.8; }
+      #auth-profile-link #auth-user-name { color: #fff; }
+      /* SVG profile-icon fallback shown when there's no photo / it fails to load. */
+      .auth-avatar-fallback {
+        width: 28px; height: 28px; border-radius: 50%;
+        display: inline-flex; align-items: center; justify-content: center;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 0.8rem;
+      }
+    </style>
   </head>
   <body id="page-top">
     <!-- Navigation-->
@@ -61,9 +74,10 @@
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#bar-map">Bar Map</a></li>
             <!-- Auth -->
             <li class="nav-item mx-0 mx-lg-1 d-flex align-items-center gap-2" style="padding: 4px 0;">
-              <a id="auth-profile-link" href="profile.html" title="View your profile" class="d-flex align-items-center gap-2 text-decoration-none" style="display:none !important;cursor:pointer;">
-                <img id="auth-user-avatar" src="" alt="" style="width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" />
-                <span id="auth-user-name" class="nav-link py-0 px-0 px-lg-2" style="font-size:0.85rem;"></span>
+              <a id="auth-profile-link" href="profile.html" title="View your profile" class="d-flex align-items-center gap-2 text-decoration-none px-lg-2" style="display:none !important;cursor:pointer;">
+                <img id="auth-user-avatar" src="" alt="" style="display:none;width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.5);" />
+                <span id="auth-user-avatar-fallback" class="auth-avatar-fallback" aria-hidden="true"><i class="fa-solid fa-user"></i></span>
+                <span id="auth-user-name" style="font-size:0.85rem;"></span>
               </a>
               <button id="auth-signin-btn" onclick="openAuthModal()" class="btn btn-sm btn-outline-light py-1 px-3" style="font-size:0.8rem;white-space:nowrap;">
                 Sign in

@@ -117,7 +117,7 @@ Philly Mappy Hour is a hyper-local geospatial application designed to help Phila
 * Bar submission and edit submission flows
 * Softball League tracker (full 2026 season)
 
-### Phase 2: Authentication & Submission Gating *(Current Focus)*
+### Phase 2: Authentication & Submission Gating
 * Firebase Google OAuth + email/password login UI (sign-in modal or dedicated page)
 * Server middleware to verify Firebase ID tokens on POST `/submit-bar` and POST `/submit-edit`
 * Admin role check: if decoded Firebase UID matches admin email (`lou3@lourodriguez.com`), grant admin session automatically — no CAPTCHA needed
@@ -149,7 +149,7 @@ Philly Mappy Hour is a hyper-local geospatial application designed to help Phila
   * Friends activity feed: see what bars friends saved, rated, or visited
   * Friends' ratings visible on bar detail cards ("Your friend Alex rated this 4/5 for vibe")
 
-### Phase 5: Happy Hour Discovery Map (MVP)
+### Phase 5: Happy Hour Discovery Map (MVP) *(Current Focus)*
 **Goal:** Let users find bars with active happy hours and verify info at the source.
 
 * Identify bars that advertise happy hours via website, PDF menu, or publicly available sources

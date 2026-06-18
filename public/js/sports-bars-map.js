@@ -785,15 +785,19 @@ async function loadSportsData() {
 
     if (window._sportsDrawerSetData) window._sportsDrawerSetData(bars);
 
-    // ── Auto-select Premier League on initial load ──────────────────────────
-    sportsActiveFilters.league = 'Premier League';
-    setSportsFilterLabel('sports-league-button', 'Premier League');
-    setSportsFilterActive('sports-league-button', true);
-    buildSportsTeamDropdownForLeague(sportsAllTeams, 'Premier League');
+    // ── Auto-select the World Cup layer on initial load ─────────────────────
+    sportsActiveFilters.worldCup = true;
+    setSportsFilterActive('sports-worldcup-button', true);
+    // Leave the league filter unset (defaults to "All") so the World Cup layer
+    // isn't further narrowed by a league.
+    sportsActiveFilters.league = null;
+    setSportsFilterLabel('sports-league-button', 'League');
+    setSportsFilterActive('sports-league-button', false);
+    clearSportsTeamDropdown();
 
-    // Sync mobile modal pill to Premier League as well
+    // Sync mobile modal league pill back to "All"
     document.querySelectorAll('#mobile-sports-league-buttons .mobile-filter-btn-option').forEach(function(btn) {
-      btn.classList.toggle('active', btn.dataset.value === 'Premier League');
+      btn.classList.toggle('active', btn.dataset.value === 'All');
     });
 
     applySportsFilters();

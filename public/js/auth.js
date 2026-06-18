@@ -166,6 +166,7 @@ onAuthStateChanged(auth, async (user) => {
   const btnSignOut  = document.getElementById('auth-signout-btn');
   const authName    = document.getElementById('auth-user-name');
   const authAvatar  = document.getElementById('auth-user-avatar');
+  const authAvatarFallback = document.getElementById('auth-user-avatar-fallback');
   const profileLink = document.getElementById('auth-profile-link');
 
   if (user) {
@@ -175,8 +176,22 @@ onAuthStateChanged(auth, async (user) => {
     // The whole avatar+name area is a link to the profile page.
     if (profileLink) profileLink.style.display = 'flex';
     if (authAvatar) {
-      if (user.photoURL) { authAvatar.src = user.photoURL; authAvatar.style.display = ''; }
-      else { authAvatar.style.display = 'none'; }
+      const showFallback = () => {
+        authAvatar.style.display = 'none';
+        if (authAvatarFallback) authAvatarFallback.style.display = '';
+      };
+      const showPhoto = () => {
+        authAvatar.style.display = '';
+        if (authAvatarFallback) authAvatarFallback.style.display = 'none';
+      };
+      if (user.photoURL) {
+        // Fall back to the profile icon if the photo fails to load.
+        authAvatar.onerror = showFallback;
+        authAvatar.src = user.photoURL;
+        showPhoto();
+      } else {
+        showFallback();
+      }
     }
     // Close the auth modal if it's open.
     const modalEl = document.getElementById('authModal');
