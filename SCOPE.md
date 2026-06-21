@@ -117,14 +117,14 @@ Philly Mappy Hour is a hyper-local geospatial application designed to help Phila
 * Bar submission and edit submission flows
 * Softball League tracker (full 2026 season)
 
-### Phase 2: Authentication & Submission Gating
+### Phase 2: Authentication & Submission Gating (Complete)
 * Firebase Google OAuth + email/password login UI (sign-in modal or dedicated page)
 * Server middleware to verify Firebase ID tokens on POST `/submit-bar` and POST `/submit-edit`
 * Admin role check: if decoded Firebase UID matches admin email (`lou3@lourodriguez.com`), grant admin session automatically — no CAPTCHA needed
 * "Sign in to contribute" prompt on submission forms for unauthenticated users; map browsing remains public
 * User profile page (submitted bars history, saved bars placeholder)
 
-### Phase 3: Location Services
+### Phase 3: Location Services (Complete)
 * **Share location:** Browser Geolocation API prompt to share current position
 * **"You are here" marker:** User's position shown on the map as a distinct pin
 * **Nearby bar query:** Spatial query (MongoDB `$near`) to find bars within a configurable radius of the user
