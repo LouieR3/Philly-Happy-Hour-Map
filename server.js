@@ -1019,17 +1019,25 @@ app.get('/api/bars', async (req, res) => {
 const HappyHour     = mappyHourDb.model('HappyHour',     new mongoose.Schema({}, { collection: 'happy_hours',      strict: false }));
 const HappyHourItem = mappyHourDb.model('HappyHourItem', new mongoose.Schema({}, { collection: 'happy_hour_items', strict: false }));
 
-// Public Happy Hour feed: join happy_hours (status=found) → bars (for lat/lng +
-// neighborhood) → happy_hour_items (grouped per bar). The map filters
-// client-side, so this returns the full set; bars with no items still appear
-// (source link + times), so the layer is useful even before pass 2 runs.
+// Philadelphia-proper bounding box — keeps the feed (and the map) scoped to the
+// city instead of the whole metro, which also keeps the payload small.
+const PHILLY_BBOX = { minLat: 39.86, maxLat: 40.14, minLng: -75.29, maxLng: -74.94 };
+
+// Public Happy Hour feed: join happy_hours → bars (for lat/lng + neighborhood) →
+// happy_hour_items (grouped per bar). Excludes bars whose only "source" is the
+// homepage (no real menu/HH link) — those are filtered out until a later pass
+// extracts a proper menu. Bars with a real source but no items yet still appear
+// (source link + times), so the layer is useful before pass 2 runs.
 app.get('/api/happy-hours', async (req, res) => {
   try {
     const [hhs, items, bars] = await Promise.all([
       HappyHour.find({ status: 'found' }).lean(),
       HappyHourItem.find({}, { __v: 0 }).lean(),
       Bar.find(
-        { Latitude: { $exists: true, $ne: null }, Longitude: { $exists: true, $ne: null } },
+        {
+          Latitude:  { $gte: PHILLY_BBOX.minLat, $lte: PHILLY_BBOX.maxLat },
+          Longitude: { $gte: PHILLY_BBOX.minLng, $lte: PHILLY_BBOX.maxLng },
+        },
         { Name: 1, 'Yelp Alias': 1, Latitude: 1, Longitude: 1, Neighborhood: 1, _id: 0 }
       ).lean(),
     ]);
@@ -1057,9 +1065,12 @@ app.get('/api/happy-hours', async (req, res) => {
 
     const out = [];
     for (const hh of hhs) {
+      // Skip "homepage-only" results: no source link, the source IS the plain
+      // website, or pass 1 flagged it homepage — none are real HH menus yet.
+      if (hh.source_type === 'homepage' || !hh.source_url || hh.source_url === hh.website) continue;
       const bar = (hh.yelp_alias && barByAlias.get(hh.yelp_alias))
         || barByName.get((hh.bar_name || '').toLowerCase());
-      if (!bar) continue; // no geocoded bar to place a marker — skip
+      if (!bar) continue; // no geocoded bar in Philadelphia to place a marker — skip
       const barItems = itemsByBar.get((hh.bar_name || '').toLowerCase()) || [];
       out.push({
         name:          hh.bar_name,

@@ -1,13 +1,14 @@
 // ─── Happy Hour map (SCOPE Phase 5) ────────────────────────────────────────
-// Reads /api/happy-hours (happy_hours ⨝ bars ⨝ happy_hour_items) and renders a
-// toggleable layer with day / drink / neighborhood filters. Mirrors the
-// pool/sports map conventions so it slots into the mobile hub + Near Me.
+// Progressive loading: the map opens showing the Philadelphia neighborhood
+// overlay (no points). Click a neighborhood to load just that area's happy-hour
+// points — this keeps the initial render light instead of dropping every marker
+// at once. Day / drink / search filters apply on top of the selected areas.
 
 const HH_API_BASE = window.location.hostname === 'localhost'
   ? 'http://localhost:3000'
   : 'https://philly-happy-hour-map-production.up.railway.app';
 
-var happyHourMap = L.map('happy-hour-leaflet-map').setView([39.951, -75.163], 12);
+var happyHourMap = L.map('happy-hour-leaflet-map').setView([39.9526, -75.1652], 12);
 happyHourMap.zoomControl.setPosition('bottomright');
 
 var hhBasemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -27,10 +28,14 @@ var hhLight = false;
   });
 })();
 
-var hhAllData = [];
-var hhMarkers = [];
+// ── State ─────────────────────────────────────────────────────────────────────
+var hhAllData = [];                 // bars (with ._nh assigned) inside a Philly neighborhood
+var hhLayer = L.layerGroup().addTo(happyHourMap);   // currently-shown markers
+var hhGeoLayer = null;              // neighborhood polygon overlay
+var hhCountByNh = {};               // LISTNAME -> # of HH bars
+var selectedHoods = new Set();      // LISTNAME(s) the user has clicked into
 var hhSearch = '';
-const hhFilters = { day: '', drink: '', neighborhood: '' };
+const hhFilters = { day: '', drink: '' };
 
 function hhEsc(s) {
   if (s === undefined || s === null) return '';
@@ -67,44 +72,50 @@ function buildHHPopup(bar) {
     '</div></div>';
 }
 
-// ── Filter predicates ───────────────────────────────────────────────────────
+function ensureMarker(bar) {
+  if (!bar._marker) {
+    bar._marker = L.marker([bar.lat, bar.lng], { icon: createHHIcon() })
+      .bindPopup(function () { return buildHHPopup(bar); }, { maxWidth: 260 });  // lazy popup HTML
+    bar._marker.barName = bar.name;
+  }
+  return bar._marker;
+}
+
+// ── Filters ───────────────────────────────────────────────────────────────────
 function hhDayMatches(bar) {
   if (!hhFilters.day) return true;
   var d = (bar.hh_days || '').toLowerCase();
   if (!d) return true;                       // unknown days stay visible
   if (/dai|every|all|week/.test(d)) return true;
-  return d.indexOf(hhFilters.day.slice(0, 3)) !== -1;   // "mon" matches "monday"/"mon-fri"
+  return d.indexOf(hhFilters.day.slice(0, 3)) !== -1;
 }
 function hhDrinkMatches(bar) {
   if (!hhFilters.drink) return true;
   return (bar.categories || []).indexOf(hhFilters.drink) !== -1;
 }
-function hhNeighborhoodMatches(bar) {
-  if (!hhFilters.neighborhood) return true;
-  return (bar.neighborhood || null) === hhFilters.neighborhood;
-}
 function hhSearchMatches(bar) {
-  if (!hhSearch) return true;
-  return (bar.name || '').toLowerCase().indexOf(hhSearch) !== -1;
+  return !hhSearch || (bar.name || '').toLowerCase().indexOf(hhSearch) !== -1;
 }
-function getFilteredHH() {
+
+// Bars to actually show = those in a selected neighborhood that pass the filters.
+function getVisibleHH() {
+  if (!selectedHoods.size) return [];
   return hhAllData.filter(function (b) {
-    return hhDayMatches(b) && hhDrinkMatches(b) && hhNeighborhoodMatches(b) && hhSearchMatches(b);
+    return selectedHoods.has(b._nh) && hhDayMatches(b) && hhDrinkMatches(b) && hhSearchMatches(b);
   });
 }
 
 // ── Render ───────────────────────────────────────────────────────────────────
-function applyHHFilters() {
-  var filtered = getFilteredHH();
-  var keep = new Set(filtered.map(function (b) { return b.name; }));
-  hhMarkers.forEach(function (m) {
-    if (keep.has(m.barName)) { if (!happyHourMap.hasLayer(m)) m.addTo(happyHourMap); }
-    else if (happyHourMap.hasLayer(m)) happyHourMap.removeLayer(m);
-  });
-  var ordered = filtered;
+function renderHHView() {
+  var visible = getVisibleHH();
+  hhLayer.clearLayers();
+  visible.forEach(function (b) { hhLayer.addLayer(ensureMarker(b)); });
+  if (hhGeoLayer) hhGeoLayer.setStyle(hhPolyStyle);
+
+  var ordered = visible;
   if (window.mappyUserLocation && typeof window.mappyHaversineMiles === 'function') {
     var u = window.mappyUserLocation;
-    ordered = filtered.slice().sort(function (a, b) {
+    ordered = visible.slice().sort(function (a, b) {
       return window.mappyHaversineMiles(u.lat, u.lng, +a.lat, +a.lng) -
              window.mappyHaversineMiles(u.lat, u.lng, +b.lat, +b.lng);
     });
@@ -124,13 +135,13 @@ function hhCard(bar) {
   var body = document.createElement('div');
   body.className = 'bar-card-body';
   body.innerHTML = '<div class="bar-card-name">' + hhEsc(bar.name) + '</div>' +
-    '<div class="bar-card-address">' + hhEsc(bar.neighborhood || '') + '</div>' +
+    '<div class="bar-card-address">' + hhEsc(bar.neighborhood || bar._nh || '') + '</div>' +
     (bar.hh_times_raw ? '<div class="bar-card-address" style="color:#fbbf24;font-weight:normal;">' + hhEsc(bar.hh_times_raw) + '</div>' : '') +
     (tags ? '<div class="bar-card-tags">' + tags + '</div>' : '');
   card.appendChild(ph);
   card.appendChild(body);
   card.addEventListener('click', function () {
-    var m = hhMarkers.find(function (x) { return x.barName === bar.name; });
+    var m = bar._marker;
     if (m) { happyHourMap.setView(m.getLatLng(), 16); m.openPopup(); }
   });
   return card;
@@ -140,63 +151,135 @@ function populateHHSidebar(list) {
   var el = document.getElementById('hh-bar-list');
   if (!el) return;
   el.innerHTML = '';
-  if (!list.length) { el.innerHTML = '<p style="color:var(--mh-text-muted);padding:12px;">No happy hours match.</p>'; return; }
+  if (!selectedHoods.size) {
+    el.innerHTML = '<p style="color:var(--mh-text-muted);padding:12px;">Tap a neighborhood on the map to load its happy hours.</p>';
+    return;
+  }
+  if (!list.length) { el.innerHTML = '<p style="color:var(--mh-text-muted);padding:12px;">No happy hours match here.</p>'; return; }
   list.forEach(function (b) { el.appendChild(hhCard(b)); });
 }
 
+// ── Neighborhood overlay ───────────────────────────────────────────────────────
+function hhPolyStyle(feature) {
+  var name = feature.properties.LISTNAME;
+  var has = hhCountByNh[name] > 0;
+  if (selectedHoods.has(name)) {
+    return { color: '#34d399', weight: 2, fillColor: '#34d399', fillOpacity: 0.22 };
+  }
+  return {
+    color: has ? '#f59e0b' : '#475569',
+    weight: 1,
+    fillColor: '#f59e0b',
+    fillOpacity: has ? 0.10 : 0.02,
+    dashArray: has ? null : '3',
+  };
+}
+
+function toggleHood(name) {
+  if (selectedHoods.has(name)) selectedHoods.delete(name);
+  else selectedHoods.add(name);
+  // keep the dropdown in sync (single selection) for clarity
+  var sel = document.getElementById('hh-neighborhood-filter');
+  if (sel) sel.value = selectedHoods.size === 1 ? [...selectedHoods][0] : '';
+  renderHHView();
+}
+
+function buildHHGeoLayer(geo) {
+  hhGeoLayer = L.geoJSON(geo, {
+    style: hhPolyStyle,
+    onEachFeature: function (feature, layer) {
+      var name = feature.properties.LISTNAME;
+      var count = hhCountByNh[name] || 0;
+      layer.bindTooltip(name + (count ? ' · ' + count + ' happy hour' + (count !== 1 ? 's' : '') : ''),
+        { sticky: true });
+      layer.on({
+        click: function () { toggleHood(name); },
+        mouseover: function () { if (!selectedHoods.has(name)) layer.setStyle({ fillOpacity: 0.2 }); },
+        mouseout: function () { if (!selectedHoods.has(name)) hhGeoLayer.resetStyle(layer); },
+      });
+    },
+  }).addTo(happyHourMap);
+}
+
+function assignNeighborhood(bar, geo) {
+  if (!window.turf) return bar.neighborhood || null;
+  try {
+    var pt = turf.point([+bar.lng, +bar.lat]);
+    for (var i = 0; i < geo.features.length; i++) {
+      if (turf.booleanPointInPolygon(pt, geo.features[i])) return geo.features[i].properties.LISTNAME;
+    }
+  } catch (e) {}
+  return null;
+}
+
 function populateHHNeighborhoods() {
-  var hoods = [...new Set(hhAllData.map(function (b) { return b.neighborhood; }).filter(Boolean))].sort();
+  var hoods = Object.keys(hhCountByNh).filter(function (n) { return hhCountByNh[n] > 0; }).sort();
   ['hh-neighborhood-filter', 'hh-mobile-neighborhood-select'].forEach(function (id) {
     var sel = document.getElementById(id);
     if (!sel) return;
     hoods.forEach(function (h) {
-      var o = document.createElement('option'); o.value = h; o.textContent = h; sel.appendChild(o);
+      var o = document.createElement('option'); o.value = h; o.textContent = h + ' (' + hhCountByNh[h] + ')'; sel.appendChild(o);
     });
   });
 }
 
-// ── Load data ─────────────────────────────────────────────────────────────────
-fetch(HH_API_BASE + '/api/happy-hours')
-  .then(function (r) { return r.json(); })
-  .then(function (data) {
-    hhAllData = Array.isArray(data) ? data.filter(function (b) { return b.lat != null && b.lng != null; }) : [];
-    hhAllData.forEach(function (bar) {
-      var m = L.marker([bar.lat, bar.lng], { icon: createHHIcon() }).bindPopup(buildHHPopup(bar), { maxWidth: 260 });
-      m.barName = bar.name;
-      hhMarkers.push(m);
-      m.addTo(happyHourMap);
-    });
-    populateHHNeighborhoods();
-    populateHHSidebar(hhAllData);
-    if (window._hhDrawerSetData) window._hhDrawerSetData(hhAllData);
-  })
-  .catch(function (err) { console.error('[happy-hour] load failed:', err); });
+// ── Load data + overlay together ────────────────────────────────────────────
+Promise.all([
+  fetch(HH_API_BASE + '/api/happy-hours').then(function (r) { return r.json(); }).catch(function () { return []; }),
+  fetch('assets/philadelphia-neighborhoods.geojson').then(function (r) { return r.json(); }).catch(function () { return null; }),
+]).then(function (res) {
+  var data = Array.isArray(res[0]) ? res[0] : [];
+  var geo = res[1];
+  data = data.filter(function (b) { return b.lat != null && b.lng != null; });
+  if (geo) {
+    data.forEach(function (b) { b._nh = assignNeighborhood(b, geo); });
+    data = data.filter(function (b) { return b._nh; });   // Philadelphia proper only
+    hhAllData = data;
+    hhAllData.forEach(function (b) { hhCountByNh[b._nh] = (hhCountByNh[b._nh] || 0) + 1; });
+    buildHHGeoLayer(geo);
+  } else {
+    hhAllData = data;   // no overlay available — fall back to showing everything
+    hhAllData.forEach(function (b) { ensureMarker(b); hhLayer.addLayer(b._marker); });
+  }
+  populateHHNeighborhoods();
+  renderHHView();
+}).catch(function (err) { console.error('[happy-hour] load failed:', err); });
 
 // ── Filter wiring ───────────────────────────────────────────────────────────
-function bindHHSelect(id, key, mirrorId) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.addEventListener('change', function () {
-    hhFilters[key] = el.value;
-    if (mirrorId) { var mm = document.getElementById(mirrorId); if (mm) mm.value = el.value; }
-    applyHHFilters();
-  });
-}
-bindHHSelect('hh-day-filter', 'day', 'hh-mobile-day-select');
-bindHHSelect('hh-drink-filter', 'drink', 'hh-mobile-drink-select');
-bindHHSelect('hh-neighborhood-filter', 'neighborhood', 'hh-mobile-neighborhood-select');
+var hhDayEl = document.getElementById('hh-day-filter');
+if (hhDayEl) hhDayEl.addEventListener('change', function () {
+  hhFilters.day = this.value;
+  var mm = document.getElementById('hh-mobile-day-select'); if (mm) mm.value = this.value;
+  renderHHView();
+});
+var hhDrinkEl = document.getElementById('hh-drink-filter');
+if (hhDrinkEl) hhDrinkEl.addEventListener('change', function () {
+  hhFilters.drink = this.value;
+  var mm = document.getElementById('hh-mobile-drink-select'); if (mm) mm.value = this.value;
+  renderHHView();
+});
+var hhNhEl = document.getElementById('hh-neighborhood-filter');
+if (hhNhEl) hhNhEl.addEventListener('change', function () {
+  selectedHoods.clear();
+  if (this.value) {
+    selectedHoods.add(this.value);
+    var lyr = hhGeoLayer && hhGeoLayer.getLayers().find(function (l) { return l.feature.properties.LISTNAME === hhNhEl.value; });
+    if (lyr) happyHourMap.fitBounds(lyr.getBounds(), { maxZoom: 15 });
+  }
+  renderHHView();
+});
 
 var hhSearchEl = document.getElementById('hh-bar-search');
-if (hhSearchEl) hhSearchEl.addEventListener('input', function () { hhSearch = this.value.trim().toLowerCase(); applyHHFilters(); });
+if (hhSearchEl) hhSearchEl.addEventListener('input', function () { hhSearch = this.value.trim().toLowerCase(); renderHHView(); });
 
 var hhResetBtn = document.getElementById('hh-reset-button');
 if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
-  hhFilters.day = hhFilters.drink = hhFilters.neighborhood = ''; hhSearch = '';
+  hhFilters.day = hhFilters.drink = ''; hhSearch = ''; selectedHoods.clear();
   ['hh-day-filter', 'hh-drink-filter', 'hh-neighborhood-filter', 'hh-mobile-day-select', 'hh-mobile-drink-select', 'hh-mobile-neighborhood-select'].forEach(function (id) {
     var el = document.getElementById(id); if (el) el.value = '';
   });
   if (hhSearchEl) hhSearchEl.value = '';
-  applyHHFilters();
+  renderHHView();
 });
 
 // ── Mobile filter modal ───────────────────────────────────────────────────────
@@ -211,12 +294,13 @@ if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
   if (applyBtn) applyBtn.addEventListener('click', function () {
     hhFilters.day = (document.getElementById('hh-mobile-day-select') || {}).value || '';
     hhFilters.drink = (document.getElementById('hh-mobile-drink-select') || {}).value || '';
-    hhFilters.neighborhood = (document.getElementById('hh-mobile-neighborhood-select') || {}).value || '';
-    // mirror to desktop selects
-    var map = { 'hh-day-filter': hhFilters.day, 'hh-drink-filter': hhFilters.drink, 'hh-neighborhood-filter': hhFilters.neighborhood };
+    var nh = (document.getElementById('hh-mobile-neighborhood-select') || {}).value || '';
+    selectedHoods.clear();
+    if (nh) selectedHoods.add(nh);
+    var map = { 'hh-day-filter': hhFilters.day, 'hh-drink-filter': hhFilters.drink, 'hh-neighborhood-filter': nh };
     Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) el.value = map[id]; });
     if (modal) modal.classList.remove('active');
-    applyHHFilters();
+    renderHHView();
   });
   if (resetBtn) resetBtn.addEventListener('click', function () {
     ['hh-mobile-day-select', 'hh-mobile-drink-select', 'hh-mobile-neighborhood-select'].forEach(function (id) {
@@ -234,7 +318,7 @@ if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
     var q = ((document.getElementById('hh-drawer-search') || {}).value || '').toLowerCase();
     row.innerHTML = '';
     var shown = list.filter(function (b) { return !q || (b.name || '').toLowerCase().indexOf(q) !== -1; });
-    if (!shown.length) { row.innerHTML = '<p style="color:#64748b;padding:20px;font-size:0.85rem;">No happy hours match.</p>'; return; }
+    if (!shown.length) { row.innerHTML = '<p style="color:#64748b;padding:20px;font-size:0.85rem;">Tap a neighborhood, then your happy hours show here.</p>'; return; }
     shown.forEach(function (bar) {
       var card = document.createElement('div');
       card.className = 'drawer-card';
@@ -244,11 +328,11 @@ if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
       var body = document.createElement('div');
       body.className = 'drawer-card-body';
       body.innerHTML = '<div class="drawer-card-name">' + hhEsc(bar.name || '') + '</div>' +
-        (bar.neighborhood ? '<div class="drawer-card-meta">' + hhEsc(bar.neighborhood) + '</div>' : '') +
+        (bar.neighborhood || bar._nh ? '<div class="drawer-card-meta">' + hhEsc(bar.neighborhood || bar._nh) + '</div>' : '') +
         (bar.hh_times_raw ? '<div class="drawer-card-tags"><span class="drawer-card-tag">' + hhEsc(bar.hh_times_raw) + '</span></div>' : '');
       card.appendChild(ph); card.appendChild(body);
       card.addEventListener('click', function () {
-        var m = hhMarkers.find(function (x) { return x.barName === bar.name; });
+        var m = bar._marker;
         if (m) { close(); happyHourMap.setView(m.getLatLng(), 16); m.openPopup(); }
       });
       row.appendChild(card);
@@ -274,11 +358,11 @@ if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
   if (search) search.addEventListener('input', function () { render(drawerData); });
 })();
 
-// ── Location services: "Near Me" ──────────────────────────────────────────────
+// ── Location services: "Near Me" (sorts the loaded points by distance) ─────────
 if (window.LocationServices) {
   window.LocationServices.attach({
     map:           happyHourMap,
-    getData:       function () { return getFilteredHH(); },
+    getData:       function () { return getVisibleHH(); },
     getLatLng:     function (b) { return [b.lat, b.lng]; },
     getName:       function (b) { return b.name; },
     renderList:    function (d) { populateHHSidebar(d); },
