@@ -1012,6 +1012,77 @@ app.get('/api/bars', async (req, res) => {
   }
 });
 
+// ─── Happy Hour (Phase 5) ───────────────────────────────────────────────────
+// Collections written by the Python pipeline in /Happy Hour:
+//   happy_hours       — one doc per bar (source link/pdf + parsed HH times + raw text)
+//   happy_hour_items  — one doc per extracted+normalized drink/food item
+const HappyHour     = mappyHourDb.model('HappyHour',     new mongoose.Schema({}, { collection: 'happy_hours',      strict: false }));
+const HappyHourItem = mappyHourDb.model('HappyHourItem', new mongoose.Schema({}, { collection: 'happy_hour_items', strict: false }));
+
+// Public Happy Hour feed: join happy_hours (status=found) → bars (for lat/lng +
+// neighborhood) → happy_hour_items (grouped per bar). The map filters
+// client-side, so this returns the full set; bars with no items still appear
+// (source link + times), so the layer is useful even before pass 2 runs.
+app.get('/api/happy-hours', async (req, res) => {
+  try {
+    const [hhs, items, bars] = await Promise.all([
+      HappyHour.find({ status: 'found' }).lean(),
+      HappyHourItem.find({}, { __v: 0 }).lean(),
+      Bar.find(
+        { Latitude: { $exists: true, $ne: null }, Longitude: { $exists: true, $ne: null } },
+        { Name: 1, 'Yelp Alias': 1, Latitude: 1, Longitude: 1, Neighborhood: 1, _id: 0 }
+      ).lean(),
+    ]);
+
+    // Index bars by lowercased Name and by Yelp Alias for the join.
+    const barByName  = new Map();
+    const barByAlias = new Map();
+    bars.forEach(b => {
+      if (b.Name) barByName.set(String(b.Name).toLowerCase(), b);
+      if (b['Yelp Alias']) barByAlias.set(b['Yelp Alias'], b);
+    });
+
+    // Group items by bar_name.
+    const itemsByBar = new Map();
+    items.forEach(it => {
+      const k = (it.bar_name || '').toLowerCase();
+      if (!itemsByBar.has(k)) itemsByBar.set(k, []);
+      itemsByBar.get(k).push({
+        category:        it.category || 'other',
+        normalized_item: it.normalized_item,
+        raw_item:        it.raw_item,
+        hh_price:        it.hh_price,
+      });
+    });
+
+    const out = [];
+    for (const hh of hhs) {
+      const bar = (hh.yelp_alias && barByAlias.get(hh.yelp_alias))
+        || barByName.get((hh.bar_name || '').toLowerCase());
+      if (!bar) continue; // no geocoded bar to place a marker — skip
+      const barItems = itemsByBar.get((hh.bar_name || '').toLowerCase()) || [];
+      out.push({
+        name:          hh.bar_name,
+        neighborhood:  bar.Neighborhood || null,
+        lat:           bar.Latitude,
+        lng:           bar.Longitude,
+        website:       hh.website || null,
+        source_url:    hh.source_url || null,
+        source_type:   hh.source_type || null,
+        hh_times_raw:  hh.hh_times_raw || null,
+        hh_days:       hh.hh_days || null,
+        hh_start:      hh.hh_start || null,
+        hh_end:        hh.hh_end || null,
+        categories:    [...new Set(barItems.map(i => i.category))],
+        items:         barItems,
+      });
+    }
+    res.json(out);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Batch meta lookup by bar name — photos, rating, price
 // ?names=Bar+One|Bar+Two  (pipe-separated, URI-encoded)
 // Returns: { "Bar Name": { photos: [...], rating: 4.5, price: "$$" } }

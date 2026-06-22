@@ -70,6 +70,7 @@
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#quizzo">Quizzo</a></li>
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#pool-bars">Pool Bars</a></li>
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#sports-bars">Sports Bars</a></li>
+            <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#happy-hour">Happy Hour</a></li>
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#meet-the-team">About</a></li>
             <li class="nav-item mx-0"><a class="nav-link py-2 px-0 px-lg-3 rounded" href="#bar-map">Bar Map</a></li>
             <!-- Auth -->
@@ -102,8 +103,8 @@
       <button type="button" class="hub-tab" data-section="sports-bars">
         <i class="fa-solid fa-futbol" aria-hidden="true"></i><span>Sports</span>
       </button>
-      <button type="button" class="hub-tab hub-tab-locked" data-section="" aria-disabled="true">
-        <i class="fa-solid fa-lock" aria-hidden="true"></i><span>Happy&nbsp;Hr</span>
+      <button type="button" class="hub-tab" data-section="happy-hour">
+        <i class="fa-solid fa-martini-glass-citrus" aria-hidden="true"></i><span>Happy&nbsp;Hr</span>
       </button>
     </nav>
 
@@ -1065,6 +1066,122 @@
       </div>
     </section>
 
+    <!-- Happy Hour Section -->
+    <section class="page-section section-alt" id="happy-hour">
+      <div class="container-xxxl">
+        <span class="section-eyebrow">Deals</span>
+        <h2 class="page-section-heading text-center text-uppercase mb-0">Philly Happy Hour Map</h2>
+        <div class="divider-custom">
+          <div class="divider-custom-line"></div>
+          <div class="divider-custom-icon"><i class="fa-solid fa-martini-glass-citrus"></i></div>
+          <div class="divider-custom-line"></div>
+        </div>
+
+        <!-- Happy Hour Filters -->
+        <div id="hh-filters" class="filter-box mb-3">
+          <select id="hh-day-filter" class="form-select rounded-pill" style="width:auto;">
+            <option value="">Any day</option>
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday">Friday</option>
+            <option value="saturday">Saturday</option>
+            <option value="sunday">Sunday</option>
+          </select>
+          <select id="hh-drink-filter" class="form-select rounded-pill" style="width:auto;">
+            <option value="">Any drink</option>
+            <option value="beer">Beer</option>
+            <option value="wine">Wine</option>
+            <option value="cocktail">Cocktail</option>
+            <option value="seltzer">Seltzer</option>
+            <option value="cider">Cider</option>
+            <option value="food">Food</option>
+          </select>
+          <select id="hh-neighborhood-filter" class="form-select rounded-pill" style="width:auto;">
+            <option value="">Any neighborhood</option>
+          </select>
+          <button id="hh-reset-button" class="btn btn-primary rounded-pill">
+            <i class="fa-solid fa-rotate-left" style="margin-right:8px;"></i>Reset
+          </button>
+        </div>
+
+        <!-- Map + Sidebar -->
+        <div class="row mt-3 align-items-start">
+          <div class="col-lg-8" id="hh-map-column">
+            <button class="basemap-toggle-btn" id="hh-basemap-toggle" title="Toggle Map Style">
+              <i class="fa-solid fa-sun"></i>
+              <span>Light Mode</span>
+            </button>
+            <button class="mobile-filter-btn" id="hh-mobile-filter-btn" title="Open Filters">
+              <i class="fa-solid fa-sliders"></i>
+            </button>
+            <div id="happy-hour-leaflet-map"></div>
+            <div class="mobile-action-buttons-wrapper d-lg-none d-flex justify-content-center gap-2 mt-3">
+              <button class="list-trigger-btn" id="hh-list-btn">
+                <i class="fa-solid fa-list"></i> List
+              </button>
+            </div>
+          </div>
+
+          <!-- Desktop list column -->
+          <div class="col-lg-4 mt-4 mt-lg-0" id="hh-table-column">
+            <div id="hh-bar-table-container">
+              <h3 class="text-center d-none d-lg-block">Happy Hours</h3>
+              <input type="text" id="hh-bar-search" class="form-control mb-3" placeholder="Search happy hours..." />
+              <div id="hh-bar-list" class="bar-card-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Filter Modal -->
+        <div class="mobile-filter-modal" id="hh-mobile-filter-modal">
+          <div class="mobile-filter-header">
+            <h2>Filters</h2>
+            <button class="mobile-filter-close" id="hh-filter-close"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="mobile-filter-content">
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Day</label>
+              <select class="mobile-filter-dropdown-select" id="hh-mobile-day-select">
+                <option value="">Any day</option>
+                <option value="monday">Monday</option>
+                <option value="tuesday">Tuesday</option>
+                <option value="wednesday">Wednesday</option>
+                <option value="thursday">Thursday</option>
+                <option value="friday">Friday</option>
+                <option value="saturday">Saturday</option>
+                <option value="sunday">Sunday</option>
+              </select>
+            </div>
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Drink</label>
+              <select class="mobile-filter-dropdown-select" id="hh-mobile-drink-select">
+                <option value="">Any drink</option>
+                <option value="beer">Beer</option>
+                <option value="wine">Wine</option>
+                <option value="cocktail">Cocktail</option>
+                <option value="seltzer">Seltzer</option>
+                <option value="cider">Cider</option>
+                <option value="food">Food</option>
+              </select>
+            </div>
+            <div class="mobile-filter-section">
+              <label class="mobile-filter-section-title">Neighborhood</label>
+              <select class="mobile-filter-dropdown-select" id="hh-mobile-neighborhood-select">
+                <option value="">Any neighborhood</option>
+              </select>
+            </div>
+          </div>
+          <div class="mobile-filter-footer">
+            <button class="btn-reset" id="hh-mobile-filter-reset">Reset</button>
+            <button class="btn-apply" id="hh-mobile-filter-apply">Apply</button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- About Section-->
     <section class="page-section bg-primary text-white mb-0" id="meet-the-team">
       <div class="container">
@@ -1280,6 +1397,8 @@
     <script src="js/pool-bars-map.js"></script>
     <!-- SPORTS BARS MAP -->
     <script src="js/sports-bars-map.js"></script>
+    <!-- HAPPY HOUR MAP -->
+    <script src="js/happy-hour-map.js"></script>
     <!-- MOBILE MAP HUB (tabs + zero-scroll shell; mobile only) -->
     <script src="js/map-hub.js"></script>
     <!-- MOBILE BOTTOM SHEET -->
@@ -1395,6 +1514,18 @@
       <button class="drawer-close" id="sports-drawer-close"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div class="drawer-card-row" id="sports-drawer-cards"></div>
+  </div>
+
+  <!-- ── Happy Hour bottom drawer (mobile only) ─────────────────────── -->
+  <div class="drawer-backdrop" id="hh-drawer-backdrop"></div>
+  <div class="bottom-drawer" id="hh-drawer">
+    <div class="drawer-pip"></div>
+    <div class="drawer-header">
+      <span class="drawer-title">Happy Hours</span>
+      <input type="text" class="drawer-search" id="hh-drawer-search" placeholder="Search…" />
+      <button class="drawer-close" id="hh-drawer-close"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="drawer-card-row" id="hh-drawer-cards"></div>
   </div>
 
   </body>

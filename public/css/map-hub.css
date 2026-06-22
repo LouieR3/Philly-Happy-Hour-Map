@@ -118,7 +118,8 @@
   }
   body.hub-active .hub-current #leaflet-map,
   body.hub-active .hub-current #pool-leaflet-map,
-  body.hub-active .hub-current #sports-leaflet-map {
+  body.hub-active .hub-current #sports-leaflet-map,
+  body.hub-active .hub-current #happy-hour-leaflet-map {
     height: 100% !important;
     min-height: 0 !important;
     border-radius: 0 !important;

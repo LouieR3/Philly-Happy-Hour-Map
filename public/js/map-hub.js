@@ -17,6 +17,7 @@
     { sec: 'quizzo',      getMap: function () { return window.leafletmap; } },
     { sec: 'pool-bars',   getMap: function () { return window.poolMap; } },
     { sec: 'sports-bars', getMap: function () { return window.sportsMap; } },
+    { sec: 'happy-hour',  getMap: function () { return window.happyHourMap; } },
   ];
 
   var tabsEl = document.getElementById('map-hub-tabs');
@@ -93,7 +94,7 @@
   // On mobile, map links re-enter the hub on the right tab; non-map links
   // (About, Bar Map, brand) exit the hub so the full page scrolls normally —
   // this keeps the marketing/About content reachable on mobile.
-  var MAP_HASHES = { '#quizzo': 'quizzo', '#pool-bars': 'pool-bars', '#sports-bars': 'sports-bars' };
+  var MAP_HASHES = { '#quizzo': 'quizzo', '#pool-bars': 'pool-bars', '#sports-bars': 'sports-bars', '#happy-hour': 'happy-hour' };
   function collapseNav() {
     var c = document.getElementById('navbarResponsive');
     if (!c || !c.classList.contains('show')) return;
