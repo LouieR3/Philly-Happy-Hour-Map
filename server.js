@@ -1033,11 +1033,11 @@ app.get('/api/happy-hours', async (req, res) => {
     const [hhs, items, bars] = await Promise.all([
       HappyHour.find({ status: 'found' }).lean(),
       HappyHourItem.find({}, { __v: 0 }).lean(),
+      // Fetch all geocoded bars and apply the Philly bbox in JS below. (A Mongo
+      // $gte/$lte query here would silently miss rows where Latitude/Longitude
+      // are stored as STRINGS — which is what collapsed the feed to one marker.)
       Bar.find(
-        {
-          Latitude:  { $gte: PHILLY_BBOX.minLat, $lte: PHILLY_BBOX.maxLat },
-          Longitude: { $gte: PHILLY_BBOX.minLng, $lte: PHILLY_BBOX.maxLng },
-        },
+        { Latitude: { $exists: true, $ne: null }, Longitude: { $exists: true, $ne: null } },
         { Name: 1, 'Yelp Alias': 1, Latitude: 1, Longitude: 1, Neighborhood: 1, _id: 0 }
       ).lean(),
     ]);
@@ -1063,20 +1063,36 @@ app.get('/api/happy-hours', async (req, res) => {
       });
     });
 
+    const inBbox = (la, ln) =>
+      la >= PHILLY_BBOX.minLat && la <= PHILLY_BBOX.maxLat &&
+      ln >= PHILLY_BBOX.minLng && ln <= PHILLY_BBOX.maxLng;
+
+    // Funnel counters so /api/happy-hours?debug=1 shows where rows drop off.
+    const counts = { hhFound: hhs.length, bars: bars.length, afterSourceFilter: 0, joined: 0, inBbox: 0 };
+    const unjoined = [];
+
     const out = [];
     for (const hh of hhs) {
       // Skip "homepage-only" results: no source link, the source IS the plain
       // website, or pass 1 flagged it homepage — none are real HH menus yet.
       if (hh.source_type === 'homepage' || !hh.source_url || hh.source_url === hh.website) continue;
+      counts.afterSourceFilter++;
+
       const bar = (hh.yelp_alias && barByAlias.get(hh.yelp_alias))
         || barByName.get((hh.bar_name || '').toLowerCase());
-      if (!bar) continue; // no geocoded bar in Philadelphia to place a marker — skip
+      if (!bar) { if (unjoined.length < 10) unjoined.push(hh.bar_name); continue; }
+      counts.joined++;
+
+      const lat = parseFloat(bar.Latitude);
+      const lng = parseFloat(bar.Longitude);
+      if (isNaN(lat) || isNaN(lng) || !inBbox(lat, lng)) continue;
+      counts.inBbox++;
+
       const barItems = itemsByBar.get((hh.bar_name || '').toLowerCase()) || [];
       out.push({
         name:          hh.bar_name,
         neighborhood:  bar.Neighborhood || null,
-        lat:           bar.Latitude,
-        lng:           bar.Longitude,
+        lat, lng,                                    // numeric, ready for the map/turf
         website:       hh.website || null,
         source_url:    hh.source_url || null,
         source_type:   hh.source_type || null,
@@ -1087,6 +1103,10 @@ app.get('/api/happy-hours', async (req, res) => {
         categories:    [...new Set(barItems.map(i => i.category))],
         items:         barItems,
       });
+    }
+
+    if (req.query.debug) {
+      return res.json({ counts, returned: out.length, unjoinedSample: unjoined, sample: out.slice(0, 3) });
     }
     res.json(out);
   } catch (err) {
