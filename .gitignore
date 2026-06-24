@@ -67,3 +67,5 @@ node_modules/
 .env.example
 node_modules/
 serviceAccountKey.json
+*.pyc
+__pycache__/

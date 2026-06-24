@@ -90,6 +90,9 @@ class DrinkNormalizer:
         self.wines = self._load(corpus_dir, 'wines.txt')
         self.beers = self._load(corpus_dir, 'beers.txt')
         self._beer_brands_lc = [b.lower() for b in self.beers]
+        # Distinctive varietal words (len>=5) to recognize wines whose menu name
+        # is just a varietal, e.g. "Orange Viognier", "Pinot Noir Rosè".
+        self._wine_terms = sorted({w.lower() for w in self.wines if len(w) >= 5}, key=len, reverse=True)
 
     @staticmethod
     def _load(d, fname):
@@ -108,7 +111,8 @@ class DrinkNormalizer:
             return 'seltzer'
         if 'cider' in t:
             return 'cider'
-        if any(k in t for k in WINE_KEYWORDS) or re.search(r'\bwine\b|\bvino\b', t):
+        if any(k in t for k in WINE_KEYWORDS) or re.search(r'\bwine\b|\bvino\b|\bblend\b|\bros[eé]\b', t) \
+                or any(re.search(r'\b' + re.escape(w) + r'\b', t) for w in self._wine_terms):
             return 'wine'
         if any(re.search(r'\b' + re.escape(s) + r'\b', t) for s in BEER_STYLES) \
                 or any(brand in t for brand in self._beer_brands_lc):
@@ -146,12 +150,14 @@ class DrinkNormalizer:
         for kw, canon in WINE_KEYWORDS.items():        # keyword -> canonical
             if kw in t:
                 return canon, 0.92
-        best, r = _best_fuzzy(t, self.wines, floor=0.80)
-        if best:
-            return best, round(r, 2)
+        for w in self._wine_terms:                     # varietal from wines.txt
+            if re.search(r'\b' + re.escape(w) + r'\b', t):
+                return w.title(), 0.9
+        if re.search(r'\bros[eé]\b', t):
+            return 'Rosé', 0.7
         if 'red' in t:
             return 'Red', 0.6
-        if 'white' in t:
+        if 'white' in t or 'blend' in t:
             return 'White', 0.6
         return 'Wine', 0.4
 

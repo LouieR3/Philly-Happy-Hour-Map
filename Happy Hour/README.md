@@ -39,11 +39,41 @@ bars ──pass1──> happy_hours ──pass2──> happy_hour_items
 
 | File | Role |
 |---|---|
-| `drink_normalizer.py` | **The ML/type system.** `DrinkNormalizer.normalize(raw)` → `{category, normalized_item, confidence, needs_review}`. Stdlib-only (corpus + `difflib` fuzzy); optional scikit-learn path. |
-| `pass1_discover.py` | Crawl each bar's site → best HH/menu link or PDF → raw text + HH times → upsert `happy_hours`. |
-| `pass2_extract.py` | Read `happy_hours.menu_text` → `(item, price)` lines → normalize → upsert `happy_hour_items`. |
+| `fetcher.py` | **Playwright** renderer for JS-heavy sites (returns rendered text + links + screenshot). |
+| `pass1_llm.py` | **Accurate pass 1 (recommended).** Render homepage → the LLM picks the HH link (or "none") → render it → the LLM extracts structured days/times. Stores confidence + provenance; reads few-shot `examples_pass1.jsonl`. |
+| `llm_client.py` | Provider-agnostic LLM call. **Defaults to a local Ollama model — free, private, no Anthropic tokens.** Switch with `LLM_PROVIDER` (`ollama` \| `openai` \| `anthropic`). |
+| `pass1_discover.py` | Heuristic pass 1 (requests + keywords). No LLM/Playwright needed; lower accuracy — kept as a fallback. |
+| `pass2_extract.py` | Read `happy_hours.menu_text` → items + prices → normalize → `happy_hour_items`. `--llm` for Claude extraction. |
+| `llm_extract.py` | Claude menu-item extractor used by `pass2_extract.py --llm`. |
+| `drink_normalizer.py` | The stdlib type system for drink normalization (corpus + `difflib`; optional scikit-learn). |
 | `db.py` | Mongo connection (`mappy_hour`), reads `MONGODB_URI` from env or `../.env`. |
-| `requirements.txt` | `pip install -r requirements.txt` |
+
+### LLM backend (local by default — no Anthropic cost)
+`pass1_llm.py` calls whatever `llm_client.py` is pointed at. The default is a
+**local Ollama model**, so it's free and nothing leaves your machine:
+
+```bash
+# one-time: install Ollama from https://ollama.com, then pull a model
+ollama pull llama3.1            # ~4.7GB; good default. Alts: qwen2.5, llama3.2:3b (faster/smaller)
+python pass1_llm.py --check-llm # sends one tiny structured prompt to confirm it works
+```
+
+Override per shell if you ever want a different backend (still no Anthropic cost for the first two):
+```bash
+$env:OLLAMA_MODEL="qwen2.5"                     # different local model
+$env:LLM_PROVIDER="openai"; $env:OPENAI_BASE_URL="https://api.groq.com/openai/v1"  # free Groq tier, etc.
+$env:LLM_PROVIDER="anthropic"                   # opt-in, COSTS TOKENS
+```
+
+> Trade-off: a local 7–8B model is less accurate than Claude at the messiest pages.
+> That's fine for the accuracy-first loop below — human review catches misses and the
+> `examples_pass1.jsonl` few-shots improve the next run. Start with `--limit`/`--neighborhood`.
+
+### Recommended workflow (accuracy first, then scale)
+1. Install Ollama + `ollama pull llama3.1`; `pip install -r requirements.txt && python -m playwright install chromium`; set `MONGODB_URI`.
+2. **Small batch:** `python pass1_llm.py --limit 30` → review the results (esp. `needs_review`/`uncertain`) in the admin queue. Scope to one neighborhood with `--neighborhood Rittenhouse` (point-in-polygon against `philadelphia-neighborhoods.geojson`; the cap applies *after* the filter, so `--limit 30 --neighborhood Rittenhouse` = up to 30 Rittenhouse bars).
+3. **Correct + teach:** append each human correction as a line in `examples_pass1.jsonl` — those become few-shot examples that improve the next run (the learning loop).
+4. Once pass 1 is reliable on the batch, ship the **day/time map** (no menu items needed), then run `pass2_extract.py --llm` for items, and widen the batch.
 
 ## Mongo collections written
 
