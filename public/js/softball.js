@@ -1,13 +1,19 @@
 // API_BASE is defined inline in softball.html
 
 let isAdmin  = false;
-let sortCol  = 'WAR';
-let sortDir  = 'desc';
 let seasonData = null;
 let gamesData  = [];
 
+// Per-tab sort state (independent so sorting one table doesn't reorder another).
+const seasonSort  = { col: 'WAR',  dir: 'desc' };
+const sort2025    = { col: 'WAR',  dir: 'desc' };
+const compareSort = { col: 'dWar', dir: 'desc' };
+
+const fmt3 = v => (+v).toFixed(3);
+
 const SEASON_COLS = [
   { key: 'name', label: 'Player', numeric: false },
+  { key: 'G',    label: 'G',   numeric: true },
   { key: 'AB',   label: 'AB',  numeric: true },
   { key: 'H',    label: 'H',   numeric: true },
   { key: '2B',   label: '2B',  numeric: true },
@@ -16,11 +22,29 @@ const SEASON_COLS = [
   { key: 'RBI',  label: 'RBI', numeric: true },
   { key: 'R',    label: 'R',   numeric: true },
   { key: 'TB',   label: 'TB',  numeric: true },
-  { key: 'AVG',  label: 'AVG', numeric: true, fmt: v => v.toFixed(3) },
-  { key: 'SLG',  label: 'SLG', numeric: true, fmt: v => v.toFixed(3) },
-  { key: 'OPS',  label: 'OPS', numeric: true, fmt: v => v.toFixed(3) },
+  { key: 'AVG',  label: 'AVG', numeric: true, fmt: fmt3 },
+  { key: 'SLG',  label: 'SLG', numeric: true, fmt: fmt3 },
+  { key: 'OPS',  label: 'OPS', numeric: true, fmt: fmt3 },
   { key: 'RC',   label: 'RC',  numeric: true, fmt: v => v.toFixed(2) },
-  { key: 'WAR',  label: 'WAR', numeric: true, fmt: v => v != null ? v.toFixed(2) : '—' },
+  { key: 'WAR',  label: 'WAR', numeric: true, war: true },
+];
+
+// 2025 → 2026 comparison. Δ columns = 2026 − 2025 (green = improved).
+const COMPARE_COLS = [
+  { key: 'name',  label: 'Player' },
+  { key: 'avg25', label: "AVG '25", fmt: fmt3 },
+  { key: 'avg26', label: "AVG '26", fmt: fmt3 },
+  { key: 'dAvg',  label: 'Δ',  delta: true, dp: 3 },
+  { key: 'ops25', label: "OPS '25", fmt: fmt3 },
+  { key: 'ops26', label: "OPS '26", fmt: fmt3 },
+  { key: 'dOps',  label: 'Δ',  delta: true, dp: 3 },
+  { key: 'hr25',  label: "HR '25" },
+  { key: 'hr26',  label: "HR '26" },
+  { key: 'rbi25', label: "RBI '25" },
+  { key: 'rbi26', label: "RBI '26" },
+  { key: 'war25', label: "WAR '25", war: true },
+  { key: 'war26', label: "WAR '26", war: true },
+  { key: 'dWar',  label: 'Δ',  delta: true, dp: 2 },
 ];
 
 const GAME_COLS = [
@@ -59,7 +83,9 @@ async function init() {
   });
 
   await checkAuth();
+  renderSeason2025();                              // static historical data
   await Promise.all([loadSeason(), loadGames()]);
+  renderCompare();  // render even if 2026 didn't load (shows 2025 with — for 2026)
 }
 
 async function checkAuth() {
@@ -70,6 +96,18 @@ async function checkAuth() {
     isAdmin = false;
   }
 }
+
+// Called by the Firebase auth module in softball.html when sign-in state changes.
+window.setSoftballAdmin = (val) => {
+  const next = !!val;
+  if (next === isAdmin) return;
+  isAdmin = next;
+  const active   = document.querySelector('.tab.active');
+  const activeKey = active ? active.dataset.panel : 'season';
+  buildGameTabs(gamesData);  // rebuild so edit affordances reflect the new state
+  const stillThere = document.querySelector(`[data-panel="${activeKey}"]`);
+  switchTab(stillThere ? activeKey : 'season');
+};
 
 // ─── Tab switching ────────────────────────────────────────────────────────────
 
@@ -83,7 +121,84 @@ function switchTab(panelKey) {
   );
 }
 
-// ─── Season ───────────────────────────────────────────────────────────────────
+// ─── Generic stats table (Season, 2025, Comparison all share this) ─────────────
+
+function sortRows(rows, st) {
+  const { col, dir } = st;
+  return rows.sort((a, b) => {
+    let av = a[col], bv = b[col];
+    if (col === 'name') {
+      av = av || ''; bv = bv || '';
+      return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+    }
+    av = (av == null || isNaN(av)) ? -Infinity : av;
+    bv = (bv == null || isNaN(bv)) ? -Infinity : bv;
+    return dir === 'asc' ? av - bv : bv - av;
+  });
+}
+
+function cellHTML(p, col) {
+  const val = p[col.key];
+  let display = '—', cls = '';
+  if (col.delta) {
+    if (val == null || isNaN(val)) { display = '—'; }
+    else {
+      const dp = col.dp != null ? col.dp : 3;
+      const sign = val > 1e-9 ? '+' : (val < -1e-9 ? '−' : '');
+      display = sign + Math.abs(val).toFixed(dp);
+      cls = val > 1e-9 ? 'delta-pos' : (val < -1e-9 ? 'delta-neg' : 'delta-zero');
+    }
+  } else if (col.war) {
+    display = val != null ? val.toFixed(2) : '—';
+    if      (val == null) cls = 'war-null';
+    else if (val > 0)     cls = 'war-positive';
+    else if (val < 0)     cls = 'war-negative';
+    else                  cls = 'war-zero';
+  } else if (col.fmt) {
+    display = val != null ? col.fmt(val) : '—';
+  } else {
+    display = (val != null && val !== '') ? val : '—';
+  }
+  return `<td class="${cls}">${display}</td>`;
+}
+
+function renderStatsTable(panelEl, players, cols, st, emptyMsg) {
+  if (!panelEl) return;
+  if (!players || !players.length) {
+    panelEl.innerHTML = `<div class="empty-state"><i class="fa-solid fa-baseball"></i><p>${emptyMsg || 'No data.'}</p></div>`;
+    return;
+  }
+  const sorted = sortRows([...players], st);
+  const headerCells = cols.map(col => {
+    const cls = col.key === st.col ? (st.dir === 'asc' ? 'sort-asc' : 'sort-desc') : '';
+    const infoIcon = STAT_TIPS[col.key]
+      ? ` <i class="fa-solid fa-circle-info stat-info" data-stat="${col.key}" onmouseenter="showStatTip(this)" onmouseleave="hideStatTip()" onclick="event.stopPropagation()"></i>`
+      : '';
+    return `<th class="${cls}" data-col="${col.key}">${col.label}${infoIcon}</th>`;
+  }).join('');
+  const rows = sorted.map(p => `<tr>${cols.map(c => cellHTML(p, c)).join('')}</tr>`).join('');
+  panelEl.innerHTML = `
+    <div class="stats-table-wrap">
+      <table>
+        <thead><tr>${headerCells}</tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  panelEl.querySelectorAll('th[data-col]').forEach(th => {
+    th.addEventListener('click', () => {
+      const k = th.dataset.col;
+      if (st.col === k) {
+        st.dir = st.dir === 'asc' ? 'desc' : 'asc';
+      } else {
+        st.col = k;
+        st.dir = k === 'name' ? 'asc' : 'desc';
+      }
+      renderStatsTable(panelEl, players, cols, st, emptyMsg);
+    });
+  });
+}
+
+// ─── 2026 Season ───────────────────────────────────────────────────────────────
 
 async function loadSeason() {
   try {
@@ -92,6 +207,7 @@ async function loadSeason() {
     seasonData = await res.json();
     renderSeasonBanner(seasonData);
     renderSeasonTable(seasonData.players);
+    renderCompare();
   } catch {
     document.getElementById('panel-season').innerHTML =
       `<div class="empty-state"><i class="fa-solid fa-circle-exclamation"></i><p>Could not load season data.</p></div>`;
@@ -107,76 +223,57 @@ function renderSeasonBanner({ record, run_diff }) {
 }
 
 function renderSeasonTable(players) {
-  const panel = document.getElementById('panel-season');
-  if (!players || !players.length) {
-    panel.innerHTML = `<div class="empty-state"><i class="fa-solid fa-baseball"></i><p>No games recorded yet. Enter stats on a game tab to get started.</p></div>`;
-    return;
-  }
-
-  const sorted = sortPlayers([...players]);
-
-  const headerCells = SEASON_COLS.map(col => {
-    const cls = col.key === sortCol
-      ? (sortDir === 'asc' ? 'sort-asc' : 'sort-desc') : '';
-    const infoIcon = STAT_TIPS[col.key]
-      ? ` <i class="fa-solid fa-circle-info stat-info" data-stat="${col.key}" onmouseenter="showStatTip(this)" onmouseleave="hideStatTip()" onclick="event.stopPropagation()"></i>`
-      : '';
-    return `<th class="${cls}" onclick="setSort('${col.key}')">${col.label}${infoIcon}</th>`;
-  }).join('');
-
-  const rows = sorted.map(p => {
-    const cells = SEASON_COLS.map(col => {
-      const val = p[col.key];
-      let display;
-      if (col.key === 'WAR') {
-        display = val != null ? val.toFixed(2) : '—';
-      } else if (col.fmt) {
-        display = col.fmt(val != null ? val : 0);
-      } else {
-        display = val != null ? val : '—';
-      }
-      let warClass = '';
-      if (col.key === 'WAR') {
-        if      (val == null) warClass = 'war-null';
-        else if (val > 0)     warClass = 'war-positive';
-        else if (val < 0)     warClass = 'war-negative';
-        else                  warClass = 'war-zero';
-      }
-      return `<td class="${warClass}">${display}</td>`;
-    }).join('');
-    return `<tr>${cells}</tr>`;
-  }).join('');
-
-  panel.innerHTML = `
-    <div class="stats-table-wrap">
-      <table>
-        <thead><tr>${headerCells}</tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+  renderStatsTable(
+    document.getElementById('panel-season'), players, SEASON_COLS, seasonSort,
+    'No games recorded yet. Enter stats on a game tab to get started.'
+  );
 }
 
-function sortPlayers(players) {
-  return players.sort((a, b) => {
-    let av = a[sortCol], bv = b[sortCol];
-    if (sortCol === 'name') {
-      av = av || ''; bv = bv || '';
-      return sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
-    }
-    av = av != null ? av : -Infinity;
-    bv = bv != null ? bv : -Infinity;
-    return sortDir === 'asc' ? av - bv : bv - av;
+// ─── 2025 Season (static) ───────────────────────────────────────────────────────
+
+function renderSeason2025() {
+  renderStatsTable(
+    document.getElementById('panel-season2025'), window.SEASON_2025 || [], SEASON_COLS, sort2025,
+    'No 2025 data available.'
+  );
+}
+
+// ─── 2025 → 2026 comparison ─────────────────────────────────────────────────────
+
+function buildCompareRows() {
+  const d25 = window.SEASON_2025 || [];
+  const d26 = (seasonData && seasonData.players) || [];
+  const by25 = Object.fromEntries(d25.map(p => [p.name, p]));
+  const by26 = Object.fromEntries(d26.map(p => [p.name, p]));
+  const names = [...new Set([...d25.map(p => p.name), ...d26.map(p => p.name)])];
+  const get  = (o, k) => (o ? o[k] : null);
+  const diff = (a, b) => (a != null && b != null) ? (b - a) : null;  // 2026 − 2025
+  return names.map(name => {
+    const a = by25[name], b = by26[name];
+    return {
+      name,
+      avg25: get(a, 'AVG'), avg26: get(b, 'AVG'), dAvg: diff(get(a, 'AVG'), get(b, 'AVG')),
+      ops25: get(a, 'OPS'), ops26: get(b, 'OPS'), dOps: diff(get(a, 'OPS'), get(b, 'OPS')),
+      hr25:  get(a, 'HR'),  hr26:  get(b, 'HR'),
+      rbi25: get(a, 'RBI'), rbi26: get(b, 'RBI'),
+      war25: get(a, 'WAR'), war26: get(b, 'WAR'), dWar: diff(get(a, 'WAR'), get(b, 'WAR')),
+    };
   });
 }
 
-function setSort(col) {
-  if (sortCol === col) {
-    sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-  } else {
-    sortCol = col;
-    sortDir = col === 'name' ? 'asc' : 'desc';
-  }
-  if (seasonData) renderSeasonTable(seasonData.players);
+function renderCompare() {
+  const panel = document.getElementById('panel-compare');
+  if (!panel) return;
+  panel.innerHTML = `
+    <div class="compare-caption">
+      Year-over-year, players in either season. <span class="swatch up">+ green</span> = improved in 2026,
+      <span class="swatch down">− red</span> = down. &ldquo;—&rdquo; means no data that season. Δ = 2026 − 2025.
+    </div>
+    <div id="compare-table"></div>`;
+  renderStatsTable(
+    document.getElementById('compare-table'), buildCompareRows(), COMPARE_COLS, compareSort,
+    'No comparison data yet.'
+  );
 }
 
 function showStatTip(el) {
@@ -243,14 +340,39 @@ function buildGameTabs(games) {
     }
     tabBar.appendChild(tab);
 
-    // Panel
+    // Panel — only the admin sees the entry form; everyone else sees read-only views.
     const panel = document.createElement('div');
     panel.id = `panel-game-${game._id}`;
     panel.className = 'panel game-panel';
-    panel.innerHTML = isResolved ? buildBoxScoreHTML(game) : buildStatsFormHTML(game);
+    if (isResolved) {
+      panel.innerHTML = buildBoxScoreHTML(game);
+    } else if (isAdmin) {
+      panel.innerHTML = buildStatsFormHTML(game);
+    } else {
+      panel.innerHTML = buildUpcomingHTML(game);
+    }
     content.appendChild(panel);
-    if (!isResolved) initFormPanel(game._id);
+    if (!isResolved && isAdmin) initFormPanel(game._id);
   });
+}
+
+// Read-only placeholder for games without stats (shown to non-admins).
+function buildUpcomingHTML(game) {
+  const dateStr = game.date
+    ? new Date(game.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    : '';
+  return `
+    <div class="game-header">
+      <div>
+        <div class="game-matchup" style="font-size:1.1rem;">Game ${game.game_number} &mdash; ${game.opponent}</div>
+        <div class="game-meta">${dateStr}</div>
+      </div>
+      <span class="status-upcoming">No Stats Yet</span>
+    </div>
+    <div class="empty-state" style="padding:48px 20px;">
+      <i class="fa-solid fa-baseball"></i>
+      <p>Stats haven't been entered for this game yet.</p>
+    </div>`;
 }
 
 // ─── Box score view ───────────────────────────────────────────────────────────
@@ -308,7 +430,9 @@ function buildBoxScoreHTML(game) {
     return `<td>${col.fmt ? col.fmt(val || 0) : (val != null ? val : '—')}</td>`;
   }).join('');
 
-  const editBtn  = `<button class="btn-edit-stats" onclick="showStatsForm('${game._id}')"><i class="fa-solid fa-pen-to-square"></i> Edit Stats</button>`;
+  const editBtn  = isAdmin
+    ? `<button class="btn-edit-stats" onclick="showStatsForm('${game._id}')"><i class="fa-solid fa-pen-to-square"></i> Edit Stats</button>`
+    : '';
   const clearBtn = isAdmin
     ? `<button class="btn-clear-stats" onclick="clearStats('${game._id}')"><i class="fa-solid fa-xmark"></i> Clear</button>`
     : '';
@@ -619,6 +743,7 @@ async function submitStats(gameId) {
   try {
     const res = await fetch(`${API_BASE}/api/softball/games/${gameId}`, {
       method: 'PUT',
+      credentials: 'include',  // send the admin session cookie — required by the gated route
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         our_score:      result === 'WF' ? 7 : (result === 'RO' ? null : our_score),
@@ -628,6 +753,7 @@ async function submitStats(gameId) {
       }),
     });
 
+    if (res.status === 401 || res.status === 403) throw new Error('Not authorized — sign in as the editor account.');
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Save failed');
 
@@ -653,9 +779,11 @@ async function clearStats(gameId) {
   try {
     const res = await fetch(`${API_BASE}/api/softball/games/${gameId}`, {
       method: 'PUT',
+      credentials: 'include',  // send the admin session cookie — required by the gated route
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ our_score: null, opponent_score: null, result: null, players: [] }),
     });
+    if (res.status === 401 || res.status === 403) { alert('Not authorized — sign in as the editor account.'); return; }
     if (!res.ok) throw new Error();
     const data = await res.json();
 

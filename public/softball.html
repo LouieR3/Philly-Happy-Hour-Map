@@ -11,6 +11,16 @@
 </head>
 <body>
 
+<!-- Utility bar: back to Mappy Hour + Google sign-in (only the editor account can edit) -->
+<div class="sb-topbar">
+  <a class="sb-home-link" href="index.html"><i class="fa-solid fa-arrow-left"></i>&nbsp; Mappy Hour</a>
+  <div class="sb-auth">
+    <span id="sb-user" class="sb-user" style="display:none;"></span>
+    <button id="sb-signin"  class="sb-auth-btn"><i class="fa-brands fa-google"></i>&nbsp; Sign in</button>
+    <button id="sb-signout" class="sb-auth-btn" style="display:none;">Sign out</button>
+  </div>
+</div>
+
 <header>
   <h1>Pennoni <span>Softball</span></h1>
   <div class="season-banner">
@@ -20,13 +30,17 @@
 </header>
 
 <div class="tabs" id="tab-bar">
-  <div class="tab active" data-panel="season">Season</div>
+  <div class="tab active" data-panel="season">2026 Season</div>
+  <div class="tab" data-panel="season2025">2025 Season</div>
+  <div class="tab" data-panel="compare">2025 &rarr; 2026</div>
 </div>
 
 <div id="content">
   <div id="panel-season" class="panel active">
     <div class="loading"><i class="fa-solid fa-spinner fa-spin"></i></div>
   </div>
+  <div id="panel-season2025" class="panel"></div>
+  <div id="panel-compare" class="panel"></div>
 </div>
 
 <script>
@@ -34,6 +48,72 @@
     ? 'http://localhost:3000'
     : 'https://philly-happy-hour-map-production.up.railway.app';
 </script>
+<script src="js/softball-2025.js"></script>
 <script src="js/softball.js"></script>
+
+<!-- Firebase Google auth (self-contained, mirrors admin-login.html). Signing in as
+     an ADMIN_EMAILS account (lou3@lourodriguez.com) mints the admin cookie the
+     edit endpoints require; anyone else can view but not edit. -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, signInWithPopup, signOut, onAuthStateChanged, GoogleAuthProvider }
+    from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAK2bb2zN7ibRWsgc7SSU5ibUOHwpbksEI",
+    authDomain:        "mappy-hour-39fb6.firebaseapp.com",
+    projectId:         "mappy-hour-39fb6",
+    storageBucket:     "mappy-hour-39fb6.appspot.com",
+    messagingSenderId: "83158396400",
+    appId:             "1:83158396400:web:63f5f70d82130c47068135",
+  };
+  const auth     = getAuth(initializeApp(firebaseConfig));
+  const provider = new GoogleAuthProvider();
+
+  const signinBtn  = document.getElementById('sb-signin');
+  const signoutBtn = document.getElementById('sb-signout');
+  const userEl     = document.getElementById('sb-user');
+
+  signinBtn.addEventListener('click', async () => {
+    try { await signInWithPopup(auth, provider); }
+    catch (e) { console.error('[Softball] sign-in error:', e.message); }
+  });
+
+  signoutBtn.addEventListener('click', async () => {
+    try { await signOut(auth); } catch {}
+    // Clear the admin session cookie too, then drop edit privileges.
+    try { await fetch(`${API_BASE}/admin/logout`, { method: 'POST', credentials: 'include' }); } catch {}
+    if (window.setSoftballAdmin) window.setSoftballAdmin(false);
+  });
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      signinBtn.style.display  = 'none';
+      signoutBtn.style.display = '';
+      userEl.style.display     = '';
+      userEl.textContent       = user.displayName || user.email;
+      // Exchange the Firebase token for the admin cookie. Only succeeds for an
+      // ADMIN_EMAILS account; the server decides, not the client.
+      let canEdit = false;
+      try {
+        const token = await user.getIdToken();
+        const res = await fetch(`${API_BASE}/admin/firebase-login`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Authorization': `Bearer ${token}` },
+        });
+        canEdit = res.ok;
+      } catch (e) { console.error('[Softball] admin-login error:', e.message); }
+      if (window.setSoftballAdmin) window.setSoftballAdmin(canEdit);
+      if (!canEdit) userEl.textContent += ' (view only)';
+    } else {
+      signinBtn.style.display  = '';
+      signoutBtn.style.display = 'none';
+      userEl.style.display     = 'none';
+      userEl.textContent       = '';
+      if (window.setSoftballAdmin) window.setSoftballAdmin(false);
+    }
+  });
+</script>
 </body>
 </html>

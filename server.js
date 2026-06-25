@@ -1872,8 +1872,11 @@ app.post('/admin/softball/games', adminAuth, async (req, res) => {
   }
 });
 
-// PUT — update stats for a pre-set game (public, no auth required)
-app.put('/api/softball/games/:id', async (req, res) => {
+// PUT — update stats for a pre-set game. Now admin-gated: only a valid signed
+// admin session (minted via /admin/firebase-login for an ADMIN_EMAILS account,
+// i.e. lou3@lourodriguez.com) may write. adminAuth also enforces the Origin
+// check on this non-GET request.
+app.put('/api/softball/games/:id', adminAuth, async (req, res) => {
   try {
     const { our_score, opponent_score, result, players } = req.body;
     const update = {
@@ -1915,9 +1918,10 @@ app.get('/api/softball/season', async (req, res) => {
     for (const g of played) {
       for (const p of g.players) {
         if (!playerMap[p.name]) {
-          playerMap[p.name] = { name: p.name, AB: 0, H: 0, '1B': 0, '2B': 0, '3B': 0, HR: 0, RBI: 0, R: 0 };
+          playerMap[p.name] = { name: p.name, G: 0, AB: 0, H: 0, '1B': 0, '2B': 0, '3B': 0, HR: 0, RBI: 0, R: 0 };
         }
         const pm = playerMap[p.name];
+        pm.G     += 1;   // one roster row per game = one game played
         pm.AB    += p.AB    || 0;
         pm.H     += p.H     || 0;
         pm['1B'] += p['1B'] || 0;
@@ -1959,6 +1963,7 @@ app.get('/api/softball/season', async (req, res) => {
         : null;
       return {
         name:  p.name,
+        G:     p.G,
         AB:    p.AB,
         H:     p.H,
         '2B':  p['2B'],

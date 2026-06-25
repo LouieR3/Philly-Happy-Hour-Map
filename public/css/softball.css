@@ -18,6 +18,57 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* ── Top utility bar (home link + auth) ───────────────────── */
+.sb-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 24px;
+  background: var(--sb-bg);
+  border-bottom: 1px solid var(--sb-border);
+}
+.sb-home-link {
+  color: var(--sb-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.15s;
+}
+.sb-home-link:hover { color: var(--sb-green-br); }
+.sb-auth { display: flex; align-items: center; gap: 10px; }
+.sb-user { font-size: 0.8rem; color: var(--sb-muted); }
+.sb-auth-btn {
+  background: none;
+  border: 1px solid var(--sb-border);
+  color: var(--sb-text);
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: border-color 0.15s, color 0.15s;
+}
+.sb-auth-btn:hover { border-color: var(--sb-green); color: var(--sb-green-br); }
+
+/* Delta cells in the 2025→2026 comparison */
+td.delta-pos { color: var(--sb-green); font-weight: 700; }
+td.delta-neg { color: var(--sb-red);   font-weight: 700; }
+td.delta-zero { color: var(--sb-muted); }
+.compare-caption {
+  font-size: 0.82rem;
+  color: var(--sb-muted);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+.compare-caption .swatch { font-weight: 700; }
+.compare-caption .swatch.up   { color: var(--sb-green); }
+.compare-caption .swatch.down { color: var(--sb-red);   }
+
 body {
   font-family: 'Lato', sans-serif;
   background: var(--sb-bg);
