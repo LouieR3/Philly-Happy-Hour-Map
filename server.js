@@ -1023,6 +1023,121 @@ const HappyHourItem = mappyHourDb.model('HappyHourItem', new mongoose.Schema({},
 // city instead of the whole metro, which also keeps the payload small.
 const PHILLY_BBOX = { minLat: 39.86, maxLat: 40.14, minLng: -75.29, maxLng: -74.94 };
 
+// ── Happy-hour time normalization ───────────────────────────────────────────
+// The pipeline stores days/times in a few shapes (structured hh_days_list +
+// hh_start/hh_end, a loose hh_days string, or only free-text hh_times_raw).
+// normalizeHHTime() collapses all of that to ONE clean shape the map can filter
+// on: a canonical day list (mon..sun), start/end as 24h "HH:MM" + minutes, and a
+// human label ("Mon–Fri · 4:00–6:00 PM"). Anything that isn't a real day-range
+// or time-range is dropped.
+const HH_DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+const _DAY_ALIASES = {
+  mon: 'mon', monday: 'mon', tue: 'tue', tues: 'tue', tuesday: 'tue',
+  wed: 'wed', weds: 'wed', wednesday: 'wed', thu: 'thu', thur: 'thu', thurs: 'thu', thursday: 'thu',
+  fri: 'fri', friday: 'fri', sat: 'sat', saturday: 'sat', sun: 'sun', sunday: 'sun',
+};
+
+function _canonDay(tok) {
+  const t = String(tok || '').trim().toLowerCase().replace(/\.+$/, '');
+  return _DAY_ALIASES[t] || _DAY_ALIASES[t.slice(0, 3)] || null;
+}
+
+function _expandDayRange(a, b) {
+  const ia = HH_DAYS.indexOf(a), ib = HH_DAYS.indexOf(b);
+  if (ia < 0 || ib < 0) return [];
+  const out = [];
+  for (let i = ia, n = 0; n < 7; n++) { out.push(HH_DAYS[i]); if (i === ib) break; i = (i + 1) % 7; }
+  return out;
+}
+
+function parseDays(input) {
+  if (Array.isArray(input)) {
+    return HH_DAYS.filter(d => new Set(input.map(_canonDay).filter(Boolean)).has(d));
+  }
+  const s = String(input || '').toLowerCase();
+  if (!s) return [];
+  if (/dai|every\s*day|all\s*week|7\s*days|mon\s*[-–—]\s*sun/.test(s)) return [...HH_DAYS];
+  const out = new Set();
+  if (/weekday/.test(s)) _expandDayRange('mon', 'fri').forEach(d => out.add(d));
+  if (/weekend/.test(s)) { out.add('sat'); out.add('sun'); }
+  const rangeRe = /([a-z]{3,9})\s*(?:-|–|—|to|thru|through)\s*([a-z]{3,9})/g;
+  let m;
+  while ((m = rangeRe.exec(s))) {
+    const a = _canonDay(m[1]), b = _canonDay(m[2]);
+    if (a && b) _expandDayRange(a, b).forEach(d => out.add(d));
+  }
+  s.split(/[^a-z]+/).forEach(t => { const d = _canonDay(t); if (d) out.add(d); });
+  return HH_DAYS.filter(d => out.has(d));
+}
+
+// Parse one time token ("16:00", "4:30pm", "4pm") → minutes since midnight.
+function _toMin(str) {
+  if (str == null) return null;
+  const s = String(str).trim().toLowerCase();
+  if (!s) return null;
+  const ap = (s.match(/([ap])m?\b/) || [])[1] || null;
+  let m = s.match(/(\d{1,2}):(\d{2})/);
+  let hh, mm = 0;
+  if (m) { hh = +m[1]; mm = +m[2]; }
+  else { m = s.match(/(\d{1,2})/); if (!m) return null; hh = +m[1]; }
+  if (ap === 'p' && hh < 12) hh += 12;
+  if (ap === 'a' && hh === 12) hh = 0;
+  if (hh > 24 || mm > 59) return null;
+  return hh * 60 + mm;
+}
+
+// Parse a "4-6pm" / "4:30pm to 6:30pm" style range, borrowing am/pm across sides.
+function _parseTimeRange(raw) {
+  const s = String(raw || '').toLowerCase();
+  const m = s.match(/(\d{1,2}(?::\d{2})?)\s*([ap]m?)?\s*(?:-|–|—|to|until|til|till)\s*(\d{1,2}(?::\d{2})?)\s*([ap]m?)?/);
+  if (!m) return [null, null];
+  const ap1 = m[2] || m[4], ap2 = m[4] || m[2];
+  return [_toMin(m[1] + (ap1 || '')), _toMin(m[3] + (ap2 || ''))];
+}
+
+function _fmt24(min) {
+  const h = Math.floor(min / 60) % 24, m = min % 60;
+  return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0');
+}
+function _fmt12(min) {
+  let h = Math.floor(min / 60) % 24; const m = min % 60;
+  const ap = h >= 12 ? 'PM' : 'AM';
+  h = h % 12; if (h === 0) h = 12;
+  return h + (m ? ':' + String(m).padStart(2, '0') : '') + ' ' + ap;
+}
+const _DAY_CAP = { mon: 'Mon', tue: 'Tue', wed: 'Wed', thu: 'Thu', fri: 'Fri', sat: 'Sat', sun: 'Sun' };
+function _daysLabel(days) {
+  if (!days.length) return '';
+  if (days.length === 7) return 'Daily';
+  const idx = days.map(d => HH_DAYS.indexOf(d)).sort((a, b) => a - b);
+  let contiguous = true;
+  for (let i = 1; i < idx.length; i++) if (idx[i] !== idx[i - 1] + 1) { contiguous = false; break; }
+  if (contiguous && idx.length >= 3) return _DAY_CAP[HH_DAYS[idx[0]]] + '–' + _DAY_CAP[HH_DAYS[idx[idx.length - 1]]];
+  return idx.map(i => _DAY_CAP[HH_DAYS[i]]).join(', ');
+}
+
+function normalizeHHTime(hh) {
+  let days = parseDays(hh.hh_days_list && hh.hh_days_list.length ? hh.hh_days_list : hh.hh_days);
+  if (!days.length && hh.hh_times_raw) days = parseDays(hh.hh_times_raw);
+
+  let start_min = _toMin(hh.hh_start);
+  let end_min   = _toMin(hh.hh_end);
+  if ((start_min == null || end_min == null) && hh.hh_times_raw) {
+    const [a, b] = _parseTimeRange(hh.hh_times_raw);
+    if (start_min == null) start_min = a;
+    if (end_min == null) end_min = b;
+  }
+  const dl = _daysLabel(days);
+  const tl = (start_min != null && end_min != null) ? `${_fmt12(start_min)}–${_fmt12(end_min)}` : '';
+  const time_label = dl && tl ? `${dl} · ${tl}` : (dl || tl || '');
+  return {
+    days,
+    start: start_min != null ? _fmt24(start_min) : null,
+    end:   end_min   != null ? _fmt24(end_min)   : null,
+    start_min, end_min, time_label,
+  };
+}
+
 // Public Happy Hour feed: join happy_hours → bars (for lat/lng + neighborhood) →
 // happy_hour_items (grouped per bar). Excludes bars whose only "source" is the
 // homepage (no real menu/HH link) — those are filtered out until a later pass
@@ -1089,6 +1204,7 @@ app.get('/api/happy-hours', async (req, res) => {
       counts.inBbox++;
 
       const barItems = itemsByBar.get((hh.bar_name || '').toLowerCase()) || [];
+      const t = normalizeHHTime(hh);   // clean days[] + start/end (+ minutes) + label
       out.push({
         name:          hh.bar_name,
         neighborhood:  bar.Neighborhood || null,
@@ -1096,10 +1212,13 @@ app.get('/api/happy-hours', async (req, res) => {
         website:       hh.website || null,
         source_url:    hh.source_url || null,
         source_type:   hh.source_type || null,
-        hh_times_raw:  hh.hh_times_raw || null,
-        hh_days:       hh.hh_days || null,
-        hh_start:      hh.hh_start || null,
-        hh_end:        hh.hh_end || null,
+        days:          t.days,           // ['mon','tue',...] — exact day filtering
+        start:         t.start,          // "16:00"
+        end:           t.end,            // "18:00"
+        start_min:     t.start_min,      // 960 — for the hour slider
+        end_min:       t.end_min,        // 1080
+        time_label:    t.time_label,     // "Mon–Fri · 4:00–6:00 PM"
+        hh_times_raw:  hh.hh_times_raw || null,   // kept for reference/debug
         categories:    [...new Set(barItems.map(i => i.category))],
         items:         barItems,
       });

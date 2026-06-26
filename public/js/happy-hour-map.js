@@ -35,7 +35,18 @@ var hhGeoLayer = null;              // neighborhood polygon overlay
 var hhCountByNh = {};               // LISTNAME -> # of HH bars
 var selectedHoods = new Set();      // LISTNAME(s) the user has clicked into
 var hhSearch = '';
-const hhFilters = { day: '', drink: '' };
+// Hour slider bounds: 11:00 AM (660) → 12:00 AM (1440), 30-min steps.
+const HH_TIME_MIN = 660, HH_TIME_MAX = 1440;
+// timeLo/timeHi in minutes; equal to the full range means "any time".
+const hhFilters = { day: '', drink: '', timeLo: HH_TIME_MIN, timeHi: HH_TIME_MAX };
+
+function hhFmt12(min) {
+  if (min >= 1440) return '12:00 AM';
+  var h = Math.floor(min / 60) % 24, m = min % 60;
+  var ap = h >= 12 ? 'PM' : 'AM';
+  h = h % 12; if (h === 0) h = 12;
+  return h + (m ? ':' + String(m).padStart(2, '0') : ':00') + ' ' + ap;
+}
 
 function hhEsc(s) {
   if (s === undefined || s === null) return '';
@@ -65,7 +76,7 @@ function buildHHPopup(bar) {
       (bar.neighborhood ? '<p style="margin:3px 0 0;font-size:12px;color:rgba(255,255,255,0.7);">' + hhEsc(bar.neighborhood) + '</p>' : '') +
     '</div>' +
     '<div style="padding:12px 14px;background:#1a2332;color:#e2e8f0;">' +
-      (bar.hh_times_raw ? '<div style="font-size:12px;color:#fbbf24;margin-bottom:8px;"><i class="fa-regular fa-clock"></i> ' + hhEsc(bar.hh_times_raw) + '</div>' : '') +
+      (bar.time_label ? '<div style="font-size:12px;color:#fbbf24;margin-bottom:8px;"><i class="fa-regular fa-clock"></i> ' + hhEsc(bar.time_label) + '</div>' : '') +
       (items ? '<div style="display:flex;flex-direction:column;gap:3px;margin-bottom:8px;">' + items + '</div>'
              : '<div style="font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:8px;">Menu items not parsed yet — see source.</div>') +
       (bar.source_url ? '<a href="' + hhEsc(bar.source_url) + '" target="_blank" rel="noopener" style="font-size:12px;color:#34d399;text-decoration:none;">View happy hour menu →</a>' : '') +
@@ -83,11 +94,19 @@ function ensureMarker(bar) {
 
 // ── Filters ───────────────────────────────────────────────────────────────────
 function hhDayMatches(bar) {
-  if (!hhFilters.day) return true;
-  var d = (bar.hh_days || '').toLowerCase();
-  if (!d) return true;                       // unknown days stay visible
-  if (/dai|every|all|week/.test(d)) return true;
-  return d.indexOf(hhFilters.day.slice(0, 3)) !== -1;
+  if (!hhFilters.day) return true;                 // "Any day"
+  var days = bar.days || [];
+  if (!days.length) return false;                  // no parsed days → can't match a chosen day
+  return days.indexOf(hhFilters.day.slice(0, 3)) !== -1;
+}
+function hhTimeMatches(bar) {
+  // Full slider range = "any time": everything passes.
+  if (hhFilters.timeLo <= HH_TIME_MIN && hhFilters.timeHi >= HH_TIME_MAX) return true;
+  if (bar.start_min == null || bar.end_min == null) return false;  // no parsed time → can't confirm
+  var s = bar.start_min, e = bar.end_min;
+  if (e <= s) e += 1440;                            // window crosses midnight
+  // The bar's happy hour overlaps the selected window.
+  return s < hhFilters.timeHi && e > hhFilters.timeLo;
 }
 function hhDrinkMatches(bar) {
   if (!hhFilters.drink) return true;
@@ -101,7 +120,8 @@ function hhSearchMatches(bar) {
 function getVisibleHH() {
   if (!selectedHoods.size) return [];
   return hhAllData.filter(function (b) {
-    return selectedHoods.has(b._nh) && hhDayMatches(b) && hhDrinkMatches(b) && hhSearchMatches(b);
+    return selectedHoods.has(b._nh) && hhDayMatches(b) && hhTimeMatches(b) &&
+           hhDrinkMatches(b) && hhSearchMatches(b);
   });
 }
 
@@ -136,7 +156,7 @@ function hhCard(bar) {
   body.className = 'bar-card-body';
   body.innerHTML = '<div class="bar-card-name">' + hhEsc(bar.name) + '</div>' +
     '<div class="bar-card-address">' + hhEsc(bar.neighborhood || bar._nh || '') + '</div>' +
-    (bar.hh_times_raw ? '<div class="bar-card-address" style="color:#fbbf24;font-weight:normal;">' + hhEsc(bar.hh_times_raw) + '</div>' : '') +
+    (bar.time_label ? '<div class="bar-card-address" style="color:#fbbf24;font-weight:normal;">' + hhEsc(bar.time_label) + '</div>' : '') +
     (tags ? '<div class="bar-card-tags">' + tags + '</div>' : '');
   card.appendChild(ph);
   card.appendChild(body);
@@ -258,6 +278,33 @@ if (hhDrinkEl) hhDrinkEl.addEventListener('change', function () {
   var mm = document.getElementById('hh-mobile-drink-select'); if (mm) mm.value = this.value;
   renderHHView();
 });
+// Dual-thumb hour range slider. `live` desktop slider re-renders on drag; the
+// mobile one only updates its readout and is applied via the modal's Apply.
+function setupHHTimeSlider(minId, maxId, readoutId, live) {
+  var lo = document.getElementById(minId), hi = document.getElementById(maxId),
+      out = document.getElementById(readoutId);
+  if (!lo || !hi) return null;
+  function update(render) {
+    var a = +lo.value, b = +hi.value;
+    if (a > b - 30) {                         // keep the thumbs at least one step apart
+      if (document.activeElement === lo) { a = Math.min(a, HH_TIME_MAX - 30); b = a + 30; hi.value = b; }
+      else { b = Math.max(b, HH_TIME_MIN + 30); a = b - 30; lo.value = a; }
+    }
+    var any = (a <= HH_TIME_MIN && b >= HH_TIME_MAX);
+    if (out) out.textContent = any ? 'Any time' : (hhFmt12(a) + ' – ' + hhFmt12(b));
+    if (render) { hhFilters.timeLo = a; hhFilters.timeHi = b; renderHHView(); }
+  }
+  lo.addEventListener('input', function () { update(live); });
+  hi.addEventListener('input', function () { update(live); });
+  update(false);
+  return {
+    get: function () { return [+lo.value, +hi.value]; },
+    reset: function () { lo.value = HH_TIME_MIN; hi.value = HH_TIME_MAX; update(false); },
+  };
+}
+var hhTimeSliderDesktop = setupHHTimeSlider('hh-time-min', 'hh-time-max', 'hh-time-readout', true);
+var hhTimeSliderMobile  = setupHHTimeSlider('hh-mobile-time-min', 'hh-mobile-time-max', 'hh-mobile-time-readout', false);
+
 var hhNhEl = document.getElementById('hh-neighborhood-filter');
 if (hhNhEl) hhNhEl.addEventListener('change', function () {
   selectedHoods.clear();
@@ -275,6 +322,9 @@ if (hhSearchEl) hhSearchEl.addEventListener('input', function () { hhSearch = th
 var hhResetBtn = document.getElementById('hh-reset-button');
 if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
   hhFilters.day = hhFilters.drink = ''; hhSearch = ''; selectedHoods.clear();
+  hhFilters.timeLo = HH_TIME_MIN; hhFilters.timeHi = HH_TIME_MAX;
+  if (hhTimeSliderDesktop) hhTimeSliderDesktop.reset();
+  if (hhTimeSliderMobile)  hhTimeSliderMobile.reset();
   ['hh-day-filter', 'hh-drink-filter', 'hh-neighborhood-filter', 'hh-mobile-day-select', 'hh-mobile-drink-select', 'hh-mobile-neighborhood-select'].forEach(function (id) {
     var el = document.getElementById(id); if (el) el.value = '';
   });
@@ -295,6 +345,10 @@ if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
     hhFilters.day = (document.getElementById('hh-mobile-day-select') || {}).value || '';
     hhFilters.drink = (document.getElementById('hh-mobile-drink-select') || {}).value || '';
     var nh = (document.getElementById('hh-mobile-neighborhood-select') || {}).value || '';
+    if (hhTimeSliderMobile) {
+      var t = hhTimeSliderMobile.get();
+      hhFilters.timeLo = t[0]; hhFilters.timeHi = t[1];
+    }
     selectedHoods.clear();
     if (nh) selectedHoods.add(nh);
     var map = { 'hh-day-filter': hhFilters.day, 'hh-drink-filter': hhFilters.drink, 'hh-neighborhood-filter': nh };
@@ -306,6 +360,7 @@ if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
     ['hh-mobile-day-select', 'hh-mobile-drink-select', 'hh-mobile-neighborhood-select'].forEach(function (id) {
       var el = document.getElementById(id); if (el) el.value = '';
     });
+    if (hhTimeSliderMobile) hhTimeSliderMobile.reset();
   });
 })();
 
@@ -329,7 +384,7 @@ if (hhResetBtn) hhResetBtn.addEventListener('click', function () {
       body.className = 'drawer-card-body';
       body.innerHTML = '<div class="drawer-card-name">' + hhEsc(bar.name || '') + '</div>' +
         (bar.neighborhood || bar._nh ? '<div class="drawer-card-meta">' + hhEsc(bar.neighborhood || bar._nh) + '</div>' : '') +
-        (bar.hh_times_raw ? '<div class="drawer-card-tags"><span class="drawer-card-tag">' + hhEsc(bar.hh_times_raw) + '</span></div>' : '');
+        (bar.time_label ? '<div class="drawer-card-tags"><span class="drawer-card-tag">' + hhEsc(bar.time_label) + '</span></div>' : '');
       card.appendChild(ph); card.appendChild(body);
       card.addEventListener('click', function () {
         var m = bar._marker;
