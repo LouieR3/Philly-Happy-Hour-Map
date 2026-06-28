@@ -323,6 +323,39 @@ def _self_test():
     print('\nOK (offline plumbing verified; no network/LLM used).')
 
 
+def _print_stats():
+    """Model-side diagnostic: how the last run's results break down in the DB.
+    Pair this with the serving-side funnel at /api/happy-hours?debug=1."""
+    from collections import Counter
+    from db import get_db
+    db = get_db()
+    docs = list(db.happy_hours.find({}, {
+        'status': 1, 'needs_review': 1, 'source_url': 1, 'website': 1,
+        'hh_start': 1, 'hh_end': 1, 'hh_days_list': 1, 'hh_days': 1,
+    }))
+    total = len(docs)
+    if not total:
+        print('happy_hours is empty — run a batch first.')
+        return
+    status = Counter(d.get('status') or 'unknown' for d in docs)
+    needs_review = sum(1 for d in docs if d.get('needs_review'))
+    real_source  = sum(1 for d in docs if d.get('source_url') and d.get('source_url') != d.get('website'))
+    has_time     = sum(1 for d in docs if d.get('hh_start') and d.get('hh_end'))
+    has_days     = sum(1 for d in docs if (d.get('hh_days_list') or d.get('hh_days')))
+
+    print(f'happy_hours: {total} docs')
+    print('\nby status:')
+    for k in ('found', 'uncertain', 'no_happy_hour', 'error', 'unknown'):
+        if status.get(k):
+            print(f'  {k:<14} {status[k]}')
+    print(f'\nneeds_review         {needs_review}')
+    print(f'real source (not homepage)  {real_source}   <- only these reach the map feed')
+    print(f'has day(s) parsed    {has_days}')
+    print(f'has start+end time   {has_time}   <- needed for the hour slider')
+    print('\nNext: open /api/happy-hours?debug=1 for the join/bbox funnel '
+          '(how many of the "real source" rows actually land on the map).')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--limit', type=int, default=0)
@@ -334,10 +367,16 @@ def main():
     ap.add_argument('--self-test', action='store_true')
     ap.add_argument('--check-llm', action='store_true',
                     help='Send one tiny structured prompt through the configured backend and exit.')
+    ap.add_argument('--stats', action='store_true',
+                    help='Print the status breakdown of stored happy_hours and exit (no LLM/render).')
     args = ap.parse_args()
 
     if args.self_test:
         _self_test()
+        return
+
+    if args.stats:
+        _print_stats()
         return
 
     import llm_client
