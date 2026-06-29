@@ -1188,9 +1188,14 @@ app.get('/api/happy-hours', async (req, res) => {
 
     const out = [];
     for (const hh of hhs) {
-      // Skip "homepage-only" results: no source link, the source IS the plain
-      // website, or pass 1 flagged it homepage — none are real HH menus yet.
-      if (hh.source_type === 'homepage' || !hh.source_url || hh.source_url === hh.website) continue;
+      const t = normalizeHHTime(hh);   // clean days[] + start/end (+ minutes) + label
+      // Keep a row if it has EITHER a real menu/HH source link OR parsed
+      // days/times. The LLM pass marks happy hours found on the homepage
+      // (source_url === website); those are legit and carry times, so we no
+      // longer discard them — we only drop rows with neither a source nor times.
+      const hasRealSource = hh.source_url && hh.source_url !== hh.website && hh.source_type !== 'homepage';
+      const hasTimes = (t.start_min != null && t.end_min != null) || t.days.length > 0;
+      if (!hasRealSource && !hasTimes) continue;
       counts.afterSourceFilter++;
 
       const bar = (hh.yelp_alias && barByAlias.get(hh.yelp_alias))
@@ -1204,7 +1209,6 @@ app.get('/api/happy-hours', async (req, res) => {
       counts.inBbox++;
 
       const barItems = itemsByBar.get((hh.bar_name || '').toLowerCase()) || [];
-      const t = normalizeHHTime(hh);   // clean days[] + start/end (+ minutes) + label
       out.push({
         name:          hh.bar_name,
         neighborhood:  bar.Neighborhood || null,
