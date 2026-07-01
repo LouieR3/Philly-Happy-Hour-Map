@@ -356,6 +356,18 @@ function buildGameTabs(games) {
   });
 }
 
+// Opponent's current league standing (from softball-standings.js), shown on the
+// tabs for games we still have to play. Returns '' if we have no record for them.
+function opponentStandingHTML(opponent) {
+  var S = window.OPPONENT_STANDINGS;
+  var r = S && S.teams && S.teams[opponent];
+  if (!r) return '';
+  var rec = r.w + '–' + r.l + (r.t ? '–' + r.t : '');
+  return '<div class="opp-standing"><i class="fa-solid fa-ranking-star"></i> ' +
+    'League record <strong>' + rec + '</strong> · #' + r.rank + ' of ' + (S.totalTeams || 26) +
+    ' <span class="opp-standing-asof">(' + (S.asOf || '') + ')</span></div>';
+}
+
 // Read-only placeholder for games without stats (shown to non-admins).
 function buildUpcomingHTML(game) {
   const dateStr = game.date
@@ -366,6 +378,7 @@ function buildUpcomingHTML(game) {
       <div>
         <div class="game-matchup" style="font-size:1.1rem;">Game ${game.game_number} &mdash; ${game.opponent}</div>
         <div class="game-meta">${dateStr}</div>
+        ${opponentStandingHTML(game.opponent)}
       </div>
       <span class="status-upcoming">No Stats Yet</span>
     </div>
@@ -485,6 +498,7 @@ function buildStatsFormHTML(game) {
           Game ${game.game_number} &mdash; ${game.opponent}
         </div>
         <div class="game-meta">${dateStr}</div>
+        ${opponentStandingHTML(game.opponent)}
       </div>
       <span class="status-upcoming">No Stats Yet</span>
     </div>

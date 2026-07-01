@@ -239,6 +239,15 @@ td.war-null     { color: var(--sb-muted); }
   margin-top: 4px;
 }
 
+.opp-standing {
+  font-size: 0.82rem;
+  color: var(--sb-text);
+  margin-top: 8px;
+}
+.opp-standing i { color: var(--sb-green-br); margin-right: 6px; }
+.opp-standing strong { color: var(--sb-green-br); }
+.opp-standing-asof { color: var(--sb-muted); font-size: 0.75rem; }
+
 .delete-game-btn {
   display: none;
   background: none;
