@@ -80,8 +80,10 @@ $env:LLM_PROVIDER="anthropic"                   # opt-in, COSTS TOKENS
 ```jsonc
 // happy_hours  (one per bar)
 { bar_name, yelp_alias, website, source_type: "html"|"pdf",
-  source_url, hh_times_raw, hh_days, hh_start, hh_end,
-  menu_text, status: "found"|"no_source"|"error", note }
+  source_url, hh_times_raw,
+  hh_windows: [ { days: ["mon","tue"], start: "16:00", end: "18:00" }, ... ],  // FULL schedule (multi-window)
+  hh_days, hh_days_list, hh_start, hh_end,   // legacy single-window = primary window
+  menu_text, status: "found"|"uncertain"|"no_happy_hour"|"error", confidence, needs_review }
 
 // happy_hour_items  (one per extracted item)
 { bar_name, source_url, raw_item, normalized_item, category,

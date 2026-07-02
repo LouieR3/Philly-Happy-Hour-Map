@@ -136,27 +136,93 @@ def days_label(days):
     return ', '.join(DAY_CAP[DAYS[i]] for i in idx)
 
 
-def normalize(hh):
-    """Return the canonical fields for one happy_hours doc."""
-    days = parse_days(hh.get('hh_days_list') or hh.get('hh_days'))
-    if not days and hh.get('hh_times_raw'):
-        days = parse_days(hh.get('hh_times_raw'))
+def split_segments(raw):
+    """Free text → candidate segments (lines, pipe/semicolon/bullet-separated)."""
+    return [p.strip() for p in re.split(r'[\n|;•·]+', str(raw or '')) if p.strip()]
 
-    start_min = to_min(hh.get('hh_start'))
-    end_min = to_min(hh.get('hh_end'))
-    if (start_min is None or end_min is None) and hh.get('hh_times_raw'):
-        a, b = parse_time_range(hh.get('hh_times_raw'))
-        start_min = start_min if start_min is not None else a
-        end_min = end_min if end_min is not None else b
 
+def parse_windows(raw):
+    """Best-effort MULTI-window parse of free text. Pairs day expressions with
+    time ranges segment by segment; a window's days and times may sit on the
+    same segment ("Mon-Fri 4-6pm") or adjacent lines (time first, days after —
+    the American Sardine layout). Returns [{'days', 'start_min', 'end_min'}]."""
+    wins = []
+    pend_days = pend_time = None
+    for seg in split_segments(raw):
+        d = parse_days(seg)
+        t = parse_time_range(seg)
+        t = t if (t[0] is not None and t[1] is not None) else None
+        if d and t:
+            wins.append({'days': d, 'start_min': t[0], 'end_min': t[1]})
+            pend_days = pend_time = None
+        elif t:
+            if pend_days:
+                wins.append({'days': pend_days, 'start_min': t[0], 'end_min': t[1]})
+                pend_days = None
+            else:
+                pend_time = t
+        elif d:
+            if pend_time:
+                wins.append({'days': d, 'start_min': pend_time[0], 'end_min': pend_time[1]})
+                pend_time = None
+            else:
+                pend_days = d
+    return wins
+
+
+def _win_label(days, start_min, end_min):
     dl = days_label(days)
     tl = f'{fmt12(start_min)}-{fmt12(end_min)}' if (start_min is not None and end_min is not None) else ''
-    label = f'{dl} - {tl}' if dl and tl else (dl or tl or '')
+    return f'{dl} - {tl}' if dl and tl else (dl or tl or '')
+
+
+def normalize(hh):
+    """Return the canonical fields for one happy_hours doc (multi-window)."""
+    # 1) Windows stored by the LLM pass (authoritative when present).
+    wins = []
+    for w in (hh.get('hh_windows') or []):
+        days = parse_days(w.get('days'))
+        s, e = to_min(w.get('start')), to_min(w.get('end'))
+        if days or (s is not None and e is not None):
+            wins.append({'days': days, 'start_min': s, 'end_min': e})
+
+    # 2) Legacy single-window fields.
+    if not wins:
+        days = parse_days(hh.get('hh_days_list') or hh.get('hh_days'))
+        s, e = to_min(hh.get('hh_start')), to_min(hh.get('hh_end'))
+        if days or (s is not None and e is not None):
+            wins = [{'days': days, 'start_min': s, 'end_min': e}]
+
+    # 3) Free text — use it when it reveals MORE windows than the fields did,
+    #    or fills a gap (no windows / missing times).
+    raw_wins = parse_windows(hh.get('hh_times_raw'))
+    if len(raw_wins) > len(wins):
+        wins = raw_wins
+    elif wins and raw_wins and wins[0]['start_min'] is None:
+        wins = raw_wins
+
+    # Windows still missing times (e.g. days came from fields, time only in raw
+    # text with no day tokens like "4-6pm") → fill from the raw text's range.
+    if any(w['start_min'] is None or w['end_min'] is None for w in wins):
+        a, b = parse_time_range(hh.get('hh_times_raw'))
+        if a is not None and b is not None:
+            for w in wins:
+                if w['start_min'] is None:
+                    w['start_min'] = a
+                if w['end_min'] is None:
+                    w['end_min'] = b
+
+    primary = wins[0] if wins else {'days': [], 'start_min': None, 'end_min': None}
+    label = '; '.join(filter(None, (_win_label(w['days'], w['start_min'], w['end_min']) for w in wins)))
     return {
-        'hh_days_list': days,
-        'hh_days': ','.join(days) if days else None,
-        'hh_start': fmt24(start_min) if start_min is not None else None,
-        'hh_end': fmt24(end_min) if end_min is not None else None,
+        'hh_windows': [{'days': w['days'],
+                        'start': fmt24(w['start_min']) if w['start_min'] is not None else None,
+                        'end': fmt24(w['end_min']) if w['end_min'] is not None else None}
+                       for w in wins],
+        'hh_days_list': primary['days'],
+        'hh_days': ','.join(primary['days']) if primary['days'] else None,
+        'hh_start': fmt24(primary['start_min']) if primary['start_min'] is not None else None,
+        'hh_end': fmt24(primary['end_min']) if primary['end_min'] is not None else None,
         'hh_time_label': label or None,
     }
 
@@ -179,6 +245,30 @@ def _self_test():
     assert normalize(cases[3])['hh_start'] == '15:00' and normalize(cases[3])['hh_end'] == '19:00'
     assert normalize(cases[4])['hh_days_list'] == ['mon', 'wed', 'fri']
     assert normalize(cases[5])['hh_days_list'] == [] and normalize(cases[5])['hh_start'] is None
+
+    # Multi-window: American Sardine layout (time line, then days line, twice).
+    sardine = {'hh_times_raw': 'Happy Hour\n4pm to 6pm\nMonday thru Friday\n'
+                               'Late Nite Happy Hour\n10pm to 12am\nMonday and Tuesday'}
+    n = normalize(sardine)
+    print('\nsardine ->', n)
+    assert len(n['hh_windows']) == 2
+    assert n['hh_windows'][0] == {'days': ['mon', 'tue', 'wed', 'thu', 'fri'], 'start': '16:00', 'end': '18:00'}
+    assert n['hh_windows'][1] == {'days': ['mon', 'tue'], 'start': '22:00', 'end': '00:00'}
+    assert n['hh_days_list'] == ['mon', 'tue', 'wed', 'thu', 'fri']   # primary fills legacy fields
+
+    # Multi-window: Bar Bombon pipe-separated layout (3 windows on one line).
+    bombon = {'hh_times_raw': 'MON-WED 5 TO 6PM | THUR-FRI 3 TO 6PM | FRI-SAT 9-11PM'}
+    n = normalize(bombon)
+    print('bombon  ->', n)
+    assert len(n['hh_windows']) == 3
+    assert n['hh_windows'][0] == {'days': ['mon', 'tue', 'wed'], 'start': '17:00', 'end': '18:00'}
+    assert n['hh_windows'][2] == {'days': ['fri', 'sat'], 'start': '21:00', 'end': '23:00'}
+
+    # LLM-stored windows are authoritative over raw text.
+    stored = {'hh_windows': [{'days': ['mon', 'fri'], 'start': '16:00', 'end': '18:00'}],
+              'hh_times_raw': 'whatever 4-6pm'}
+    assert normalize(stored)['hh_windows'] == [{'days': ['mon', 'fri'], 'start': '16:00', 'end': '18:00'}]
+
     print('\nOK (offline parser verified; no DB used).')
 
 
@@ -195,7 +285,8 @@ def main():
     from db import get_db
     db = get_db()
     docs = list(db.happy_hours.find({}, {
-        'bar_name': 1, 'hh_days_list': 1, 'hh_days': 1, 'hh_start': 1, 'hh_end': 1, 'hh_times_raw': 1,
+        'bar_name': 1, 'hh_windows': 1, 'hh_days_list': 1, 'hh_days': 1,
+        'hh_start': 1, 'hh_end': 1, 'hh_times_raw': 1,
     }))
     changed = 0
     for d in docs:

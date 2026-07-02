@@ -1116,25 +1116,83 @@ function _daysLabel(days) {
   return idx.map(i => _DAY_CAP[HH_DAYS[i]]).join(', ');
 }
 
-function normalizeHHTime(hh) {
-  let days = parseDays(hh.hh_days_list && hh.hh_days_list.length ? hh.hh_days_list : hh.hh_days);
-  if (!days.length && hh.hh_times_raw) days = parseDays(hh.hh_times_raw);
+// Multi-window support: many bars run several happy hours ("Mon–Fri 4–6pm" plus
+// a late-night "Mon–Tue 10pm–12am"), so the canonical shape is a LIST of windows.
+function _splitSegments(raw) {
+  return String(raw || '').split(/[\n|;•·]+/).map(s => s.trim()).filter(Boolean);
+}
 
-  let start_min = _toMin(hh.hh_start);
-  let end_min   = _toMin(hh.hh_end);
-  if ((start_min == null || end_min == null) && hh.hh_times_raw) {
-    const [a, b] = _parseTimeRange(hh.hh_times_raw);
-    if (start_min == null) start_min = a;
-    if (end_min == null) end_min = b;
+// Best-effort multi-window parse of free text: pairs day expressions with time
+// ranges segment by segment; a window's days/times may share a segment
+// ("Mon-Fri 4-6pm") or sit on adjacent lines (time first, days after).
+function _parseWindowsFromRaw(raw) {
+  const wins = [];
+  let pendDays = null, pendTime = null;
+  for (const seg of _splitSegments(raw)) {
+    const d = parseDays(seg);
+    let t = _parseTimeRange(seg);
+    t = (t[0] != null && t[1] != null) ? t : null;
+    if (d.length && t) {
+      wins.push({ days: d, start_min: t[0], end_min: t[1] });
+      pendDays = pendTime = null;
+    } else if (t) {
+      if (pendDays) { wins.push({ days: pendDays, start_min: t[0], end_min: t[1] }); pendDays = null; }
+      else pendTime = t;
+    } else if (d.length) {
+      if (pendTime) { wins.push({ days: d, start_min: pendTime[0], end_min: pendTime[1] }); pendTime = null; }
+      else pendDays = d;
+    }
   }
-  const dl = _daysLabel(days);
-  const tl = (start_min != null && end_min != null) ? `${_fmt12(start_min)}–${_fmt12(end_min)}` : '';
-  const time_label = dl && tl ? `${dl} · ${tl}` : (dl || tl || '');
+  return wins;
+}
+
+function _winLabel(w) {
+  const dl = _daysLabel(w.days);
+  const tl = (w.start_min != null && w.end_min != null)
+    ? `${_fmt12(w.start_min)}–${_fmt12(w.end_min)}` : '';
+  return dl && tl ? `${dl} · ${tl}` : (dl || tl || '');
+}
+
+function normalizeHHTime(hh) {
+  // 1) Windows stored by the LLM pass (authoritative when present).
+  let wins = [];
+  for (const w of (hh.hh_windows || [])) {
+    const days = parseDays(w.days);
+    const s = _toMin(w.start), e = _toMin(w.end);
+    if (days.length || (s != null && e != null)) wins.push({ days, start_min: s, end_min: e });
+  }
+  // 2) Legacy single-window fields.
+  if (!wins.length) {
+    const days = parseDays(hh.hh_days_list && hh.hh_days_list.length ? hh.hh_days_list : hh.hh_days);
+    const s = _toMin(hh.hh_start), e = _toMin(hh.hh_end);
+    if (days.length || (s != null && e != null)) wins = [{ days, start_min: s, end_min: e }];
+  }
+  // 3) Free text — use when it reveals MORE windows, or fills missing times.
+  const rawWins = _parseWindowsFromRaw(hh.hh_times_raw);
+  if (rawWins.length > wins.length) wins = rawWins;
+  else if (wins.length && rawWins.length && wins[0].start_min == null) wins = rawWins;
+  if (wins.some(w => w.start_min == null || w.end_min == null)) {
+    const [a, b] = _parseTimeRange(hh.hh_times_raw);
+    if (a != null && b != null) {
+      for (const w of wins) {
+        if (w.start_min == null) w.start_min = a;
+        if (w.end_min == null) w.end_min = b;
+      }
+    }
+  }
+
+  const primary = wins[0] || { days: [], start_min: null, end_min: null };
   return {
-    days,
-    start: start_min != null ? _fmt24(start_min) : null,
-    end:   end_min   != null ? _fmt24(end_min)   : null,
-    start_min, end_min, time_label,
+    windows: wins.map(w => ({
+      days: w.days, start_min: w.start_min, end_min: w.end_min,
+      start: w.start_min != null ? _fmt24(w.start_min) : null,
+      end:   w.end_min   != null ? _fmt24(w.end_min)   : null,
+    })),
+    days: HH_DAYS.filter(d => wins.some(w => w.days.includes(d))),   // union across windows
+    start: primary.start_min != null ? _fmt24(primary.start_min) : null,
+    end:   primary.end_min   != null ? _fmt24(primary.end_min)   : null,
+    start_min: primary.start_min, end_min: primary.end_min,
+    time_label: wins.map(_winLabel).filter(Boolean).join('; '),
   };
 }
 
@@ -1194,7 +1252,7 @@ app.get('/api/happy-hours', async (req, res) => {
       // (source_url === website); those are legit and carry times, so we no
       // longer discard them — we only drop rows with neither a source nor times.
       const hasRealSource = hh.source_url && hh.source_url !== hh.website && hh.source_type !== 'homepage';
-      const hasTimes = (t.start_min != null && t.end_min != null) || t.days.length > 0;
+      const hasTimes = t.windows.length > 0;
       if (!hasRealSource && !hasTimes) continue;
       counts.afterSourceFilter++;
 
@@ -1216,12 +1274,13 @@ app.get('/api/happy-hours', async (req, res) => {
         website:       hh.website || null,
         source_url:    hh.source_url || null,
         source_type:   hh.source_type || null,
-        days:          t.days,           // ['mon','tue',...] — exact day filtering
-        start:         t.start,          // "16:00"
-        end:           t.end,            // "18:00"
-        start_min:     t.start_min,      // 960 — for the hour slider
-        end_min:       t.end_min,        // 1080
-        time_label:    t.time_label,     // "Mon–Fri · 4:00–6:00 PM"
+        windows:       t.windows,        // [{days,start,end,start_min,end_min}] — full schedule
+        days:          t.days,           // union across windows (display/back-compat)
+        start:         t.start,          // primary window "16:00"
+        end:           t.end,            // primary window "18:00"
+        start_min:     t.start_min,      // primary window minutes
+        end_min:       t.end_min,
+        time_label:    t.time_label,     // "Mon–Fri · 4–6 PM; Mon, Tue · 10 PM–12 AM"
         hh_times_raw:  hh.hh_times_raw || null,   // kept for reference/debug
         categories:    [...new Set(barItems.map(i => i.category))],
         items:         barItems,

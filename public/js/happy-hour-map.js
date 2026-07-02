@@ -93,20 +93,25 @@ function ensureMarker(bar) {
 }
 
 // ── Filters ───────────────────────────────────────────────────────────────────
-function hhDayMatches(bar) {
-  if (!hhFilters.day) return true;                 // "Any day"
-  var days = bar.days || [];
-  if (!days.length) return false;                  // no parsed days → can't match a chosen day
-  return days.indexOf(hhFilters.day.slice(0, 3)) !== -1;
-}
-function hhTimeMatches(bar) {
-  // Full slider range = "any time": everything passes.
-  if (hhFilters.timeLo <= HH_TIME_MIN && hhFilters.timeHi >= HH_TIME_MAX) return true;
-  if (bar.start_min == null || bar.end_min == null) return false;  // no parsed time → can't confirm
-  var s = bar.start_min, e = bar.end_min;
-  if (e <= s) e += 1440;                            // window crosses midnight
-  // The bar's happy hour overlaps the selected window.
-  return s < hhFilters.timeHi && e > hhFilters.timeLo;
+// A bar may run several happy-hour windows (bar.windows). The day + time
+// filters are evaluated per window: at least ONE window must satisfy BOTH —
+// a bar with "Mon 4-6" and "Fri 9-11" must NOT match a "Fri 4-6" filter.
+function hhScheduleMatches(bar) {
+  var dayF = hhFilters.day ? hhFilters.day.slice(0, 3) : null;
+  var timeActive = !(hhFilters.timeLo <= HH_TIME_MIN && hhFilters.timeHi >= HH_TIME_MAX);
+  if (!dayF && !timeActive) return true;           // both filters at "any"
+  var wins = bar.windows || [];
+  if (!wins.length) return false;                  // nothing parsed → can't confirm a match
+  return wins.some(function (w) {
+    if (dayF && (w.days || []).indexOf(dayF) === -1) return false;
+    if (timeActive) {
+      if (w.start_min == null || w.end_min == null) return false;
+      var s = w.start_min, e = w.end_min;
+      if (e <= s) e += 1440;                       // window crosses midnight
+      if (!(s < hhFilters.timeHi && e > hhFilters.timeLo)) return false;
+    }
+    return true;
+  });
 }
 function hhDrinkMatches(bar) {
   if (!hhFilters.drink) return true;
@@ -120,7 +125,7 @@ function hhSearchMatches(bar) {
 function getVisibleHH() {
   if (!selectedHoods.size) return [];
   return hhAllData.filter(function (b) {
-    return selectedHoods.has(b._nh) && hhDayMatches(b) && hhTimeMatches(b) &&
+    return selectedHoods.has(b._nh) && hhScheduleMatches(b) &&
            hhDrinkMatches(b) && hhSearchMatches(b);
   });
 }

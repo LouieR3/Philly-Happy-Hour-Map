@@ -116,20 +116,34 @@ SOURCE_SCHEMA = {
                  'source_type', 'confidence', 'reason'],
 }
 
+# A happy hour is a LIST of windows: many bars run several (e.g. "Mon-Fri 4-6pm"
+# plus a late-night "Mon-Tue 10pm-12am"). Forcing one days/start/end made the
+# model smear multiple windows together (the American Sardine Bar bug).
 TIME_SCHEMA = {
     'type': 'object', 'additionalProperties': False,
     'properties': {
         'is_happy_hour': {'type': 'boolean',
                           'description': 'Does this page actually describe a happy hour (not a regular menu)?'},
-        'days': {'type': 'array', 'items': {'type': 'string', 'enum': DAYS},
-                 'description': 'Days the happy hour runs.'},
-        'start': {'type': 'string', 'description': "Start time 24h 'HH:MM', or '' if unknown."},
-        'end': {'type': 'string', 'description': "End time 24h 'HH:MM', or '' if unknown."},
-        'raw': {'type': 'string', 'description': "The time window as written, e.g. 'Mon-Fri 4-6pm'."},
+        'windows': {
+            'type': 'array',
+            'description': 'One entry per distinct happy-hour time window. Primary/main window first.',
+            'items': {
+                'type': 'object', 'additionalProperties': False,
+                'properties': {
+                    'days': {'type': 'array', 'items': {'type': 'string', 'enum': DAYS},
+                             'description': 'Every day this window runs — expand ranges fully '
+                                            '("Monday thru Friday" = mon,tue,wed,thu,fri).'},
+                    'start': {'type': 'string', 'description': "Start time 24h 'HH:MM', or '' if unknown."},
+                    'end': {'type': 'string', 'description': "End time 24h 'HH:MM', or '' if unknown."},
+                },
+                'required': ['days', 'start', 'end'],
+            },
+        },
+        'raw': {'type': 'string', 'description': "The schedule as written, e.g. 'Mon-Fri 4-6pm; late night Mon-Tue 10pm-12am'."},
         'confidence': {'type': 'number'},
         'notes': {'type': 'string'},
     },
-    'required': ['is_happy_hour', 'days', 'start', 'end', 'raw', 'confidence', 'notes'],
+    'required': ['is_happy_hour', 'windows', 'raw', 'confidence', 'notes'],
 }
 
 
@@ -207,9 +221,13 @@ def resolve_source(decision, candidates, website):
 
 def extract_messages(text):
     system = (
-        "You read a happy-hour page and extract the day/time window. Return the days the happy hour runs, "
-        "start and end times in 24-hour HH:MM, and the raw text. If the page is a regular menu with no "
-        "happy hour, set is_happy_hour=false. Only report times you can actually find."
+        "You read a happy-hour page and extract the schedule as a list of time windows. Rules:\n"
+        "- Expand day ranges completely: 'Monday thru Friday' means mon,tue,wed,thu,fri — never just the endpoints.\n"
+        "- If there are MULTIPLE windows (e.g. a regular happy hour AND a late-night one, or different "
+        "hours on different days), return one entry per window — do not merge them. Primary window first.\n"
+        "- Times are 24-hour HH:MM. Only report days/times actually stated on the page.\n"
+        "- If the page is a regular menu with no happy hour, set is_happy_hour=false and windows=[].\n"
+        "- The text may come from a PDF with garbled glyphs (e.g. 'BE ER', 'MON?WED') — read through the noise."
     )
     user = f"PAGE TEXT (truncated):\n{(text or '')[:6000]}\n"
     return system, user
@@ -227,26 +245,151 @@ def _pdf_text(url):
     return '\n'.join(page.get_text() for page in doc)
 
 
-def process_bar(ctx, bar, examples):
-    import fetcher
-    website = bar.get('Website')
-    home = fetcher.render(ctx, website)
-    candidates = build_candidates(home['links'])
+# ── Tier 0: dedicated-path probe (no LLM, plain requests) ─────────────────────
+COMMON_HH_PATHS = ['/happy-hour', '/happyhour', '/happy-hour-menu', '/happy-hour-specials',
+                   '/specials', '/hh', '/menus/happy-hour', '/menu/happy-hour']
+PROBE_UA = 'Mozilla/5.0 (compatible; MappyHourBot/1.0; +happy-hour discovery)'
 
-    decision = complete_json(*find_source_messages(bar, home['text'], candidates, examples), SOURCE_SCHEMA)
-    stype, surl, on_home = resolve_source(decision, candidates, website)
-    base = {
-        'bar_name': bar.get('Name'), 'yelp_alias': bar.get('Yelp Alias'), 'website': website,
-        'source_type': stype, 'source_url': surl, 'on_homepage': on_home,
-        'has_happy_hour': bool(decision.get('has_happy_hour')),
-        'find_confidence': decision.get('confidence'),
-        'llm_reason': decision.get('reason'),
-        'candidates': [c['href'] for c in candidates],   # provenance for review/learning
+
+def probe_hh_paths(website, timeout=8):
+    """Cheapest tier: many bars have a dedicated /happy-hour page that the
+    homepage never links to. Returns ('html'|'pdf', url) on a hit, else None."""
+    import requests
+    p = urlparse(website or '')
+    if not p.netloc:
+        return None
+    root = f'{p.scheme or "https"}://{p.netloc}'
+    for path in COMMON_HH_PATHS:
+        url = root + path
+        try:
+            r = requests.get(url, timeout=timeout, headers={'User-Agent': PROBE_UA}, allow_redirects=True)
+            if r.status_code != 200:
+                continue
+        except Exception:
+            continue
+        if url.lower().endswith('.pdf') or 'pdf' in r.headers.get('Content-Type', '').lower():
+            return 'pdf', url
+        if 'happy hour' in r.text.lower():   # guard against soft-404s
+            return 'html', str(r.url)
+    return None
+
+
+def _render_retry(ctx, url, attempts=2):
+    """Playwright timeouts caused ~67 'error' rows — one retry clears most."""
+    import fetcher
+    last = None
+    for _ in range(attempts):
+        try:
+            return fetcher.render(ctx, url)
+        except Exception as e:
+            last = e
+    raise last
+
+
+def _menu_candidates(candidates, limit=2):
+    """Menu-ish links to try when the model says 'no happy hour' — Dizengoff-style
+    sites keep the HH section inside the generic /menu page."""
+    out = []
+    for c in candidates:
+        s = ((c.get('text') or '') + ' ' + (c.get('href') or '')).lower()
+        if 'menu' in s or 'special' in s or 'drink' in s or 'happen' in s:
+            out.append(c['href'])
+            if len(out) >= limit:
+                break
+    return out
+
+
+def windows_to_fields(ext):
+    """Extractor windows[] → storage fields. Primary window fills the legacy
+    hh_days_list/hh_start/hh_end fields; hh_windows carries the full schedule."""
+    wins = []
+    for w in (ext.get('windows') or []):
+        days = {d for d in (w.get('days') or []) if d in DAYS}
+        days = [d for d in DAYS if d in days]            # canonical order
+        start = (w.get('start') or '').strip() or None
+        end = (w.get('end') or '').strip() or None
+        if not days and not (start and end):
+            continue
+        wins.append({'days': days, 'start': start, 'end': end})
+    primary = wins[0] if wins else {'days': [], 'start': None, 'end': None}
+    return {
+        'hh_windows': wins,
+        'hh_days_list': primary['days'],
+        'hh_days': ','.join(primary['days']) or None,
+        'hh_start': primary['start'],
+        'hh_end': primary['end'],
     }
 
+
+_EMPTY_TIMES = dict(hh_windows=[], hh_days=None, hh_days_list=[],
+                    hh_start=None, hh_end=None, hh_times_raw=None)
+
+
+def _extract_into(base, decision_conf, src_text, ext, note=''):
+    """Fill `base` with extraction results (shared by the main path + fallback)."""
+    conf = round(min(float(decision_conf), float(ext.get('confidence', 0.5))), 2)
+    base.update(windows_to_fields(ext))
+    base.update(
+        status='found' if ext.get('is_happy_hour') else 'uncertain',
+        menu_text=(src_text or '')[:20000],
+        hh_times_raw=ext.get('raw') or None,
+        confidence=conf,
+        extract_notes=((ext.get('notes') or '') + (' | ' + note if note else '')).strip(' |') or None,
+        needs_review=(conf < 0.7) or (not ext.get('is_happy_hour')),
+    )
+    return base
+
+
+def process_bar(ctx, bar, examples):
+    website = bar.get('Website')
+    base = {
+        'bar_name': bar.get('Name'), 'yelp_alias': bar.get('Yelp Alias'), 'website': website,
+    }
+
+    # Tier 0 — dedicated path probe: no LLM call needed to FIND the source.
+    probed = probe_hh_paths(website)
+    if probed:
+        stype, surl = probed
+        base.update(source_type=stype, source_url=surl, on_homepage=False,
+                    has_happy_hour=True, find_confidence=0.9,
+                    llm_reason=f'dedicated path probe hit {surl}', candidates=[])
+        src_text = _pdf_text(surl) if stype == 'pdf' else _render_retry(ctx, surl)['text']
+        ext = complete_json(*extract_messages(src_text), TIME_SCHEMA)
+        return _extract_into(base, 0.9, src_text, ext, note='tier0 probe')
+
+    # Tier 1 — render homepage, let the LLM pick the source.
+    home = _render_retry(ctx, website)
+    candidates = build_candidates(home['links'])
+    decision = complete_json(*find_source_messages(bar, home['text'], candidates, examples), SOURCE_SCHEMA)
+    stype, surl, on_home = resolve_source(decision, candidates, website)
+    base.update(
+        source_type=stype, source_url=surl, on_homepage=on_home,
+        has_happy_hour=bool(decision.get('has_happy_hour')),
+        find_confidence=decision.get('confidence'),
+        llm_reason=decision.get('reason'),
+        candidates=[c['href'] for c in candidates],   # provenance for review/learning
+    )
+
     if stype == 'none':
-        base.update(status='no_happy_hour', needs_review=False, menu_text='',
-                    hh_days=None, hh_days_list=[], hh_start=None, hh_end=None, hh_times_raw=None)
+        # Recall fallback: the HH section often hides inside a generic menu page
+        # (Dizengoff-style). Render up to 2 menu-ish links; keep one only if the
+        # extractor affirms it's a real happy hour.
+        for murl in _menu_candidates(candidates):
+            try:
+                mtext = _pdf_text(murl) if murl.lower().endswith('.pdf') else _render_retry(ctx, murl)['text']
+                if 'happy hour' not in (mtext or '').lower():
+                    continue
+                ext = complete_json(*extract_messages(mtext), TIME_SCHEMA)
+                if ext.get('is_happy_hour'):
+                    base.update(source_type='pdf' if murl.lower().endswith('.pdf') else 'html',
+                                source_url=murl, has_happy_hour=True,
+                                llm_reason=(base.get('llm_reason') or '') + ' | menu-page fallback')
+                    out = _extract_into(base, 0.6, mtext, ext, note='menu fallback')
+                    out['needs_review'] = True   # fallback finds always get a human look
+                    return out
+            except Exception:
+                continue
+        base.update(status='no_happy_hour', needs_review=False, menu_text='', **_EMPTY_TIMES)
         return base
 
     # Get the source text (rendered HTML, PDF, or homepage we already have).
@@ -255,26 +398,12 @@ def process_bar(ctx, bar, examples):
     elif stype == 'pdf':
         src_text = _pdf_text(surl)
     else:
-        rendered = fetcher.render(ctx, surl)
+        rendered = _render_retry(ctx, surl)
         src_text, surl = rendered['text'], rendered['final_url']
         base['source_url'] = surl
 
     ext = complete_json(*extract_messages(src_text), TIME_SCHEMA)
-    days = [d for d in (ext.get('days') or []) if d in DAYS]
-    conf = round(min(float(decision.get('confidence', 0.5)), float(ext.get('confidence', 0.5))), 2)
-    base.update(
-        status='found' if ext.get('is_happy_hour') else 'uncertain',
-        menu_text=(src_text or '')[:20000],
-        hh_days=','.join(days) or None,        # back-compat string for the current map filter
-        hh_days_list=days,                      # structured, for exact day filtering
-        hh_start=ext.get('start') or None,
-        hh_end=ext.get('end') or None,
-        hh_times_raw=ext.get('raw') or None,
-        confidence=conf,
-        extract_notes=ext.get('notes'),
-        needs_review=(conf < 0.7) or (not ext.get('is_happy_hour')),
-    )
-    return base
+    return _extract_into(base, float(decision.get('confidence', 0.5)), src_text, ext)
 
 
 # ── CLI ───────────────────────────────────────────────────────────────────────
@@ -304,6 +433,32 @@ def _self_test():
     s, u = find_source_messages({'Name': 'Test Bar', 'Website': 'https://bar.test/'},
                                 'Welcome to Test Bar. Happy hour daily!', cands, _load_examples())
     print('\n--- find_source prompt (user) ---\n' + u[:600])
+
+    # Multi-window storage: two windows, primary fills the legacy fields.
+    ext = {'windows': [
+        {'days': ['mon', 'tue', 'wed', 'thu', 'fri'], 'start': '16:00', 'end': '18:00'},
+        {'days': ['tue', 'mon'], 'start': '22:00', 'end': '00:00'},   # out-of-order days
+        {'days': [], 'start': '', 'end': ''},                         # empty → dropped
+    ]}
+    f = windows_to_fields(ext)
+    assert len(f['hh_windows']) == 2
+    assert f['hh_windows'][1]['days'] == ['mon', 'tue']               # canonical order
+    assert f['hh_days_list'] == ['mon', 'tue', 'wed', 'thu', 'fri'] and f['hh_start'] == '16:00'
+    print('windows_to_fields: 2 windows kept, empty dropped, primary -> legacy fields OK')
+
+    # Menu fallback candidates: menu-ish links picked, capped at 2.
+    mc = _menu_candidates([
+        {'text': 'Our Story', 'href': 'https://bar.test/about'},
+        {'text': 'Menus', 'href': 'https://bar.test/menus'},
+        {'text': 'Happenings', 'href': 'https://bar.test/happenings'},
+        {'text': 'Drinks', 'href': 'https://bar.test/drinks'},
+    ])
+    assert mc == ['https://bar.test/menus', 'https://bar.test/happenings']
+    print('menu fallback candidates:', mc)
+
+    # Probe URL construction is exercised implicitly (network calls skipped offline).
+    assert probe_hh_paths('not a url') is None
+    print('probe_hh_paths: rejects invalid website OK')
 
     # Point-in-polygon: unit square contains its center, excludes an outside point.
     square = {'type': 'Polygon', 'coordinates': [[[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]]}
