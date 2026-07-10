@@ -1,0 +1,1285 @@
+"id","received","sent","priority","description","details","external_data","place","address","unit","cross_street","city","state","lat","lon","coordinate_source","source","units","cad_code","map_code","map_id","alert_key","messages","responses"
+"635258859","07/06/2026 02:46:48 EDT","07/06/2026 02:46:49 EDT","3","SERV - Service assignment (Fire){3}","Toner Alert Initiated 
+ {102} 
+  Station Dispatched : {102   } 
+  Units Recommended: {102    };
+ Dispatched: {102} 
+  Toner Alert Initiated, Following tones sent to device - F1   
+ 10DE - 10-2 Whitman Square FD
+  
+  Room 32, assist with forcing the door 
+  Names Added : Ejiogu, Judith; Caller
+DATE: 07/06/2026
+CODE: SERV
+TIME: 02:44:06","","Juniper Partners","120 Town Center Blvd","0 Sewell Washin","Hurffville Crosskeys RD & Dead End","Gloucester County","NJ","39.7242","-75.04628001","amazon:cached","","102, 102, 102, 102","2026001177","","","qJ4tu","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/06/2026 02:46:48 EDT.
+Sent message of type xmpp to BC101(61863) at 07/06/2026 02:46:48 EDT.
+Sent message of type xmpp to BC103(61595) at 07/06/2026 02:46:48 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/06/2026 02:46:48 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/06/2026 02:46:48 EDT.
+Sent message of type xmpp to EOC (63727) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to 1002(61865) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to 1065(61599) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to 26-1(61402) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to 2600(215257) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to BC-101(155258) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to BC102(54929) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to CH10(61597) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to E1011(57083) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to E1021(61596) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to E1022(57091) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to E1031(61600) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to E1032(61601) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to E1033(61602) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to FM-10(63730) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to L1026(61598) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to LT1016(61591) at 07/06/2026 02:46:48 EDT.  It was opened by the device at 07/06/2026 02:48:04 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to PW1015(61593) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to R10(49651) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to S10(61594) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to SQ26(964403) at 07/06/2026 02:46:48 EDT.  It was opened by the device at 07/06/2026 10:37:31 EDT.
+Sent message of type apns to SQ261(964402) at 07/06/2026 02:46:48 EDT.  It was opened by the device at 07/06/2026 22:18:20 EDT.
+Sent message of type apns to Squad 283(189242) at 07/06/2026 02:46:48 EDT.
+Sent message of type apns to U1017(61592) at 07/06/2026 02:46:48 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/06/2026 02:46:49 EDT.  It was opened by the device at 07/06/2026 07:07:59 EDT.
+","Got a response of Avail to LT1016(61591) at 07/06/2026 03:09:45 EDT.
+"
+"635300337","07/06/2026 09:43:18 EDT","07/06/2026 09:43:19 EDT","3","INVF - Investigation (FIRE){3}","Toner Alert Initiated 
+ {101}[S10]
+TIME: 09:43:12
+DATE: 07/06/2026
+CODE: INVF
+Suggested city: Blackwood","","","62 Bells Lake DR","","Shady LN & Merion RD","Turnersville","NJ","39.75197955","-75.05722904","amazon","","101","2026001178","","","rgeQ5","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/06/2026 09:43:18 EDT.
+Sent message of type xmpp to BC101(61863) at 07/06/2026 09:43:18 EDT.
+Sent message of type xmpp to BC103(61595) at 07/06/2026 09:43:18 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/06/2026 09:43:18 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/06/2026 09:43:18 EDT.
+Sent message of type xmpp to EOC (63727) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to 1002(61865) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to 1065(61599) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to 26-1(61402) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to 2600(215257) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to BC-101(155258) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to BC102(54929) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to CH10(61597) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to E1011(57083) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to E1021(61596) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to E1022(57091) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to E1031(61600) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to E1032(61601) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to E1033(61602) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to FM-10(63730) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to L1026(61598) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to LT1016(61591) at 07/06/2026 09:43:18 EDT.  It was opened by the device at 07/06/2026 09:45:08 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to PW1015(61593) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to R10(49651) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to S10(61594) at 07/06/2026 09:43:18 EDT.  It was opened by the device at 07/06/2026 10:34:50 EDT.
+Sent message of type apns to SQ26(964403) at 07/06/2026 09:43:18 EDT.  It was opened by the device at 07/06/2026 10:37:31 EDT.
+Sent message of type apns to SQ261(964402) at 07/06/2026 09:43:18 EDT.  It was opened by the device at 07/06/2026 22:18:19 EDT.
+Sent message of type apns to Squad 283(189242) at 07/06/2026 09:43:18 EDT.
+Sent message of type apns to U1017(61592) at 07/06/2026 09:43:18 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/06/2026 09:43:19 EDT.
+",""
+"635309992","07/06/2026 10:36:06 EDT","07/06/2026 10:36:07 EDT","3","SERV - Service assignment (Fire){3}","Toner Alert Initiated 
+ {102} 
+  Station Dispatched : {102   } 
+  Dispatched: {102}, {109} 
+  Toner Alert Initiated, Following tones sent to device - F1   
+ 10DE - 10-2 Whitman Square FD
+ 109D - 10-9 Washington Township EMS
+  
+  Fire CFS from -> RSQM     to SERV
+ 
+  
+  In the roadway facing the wrong way.  stuck in the water.  caller stuck in the car with her children
+ 
+ PD req FD 
+  Update reviewed by dispatcher- Severns, Kevin D-5111 
+  R10-3 
+ CH10 
+ S10-3 
+  Update reviewed by dispatcher- Norcross, Ian W-6281 
+  Vehicle became disabled when drving through flood waters, not in distress
+CODE: SERV
+TIME: 10:32:23
+DATE: 07/06/2026","","","Fairmount DR & Longwood DR","","","Sicklerville","NJ","39.72583899","-75.02602196","amazon","","102, 102, 102, 109","2026001179","","","CJHTx","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/06/2026 10:36:06 EDT.
+Sent message of type xmpp to BC101(61863) at 07/06/2026 10:36:06 EDT.
+Sent message of type xmpp to BC103(61595) at 07/06/2026 10:36:06 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/06/2026 10:36:06 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/06/2026 10:36:06 EDT.
+Sent message of type xmpp to EOC (63727) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to 1002(61865) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to 1065(61599) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to 26-1(61402) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to 2600(215257) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to BC-101(155258) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to BC102(54929) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to CH10(61597) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to E1011(57083) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to E1021(61596) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to E1022(57091) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to E1031(61600) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to E1032(61601) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to E1033(61602) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to FM-10(63730) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to L1026(61598) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to LT1016(61591) at 07/06/2026 10:36:06 EDT.  It was opened by the device at 07/06/2026 15:41:13 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to PW1015(61593) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to R10(49651) at 07/06/2026 10:36:06 EDT.  It was opened by the device at 07/06/2026 10:36:28 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to S10(61594) at 07/06/2026 10:36:06 EDT.  It was opened by the device at 07/06/2026 10:36:27 EDT.
+Sent message of type apns to SQ26(964403) at 07/06/2026 10:36:06 EDT.  It was opened by the device at 07/06/2026 10:37:30 EDT.
+Sent message of type apns to SQ261(964402) at 07/06/2026 10:36:06 EDT.  It was opened by the device at 07/06/2026 22:18:18 EDT.
+Sent message of type apns to Squad 283(189242) at 07/06/2026 10:36:06 EDT.
+Sent message of type apns to U1017(61592) at 07/06/2026 10:36:06 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/06/2026 10:36:07 EDT.  It was opened by the device at 07/06/2026 10:42:35 EDT.
+",""
+"635310950","07/06/2026 10:41:37 EDT","07/06/2026 10:41:39 EDT","3","ALRM - Fire Alarm System{3}","Toner Alert Initiated 
+ {102} 
+  Station Dispatched : {102   } 
+  Units Recommended: {102    };
+ Dispatched: {102} 
+  KARONLEENA MICHAELS BEAUTY SALON
+ ZONE 2 BASEMENT SMOKE
+ PREMISE 856-371-5993
+ UAS ALARM 800-421-6661
+ OP SL08
+CODE: ALRM
+TIME: 10:36:11
+DATE: 07/06/2026
+Suggested city: Blackwood","","Pure Stone","4350 Black Horse PIKE","","Leddon LN & Fries Mill RD","Turnersville","NJ","39.74036638","-75.04294469","amazon","","102, 102, 102, 102","2026001180","","","YEIzB","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/06/2026 10:41:37 EDT.
+Sent message of type xmpp to BC101(61863) at 07/06/2026 10:41:37 EDT.
+Sent message of type xmpp to BC103(61595) at 07/06/2026 10:41:37 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/06/2026 10:41:37 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/06/2026 10:41:37 EDT.
+Sent message of type xmpp to EOC (63727) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to 1002(61865) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to 1065(61599) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to 26-1(61402) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to 2600(215257) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to BC-101(155258) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to BC102(54929) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to CH10(61597) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to E1011(57083) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to E1021(61596) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to E1022(57091) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to E1031(61600) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to E1032(61601) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to E1033(61602) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to FM-10(63730) at 07/06/2026 10:41:37 EDT.  It was opened by the device at 07/06/2026 10:43:54 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to L1026(61598) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to LT1016(61591) at 07/06/2026 10:41:37 EDT.  It was opened by the device at 07/06/2026 15:41:14 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to PW1015(61593) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to R10(49651) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to S10(61594) at 07/06/2026 10:41:37 EDT.  It was opened by the device at 07/06/2026 10:41:41 EDT.
+Sent message of type apns to SQ26(964403) at 07/06/2026 10:41:37 EDT.  It was opened by the device at 07/06/2026 12:31:42 EDT.
+Sent message of type apns to SQ261(964402) at 07/06/2026 10:41:37 EDT.  It was opened by the device at 07/06/2026 22:18:19 EDT.
+Sent message of type apns to Squad 283(189242) at 07/06/2026 10:41:37 EDT.
+Sent message of type apns to U1017(61592) at 07/06/2026 10:41:37 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/06/2026 10:41:39 EDT.  It was opened by the device at 07/06/2026 10:42:36 EDT.
+",""
+"635312793","07/06/2026 10:51:04 EDT","07/06/2026 10:51:05 EDT","3","INVF - Investigation (FIRE){3}","Toner Alert Initiated 
+ {102} 
+  Station Dispatched : {102   } 
+  Units Recommended: {102    };
+ Dispatched: {102} 
+  Call Back Information : 8567451680 
+  CALLER REPORTING OUTSIDE OUTLET SMOKING BUT APPEARS TO HAVE STOPOPED, STILL WOULD LIKE FD TO CHECK OUT 
+  Names Added : Stinsman, Stacy; Caller
+DATE: 07/06/2026
+CODE: INVF
+TIME: 10:47:27","","","325 Bucknell AVE","","Westminster BLVD & Georgetown RD","Turnersville","NJ","39.74624712","-75.05019403","amazon:cached","","102, 102, 102, 102","2026001181","","","ZmgLl","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/06/2026 10:51:04 EDT.
+Sent message of type xmpp to BC101(61863) at 07/06/2026 10:51:04 EDT.
+Sent message of type xmpp to BC103(61595) at 07/06/2026 10:51:04 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/06/2026 10:51:04 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/06/2026 10:51:04 EDT.
+Sent message of type xmpp to EOC (63727) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to 1002(61865) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to 1065(61599) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to 26-1(61402) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to 2600(215257) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to BC-101(155258) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to BC102(54929) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to CH10(61597) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to E1011(57083) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to E1021(61596) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to E1022(57091) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to E1031(61600) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to E1032(61601) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to E1033(61602) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to FM-10(63730) at 07/06/2026 10:51:04 EDT.  It was opened by the device at 07/06/2026 10:51:11 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to L1026(61598) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to LT1016(61591) at 07/06/2026 10:51:04 EDT.  It was opened by the device at 07/06/2026 15:41:12 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to PW1015(61593) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to R10(49651) at 07/06/2026 10:51:04 EDT.  It was opened by the device at 07/06/2026 11:06:33 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to S10(61594) at 07/06/2026 10:51:04 EDT.  It was opened by the device at 07/06/2026 10:51:33 EDT.
+Sent message of type apns to SQ26(964403) at 07/06/2026 10:51:04 EDT.  It was opened by the device at 07/06/2026 12:31:41 EDT.
+Sent message of type apns to SQ261(964402) at 07/06/2026 10:51:04 EDT.  It was opened by the device at 07/06/2026 22:18:17 EDT.
+Sent message of type apns to Squad 283(189242) at 07/06/2026 10:51:04 EDT.
+Sent message of type apns to U1017(61592) at 07/06/2026 10:51:04 EDT.  It was opened by the device at 07/06/2026 10:51:37 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/06/2026 10:51:05 EDT.  It was opened by the device at 07/06/2026 10:51:12 EDT.
+","Got a response of Resp to S10(61594) at 07/06/2026 10:52:22 EDT.
+Got a response of Avail to S10(61594) at 07/06/2026 11:28:16 EDT.
+"
+"635372625","07/06/2026 15:28:53 EDT","07/06/2026 15:28:54 EDT","3","SPIL - Material Spill{3}","Toner Alert Initiated 
+ {102} 
+  Station Dispatched : {102   } 
+  Units Recommended: {102    };
+ Dispatched: {102} 
+  Vehicle leaking gas in the parking lot, tow enroute 
+  Names Added : Foley, Brian; Caller
+TIME: 15:26:09
+ZIP: 08080
+DATE: 07/06/2026
+CODE: SPIL","","Crossroads Worship Center (Vacant)","367 Hurffville Crosskeys RD","","Fish Pond RD & Egg Harbor RD","Sewell","NJ","39.73114964","-75.05952837","amazon","","102, 102, 102, 102","2026001183","","","236L4","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/06/2026 15:28:53 EDT.
+Sent message of type xmpp to BC101(61863) at 07/06/2026 15:28:53 EDT.
+Sent message of type xmpp to BC103(61595) at 07/06/2026 15:28:53 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/06/2026 15:28:53 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/06/2026 15:28:53 EDT.
+Sent message of type xmpp to EOC (63727) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to 1002(61865) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to 1065(61599) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to 26-1(61402) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to 2600(215257) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to BC-101(155258) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to BC102(54929) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to CH10(61597) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to E1011(57083) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to E1021(61596) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to E1022(57091) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to E1031(61600) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to E1032(61601) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to E1033(61602) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to FM-10(63730) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to L1026(61598) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to LT1016(61591) at 07/06/2026 15:28:53 EDT.  It was opened by the device at 07/06/2026 15:30:25 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/06/2026 15:28:53 EDT.  It was opened by the device at 07/06/2026 15:29:05 EDT.
+Sent message of type apns to PW1015(61593) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to R10(49651) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to S10(61594) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to SQ26(964403) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to SQ261(964402) at 07/06/2026 15:28:53 EDT.  It was opened by the device at 07/06/2026 22:18:18 EDT.
+Sent message of type apns to Squad 283(189242) at 07/06/2026 15:28:53 EDT.
+Sent message of type apns to U1017(61592) at 07/06/2026 15:28:53 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/06/2026 15:28:54 EDT.  It was opened by the device at 07/06/2026 15:29:54 EDT.
+",""
+"635460564","07/06/2026 22:57:02 EDT","07/06/2026 22:57:04 EDT","2","MVC - Motor Vehicle Crash{2}","Toner Alert Initiated 
+ {101} 
+  Station Dispatched : {101   } 
+  Dispatched: {101} 
+  Dispatched: BLS1092 
+  Dispatched: BLS109 
+  IN AREA OF EXIT, MULTI VEHICLE ACCIDENT PER NJSP
+DATE: 07/06/2026
+CODE: MVC
+TIME: 22:56:54","","Exit 7 SB","660MM RT 42 SB","","","Turnersville","NJ","39.77088771","-75.04895128","amazon:cached","","101, 101, 101","2026001184","","","ZGPI1","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/06/2026 22:57:02 EDT.
+Sent message of type xmpp to BC101(61863) at 07/06/2026 22:57:02 EDT.
+Sent message of type xmpp to BC103(61595) at 07/06/2026 22:57:02 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/06/2026 22:57:02 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/06/2026 22:57:02 EDT.
+Sent message of type xmpp to EOC (63727) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to 1002(61865) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to 1065(61599) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to 26-1(61402) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to 2600(215257) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to BC-101(155258) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to BC102(54929) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to CH10(61597) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to E1011(57083) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to E1021(61596) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to E1022(57091) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to E1031(61600) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to E1032(61601) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to E1033(61602) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to FM-10(63730) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to L1026(61598) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to LT1016(61591) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to PW1015(61593) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to R10(49651) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to S10(61594) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to SQ26(964403) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to SQ261(964402) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to Squad 283(189242) at 07/06/2026 22:57:02 EDT.
+Sent message of type apns to U1017(61592) at 07/06/2026 22:57:02 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/06/2026 22:57:04 EDT.
+",""
+"635506440","07/07/2026 06:51:59 EDT","07/07/2026 06:52:01 EDT","3","WIRE - Wires down or Arcing{3}","Toner Alert Initiated 
+ {101} 
+  Station Dispatched : {101   } 
+  Units Recommended: {101    };
+ Dispatched: {101} 
+  Toner Alert Initiated, Following tones sent to device - F1   
+ 10DE - 10-1 Grenloch FD
+  
+  Wires arc and sparking 
+  Names Added : Buggey, Lucia; Caller
+TIME: 06:49:29
+CODE: WIRE
+DATE: 07/07/2026","","","411 Greenview DR","","Barclay DR & Greentree RD","Turnersville","NJ","39.75390797","-75.05393286","amazon:cached","","101, 101, 101, 101","2026001185","","","MNH4Y","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/07/2026 06:52:00 EDT.
+Sent message of type xmpp to BC101(61863) at 07/07/2026 06:52:00 EDT.
+Sent message of type xmpp to BC103(61595) at 07/07/2026 06:52:00 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/07/2026 06:52:00 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/07/2026 06:52:00 EDT.
+Sent message of type xmpp to EOC (63727) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to 1002(61865) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to 1065(61599) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to 26-1(61402) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to 2600(215257) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to BC-101(155258) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to BC102(54929) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to CH10(61597) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to E1011(57083) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to E1021(61596) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to E1022(57091) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to E1031(61600) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to E1032(61601) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to E1033(61602) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to FM-10(63730) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to L1026(61598) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to LT1016(61591) at 07/07/2026 06:52:00 EDT.  It was opened by the device at 07/07/2026 06:55:08 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to PW1015(61593) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to R10(49651) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to S10(61594) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to SQ26(964403) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to SQ261(964402) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to Squad 283(189242) at 07/07/2026 06:52:00 EDT.
+Sent message of type apns to U1017(61592) at 07/07/2026 06:52:00 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/07/2026 06:52:01 EDT.  It was opened by the device at 07/07/2026 08:40:43 EDT.
+",""
+"635512982","07/07/2026 07:55:23 EDT","07/07/2026 07:55:25 EDT","3","ALRM - Fire Alarm System{3}","Toner Alert Initiated 
+ {103} 
+  Station Dispatched : {103   } 
+  Units Recommended: {103    };
+ Dispatched: {103} 
+  Fire Alarm set off the fire alarm in the womens bathroom, can not shut the alarm off.
+ 
+ Caller is an employee 
+  Names Added : Beebe, Jaycen; Caller
+CODE: ALRM
+TIME: 07:53:47
+DATE: 07/07/2026","","Planet Fitness","415 Egg Harbor RD","24 Sewell Washi","Greentree RD & Ganttown RD","Sewell","NJ","39.74792673","-75.07582824","amazon","","103, 103, 103, 103","2026001186","","33053","S8upL","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/07/2026 07:55:23 EDT.
+Sent message of type xmpp to BC101(61863) at 07/07/2026 07:55:23 EDT.
+Sent message of type xmpp to BC103(61595) at 07/07/2026 07:55:23 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/07/2026 07:55:23 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/07/2026 07:55:23 EDT.
+Sent message of type xmpp to EOC (63727) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to 1002(61865) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to 1065(61599) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to 26-1(61402) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to 2600(215257) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to BC-101(155258) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to BC102(54929) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to CH10(61597) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to E1011(57083) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to E1021(61596) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to E1022(57091) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to E1031(61600) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to E1032(61601) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to E1033(61602) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to FM-10(63730) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to L1026(61598) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to LT1016(61591) at 07/07/2026 07:55:23 EDT.  It was opened by the device at 07/07/2026 09:50:04 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to PW1015(61593) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to R10(49651) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to S10(61594) at 07/07/2026 07:55:23 EDT.  It was opened by the device at 07/07/2026 07:56:43 EDT.
+Sent message of type apns to SQ26(964403) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to SQ261(964402) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to Squad 283(189242) at 07/07/2026 07:55:23 EDT.
+Sent message of type apns to U1017(61592) at 07/07/2026 07:55:23 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/07/2026 07:55:25 EDT.  It was opened by the device at 07/07/2026 08:40:51 EDT.
+","Got a response of Resp to S10(61594) at 07/07/2026 07:56:45 EDT.
+Got a response of Avail to S10(61594) at 07/07/2026 07:57:34 EDT.
+"
+"635520442","07/07/2026 08:50:51 EDT","07/07/2026 08:50:53 EDT","3","ALRM - Fire Alarm System{3}","Toner Alert Initiated 
+ {103} 
+  Station Dispatched : {103   } 
+  Units Recommended: {103    };
+ Dispatched: {103} 
+  COMBO FIRE/CO DETECT SOUNDING // DOES NOT SEE OR SMELL ANYTHING // LOCATED NEAR LAUNDRY ROOM 
+  Names Added : Young, Danielle; Caller
+TIME: 08:49:01
+DATE: 07/07/2026
+CODE: ALRM
+ZIP: 08080","","","11 Comet WAY","","Pitman Downer RD & Saturn DR","Sewell","NJ","39.72002673","-75.08826924","amazon","","103, 103, 103, 103","2026001187","","35049","n5uBk","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/07/2026 08:50:51 EDT.
+Sent message of type xmpp to BC101(61863) at 07/07/2026 08:50:51 EDT.
+Sent message of type xmpp to BC103(61595) at 07/07/2026 08:50:51 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/07/2026 08:50:51 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/07/2026 08:50:51 EDT.
+Sent message of type xmpp to EOC (63727) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to 1002(61865) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to 1065(61599) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to 26-1(61402) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to 2600(215257) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to BC-101(155258) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to BC102(54929) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to CH10(61597) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to E1011(57083) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to E1021(61596) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to E1022(57091) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to E1031(61600) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to E1032(61601) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to E1033(61602) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to FM-10(63730) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/07/2026 08:50:51 EDT.
+Sent message of type apns to L1026(61598) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to LT1016(61591) at 07/07/2026 08:50:52 EDT.  It was opened by the device at 07/07/2026 08:51:41 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to PW1015(61593) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to R10(49651) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to S10(61594) at 07/07/2026 08:50:52 EDT.  It was opened by the device at 07/07/2026 08:52:15 EDT.
+Sent message of type apns to SQ26(964403) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to SQ261(964402) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to Squad 283(189242) at 07/07/2026 08:50:52 EDT.
+Sent message of type apns to U1017(61592) at 07/07/2026 08:50:52 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/07/2026 08:50:53 EDT.
+","Got a response of Avail to S10(61594) at 07/07/2026 09:05:44 EDT.
+Got a response of Avail to LT1016(61591) at 07/07/2026 09:50:15 EDT.
+"
+"635534912","07/07/2026 10:18:26 EDT","07/07/2026 10:18:27 EDT","3","ALRM - Fire Alarm System{3}","Toner Alert Initiated 
+ {101} 
+  Station Dispatched : {101   } 
+  Units Recommended: {101    };
+ Dispatched: {101} 
+  SECOND FLOOR OFFICE RM 215 AND GFA
+ KVEIN PECORELLO 610-484-1187
+ FRANKLIN 800-633-2677
+ OP/ 013383 REF/ 16-4162
+ ATTEMPTING TO NOTIFY
+DATE: 07/07/2026
+CODE: ALRM
+TIME: 10:15:50
+Suggested city: Blackwood","","Epiphany Wellness","461 Black Horse PIKE","","Gloucester Twp Line & N S Freeway","Turnersville","NJ","39.77163457","-75.05153706","amazon","","101, 101, 101, 101","2026001188","","39223","Av08I","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/07/2026 10:18:26 EDT.
+Sent message of type xmpp to BC101(61863) at 07/07/2026 10:18:26 EDT.
+Sent message of type xmpp to BC103(61595) at 07/07/2026 10:18:26 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/07/2026 10:18:26 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/07/2026 10:18:26 EDT.
+Sent message of type xmpp to EOC (63727) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to 1002(61865) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to 1065(61599) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to 26-1(61402) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to 2600(215257) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to BC-101(155258) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to BC102(54929) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to CH10(61597) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to E1011(57083) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to E1021(61596) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to E1022(57091) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to E1031(61600) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to E1032(61601) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to E1033(61602) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to FM-10(63730) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to L1026(61598) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to LT1016(61591) at 07/07/2026 10:18:26 EDT.  It was opened by the device at 07/07/2026 10:18:37 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to PW1015(61593) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to R10(49651) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to S10(61594) at 07/07/2026 10:18:26 EDT.  It was opened by the device at 07/07/2026 10:19:40 EDT.
+Sent message of type apns to SQ26(964403) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to SQ261(964402) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to Squad 283(189242) at 07/07/2026 10:18:26 EDT.
+Sent message of type apns to U1017(61592) at 07/07/2026 10:18:26 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/07/2026 10:18:27 EDT.
+","Got a response of Avail to S10(61594) at 07/07/2026 10:35:44 EDT.
+"
+"635571418","07/07/2026 13:20:15 EDT","07/07/2026 13:20:17 EDT","3","SPIL - Material Spill{3}","Toner Alert Initiated 
+ {101} 
+  Station Dispatched : {101   } 
+  Units Recommended: {101    };
+ Dispatched: {101} 
+  GASOLINE SPILL SMALL IN NATURE REQ BY PD
+CODE: SPIL
+DATE: 07/07/2026
+TIME: 13:18:39","","","Egg Harbor RD & Long Bow CIR","","","Sewell","NJ","39.7747111","-75.09258341","amazon:cached","","101, 101, 101, 101","2026001189","","","Qfzyj","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/07/2026 13:20:15 EDT.
+Sent message of type xmpp to BC101(61863) at 07/07/2026 13:20:15 EDT.
+Sent message of type xmpp to BC103(61595) at 07/07/2026 13:20:15 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/07/2026 13:20:15 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/07/2026 13:20:15 EDT.
+Sent message of type xmpp to EOC (63727) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to 1002(61865) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to 1065(61599) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to 26-1(61402) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to 2600(215257) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to BC-101(155258) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to BC102(54929) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to CH10(61597) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to E1011(57083) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to E1021(61596) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to E1022(57091) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to E1031(61600) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to E1032(61601) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to E1033(61602) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to FM-10(63730) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to L1026(61598) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to LT1016(61591) at 07/07/2026 13:20:15 EDT.  It was opened by the device at 07/07/2026 14:23:58 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to PW1015(61593) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to R10(49651) at 07/07/2026 13:20:15 EDT.  It was opened by the device at 07/07/2026 13:23:15 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to S10(61594) at 07/07/2026 13:20:15 EDT.  It was opened by the device at 07/07/2026 13:21:06 EDT.
+Sent message of type apns to SQ26(964403) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to SQ261(964402) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to Squad 283(189242) at 07/07/2026 13:20:15 EDT.
+Sent message of type apns to U1017(61592) at 07/07/2026 13:20:15 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/07/2026 13:20:17 EDT.  It was opened by the device at 07/07/2026 13:20:31 EDT.
+",""
+"635714634","07/08/2026 03:21:44 EDT","07/08/2026 03:21:46 EDT","3","ALRM - Fire Alarm System{3}","Toner Alert Initiated 
+ {101} 
+  Station Dispatched : {101   } 
+  Units Recommended: {101    };
+ Dispatched: {101} 
+  Toner Alert Initiated, Following tones sent to device - F1   
+ 10DE - 10-1 Grenloch FD
+  
+  SMOKE DETECTORS///DOES NOT SEE OR SMELL ANYTHING//ADVISED 
+  Names Added : Viola; Caller
+ZIP: 08080
+DATE: 07/08/2026
+CODE: ALRM
+TIME: 03:19:44","","","10 Fox Hollow LN","","Mt Pleasant RD & Fox Hollow LN","Sewell","NJ","39.77655387","-75.08610143","amazon","","101, 101, 101, 101","2026001190","","86464","Kzis3","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/08/2026 03:21:44 EDT.
+Sent message of type xmpp to BC101(61863) at 07/08/2026 03:21:44 EDT.
+Sent message of type xmpp to BC103(61595) at 07/08/2026 03:21:44 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/08/2026 03:21:44 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/08/2026 03:21:44 EDT.
+Sent message of type xmpp to EOC (63727) at 07/08/2026 03:21:44 EDT.
+Sent message of type apns to 1002(61865) at 07/08/2026 03:21:44 EDT.
+Sent message of type apns to 1065(61599) at 07/08/2026 03:21:44 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to 26-1(61402) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to 2600(215257) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to BC-101(155258) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to BC102(54929) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to CH10(61597) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to E1011(57083) at 07/08/2026 03:21:45 EDT.  It was opened by the device at 07/08/2026 03:25:34 EDT.
+Sent message of type apns to E1021(61596) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to E1022(57091) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to E1031(61600) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to E1032(61601) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to E1033(61602) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to FM-10(63730) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to L1026(61598) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to LT1016(61591) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to PW1015(61593) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to R10(49651) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to S10(61594) at 07/08/2026 03:21:45 EDT.  It was opened by the device at 07/08/2026 03:25:40 EDT.
+Sent message of type apns to SQ26(964403) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to SQ261(964402) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to Squad 283(189242) at 07/08/2026 03:21:45 EDT.
+Sent message of type apns to U1017(61592) at 07/08/2026 03:21:45 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/08/2026 03:21:46 EDT.
+","Got a response of Resp to S10(61594) at 07/08/2026 03:25:44 EDT.
+Got a response of Avail to S10(61594) at 07/08/2026 03:40:57 EDT.
+Got a response of Avail to E1011(57083) at 07/08/2026 03:41:24 EDT.
+"
+"635745318","07/08/2026 09:05:28 EDT","07/08/2026 09:05:30 EDT","3","ALMC - CO Alarm{3}","Toner Alert Initiated 
+ {103} 
+  Station Dispatched : {103   } 
+  Units Recommended: {103    };
+ Dispatched: {103} 
+  Co alarm going off since yesterday - no ill effects - no smoke or flames
+ advised to evacuate 
+  Names Added : Hermanez, Mariam; Caller
+TIME: 09:03:47
+CODE: ALMC
+ZIP: 08080
+DATE: 07/08/2026","","","175 Golfview DR","","Abbington LN & Egg Harbor RD","Sewell","NJ","39.7596202","-75.08503785","amazon:cached","","103, 103, 103, 103","2026001191","","","fUgAl","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/08/2026 09:05:28 EDT.
+Sent message of type xmpp to BC101(61863) at 07/08/2026 09:05:28 EDT.
+Sent message of type xmpp to BC103(61595) at 07/08/2026 09:05:28 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/08/2026 09:05:28 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/08/2026 09:05:28 EDT.
+Sent message of type xmpp to EOC (63727) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to 1002(61865) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to 1065(61599) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to 26-1(61402) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to 2600(215257) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to BC-101(155258) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to BC102(54929) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to CH10(61597) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to E1011(57083) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to E1021(61596) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to E1022(57091) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to E1031(61600) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to E1032(61601) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to E1033(61602) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to FM-10(63730) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to L1026(61598) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to LT1016(61591) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to PW1015(61593) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to R10(49651) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to S10(61594) at 07/08/2026 09:05:28 EDT.  It was opened by the device at 07/08/2026 09:05:34 EDT.
+Sent message of type apns to SQ26(964403) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to SQ261(964402) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to Squad 283(189242) at 07/08/2026 09:05:28 EDT.
+Sent message of type apns to U1017(61592) at 07/08/2026 09:05:28 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/08/2026 09:05:29 EDT.  It was opened by the device at 07/08/2026 09:06:24 EDT.
+","Got a response of Resp to S10(61594) at 07/08/2026 09:05:38 EDT.
+"
+"635759170","07/08/2026 10:24:21 EDT","07/08/2026 10:24:22 EDT","3","FUMEIN - Interior Fumes{3}","Toner Alert Initiated 
+ {103} 
+  Station Dispatched : {103   } 
+  Units Recommended: {103    };
+ Dispatched: {103} 
+  Call Back Information : 6098551881 
+  Gas smell in residence after using dryer 
+  Names Added : Gaff, Carleie; Caller
+TIME: 10:22:15
+CODE: FUMEIN
+ZIP: 08080
+DATE: 07/08/2026","","","23 Canis CT","","Vergo LN & Dead End","Sewell","NJ","39.72726178","-75.06309101","amazon:cached","","103, 103, 103, 103","2026001192","","","clQhr","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/08/2026 10:24:21 EDT.
+Sent message of type xmpp to BC101(61863) at 07/08/2026 10:24:21 EDT.
+Sent message of type xmpp to BC103(61595) at 07/08/2026 10:24:21 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/08/2026 10:24:21 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/08/2026 10:24:21 EDT.
+Sent message of type xmpp to EOC (63727) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to 1002(61865) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to 1065(61599) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to 26-1(61402) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to 2600(215257) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to BC-101(155258) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to BC102(54929) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to CH10(61597) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to E1011(57083) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to E1021(61596) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to E1022(57091) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to E1031(61600) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to E1032(61601) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to E1033(61602) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to FM-10(63730) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to L1026(61598) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to LT1016(61591) at 07/08/2026 10:24:21 EDT.  It was opened by the device at 07/08/2026 10:24:31 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to PW1015(61593) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to R10(49651) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to S10(61594) at 07/08/2026 10:24:21 EDT.  It was opened by the device at 07/08/2026 10:31:39 EDT.
+Sent message of type apns to SQ26(964403) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to SQ261(964402) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to Squad 283(189242) at 07/08/2026 10:24:21 EDT.
+Sent message of type apns to U1017(61592) at 07/08/2026 10:24:21 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/08/2026 10:24:22 EDT.
+","Got a response of Resp to LT1016(61591) at 07/08/2026 10:24:32 EDT.
+"
+"635787021","07/08/2026 12:44:00 EDT","07/08/2026 12:44:02 EDT","3","ALRM - Fire Alarm System{3}","Toner Alert Initiated 
+ {102} 
+  Station Dispatched : {102   } 
+  Units Recommended: {102    };
+ Dispatched: {102} 
+  BUILIDNG 500 
+ ZONE 215 NO DESCRIPTION 
+ PREM- 856-230-1767
+ EMERGENCY REPSPONSE ASSOC- 800-633-2677
+ OPER- 84599
+ KEY HOLDER- JOSEPH YEH 201-892-3268
+  
+  PF# AL6313          , notified with address flag 
+  Update reviewed by dispatcher- Shephard, Aidan M 
+  PF# AS6367          , notified with address flag
+TIME: 12:40:45
+DATE: 07/08/2026
+CODE: ALRM
+Suggested city: Blackwood","","Birches Apts Complex","195 Fries Mill RD","Complex","Mill Park DR & White Birch RD","Turnersville","NJ","39.73470311","-75.04929742","amazon","","102, 102, 102, 102","2026001193","","105522","2eeuF","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/08/2026 12:44:00 EDT.
+Sent message of type xmpp to BC101(61863) at 07/08/2026 12:44:00 EDT.
+Sent message of type xmpp to BC103(61595) at 07/08/2026 12:44:00 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/08/2026 12:44:00 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/08/2026 12:44:00 EDT.
+Sent message of type xmpp to EOC (63727) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to 1002(61865) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to 1065(61599) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to 26-1(61402) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to 2600(215257) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to BC-101(155258) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to BC102(54929) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to CH10(61597) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to E1011(57083) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to E1021(61596) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to E1022(57091) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to E1031(61600) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to E1032(61601) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to E1033(61602) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to FM-10(63730) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to L1026(61598) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to LT1016(61591) at 07/08/2026 12:44:00 EDT.  It was opened by the device at 07/08/2026 13:00:47 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to PW1015(61593) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to R10(49651) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to S10(61594) at 07/08/2026 12:44:00 EDT.  It was opened by the device at 07/08/2026 12:46:34 EDT.
+Sent message of type apns to SQ26(964403) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to SQ261(964402) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to Squad 283(189242) at 07/08/2026 12:44:00 EDT.
+Sent message of type apns to U1017(61592) at 07/08/2026 12:44:00 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/08/2026 12:44:02 EDT.  It was opened by the device at 07/08/2026 12:47:57 EDT.
+","Got a response of Resp to S10(61594) at 07/08/2026 12:46:36 EDT.
+"
+"635787782","07/08/2026 12:47:32 EDT","07/08/2026 12:47:34 EDT","3","SERV - Service assignment (Fire){3}","Toner Alert Initiated 
+ {101}[TL10]
+TIME: 12:47:24
+CODE: SERV
+ZIP: 08080
+DATE: 07/08/2026","","","10 Fox Hollow LN","","Mt Pleasant RD & Fox Hollow LN","Sewell","NJ","39.77655387","-75.08610143","amazon","","TL10, 101","2026001194","","105709","VZuaZ","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/08/2026 12:47:32 EDT.
+Sent message of type xmpp to BC101(61863) at 07/08/2026 12:47:32 EDT.
+Sent message of type xmpp to BC103(61595) at 07/08/2026 12:47:32 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/08/2026 12:47:32 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/08/2026 12:47:32 EDT.
+Sent message of type xmpp to EOC (63727) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to 1002(61865) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to 1065(61599) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to 26-1(61402) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to 2600(215257) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to BC-101(155258) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to BC102(54929) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to CH10(61597) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to E1011(57083) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to E1021(61596) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to E1022(57091) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to E1031(61600) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to E1032(61601) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to E1033(61602) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to FM-10(63730) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to L1026(61598) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to LT1016(61591) at 07/08/2026 12:47:32 EDT.  It was opened by the device at 07/08/2026 15:48:17 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/08/2026 12:47:32 EDT.
+Sent message of type apns to PW1015(61593) at 07/08/2026 12:47:33 EDT.
+Sent message of type apns to R10(49651) at 07/08/2026 12:47:33 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/08/2026 12:47:33 EDT.
+Sent message of type apns to S10(61594) at 07/08/2026 12:47:33 EDT.  It was opened by the device at 07/08/2026 18:39:11 EDT.
+Sent message of type apns to SQ26(964403) at 07/08/2026 12:47:33 EDT.
+Sent message of type apns to SQ261(964402) at 07/08/2026 12:47:33 EDT.
+Sent message of type apns to Squad 283(189242) at 07/08/2026 12:47:33 EDT.
+Sent message of type apns to U1017(61592) at 07/08/2026 12:47:33 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/08/2026 12:47:34 EDT.  It was opened by the device at 07/08/2026 13:30:08 EDT.
+",""
+"635862809","07/08/2026 18:38:10 EDT","07/08/2026 18:38:13 EDT","2","DWEL - Dwelling Fire{2}","Toner Alert Initiated 
+ {101},{102},{103} 
+  Station Dispatched : {101   } 
+  Station Dispatched : {103   } 
+  Station Dispatched : {102   } 
+  Units Recommended: {109    },{102    },{103    },{101    },{026    },{022    };
+ Dispatched: {109}, {102}, {103}, {101}, {026}, {022} 
+  Toner Alert Initiated, Following tones sent to device - F1   
+ 109D - 10-9 Washington Township EMS
+ 10DF - 10-2 Whitman Square FD
+ 2FC2 - 10-2 Whitman Square FD
+  
+  KITCHEN FIRE ALARMS SOUNDING CALLER SEES ACTIVE FIRE 
+  Names Added : Monte, Allysia; Caller 
+  EVACUATED
+TIME: 18:36:31
+CODE: DWEL
+ZIP: 08080
+DATE: 07/08/2026","","","5 Sun Haven DR","","Hurffville Crosskeys RD & Joseph DR","Sewell","NJ","39.71994605","-75.04388262","amazon","","101 102 103, 101, 103, 102, 109, 102, 103, 101, 026, 022, 109, 102, 103, 101, 026, 022","2026001195","","125321","RG5Sa","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/08/2026 18:38:10 EDT.
+Sent message of type xmpp to BC101(61863) at 07/08/2026 18:38:10 EDT.
+Sent message of type xmpp to BC103(61595) at 07/08/2026 18:38:10 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/08/2026 18:38:10 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/08/2026 18:38:10 EDT.
+Sent message of type xmpp to EOC (63727) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to 1002(61865) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to 1065(61599) at 07/08/2026 18:38:10 EDT.  It was opened by the device at 07/08/2026 18:39:29 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/08/2026 18:38:10 EDT.  It was opened by the device at 07/08/2026 18:40:36 EDT.
+Sent message of type apns to 26-1(61402) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to 2600(215257) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to BC-101(155258) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to BC102(54929) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to CH10(61597) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to E1011(57083) at 07/08/2026 18:38:10 EDT.  It was opened by the device at 07/08/2026 18:41:10 EDT.
+Sent message of type apns to E1021(61596) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to E1022(57091) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to E1031(61600) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to E1032(61601) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to E1033(61602) at 07/08/2026 18:38:10 EDT.  It was opened by the device at 07/08/2026 18:39:33 EDT.
+Sent message of type apns to FM-10(63730) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to L1026(61598) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to LT1016(61591) at 07/08/2026 18:38:10 EDT.  It was opened by the device at 07/08/2026 18:38:37 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to PW1015(61593) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to R10(49651) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/08/2026 18:38:10 EDT.
+Sent message of type apns to S10(61594) at 07/08/2026 18:38:10 EDT.  It was opened by the device at 07/08/2026 18:39:12 EDT.
+Sent message of type apns to SQ26(964403) at 07/08/2026 18:38:11 EDT.
+Sent message of type apns to SQ261(964402) at 07/08/2026 18:38:11 EDT.
+Sent message of type apns to Squad 283(189242) at 07/08/2026 18:38:11 EDT.
+Sent message of type apns to U1017(61592) at 07/08/2026 18:38:11 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/08/2026 18:38:13 EDT.  It was opened by the device at 07/08/2026 18:38:47 EDT.
+","Got a response of Resp to LT1016(61591) at 07/08/2026 18:38:41 EDT.
+Got a response of Resp to S10(61594) at 07/08/2026 18:39:14 EDT.
+Got a response of Resp to 1065(61599) at 07/08/2026 18:39:32 EDT.
+Got a response of Resp to E1033(61602) at 07/08/2026 18:39:34 EDT.
+Got a response of Resp to E1033(61602) at 07/08/2026 18:39:34 EDT.
+"
+"635877227","07/08/2026 19:50:52 EDT","07/08/2026 19:50:56 EDT","3","FUMEEX - Exterior Fumes{3}","Toner Alert Initiated 
+ {101}[S10] 
+  Units Recommended: {026    };
+ Dispatched: {026}, S10 
+  Call Back Information : EXT 5488 6095619000 
+  EXTERIOR ODOR 
+ TECH 20 MIN 
+ OPER 4271
+DATE: 07/08/2026
+TIME: 19:50:45
+CODE: FUMEEX","","","Victoria ST & Mick DR","","","Glassboro","NJ","39.70436632","-75.11468389","amazon","","S10, 026, 026","2026001196","","129501","SPnPl","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/08/2026 19:50:53 EDT.
+Sent message of type xmpp to BC101(61863) at 07/08/2026 19:50:53 EDT.
+Sent message of type xmpp to BC103(61595) at 07/08/2026 19:50:53 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/08/2026 19:50:53 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/08/2026 19:50:53 EDT.
+Sent message of type xmpp to EOC (63727) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to 1002(61865) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to 1065(61599) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to 26-1(61402) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to 2600(215257) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to BC-101(155258) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to BC102(54929) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to CH10(61597) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to E1011(57083) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to E1021(61596) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to E1022(57091) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to E1031(61600) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to E1032(61601) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to E1033(61602) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to FM-10(63730) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to L1026(61598) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to LT1016(61591) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to PW1015(61593) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to R10(49651) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/08/2026 19:50:53 EDT.  It was opened by the device at 07/08/2026 19:51:01 EDT.
+Sent message of type apns to S10(61594) at 07/08/2026 19:50:53 EDT.  It was opened by the device at 07/08/2026 19:50:59 EDT.
+Sent message of type apns to SQ26(964403) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to SQ261(964402) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to Squad 283(189242) at 07/08/2026 19:50:53 EDT.
+Sent message of type apns to U1017(61592) at 07/08/2026 19:50:53 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/08/2026 19:50:56 EDT.  It was opened by the device at 07/08/2026 19:51:08 EDT.
+","Got a response of Resp to S10(61594) at 07/08/2026 19:50:59 EDT.
+"
+"635879933","07/08/2026 20:04:38 EDT","07/08/2026 20:04:41 EDT","3","INVF - Investigation (FIRE){3}","Toner Alert Initiated 
+ {102} 
+  Station Dispatched : {102   } 
+  Units Recommended: {102    };
+ Dispatched: {102} 
+  Toner Alert Initiated, Following tones sent to device - F1   
+ 10DE - 10-2 Whitman Square FD
+  
+  The smoke detector that fire department gave her 10 yrs ago is now beeping...no problems at her residence  just cant get it off the wall and needs a new one 
+  Names Added : Noll, Ethel; Caller
+DATE: 07/08/2026
+CODE: INVF
+ZIP: 08080
+TIME: 19:59:22","","","120 Strand AVE","","Black Horse PIKE & Tuckahoe RD","Sewell","NJ","39.72354755","-75.0274494","amazon:cached","","102, 102, 102, 102","2026001197","","","dnBtX","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/08/2026 20:04:38 EDT.
+Sent message of type xmpp to BC101(61863) at 07/08/2026 20:04:38 EDT.
+Sent message of type xmpp to BC103(61595) at 07/08/2026 20:04:38 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/08/2026 20:04:38 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/08/2026 20:04:38 EDT.
+Sent message of type xmpp to EOC (63727) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to 1002(61865) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to 1065(61599) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to 26-1(61402) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to 2600(215257) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to BC-101(155258) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to BC102(54929) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to CH10(61597) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to E1011(57083) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to E1021(61596) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to E1022(57091) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to E1031(61600) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to E1032(61601) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to E1033(61602) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to FM-10(63730) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to L1026(61598) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to LT1016(61591) at 07/08/2026 20:04:38 EDT.  It was opened by the device at 07/08/2026 20:05:52 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to PW1015(61593) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to R10(49651) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to S10(61594) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to SQ26(964403) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to SQ261(964402) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to Squad 283(189242) at 07/08/2026 20:04:38 EDT.
+Sent message of type apns to U1017(61592) at 07/08/2026 20:04:38 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/08/2026 20:04:41 EDT.  It was opened by the device at 07/08/2026 20:05:31 EDT.
+","Got a response of Resp to LT1016(61591) at 07/08/2026 20:05:53 EDT.
+"
+"635958364","07/09/2026 07:35:24 EDT","07/09/2026 07:35:25 EDT","3","INVF - Investigation (FIRE){3}","Toner Alert Initiated 
+ {101}[S10] 
+  Units Recommended: {103    };
+ Dispatched: S10 
+  Call Back Information : 8562308084 
+  Electrical burning odor in res / adv to evac 
+  Names Added : Chaccio, Joseph; Caller
+DATE: 07/09/2026
+TIME: 07:33:18
+ZIP: 08080
+CODE: INVF","","","31 Sirius CT","","Lunar LN & Dead End","Sewell","NJ","39.7248286","-75.06397547","amazon:cached","","S10, 103","2026001198","","","xVtml","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/09/2026 07:35:24 EDT.
+Sent message of type xmpp to BC101(61863) at 07/09/2026 07:35:24 EDT.
+Sent message of type xmpp to BC103(61595) at 07/09/2026 07:35:24 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/09/2026 07:35:24 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/09/2026 07:35:24 EDT.
+Sent message of type xmpp to EOC (63727) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to 1002(61865) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to 1065(61599) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to 26-1(61402) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to 2600(215257) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to BC-101(155258) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to BC102(54929) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to CH10(61597) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to E1011(57083) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to E1021(61596) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to E1022(57091) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to E1031(61600) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to E1032(61601) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to E1033(61602) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to FM-10(63730) at 07/09/2026 07:35:24 EDT.  It was opened by the device at 07/09/2026 07:52:25 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to L1026(61598) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to LT1016(61591) at 07/09/2026 07:35:24 EDT.  It was opened by the device at 07/09/2026 07:37:37 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to PW1015(61593) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to R10(49651) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to S10(61594) at 07/09/2026 07:35:24 EDT.  It was opened by the device at 07/09/2026 07:36:54 EDT.
+Sent message of type apns to SQ26(964403) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to SQ261(964402) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to Squad 283(189242) at 07/09/2026 07:35:24 EDT.
+Sent message of type apns to U1017(61592) at 07/09/2026 07:35:24 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/09/2026 07:35:25 EDT.  It was opened by the device at 07/09/2026 07:35:31 EDT.
+","Got a response of Resp to LT1016(61591) at 07/09/2026 07:37:38 EDT.
+"
+"636003614","07/09/2026 12:11:19 EDT","07/09/2026 12:11:20 EDT","3","ASPD - Assist PD{3}","Toner Alert Initiated 
+ {101}[S10] 
+  Units Recommended: {103    };
+ Dispatched: S10 
+  10217 advised to ask fd to respond for a kitten in the tree closest to the dumpster all the way up at the top, about 8 feet in the air
+ZIP: 08080
+TIME: 12:08:33
+DATE: 07/09/2026
+CODE: ASPD","","Cold Stone Creamery","304 Greentree RD","","Egg Harbor RD & Senior LN","Sewell","NJ","39.75006726","-75.0765837","amazon","","S10, 103","2026001199","","161997","EHJWA","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/09/2026 12:11:19 EDT.
+Sent message of type xmpp to BC101(61863) at 07/09/2026 12:11:19 EDT.
+Sent message of type xmpp to BC103(61595) at 07/09/2026 12:11:19 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/09/2026 12:11:19 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/09/2026 12:11:19 EDT.
+Sent message of type xmpp to EOC (63727) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to 1002(61865) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to 1065(61599) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to 26-1(61402) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to 2600(215257) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to BC-101(155258) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to BC102(54929) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to CH10(61597) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to E1011(57083) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to E1021(61596) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to E1022(57091) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to E1031(61600) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to E1032(61601) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to E1033(61602) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to FM-10(63730) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to L1026(61598) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to LT1016(61591) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to PW1015(61593) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to R10(49651) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to S10(61594) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to SQ26(964403) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to SQ261(964402) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to Squad 283(189242) at 07/09/2026 12:11:19 EDT.
+Sent message of type apns to U1017(61592) at 07/09/2026 12:11:19 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/09/2026 12:11:20 EDT.  It was opened by the device at 07/09/2026 12:11:24 EDT.
+",""
+"636012396","07/09/2026 12:53:16 EDT","07/09/2026 12:53:17 EDT","3","FINV - Fire Marshal Invest{3}","Toner Alert Initiated 
+ {101}[S10],{100}[BC10] 
+  Units Recommended: {101    };
+ Dispatched: BC10, S10 
+  W/ems, 42 yof took in smoke NO FIRE, burnt popcorn set off alarms, caller concerned with the smoke inhalation 
+  Names Added : Bonsera, Chri; Caller
+TIME: 12:49:30
+CODE: FINV
+DATE: 07/09/2026
+ZIP: 08080","","","12 Marni CT","","Raymond DR & Dead End","Sewell","NJ","39.76387091","-75.08207879","amazon:cached","","S10, BC10, 101","2026001200","","","dGcw7","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/09/2026 12:53:16 EDT.
+Sent message of type xmpp to BC101(61863) at 07/09/2026 12:53:16 EDT.
+Sent message of type xmpp to BC103(61595) at 07/09/2026 12:53:16 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/09/2026 12:53:16 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/09/2026 12:53:16 EDT.
+Sent message of type xmpp to EOC (63727) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to 1002(61865) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to 1065(61599) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to 26-1(61402) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to 2600(215257) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to BC-101(155258) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to BC102(54929) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to CH10(61597) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to E1011(57083) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to E1021(61596) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to E1022(57091) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to E1031(61600) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to E1032(61601) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to E1033(61602) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to FM-10(63730) at 07/09/2026 12:53:16 EDT.  It was opened by the device at 07/09/2026 12:54:05 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to L1026(61598) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to LT1016(61591) at 07/09/2026 12:53:16 EDT.  It was opened by the device at 07/09/2026 17:04:25 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to PW1015(61593) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to R10(49651) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to S10(61594) at 07/09/2026 12:53:16 EDT.  It was opened by the device at 07/09/2026 12:54:10 EDT.
+Sent message of type apns to SQ26(964403) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to SQ261(964402) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to Squad 283(189242) at 07/09/2026 12:53:16 EDT.
+Sent message of type apns to U1017(61592) at 07/09/2026 12:53:16 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/09/2026 12:53:17 EDT.  It was opened by the device at 07/09/2026 12:56:05 EDT.
+",""
+"636048682","07/09/2026 15:39:52 EDT","07/09/2026 15:39:54 EDT","2","MVC - Motor Vehicle Crash{2}","Toner Alert Initiated 
+ {103}[R10] 
+  Station Dispatched : {103   } 
+  Units Recommended: {109    },{103    };
+ Dispatched: {109}, {103}, MED3, R10 
+  2 car crash trap 
+  2nd caller, no one trapped??  911 phone only 
+  Names Added : Dabach, Mars; Caller
+DATE: 07/09/2026
+CODE: MVC
+TIME: 15:39:46","","","Jupiter DR & Saturn DR","","","Sewell","NJ","39.72207698","-75.088429","amazon","","R10, 103, 109, 103, 109, 103","2026001201","","174022","EaASI","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/09/2026 15:39:52 EDT.
+Sent message of type xmpp to BC101(61863) at 07/09/2026 15:39:52 EDT.
+Sent message of type xmpp to BC103(61595) at 07/09/2026 15:39:52 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/09/2026 15:39:52 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/09/2026 15:39:52 EDT.
+Sent message of type xmpp to EOC (63727) at 07/09/2026 15:39:52 EDT.
+Sent message of type apns to 1002(61865) at 07/09/2026 15:39:52 EDT.
+Sent message of type apns to 1065(61599) at 07/09/2026 15:39:52 EDT.  It was opened by the device at 07/09/2026 15:40:24 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/09/2026 15:39:52 EDT.
+Sent message of type apns to 26-1(61402) at 07/09/2026 15:39:52 EDT.
+Sent message of type apns to 2600(215257) at 07/09/2026 15:39:52 EDT.
+Sent message of type apns to BC-101(155258) at 07/09/2026 15:39:52 EDT.
+Sent message of type apns to BC102(54929) at 07/09/2026 15:39:52 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/09/2026 15:39:52 EDT.
+Sent message of type apns to CH10(61597) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to E1011(57083) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to E1021(61596) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to E1022(57091) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to E1031(61600) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to E1032(61601) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to E1033(61602) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to FM-10(63730) at 07/09/2026 15:39:53 EDT.  It was opened by the device at 07/09/2026 15:40:54 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to L1026(61598) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to LT1016(61591) at 07/09/2026 15:39:53 EDT.  It was opened by the device at 07/09/2026 16:49:16 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to PW1015(61593) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to R10(49651) at 07/09/2026 15:39:53 EDT.  It was opened by the device at 07/09/2026 15:40:35 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to S10(61594) at 07/09/2026 15:39:53 EDT.  It was opened by the device at 07/09/2026 15:40:54 EDT.
+Sent message of type apns to SQ26(964403) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to SQ261(964402) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to Squad 283(189242) at 07/09/2026 15:39:53 EDT.
+Sent message of type apns to U1017(61592) at 07/09/2026 15:39:53 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/09/2026 15:39:54 EDT.  It was opened by the device at 07/09/2026 15:39:57 EDT.
+","Got a response of Resp to R10(49651) at 07/09/2026 15:40:36 EDT.
+Got a response of Resp to S10(61594) at 07/09/2026 15:43:50 EDT.
+"
+"636057793","07/09/2026 16:20:08 EDT","07/09/2026 16:20:09 EDT","2","DWEL - Dwelling Fire{2}","Toner Alert Initiated 
+ {101},{102},{103} 
+  Station Dispatched : {103   } 
+  Station Dispatched : {102   } 
+  Station Dispatched : {101   } 
+  Units Recommended: {109    },{101    },{102    },{103    },{026    },{022    };
+ Dispatched: {109}, {101}, {102}, {103}, {026}, {022} 
+  Toner Alert Initiated, Following tones sent to device - F1   
+ 2FC2 - 10-2 Whitman Square FD
+  
+  House was struck by lighting 10 min ago smells front left street side by door saw sparks at time of strike house evacuated 
+  Names Added : Unknown, Frank; Caller
+TIME: 16:16:56
+DATE: 07/09/2026
+CODE: DWEL
+Suggested city: Blackwood","","","65 Hillside RD","","Trent RD & Cranford RD","Turnersville","NJ","39.75718002","-75.06941231","amazon","","101 102 103, 103, 102, 101, 109, 101, 102, 103, 026, 022, 109, 101, 102, 103, 026, 022","2026001202","","176542","SAjFD","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/09/2026 16:20:08 EDT.
+Sent message of type xmpp to BC101(61863) at 07/09/2026 16:20:08 EDT.
+Sent message of type xmpp to BC103(61595) at 07/09/2026 16:20:08 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/09/2026 16:20:08 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/09/2026 16:20:08 EDT.
+Sent message of type xmpp to EOC (63727) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to 1002(61865) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to 1065(61599) at 07/09/2026 16:20:08 EDT.  It was opened by the device at 07/09/2026 16:20:52 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to 26-1(61402) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to 2600(215257) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to BC-101(155258) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to BC102(54929) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to CH10(61597) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to E1011(57083) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to E1021(61596) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to E1022(57091) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to E1031(61600) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to E1032(61601) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to E1033(61602) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to FM-10(63730) at 07/09/2026 16:20:08 EDT.  It was opened by the device at 07/09/2026 16:20:19 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to L1026(61598) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to LT1016(61591) at 07/09/2026 16:20:08 EDT.  It was opened by the device at 07/09/2026 16:21:23 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to PW1015(61593) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to R10(49651) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to S10(61594) at 07/09/2026 16:20:08 EDT.  It was opened by the device at 07/09/2026 16:20:18 EDT.
+Sent message of type apns to SQ26(964403) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to SQ261(964402) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to Squad 283(189242) at 07/09/2026 16:20:08 EDT.
+Sent message of type apns to U1017(61592) at 07/09/2026 16:20:08 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/09/2026 16:20:09 EDT.
+","Got a response of Resp to S10(61594) at 07/09/2026 16:20:34 EDT.
+Got a response of Resp to LT1016(61591) at 07/09/2026 16:21:24 EDT.
+Got a response of Resp to LT1016(61591) at 07/09/2026 16:21:24 EDT.
+"
+"636065606","07/09/2026 16:56:11 EDT","07/09/2026 16:56:12 EDT","2","MVC - Motor Vehicle Crash{2}","Toner Alert Initiated 
+ {101} 
+  Station Dispatched : {101   } 
+  Units Recommended: {109    },{101    };
+ Dispatched: {101}, {109} 
+  10199 requesting bls for 20 y/o fmle neck pain
+DATE: 07/09/2026
+CODE: MVC
+TIME: 16:56:04
+Suggested city: Blackwood","","Amechi and Son","5950 Black Horse PIKE","","Shoppers LN & Hurff LN","Turnersville","NJ","39.76367381","-75.04683138","amazon","","101, 101, 109, 101, 101, 109","2026001203","","178697","jiWkv","Sent message of type xmpp to 10-2 Main Johnson Rd.(564967) at 07/09/2026 16:56:11 EDT.
+Sent message of type xmpp to BC101(61863) at 07/09/2026 16:56:11 EDT.
+Sent message of type xmpp to BC103(61595) at 07/09/2026 16:56:11 EDT.
+Sent message of type xmpp to DC1003(45927) at 07/09/2026 16:56:11 EDT.
+Sent message of type xmpp to DC1004(61864) at 07/09/2026 16:56:11 EDT.
+Sent message of type xmpp to EOC (63727) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to 1002(61865) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to 1065(61599) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to 2202 iPad(834797) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to 26-1(61402) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to 2600(215257) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to BC-101(155258) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to BC102(54929) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to Car 2203 iPad(175532) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to CH10(61597) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to E1011(57083) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to E1021(61596) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to E1022(57091) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to E1031(61600) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to E1032(61601) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to E1033(61602) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to FM-10(63730) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to FM22 iPad(226331) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to L1026(61598) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to Ladder 28(189241) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to LT1016(61591) at 07/09/2026 16:56:11 EDT.  It was opened by the device at 07/09/2026 16:56:40 EDT.
+Sent message of type apns to Michael Jordan(2192377) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to PW1015(61593) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to R10(49651) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to Rescue 22 iPad(317552) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to S10(61594) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to SQ26(964403) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to SQ261(964402) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to Squad 283(189242) at 07/09/2026 16:56:11 EDT.
+Sent message of type apns to U1017(61592) at 07/09/2026 16:56:11 EDT.
+Sent message of type active911_fcm to Cindy Grudzinski(239323) at 07/09/2026 16:56:12 EDT.
+",""
