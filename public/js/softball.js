@@ -317,6 +317,12 @@ async function loadGames() {
   }
 }
 
+// Tab/header text for a game — uses the optional `label` override (e.g. "Playoff
+// Round 1") when set, otherwise falls back to "Game N".
+function gameLabel(game) {
+  return game.label || `Game ${game.game_number}`;
+}
+
 function buildGameTabs(games) {
   const tabBar  = document.getElementById('tab-bar');
   const content = document.getElementById('content');
@@ -334,9 +340,9 @@ function buildGameTabs(games) {
     tab.className = 'tab game-tab';
     tab.dataset.panel = `game-${game._id}`;
     if (isResolved) {
-      tab.innerHTML = `<span style="font-size:0.75rem;margin-right:3px;" class="result-${game.result}">${game.result}</span> Game ${game.game_number}`;
+      tab.innerHTML = `<span style="font-size:0.75rem;margin-right:3px;" class="result-${game.result}">${game.result}</span> ${gameLabel(game)}`;
     } else {
-      tab.textContent = `Game ${game.game_number}`;
+      tab.textContent = gameLabel(game);
     }
     tabBar.appendChild(tab);
 
@@ -376,7 +382,7 @@ function buildUpcomingHTML(game) {
   return `
     <div class="game-header">
       <div>
-        <div class="game-matchup" style="font-size:1.1rem;">Game ${game.game_number} &mdash; ${game.opponent}</div>
+        <div class="game-matchup" style="font-size:1.1rem;">${gameLabel(game)} &mdash; ${game.opponent}</div>
         <div class="game-meta">${dateStr}</div>
         ${opponentStandingHTML(game.opponent)}
       </div>
@@ -410,7 +416,7 @@ function buildBoxScoreHTML(game) {
             <span class="result-${game.result}">${title}</span>
             <span style="font-size:0.9rem;color:var(--sb-muted);">&nbsp;vs ${game.opponent}</span>
           </div>
-          <div class="game-meta">${dateStr}${dateStr ? ' · ' : ''}Game ${game.game_number}</div>
+          <div class="game-meta">${dateStr}${dateStr ? ' · ' : ''}${gameLabel(game)}</div>
         </div>
         <div style="display:flex;gap:8px;align-items:center;">${clearBtn}</div>
       </div>
@@ -495,7 +501,7 @@ function buildStatsFormHTML(game) {
     <div class="game-header">
       <div>
         <div class="game-matchup" style="font-size:1.1rem;">
-          Game ${game.game_number} &mdash; ${game.opponent}
+          ${gameLabel(game)} &mdash; ${game.opponent}
         </div>
         <div class="game-meta">${dateStr}</div>
         ${opponentStandingHTML(game.opponent)}
@@ -779,7 +785,7 @@ async function submitStats(gameId) {
     if (panel) panel.innerHTML = buildBoxScoreHTML(data);
 
     const tab = document.querySelector(`[data-panel="game-${gameId}"]`);
-    if (tab) tab.innerHTML = `<span style="font-size:0.75rem;margin-right:3px;" class="result-${data.result}">${data.result}</span> Game ${data.game_number}`;
+    if (tab) tab.innerHTML = `<span style="font-size:0.75rem;margin-right:3px;" class="result-${data.result}">${data.result}</span> ${gameLabel(data)}`;
 
     await loadSeason();
   } catch (err) {
@@ -811,7 +817,7 @@ async function clearStats(gameId) {
     }
 
     const tab = document.querySelector(`[data-panel="game-${gameId}"]`);
-    if (tab) tab.textContent = `Game ${data.game_number}`;
+    if (tab) tab.textContent = gameLabel(data);
 
     await loadSeason();
   } catch {

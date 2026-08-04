@@ -1967,6 +1967,7 @@ const softballGameSchema = new mongoose.Schema({
   opponent_score: { type: Number },
   result:         { type: String },
   players:        [playerStatSchema],
+  label:          { type: String },  // optional override for the tab/header text, e.g. "Playoff Round 1"
 }, { collection: 'softball_games' });
 
 const SoftballGame = mappyHourDb.model('SoftballGame', softballGameSchema);
@@ -1984,6 +1985,7 @@ const SOFTBALL_SCHEDULE = [
   { game_number: 10, date: new Date('2026-07-15'), opponent: 'Team Meyer'          },
   { game_number: 11, date: new Date('2026-07-22'), opponent: 'Stantec'             },
   { game_number: 12, date: new Date('2026-07-29'), opponent: 'Red'                 },
+  { game_number: 13, date: new Date('2026-08-05'), opponent: 'Digsau', label: 'Playoff Round 1' },
 ];
 
 async function seedSoftballSchedule() {
@@ -1994,6 +1996,7 @@ async function seedSoftballSchedule() {
         game_number: game.game_number,
         date:        game.date,
         opponent:    game.opponent,
+        label:       game.label,
         players:     [],
       }).save();
     }
