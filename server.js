@@ -1986,6 +1986,7 @@ const SOFTBALL_SCHEDULE = [
   { game_number: 11, date: new Date('2026-07-22'), opponent: 'Stantec'             },
   { game_number: 12, date: new Date('2026-07-29'), opponent: 'Red'                 },
   { game_number: 13, date: new Date('2026-08-05'), opponent: 'Digsau', label: 'Playoff Round 1' },
+  { game_number: 14, date: new Date('2026-08-12'), opponent: 'Perkins Eastman', label: 'Playoff Round 2' },
 ];
 
 async function seedSoftballSchedule() {
