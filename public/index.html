@@ -1426,6 +1426,8 @@
     <script type="module" src="js/auth.js"></script>
     <!-- LOCATION SERVICES (Near Me) — must load before the map scripts -->
     <script src="js/location-services.js"></script>
+    <!-- SHARED BASEMAP TILES — must load before the map scripts and the bar-map init below -->
+    <script src="js/basemap-tiles.js"></script>
     <!-- QUIZZO MAP -->
     <script src="js/new-quizzo-map.js"></script>
     <!-- POOL BARS MAP -->
@@ -1479,9 +1481,7 @@
           : 'https://philly-happy-hour-map-production.up.railway.app';
         const barMap = L.map('philly-bar-map').setView([39.951, -75.163], 12);
         barMap.zoomControl.setPosition('bottomright');
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-          attribution: '&copy; OpenStreetMap & CartoDB', subdomains: 'abcd',
-        }).addTo(barMap);
+        MappyBasemap.create(barMap, 'dark');
         fetch(BAR_API + '/api/bars')
           .then(r => r.json())
           .then(data => {

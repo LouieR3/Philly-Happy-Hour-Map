@@ -11,31 +11,21 @@ leafletmap.zoomControl.setPosition("bottomright");
 //     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 // }).addTo(leafletmap);
 
-var quizzoBasemapLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-  attribution: "&copy; OpenStreetMap & CartoDB",
-  subdomains: "abcd",
-}).addTo(leafletmap);
+var quizzoBasemapLayer = MappyBasemap.create(leafletmap, 'light');
 
 var quizzoIsLightMode = true;
 
 // ─── Basemap toggle functionality ─────────────────────────────────────────
 function toggleQuizzoBasemap() {
+  quizzoBasemapLayer.remove();
   if (quizzoIsLightMode) {
     // Switch to dark
-    leafletmap.removeLayer(quizzoBasemapLayer);
-    quizzoBasemapLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-      attribution: "&copy; OpenStreetMap & CartoDB",
-      subdomains: "abcd",
-    }).addTo(leafletmap);
+    quizzoBasemapLayer = MappyBasemap.create(leafletmap, 'dark');
     quizzoIsLightMode = false;
     document.getElementById('quizzo-basemap-toggle').innerHTML = '<i class="fa-solid fa-moon"></i><span>Dark Mode</span>';
   } else {
     // Switch to light
-    leafletmap.removeLayer(quizzoBasemapLayer);
-    quizzoBasemapLayer = L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-      attribution: "&copy; OpenStreetMap & CartoDB",
-      subdomains: "abcd",
-    }).addTo(leafletmap);
+    quizzoBasemapLayer = MappyBasemap.create(leafletmap, 'light');
     quizzoIsLightMode = true;
     document.getElementById('quizzo-basemap-toggle').innerHTML = '<i class="fa-solid fa-sun"></i><span>Light Mode</span>';
   }

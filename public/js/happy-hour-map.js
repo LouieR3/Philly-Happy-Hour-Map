@@ -11,17 +11,14 @@ const HH_API_BASE = window.location.hostname === 'localhost'
 var happyHourMap = L.map('happy-hour-leaflet-map').setView([39.9526, -75.1652], 12);
 happyHourMap.zoomControl.setPosition('bottomright');
 
-var hhBasemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap & CartoDB', subdomains: 'abcd',
-}).addTo(happyHourMap);
+var hhBasemap = MappyBasemap.create(happyHourMap, 'dark');
 var hhLight = false;
 (function () {
   var btn = document.getElementById('hh-basemap-toggle');
   if (!btn) return;
   btn.addEventListener('click', function () {
-    happyHourMap.removeLayer(hhBasemap);
-    hhBasemap = L.tileLayer('https://{s}.basemaps.cartocdn.com/' + (hhLight ? 'dark_all' : 'light_all') + '/{z}/{x}/{y}{r}.png',
-      { attribution: '&copy; OpenStreetMap & CartoDB', subdomains: 'abcd' }).addTo(happyHourMap);
+    hhBasemap.remove();
+    hhBasemap = MappyBasemap.create(happyHourMap, hhLight ? 'dark' : 'light');
     hhLight = !hhLight;
     btn.innerHTML = hhLight ? '<i class="fa-solid fa-moon"></i><span>Dark Mode</span>'
                             : '<i class="fa-solid fa-sun"></i><span>Light Mode</span>';

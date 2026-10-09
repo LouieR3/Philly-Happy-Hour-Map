@@ -6,26 +6,19 @@ const SPORTS_API_BASE = window.location.hostname === 'localhost'
 var sportsMap = L.map('sports-leaflet-map').setView([39.951, -75.163], 12);
 sportsMap.zoomControl.setPosition('bottomright');
 
-var sportsBasemapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap & CartoDB',
-  subdomains: 'abcd',
-}).addTo(sportsMap);
+var sportsBasemapLayer = MappyBasemap.create(sportsMap, 'dark');
 
 var sportsIsLightMode = false;
 
 // ─── Basemap toggle ───────────────────────────────────────────────────────────
 function toggleSportsBasemap() {
-  sportsMap.removeLayer(sportsBasemapLayer);
+  sportsBasemapLayer.remove();
   if (sportsIsLightMode) {
-    sportsBasemapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap & CartoDB', subdomains: 'abcd',
-    }).addTo(sportsMap);
+    sportsBasemapLayer = MappyBasemap.create(sportsMap, 'dark');
     sportsIsLightMode = false;
     document.getElementById('sports-basemap-toggle').innerHTML = '<i class="fa-solid fa-sun"></i><span>Light Mode</span>';
   } else {
-    sportsBasemapLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap & CartoDB', subdomains: 'abcd',
-    }).addTo(sportsMap);
+    sportsBasemapLayer = MappyBasemap.create(sportsMap, 'light');
     sportsIsLightMode = true;
     document.getElementById('sports-basemap-toggle').innerHTML = '<i class="fa-solid fa-moon"></i><span>Dark Mode</span>';
   }

@@ -3,11 +3,8 @@
 // Initialize the map
 const map = L.map('neighborhood-map').setView([39.9526, -75.1652], 12); // Centered on Philadelphia
 
-// Add a tile layer (OpenStreetMap)
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap & CartoDB',
-  subdomains: 'abcd'
-}).addTo(map);
+// Add a tile layer
+MappyBasemap.create(map, 'light');
 
 // Store references to the neighborhood labels and polygons
 const neighborhoodLabels = [];
